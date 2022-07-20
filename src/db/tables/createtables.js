@@ -1,4 +1,4 @@
-const { Client } = require('pg')
+const { Pool } = require('pg')
 const createUserTable					= require('../tables/user.js')
 const createCustomerTable				= require('../tables/customer.js')
 const createShipAddrTable				= require('../tables/shipping_address.js')
@@ -14,36 +14,37 @@ const createVendorRevTable				= require('../tables/vendor_review.js')
 const createProductMediaTable			= require('../tables/product_media.js')
 const createReversedTransactionTable	= require('../tables/reversed_transaction.js')
 
-const client = new Client({
-    user: process.env.user,
+const pool = new Pool({
+    user: process.env.pguser,
     host: process.env.host,
     password: process.env.pgpassword,
+	database: process.env.pgdatabase,
     port: process.env.pgport
 })
 
-const connectdb = async () => {
+module.exports = async () => {
 	try {
-		await client.connect()
-		await client.query(createUserTable)
-		await client.query(createCustomerTable)
-		await client.query(createUserTable)
-		await client.query(createCustomerTable)
-		await client.query(createShipAddrTable)
-		await client.query(createVendorTable)
-		await client.query(createShopTable)
-		await client.query(createShopContactTable)
-		await client.query(createProductTable)
-		await client.query(createShopCartTable)
-		await client.query(createCartItemTable)
-		await client.query(createTransactionTable)
-		await client.query(createProductRevTable)
-		await client.query(createVendorRevTable)
-		await client.query(createProductMediaTable)
-		await client.query(createReversedTransactionTable)
-	} catch (err) {
+		await pool.connect()
+		await pool.query(createUserTable)
+		await pool.query(createCustomerTable)
+		await pool.query(createUserTable)
+		await pool.query(createCustomerTable)
+		await pool.query(createShipAddrTable)
+		await pool.query(createVendorTable)
+		await pool.query(createShopTable)
+		await pool.query(createShopContactTable)
+		await pool.query(createProductTable)
+		await pool.query(createShopCartTable)
+		await pool.query(createCartItemTable)
+		await pool.query(createTransactionTable)
+		await pool.query(createProductRevTable)
+		await pool.query(createVendorRevTable)
+		await pool.query(createProductMediaTable)
+		await pool.query(createReversedTransactionTable)
+		await pool.end()
+	} catch (error) {
 		console.error(error.stack)
 	} finally {
-		await client.end()
+		await pool.end()
 	}
 }
-

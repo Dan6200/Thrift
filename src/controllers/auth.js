@@ -1,34 +1,29 @@
 const db = require('../db')
 const { StatusCodes } = require('http-status-codes')
 const { BadRequestError, UnauthenticatedError } = require('../errors')
-const User = require('../models/user')
 const path = require('path')
 const fileName = path.basename(__filename)
 // Verify with a call and sms api...
 const validatePhoneNumber = require('../security/validate-phone')
 const validateEmail = require('../security/validate-email')
-const { hashPassword, loginValidatePassword } = require('../security/password')
-const createJWT = require('../security/create-token')
+const { hashPassword, validatePassword } = require('../security/password')
+const createToken = require('../security/create-token')
 const locateIP = require('../security/ipgeolocator')
 
 const register = async (request, response) => {
-//	const user = await User.create({...request.body})
-//	const token = user.createJWT()
-//	response.status(StatusCodes.CREATED).json({
-//		user:{name: user.name},
-//		token
-//	})
 	const userData = request.body
 	const {phoneNum, email, password} = userData
 	if ((!phoneNum && !email)) {
 		throw new BadRequestError(`please provide an email address or phone number`)
 	}
 	if (!email) {
-		const validPhoneNumber = validatePhoneNumber(phoneNum)
+		// TODO: const validPhoneNumber = validatePhoneNumber(phoneNum)
+		const validPhoneNumber = true
 		if (!validPhoneNumber)
 			throw new BadRequestError(`please provide a valid phone number`)
 	} else {
-		const validEmail = validateEmail(email)
+		// TODO: const validEmail = validateEmail(email)
+		const validEmail = true
 		if (!validEmail) {
 			if (!validEmail)
 				throw new BadRequestError(`
@@ -36,12 +31,10 @@ const register = async (request, response) => {
 				`)
 		}
 	}
-	if (password) {
+	if (!password) {
 		throw new BadRequestError(`please provide a password`)
 	}
-	userData.hashedPassword = hashPassword(password)
-	// For extra security test the password is null
-	userData.password = null
+	userData.password = hashPassword(password)
 	await db.query(`
 		insert into  ecommerce_app.user_account (
 			first_name,
@@ -58,10 +51,10 @@ const register = async (request, response) => {
 	)
 	const result = await db.query(`
 		select user_id, first_name, initials 
-		from user_account
+		from ecommerce_app.user_account
 	`)
 	const newUser = result.rows[0]
-	const token = createJWT(newUser)
+	const token = createToken(newUser)
 	response.status(StatusCodes.CREATED).json({
 		msg: `success ${StatusCodes.CREATED}`,
 		newUser,
@@ -76,20 +69,32 @@ const login = async (request, response) => {
 	}
 	if (!password) 
 		throw new BadRequestError('Please provide password')
+	let user
 	if (!email) {
-		const user = await db.query(`
+		user = (await db.query(`
 			select user_id, first_name, initials
-			from user_account, 
-			where email=$1`, email)
+			from ecommerce_app.user_account, 
+			where phone=$1`, phone)).rows[0]
+	}
+	if (!phone) {
+		user = (await db.query(`
+			select user_id, first_name, initials
+			from ecommerce_app.user_account, 
+			where email=$1`, email)).rows[0]
 	}
 	if (!user)
 		throw new UnauthenticatedError('Invalid Credentials')
-	const pwdIsValid = await user.validatePwd(password)
+	const pwdIsValid = await validatePassword(password)
 	if (!pwdIsValid)
 		throw new UnauthenticatedError('Invalid Credentials')
-	const token = user.createJWT()
+	const token = user.createToken(user)
+	const {user_id, first_name, initials} = user
 	response.status(StatusCodes.OK).json({
-		user:{name: user.name},
+		user: {
+			id: user_id,
+			name: first_name,
+			initials,
+		},
 		token
 	})
 }

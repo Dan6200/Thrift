@@ -4,14 +4,14 @@
 clear
 PORT=1024
 
-USERNAME="ebuka"
+USERNAME="Ebuka"
 DATA="{
 	\"first_name\"	    :\"$USERNAME\",
-	\"last_name\"	    :\"eze\",
-	\"initials\"	    :\"ee\",
+	\"last_name\"	    :\"Eze\",
+	\"initials\"	    :\"EE\",
 	\"email\"			:\"ebukachibueze5489@gmail.com\",
 	\"phone\"			:\"2349063459623\",
-	\"password_hash\"	:\"0xDEADDEED\",
+	\"password\"		:\"EbukaDa1!\",
 	\"ip_address\"		:\"168.89.91.45\",
 	\"country\"			:\"nigeria\",
 	\"dob\"				:\"1999-07-01\"
@@ -38,6 +38,6 @@ for (( i=0; i<${#RES}; i++)); do
 done
 printf "\n\n$HEAD"
 echo $BODY | jq '.'
-# TOKEN=$(jq -r '.token' <<< $BODY)
-# echo $TOKEN > curl_scripts/authentication/token/$USERNAME.txt
+TOKEN=$(jq -r '.token' <<< $BODY)
+echo $TOKEN > token/$USERNAME.txt
 

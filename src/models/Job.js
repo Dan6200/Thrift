@@ -1,5 +1,4 @@
-const { Schema, model, Types } = require('mongoose')
-
+/*
 const JobSchema = new Schema ({
 	company:{
 		type: String,
@@ -24,3 +23,4 @@ const JobSchema = new Schema ({
 },{ timestamps: true })
 
 module.exports = model('Job', JobSchema)
+*/

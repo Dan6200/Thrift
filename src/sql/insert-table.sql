@@ -1,17 +1,4 @@
---create table if not exists user_account (
---	user_id					serial 			primary key,
---	first_name				varchar(30)		not null,
---	last_name				varchar(30)		not null,
---	initials				char(2)			not null,
---	email					varchar(320)	unique,			
---	phone		 			varchar(40)		unique,			
---	password_hash			bytea			not null,
---	ip_address				varchar			not null,
---	country					varchar			not null,
---	dob						date			not null		check (current_date - dob > 17)
---);
-
-insert into  user_account (
+insert into  ecommerce_app.user_account (
 	first_name,
 	last_name,
 	initials,
@@ -32,6 +19,7 @@ insert into  user_account (
 	'nigeria',
 	'1999-07-01'
 );
+/*
 
 insert into  user_account (
 	first_name,
@@ -55,20 +43,23 @@ insert into  user_account (
 	'2000-10-19'
 );
 
-/*
+
+
 create table if not exists customer (
 	customer_id			int 		primary key,
 	preferred_currency	varchar		not null,
 	foreign	key	(customer_id)	references	user_account	on	update	cascade
 );
-*/
+
+
 
 insert into  customer values (
 	1,
 	'NGN'
 );
 
-/*
+
+
 create table if not exists shipping_address (
 	customer_id				int				primary key		references	customer	on	update	cascade,
 	-- Set default value with frontend
@@ -81,7 +72,8 @@ create table if not exists shipping_address (
 	delivery_instructions	varchar			not	null,
 	isdefault				boolean			not null
 );
-*/
+
+
 
 insert into  shipping_address (
 	customer_id,
@@ -105,15 +97,18 @@ insert into  shipping_address (
 	true
 );
 
-/*
+
+
 create table if not exists vendor (
 	vendor_id		int 		primary key	references	user_account	on	update	cascade
 );
-*/
+
+
 
 insert into vendor values (2);
 
-/*
+
+
 create table if not exists shop (
 	shop_id					serial			primary key,	
 	shop_name				varchar			not null,
@@ -123,7 +118,8 @@ create table if not exists shop (
 	postal_code				varchar,
 	banner_image			varchar
 );
-*/
+
+
 
 insert into shop (
 	shop_name, 
@@ -137,7 +133,8 @@ insert into shop (
 	100245
 );
 
-/*
+
+
 create table if not exists product (
 	product_id			serial				primary key,
 	product_title		varchar,
@@ -150,7 +147,8 @@ create table if not exists product (
 	quantity_available	int					not null,
 	is_flagship			boolean				not null
 );
-*/
+
+
 
 insert into  product (
 	product_title,
@@ -174,24 +172,28 @@ insert into  product (
 	true
 );
 
-/*
+
+
 create table if not exists shopping_cart (
 	cart_id				serial			primary key,
 	customer_id			int				not null	references	customer	on	update	cascade,
 	made				timestamptz		not null	default	now()
 );
-*/
+
+
 
 insert into shopping_cart (customer_id) values (1);
 
-/*
+
+
 create table if not exists shopping_cart_item (
 	items_id				serial			primary	key,
 	cart_id					int				not null		references	shopping_cart	on 	update	cascade,
 	product_id				int				not null		references	product		on update	cascade,
 	product_quantity		int				not null		default	1	check (product_quantity > 0)
 );
-*/
+
+
 
 insert into shopping_cart_item (
 	cart_id,
@@ -203,7 +205,8 @@ insert into shopping_cart_item (
 	3
 );
 
-/*
+
+
 create table if not exists transaction (
 	transaction_id				serial			primary	key,
 	transaction_timestamp		timestamptz		not null		default	now()	unique,
@@ -213,7 +216,7 @@ create table if not exists transaction (
 	transaction_amount			numeric(19,4)	not null,
 	foreign key	(vendor_id)		references	vendor		on	update	cascade
 );
-*/
+
 insert into transaction (
 	transacted_items_id,
 	customer_id,
@@ -226,16 +229,15 @@ insert into transaction (
 	(select sum(net_price * product_quantity) from product join shopping_cart_item using (product_id))
 );
 
-/*
+
 create table if not exists reverse_transaction (
 	transaction_id				int			primary	key	references	transaction		on	update	cascade,
 	rev_trans_timestamp			timestamptz		not null	default	now()	unique
 );
-*/
+
 
 insert into reversed_transaction (transaction_id) values (1);
 
-/*
 create table if not exists product_review (
 	review_id				serial			primary key,
 	product_id				int				not null	references	product		on	update	cascade,

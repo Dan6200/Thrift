@@ -1,7 +1,6 @@
 require('dotenv').config()
 const { Client } = require('pg')
 const fileName = require('path').basename(__filename)
-// console.log("%s\n\n%s", databases, fileName)
 
 const createUserTable					= require('./tables/user.js')
 const createCustomerTable				= require('./tables/customer.js')

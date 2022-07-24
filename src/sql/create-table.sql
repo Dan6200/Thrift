@@ -14,9 +14,9 @@ create table if not exists user_account (
 );
 
 create table if not exists customer (
-	customer_id			int 		primary key,
-	preferred_currency	varchar		not null,
-	foreign	key	(customer_id)	references	user_account	on	update	cascade
+	customer_id			int 		primary key	references	user_account	on	update	cascade,
+	default_currency	varchar(3) 	not	null,
+	preferred_currency	varchar(3)
 );
 
 create table if not exists shipping_address (
@@ -84,9 +84,10 @@ create table if not exists transaction (
 	transaction_timestamp		timestamptz		not null		default	now()	unique,
 	transacted_items_id			int				not null		references shopping_cart	on update	cascade,
 	customer_id					int				not null		references	customer	on	update	cascade,
-	vendor_id					int				not null		check (customer_id <> vendor_id),
+	vendor_id					int				not null,
 	transaction_amount			numeric(19,4)	not null,
-	foreign key	(vendor_id)		references	vendor		on	update	cascade
+	foreign key	(vendor_id)		references	vendor		on	update	cascade,
+	check (customer_id <> vendor_id)
 );
 
 create table if not exists reversed_transaction (

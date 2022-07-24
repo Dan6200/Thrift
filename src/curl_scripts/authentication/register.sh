@@ -4,9 +4,9 @@
 clear
 PORT=1024
 
-# USERNAME="daniel"
+USERNAME="ebuka"
 DATA="{
-	\"first_name\"	    :\"ebuka\",
+	\"first_name\"	    :\"$USERNAME\",
 	\"last_name\"	    :\"eze\",
 	\"initials\"	    :\"ee\",
 	\"email\"			:\"ebukachibueze5489@gmail.com\",
@@ -39,4 +39,5 @@ done
 printf "\n\n$HEAD"
 echo $BODY | jq '.'
 # TOKEN=$(jq -r '.token' <<< $BODY)
-# echo $TOKEN > curl_scripts/$USERNAME-token.txt
+# echo $TOKEN > curl_scripts/authentication/token/$USERNAME.txt
+

@@ -1,5 +1,5 @@
 const { StatusCode } = require('http-status-codes')
-const Job = require('../models/Job.js')
+// const Job = require('../models/Job')
 const {BadRequestError, NotFoundError} = require('../errors/')
 
 const getAllJobs = async (req, res) => {
@@ -77,5 +77,3 @@ module.exports = {
 	updateJob,
 	deleteJob
 }
-
-

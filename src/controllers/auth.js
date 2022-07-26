@@ -16,25 +16,27 @@ const register = async (request, response) => {
 	if ((!phoneNum && !email)) {
 		throw new BadRequestError(`please provide an email address or phone number`)
 	}
+	if (!password) {
+		throw new BadRequestError(`please provide a password`)
+	}
 	if (!email) {
 		// TODO: const validPhoneNumber = validatePhoneNumber(phoneNum)
 		const validPhoneNumber = true
 		if (!validPhoneNumber)
-			throw new BadRequestError(`please provide a valid phone number`)
+			throw new BadRequestError(`
+				please provide a valid phone number
+			`)
+		// TODO: Email verification
 	} else {
 		// TODO: const validEmail = validateEmail(email)
 		const validEmail = true
-		if (!validEmail) {
-			if (!validEmail)
-				throw new BadRequestError(`
-					please provide a valid email address
-				`)
-		}
+		if (!validEmail)
+			throw new BadRequestError(`
+				please provide a valid email address
+			`)
+		// TODO: SMS verification
 	}
-	if (!password) {
-		throw new BadRequestError(`please provide a password`)
-	}
-	userData.password = hashPassword(password)
+	userData.password = await hashPassword(password)
 	await db.query(`
 		insert into  ecommerce_app.user_account (
 			first_name,
@@ -53,10 +55,10 @@ const register = async (request, response) => {
 		select user_id, first_name, initials 
 		from ecommerce_app.user_account
 	`)
-	const newUser = result.rows[0]
+	const newUser = result.rows[result.rowCount-1]
 	const token = createToken(newUser)
 	response.status(StatusCodes.CREATED).json({
-		msg: `success ${StatusCodes.CREATED}`,
+		msg: `success: ${StatusCodes.CREATED}`,
 		newUser,
 		token
 	})
@@ -69,29 +71,31 @@ const login = async (request, response) => {
 	}
 	if (!password) 
 		throw new BadRequestError('Please provide password')
-	let user
+	let user, result
 	if (!email) {
-		user = (await db.query(`
-			select user_id, first_name, initials
-			from ecommerce_app.user_account, 
-			where phone=$1`, phone)).rows[0]
+		result = await db.query(`
+			select user_id, first_name, initials, password
+			from ecommerce_app.user_account 
+			where phone=$1`, [phone]) 
 	}
 	if (!phone) {
-		user = (await db.query(`
-			select user_id, first_name, initials
-			from ecommerce_app.user_account, 
-			where email=$1`, email)).rows[0]
+		result = await db.query(`
+			select user_id, first_name, initials, password
+			from ecommerce_app.user_account 
+			where email=$1`, [email])
 	}
+	user = result.rows[result.rowCount-1]
 	if (!user)
 		throw new UnauthenticatedError('Invalid Credentials')
-	const pwdIsValid = await validatePassword(password)
+	const pwdIsValid = await validatePassword(password, user.password.toString())
 	if (!pwdIsValid)
 		throw new UnauthenticatedError('Invalid Credentials')
-	const token = user.createToken(user)
+	const token = createToken(user)
 	const {user_id, first_name, initials} = user
 	response.status(StatusCodes.OK).json({
+		msg: `success: ${StatusCodes.OK}`,
 		user: {
-			id: user_id,
+			userId: user_id,
 			name: first_name,
 			initials,
 		},

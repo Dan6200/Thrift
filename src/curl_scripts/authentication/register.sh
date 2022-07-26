@@ -3,17 +3,15 @@
 
 clear
 PORT=1024
-
-USERNAME="Ebuka"
 DATA="{
-	\"first_name\"	    :\"$USERNAME\",
+	\"first_name\"	    :\"Ebuka\",
 	\"last_name\"	    :\"Eze\",
 	\"initials\"	    :\"EE\",
 	\"email\"			:\"ebukachibueze5489@gmail.com\",
 	\"phone\"			:\"2349063459623\",
 	\"password\"		:\"EbukaDa1!\",
 	\"ip_address\"		:\"168.89.91.45\",
-	\"country\"			:\"nigeria\",
+	\"country\"			:\"Nigeria\",
 	\"dob\"				:\"1999-07-01\"
 }"
 URL=localhost
@@ -38,6 +36,8 @@ for (( i=0; i<${#RES}; i++)); do
 done
 printf "\n\n$HEAD"
 echo $BODY | jq '.'
-TOKEN=$(jq -r '.token' <<< $BODY)
-echo $TOKEN > token/$USERNAME.txt
 
+TOKEN=$(jq -r '.token' <<< $BODY)
+USERNAME=$(jq -r '.newUser.first_name' <<< $BODY)
+USERID=$(jq -r '.newUser.user_id' <<< $BODY)
+echo $TOKEN > token/$USERNAME$USERID.txt

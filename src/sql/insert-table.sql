@@ -9,12 +9,12 @@ insert into  ecommerce_app.user_account (
 	country,
 	dob
 ) values (
-	'ebuka',
-	'eze',
-	'ee',
+	'Ebuka',
+	'Eze',
+	'EE',
 	'ebukachibueze5489@gmail.com',
 	'2349063459623',
-	'\xDEADDEED',
+	'EbukaDa1!',
 	'168.89.91.45',
 	'nigeria',
 	'1999-07-01'

@@ -7,7 +7,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
         statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
         msg: err.message || 'Something went wrong try again later',
     }
-	db.query('rollback')
+	console.error(err)
     return res.status(customError.statusCode).json({ msg: customError.msg })
 }
 

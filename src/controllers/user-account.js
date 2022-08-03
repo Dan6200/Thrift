@@ -2,56 +2,80 @@ const db = require('../db')
 const { StatusCodes } = require('http-status-codes')
 const {BadRequestError, NotFoundError} = require('../errors/')
 
-//	getAllAccounts,
+//	getUserAccount,
 //	getCustomerAccount,
 //	getVendorAccount,
 //	createCustomerAccount,
 //	createVendorAccount,
 //	updateCustomerAccount,
 //	updateVendorAccount,
-//	deleteAccount
+//	deleteUserAccount,
+//	deleteCustomerAccount
+//	deleteVendorAccount
 
-const getAllAccounts = async (...[, response]) => {
-	const vendorAccount = (await db.query('select * from ecommerce_app.vendor')).rows[0] || null
-	const customerAccount = (await db.query('select * from ecommerce_app.customer')).rows[0] || null
+const getUserAccount = async (request, response) => {
+	const userId = request.user
+	const userAccount = (await db.query(
+		`select * from ecommerce_app.user_account where user_id = ${userId}
+		left outer join ecommerce_app.vendor on (user_id = vendor_id) 
+		join ecommerce_app.vendor on (user_id = vendor_id)`
+	)).rows[0]
 	response.status(StatusCodes.OK).json({
-		accounts: {
-			customerAccount,
-			vendorAccount,
-		}
+		userAccount
 	})
 }
 
+const updateUserAccount = async (request, response) => {}
+
+const deleteUserAccount = async (request, response) => {}
+
 const createCustomerAccount = async (request, response) => {
+	const userAccount = request.user
 	const accountData = request.body
 	await db.query(`
 		insert into ecommerce_app.customer (
 			customer_id,
-			default_currency,
-			preferred_currency
-		) values ($1, $2, $3)
+			currency
+		) values ($1, $2)
 	`, Object.values(accountData))
 	const result = await db.query('select * from ecommerce_app.customer')
-	const newCustomer = result.rows[0] || null
+	const lastInsert = result.rowCount-1
+	const newCustomerAccount = result.rows[lastInsert]
 	response.status(StatusCodes.CREATED).json({
-		msg: `Customer account created ${StatusCode.CREATED}`,
-		newCustomer 
+		userAccount,
+		newCustomerAccount
 	})
 }
 
+const getCustomerAccount = async (request, response) => {}
+
+const updateCustomerAccount = async (request, response) => {}
+
+const deleteCustomerAccount = async (request, response) => {}
+
 const createVendorAccount = async (request, response) => {
+	const userAccount = request.user
 	const accountData = request.body
-	await db.query(`
-		insert into ecommerce_app.vendor (vendor_id)
-		values ($1)
-	`, Object.values(accountData))
-	const result = await db.query('select * from ecommerce_app.vendor')
-	const newVendor = result.rows[0]
-	response.status(StatusCode.CREATED).json ({
-		msg: `Vendor account created ${StatusCode.CREATED}`,
-		newVendor 
+	await db.query(
+		`insert into ecommerce_app.vendor values ($1)`
+		, Object.values(accountData))
+	const result = await db.query(
+		`select * from ecommerce_app.vendor
+		where `
+	)
+	const lastInsert = result.rowCount-1
+	const newVendorAccount = result.rows[lastInsert]
+	response.status(StatusCodes.CREATED).json ({
+		userAccount,
+		newVendorAccount
 	})
 }
+
+const getVendorAccount = async (request, response) => {}
+
+const updateVendorAccount = async (request, response) => {}
+
+const deleteVendorAccount = async (request, response) => {}
 
 const getJob = async (req, res) => {
 	const {
@@ -111,7 +135,7 @@ const deleteJob = async (req, res) => {
 }
 
 module.exports = {
-	getAllAccounts,
+	getUserAccount,
 	createVendorAccount,
 	createCustomerAccount,
 	getJob,

@@ -15,8 +15,7 @@ create table if not exists user_account (
 
 create table if not exists customer (
 	customer_id			int 		primary key	references	user_account	on	update	cascade,
-	default_currency	varchar(3) 	not	null,
-	preferred_currency	varchar(3)
+	currency	varchar(3) 	not	null
 );
 
 create table if not exists shipping_address (

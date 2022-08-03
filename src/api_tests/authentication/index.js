@@ -5,10 +5,10 @@ const chaiHttp			= require('chai-http')
 const db				= require('../../db')
 const { newUsers, users }		= require('./test-data')
 const { StatusCodes }	= require('http-status-codes')
-const should = chai.should()
-let token = {}
 
 chai.use(chaiHttp)
+const should = chai.should()
+let token = {}
 
 const testRegistration = () => {
 	beforeEach( async () => {
@@ -23,18 +23,18 @@ const testRegistration = () => {
 					.send(newUsers[i])
 				response.should.have.status(StatusCodes.CREATED)
 				response.body.should.be.an('object')
-				response.body.should.have.property('newUser')
-				response.body.should.have.property('token')
-				response.body.newUser.should.have.property('userId')
-				response.body.newUser.should.have.property('name')
-				response.body.newUser.should.have.property('initials')
-				token[response.body.newUser.userId] = response.body.token
+				const responseObject = response.body
+				responseObject.should.have.property('newUserId')
+				responseObject.should.have.property('token')
+				const { newUserId, token: responseToken } = responseObject
+				token[newUserId] = responseToken
 			}
 		})
 	})
 }
 
 const testLogin = () => {
+	// Testing the login route
 	describe ('/POST user: Login', () => {
 		it ('it should login 2 users', async () => {
 			for (let i=0; i < users.length; i++) {
@@ -43,12 +43,11 @@ const testLogin = () => {
 					.send(users[i])
 				response.should.have.status(StatusCodes.OK)
 				response.body.should.be.an('object')
-				response.body.should.have.property('user')
-				response.body.should.have.property('token')
-				response.body.user.should.have.property('userId')
-				response.body.user.should.have.property('name')
-				response.body.user.should.have.property('initials')
-				token[response.body.user.userId] = response.body.token
+				const responseObject = response.body
+				responseObject.should.have.property('userId')
+				responseObject.should.have.property('token')
+				const { userId, token: responseToken } = responseObject
+				token[userId] = responseToken
 			}
 		})
 	})

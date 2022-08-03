@@ -3,9 +3,9 @@ const router = express.Router()
 
 
 const {
-	getUserAccounts,
-	deleteUserAccounts,
-	updateUserAccounts,
+	getUserAccount,
+	deleteUserAccount,
+	updateUserAccount,
 	createCustomerAccount,
 	getCustomerAccount,
 	updateCustomerAccount,
@@ -18,9 +18,9 @@ const {
 
 router
 	.route('/')
-		.get(getUserAccounts)
-	//	.patch(updateUserAccounts)
-	//	.delete(deleteUserAccounts)
+		.get(getUserAccount)
+	//	.patch(updateUserAccount)
+	//	.delete(deleteUserAccount)
 
 router
 	.route('/customer')

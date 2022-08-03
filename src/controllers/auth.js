@@ -52,14 +52,13 @@ const register = async (request, response) => {
 		Object.values(userData)
 	)
 	const result = await db.query(`
-		select user_id, first_name, initials 
-		from ecommerce_app.user_account
+		select user_id from ecommerce_app.user_account
 	`)
-	const newUser = result.rows[result.rowCount-1]
-	const token = createToken(newUser)
+	const lastInsert = result.rowCount-1
+	const newUserId = result.rows[lastInsert].user_id
+	const token = createToken(newUserId)
 	response.status(StatusCodes.CREATED).json({
-		msg: `success: ${StatusCodes.CREATED}`,
-		newUser,
+		newUserId,
 		token
 	})
 }
@@ -74,31 +73,27 @@ const login = async (request, response) => {
 	let user, result
 	if (!email) {
 		result = await db.query(`
-			select user_id, first_name, initials, password
+			select user_id, password
 			from ecommerce_app.user_account 
 			where phone=$1`, [phone]) 
 	}
 	if (!phone) {
 		result = await db.query(`
-			select user_id, first_name, initials, password
+			select user_id, password
 			from ecommerce_app.user_account 
 			where email=$1`, [email])
 	}
-	user = result.rows[result.rowCount-1]
+	const lastInsert = result.rowCount-1
+	user = result.rows[lastInsert]
 	if (!user)
 		throw new UnauthenticatedError('Invalid Credentials')
 	const pwdIsValid = await validatePassword(password, user.password.toString())
 	if (!pwdIsValid)
 		throw new UnauthenticatedError('Invalid Credentials')
 	const token = createToken(user)
-	const {user_id, first_name, initials} = user
+	const {user_id: userId} = user
 	response.status(StatusCodes.OK).json({
-		msg: `success: ${StatusCodes.OK}`,
-		user: {
-			userId: user_id,
-			name: first_name,
-			initials,
-		},
+		userId,
 		token
 	})
 }

@@ -15,6 +15,7 @@ const rateLimiter = require('express-rate-limit')
 // routers
 const authRouter = require('./routes/auth')
 const jobsRouter = require('./routes/jobs')
+const userAccountsRouter = require('./routes/user-account')
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found')
@@ -38,6 +39,7 @@ application.use(xss())
 // routes
 application.use('/api/v1/auth', authRouter)
 application.use('/api/v1/jobs', authenticateUser, jobsRouter)
+application.use('/api/v1/user-account', authenticateUser, userAccountsRouter)
 
 application.get('/', (...[,response]) => {
 	response.send('</h1>ecommerce application</h1>')
@@ -51,11 +53,14 @@ const port = process.env.PORT
 const start = async () => {
 	console.clear() // Remove at build
 	try {
-		application.listen(port, () =>
-			console.log(`Server is listening on port ${port}...`)) 
+		if (require.main === module)
+			application.listen(port, () =>
+				console.log(`Server is listening on port ${port}...`)) 
 	} catch (error) { 
 		console.log(error) 
 	}
 }
 
 start()
+
+module.exports = application

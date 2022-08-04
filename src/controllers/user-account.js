@@ -14,35 +14,36 @@ const {BadRequestError, NotFoundError} = require('../errors/')
 //	deleteVendorAccount
 
 const getUserAccount = async (request, response) => {
-	const userId = request.user
+	const { userId } = request
 	const userAccount = (await db.query(
-		`select * from ecommerce_app.user_account where user_id = ${userId}
+		`select * from ecommerce_app.user_account 
 		left outer join ecommerce_app.vendor on (user_id = vendor_id) 
-		join ecommerce_app.vendor on (user_id = vendor_id)`
+		left outer join ecommerce_app.customer on (vendor_id = customer_id)
+		where user_id = ${userId}`
 	)).rows[0]
 	response.status(StatusCodes.OK).json({
 		userAccount
 	})
 }
 
-const updateUserAccount = async (request, response) => {}
+const updateUserAccount = async (request, response) => {
+}
 
 const deleteUserAccount = async (request, response) => {}
 
 const createCustomerAccount = async (request, response) => {
-	const userAccount = request.user
+	const { userId } = request
 	const accountData = request.body
 	await db.query(`
 		insert into ecommerce_app.customer (
 			customer_id,
 			currency
 		) values ($1, $2)
-	`, Object.values(accountData))
+	`, Object.values([userId, ...accountData]))
 	const result = await db.query('select * from ecommerce_app.customer')
 	const lastInsert = result.rowCount-1
 	const newCustomerAccount = result.rows[lastInsert]
 	response.status(StatusCodes.CREATED).json({
-		userAccount,
 		newCustomerAccount
 	})
 }

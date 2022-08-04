@@ -3,8 +3,6 @@ const application		= require('../../app')
 const chai				= require('chai')
 const chaiHttp			= require('chai-http')
 const db				= require('../../db')
-const { customerAccount,
-	vendorAccount}		= require('./test-data')
 const { StatusCodes }	= require('http-status-codes')
 const { token } 	 	= require('../authentication')
 
@@ -12,7 +10,7 @@ chai.use(chaiHttp)
 const should = chai.should()
 , expect = chai.expect
 
-const testUserAccount = () => {
+const testGetUserAccount = () => {
 	describe('/GET user account', () => {
 		it ('it should retrieve the User account',
 			async () => {
@@ -98,7 +96,7 @@ const testCreateVendorAccount = () => {
 }
 
 module.exports = {
-	testGetAllAccounts,
+	testGetUserAccount,
 	testCreateCustomerAccount,
 	testCreateVendorAccount
 }

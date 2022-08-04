@@ -1,1 +1,1 @@
-Marketplace E-commerce, Resell Application
+Marketplace: E-commerce, Resell Application

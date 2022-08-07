@@ -14,11 +14,10 @@ create table if not exists user_account (
 );
 
 create table if not exists customer (
-	customer_id			int 		primary key	references	user_account	on	update	cascade,
-	currency	varchar(3) 	not	null
+	customer_id			int 		primary key	references	user_account	on	update	cascade
 );
 
-create table if not exists shipping_address (
+create table if not exists shipping_info (
 	address_id				serial			primary key,
 	customer_id				int				not null		references	customer	on	update	cascade,
 	recepient_first_name	varchar(30)		not null,
@@ -27,7 +26,7 @@ create table if not exists shipping_address (
 	street					varchar			not null,
 	postal_code				varchar			not null,
 	delivery_contact		varchar			not	null,
-	delivery_instructions	varchar			not	null,
+	delivery_instructions	varchar,
 	is_default				boolean			not null
 );
 

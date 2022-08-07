@@ -1,4 +1,4 @@
-insert into  ecommerce_app.user_account (
+insert into  marketplace.user_account (
 	first_name,
 	last_name,
 	initials,

@@ -11,7 +11,7 @@ module.exports = async (...[request,, next]) => {
 	try {
 		const payload = jwt.verify(token, process.env.JWT_SECRET)
 		// attach the user id to the Job route
-		request.userId = payload.userId
+		request.user = payload
 		next()
 	} catch (err) {
 		throw new UnauthenticatedError('Authentication invalid')

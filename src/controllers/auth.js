@@ -38,7 +38,7 @@ const register = async (request, response) => {
 	}
 	userData.password = await hashPassword(password)
 	await db.query(`
-		insert into  ecommerce_app.user_account (
+		insert into  marketplace.user_account (
 			first_name,
 			last_name,
 			initials,
@@ -52,11 +52,12 @@ const register = async (request, response) => {
 		Object.values(userData)
 	)
 	const result = await db.query(`
-		select user_id from ecommerce_app.user_account
+		select user_id, phone, email from marketplace.user_account
 	`)
 	const lastInsert = result.rowCount-1
-	const newUserId = result.rows[lastInsert].user_id
-	const token = createToken(newUserId)
+	const newUser = result.rows[lastInsert]
+	const token = createToken(newUser)
+	const { user_id: newUserId } = newUser
 	response.status(StatusCodes.CREATED).json({
 		newUserId,
 		token
@@ -74,13 +75,13 @@ const login = async (request, response) => {
 	if (!email) {
 		result = await db.query(`
 			select user_id, password
-			from ecommerce_app.user_account 
+			from marketplace.user_account 
 			where phone=$1`, [phone]) 
 	}
 	if (!phone) {
 		result = await db.query(`
 			select user_id, password
-			from ecommerce_app.user_account 
+			from marketplace.user_account 
 			where email=$1`, [email])
 	}
 	const lastInsert = result.rowCount-1

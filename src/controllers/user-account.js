@@ -14,15 +14,31 @@ const {BadRequestError, NotFoundError} = require('../errors/')
 //	deleteVendorAccount
 
 const getUserAccount = async (request, response) => {
-	const { userId } = request
+	const { userId } = request.user
 	const userAccount = (await db.query(
-		`select * from ecommerce_app.user_account 
-		left outer join ecommerce_app.vendor on (user_id = vendor_id) 
-		left outer join ecommerce_app.customer on (vendor_id = customer_id)
-		where user_id = ${userId}`
-	)).rows[0]
+		`select 
+			user_id, 
+			first_name,
+			last_name,
+			email,
+			phone,
+			ip_address,
+			country,
+			dob,
+			customer_id,
+			vendor_id
+		from marketplace.user_account 
+		left outer join marketplace.vendor on (user_id = vendor_id) 
+		left outer join marketplace.customer on (vendor_id = customer_id)
+		where user_id = $1` 
+	, [ userId ])).rows[0]
 	response.status(StatusCodes.OK).json({
-		userAccount
+		userAccount: {
+			userId: userAccount.user_id.toString(),
+			vendorId: userAccount.vendor_id.toString(),
+			customerId: userAccount.customer_id.toString(),
+			...userAccount
+		}
 	})
 }
 
@@ -32,20 +48,44 @@ const updateUserAccount = async (request, response) => {
 const deleteUserAccount = async (request, response) => {}
 
 const createCustomerAccount = async (request, response) => {
-	const { userId } = request
-	const accountData = request.body
-	await db.query(`
-		insert into ecommerce_app.customer (
-			customer_id,
-			currency
-		) values ($1, $2)
-	`, Object.values([userId, ...accountData]))
-	const result = await db.query('select * from ecommerce_app.customer')
+	const { userId } = request.user
+	await db.query(
+		`insert into marketplace.customer values ($1)`, 
+		[ userId ]
+	)
+	const result = await db.query(
+		`select customer_id from marketplace.customer`
+	)
 	const lastInsert = result.rowCount-1
-	const newCustomerAccount = result.rows[lastInsert]
+	const newCustomerId = result.rows[ lastInsert ].customer_id.toString()
 	response.status(StatusCodes.CREATED).json({
-		newCustomerAccount
+		newCustomerId
 	})
+	/*
+	if (!shippingInfo.delivery_contact) {
+		if (phone) {
+			shippingInfo.delivery_contact = phone
+		} else {
+			throw new BadRequestError(
+				'Please provide a phone number contact'
+			)
+		}
+	}
+	await db.query(
+		`insert into marketplace.shipping_info (
+			customer_id,
+			recepient_first_name,
+			recepient_last_name,
+			recepient_initials,
+			street,
+			postal_code,
+			delivery_contact,
+		) values ($1)`, 
+		Object.values([
+			...Object.values(shippingInfo) 
+		])
+	)
+	*/
 }
 
 const getCustomerAccount = async (request, response) => {}
@@ -55,20 +95,17 @@ const updateCustomerAccount = async (request, response) => {}
 const deleteCustomerAccount = async (request, response) => {}
 
 const createVendorAccount = async (request, response) => {
-	const userAccount = request.user
-	const accountData = request.body
+	const { userId } = request.user
 	await db.query(
-		`insert into ecommerce_app.vendor values ($1)`
-		, Object.values(accountData))
+		`insert into marketplace.vendor values ($1)`
+		, [ userId ])
 	const result = await db.query(
-		`select * from ecommerce_app.vendor
-		where `
+		`select vendor_id from marketplace.vendor`
 	)
 	const lastInsert = result.rowCount-1
-	const newVendorAccount = result.rows[lastInsert]
+	const newVendorId = result.rows[ lastInsert ].vendor_id.toString()
 	response.status(StatusCodes.CREATED).json ({
-		userAccount,
-		newVendorAccount
+		newVendorId
 	})
 }
 

@@ -28,8 +28,8 @@ const client = new Client({
 const create = async () => {
 	try {
 		await client.connect()
-		await client.query(`drop schema ecommerce_app cascade;`)
-		await client.query(`create schema if not exists ecommerce_app;`)
+		await client.query(`drop schema marketplace cascade;`)
+		await client.query(`create schema if not exists marketplace;`)
 		await client.query(createUserTable)
 		await client.query(createCustomerTable)
 		await client.query(createUserTable)

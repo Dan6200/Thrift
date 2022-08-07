@@ -12,7 +12,7 @@ let token = {}
 
 const testRegistration = () => {
 	beforeEach( async () => {
-		await db.query('delete from ecommerce_app.user_account')
+		await db.query('delete from marketplace.user_account')
 	})
 	// Testing the register route
 	describe ('/POST user: Registration', () => {

@@ -1,12 +1,12 @@
 {
-  "name": "Ecommerce App",
+  "name": "Marketplace",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
 	"dev": "nodemon app.js",
-	"test": "psql -q -d ECOMMERCE-APP -f sql/create-schema.sql -f sql/create-table.sql && mocha api_tests"
+	"test": "psql -q -d marketplace -f sql/create-schema.sql -f sql/create-table.sql && mocha api_tests"
   },
   "author": "",
   "license": "ISC",

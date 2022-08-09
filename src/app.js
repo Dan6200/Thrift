@@ -14,7 +14,6 @@ const rateLimiter = require('express-rate-limit')
 
 // routers
 const authRouter = require('./routes/auth')
-const jobsRouter = require('./routes/jobs')
 const userAccountsRouter = require('./routes/user-account')
 
 // error handler

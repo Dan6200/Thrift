@@ -1,7 +1,8 @@
-const db = require('../db')
-const { StatusCodes } = require('http-status-codes')
-const {BadRequestError, NotFoundError} = require('../errors/')
-const { genUpdateCommands } = require('./helper-functions')
+const db = require('../db'),
+	 { StatusCodes } = require('http-status-codes'),
+	 { BadRequestError, NotFoundError } = require('../errors/'),
+	 { genSqlCommands } = require('./helper-functions'),
+	 { hashPassword, validatePassword } = require('../security/password')
 
 //	getUserAccount,
 //	getCustomerAccount,
@@ -15,38 +16,73 @@ const { genUpdateCommands } = require('./helper-functions')
 //	deleteVendorAccount
 
 const getUserAccount = async (request, response) => {
-	const { userId } = request.user
-	const userAccount = (await db.query(
-		`select 
-			first_name,
-			last_name,
-			email,
-			phone,
-			ip_address,
-			country,
-			dob,
-			is_vendor,
-			is_customer
-		from marketplace.user_account 
-		where user_id = $1` 
-	, [ userId ])).rows[0]
+	const { userId } = request.user,
+		userAccount = (await db.query(
+			`select 
+				first_name,
+				last_name,
+				email,
+				phone,
+				ip_address,
+				country,
+				dob,
+				is_vendor,
+				is_customer
+			from marketplace.user_account 
+			where user_id = $1` 
+		, [ userId ])).rows[0]
 	response.status(StatusCodes.OK).json({
 		userAccount 
 	})
 }
 
 const updateUserAccount = async (request, response) => {
-	const { userId } = request.user
-	const updatedData = request.body
-	if (!Object.keys(updatedData).length)
+	const { userId } = request.user,
+		 rawFields = Object.keys (request.body),
+		 rawData = Object.values (request.body)
+	if (!rawFields.length)
 		throw new BadRequestError ('request data cannot be empty')
+	// TODO: validate and verify updated email and phone numbers
+	const { 
+		old_password:	oldPassword,
+		new_password:	newPassword	
+	} = request.body
+
+	if (oldPassword) {
+		const { password } = (await db.query (
+			`select password from marketplace.user_account
+			where user_id = $1`,
+			[ userId ])).rows[0]
+
+		const pwdIsValid = await validatePassword(oldPassword,
+			password.toString())
+
+		if (!pwdIsValid)
+			throw new UnauthenticatedError(`Invalid Credentials,
+				cannot update password`)
+
+		request.body.password = hashPassword (newPassword)
+		delete request.body.old_password
+		delete request.body.new_password
+	}
+
+	const fields = Object.keys(request.body),
+		data = Object.values(request.body)
+
 	await db.query (
-		`update user_account
-		${ genUpdateCommands(Object.keys(updatedData), 2) }
+		`update marketplace.user_account
+		${ genSqlCommands(fields, 2) }
 		where user_id = $1`,
-		[ userId, ...Object.values(updatedData) ]
+		[ userId, ...data ]
 	)
-	response.status(StatusCodes.OK)
+	const updatedAccount = (await db.query(
+		`select ${fields.join(', ')}
+		from marketplace.user_account
+		where user_id = $1`,
+		[ userId ])).rows[0]
+	response.status(StatusCodes.OK).json({
+		updatedAccount
+	})
 }
 
 const deleteUserAccount = async (request, response) => {
@@ -55,7 +91,7 @@ const deleteUserAccount = async (request, response) => {
 		`delete from user_account
 		where user_id = $1`,
 		[ userId ])
-	response.status(StatusCodes.OK)
+	response.status(StatusCodes.OK).end()
 }
 
 const createCustomerAccount = async (request, response) => {

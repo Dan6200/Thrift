@@ -3,12 +3,15 @@ const application		= require('../../app')
 const chai				= require('chai')
 const chaiHttp			= require('chai-http')
 const db				= require('../../db')
-const { newUsers, users }		= require('./test-data')
+const { 
+	newUsers, 
+	loginUsers,
+	user,
+}						= require('./test-data')
 const { StatusCodes }	= require('http-status-codes')
 
 chai.use(chaiHttp)
 const should = chai.should()
-let token = {}
 
 const testRegistration = () => {
 	beforeEach( async () => {
@@ -16,7 +19,7 @@ const testRegistration = () => {
 	})
 	// Testing the register route
 	describe ('/POST user: Registration', () => {
-		it ('it should register 2 new users', async () => {
+		it (`it should register ${newUsers.length} new users`, async () => {
 			for (let i=0; i < newUsers.length; i++) {
 				const response = await chai.request(application)
 					.post('/api/v1/auth/register')
@@ -26,37 +29,37 @@ const testRegistration = () => {
 				const responseObject = response.body
 				responseObject.should.have.property('newUserId')
 				responseObject.should.have.property('token')
-				const { newUserId, token: responseToken } = responseObject
-				token[newUserId] = responseToken
+				const { newUserId, token } = responseObject
+				user[newUserId] = { token }
 			}
-			console.log(token)
 		})
 	})
 }
 
-const testLogin = () => {
+const testLogin = count => {
 	// Testing the login route
-	describe ('/POST user: Login', () => {
-		it ('it should login 2 users', async () => {
-			for (let i=0; i < users.length; i++) {
-				const response = await chai.request(application)
-					.post('/api/v1/auth/login')
-					.send(users[i])
-				response.should.have.status(StatusCodes.OK)
-				response.body.should.be.an('object')
-				const responseObject = response.body
-				responseObject.should.have.property('userId')
-				responseObject.should.have.property('token')
-				const { userId, token: responseToken } = responseObject
-				token[userId] = responseToken
-			}
-			console.log(token)
+	for (let n=0; n < count; n++) {
+		describe ('/POST user: Login', () => {
+			const noOfUsers = loginUsers[n].length
+			it (`it should login ${noOfUsers} users`, async () => {
+				for (let i=0; i < noOfUsers; i++) {
+					const response = await chai.request(application)
+						.post('/api/v1/auth/login')
+						.send(loginUsers[n][i])
+					response.should.have.status(StatusCodes.OK)
+					response.body.should.be.an('object')
+					const responseObject = response.body
+					responseObject.should.have.property('userId')
+					responseObject.should.have.property('token')
+					const { userId, token } = responseObject
+					user[userId] = { token }
+				}
+			})
 		})
-	})
+	}
 }
 
 module.exports = {
 	testRegistration,
 	testLogin,
-	token
 }

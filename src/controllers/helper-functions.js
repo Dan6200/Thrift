@@ -1,11 +1,13 @@
-const genUpdateCommands = (fields, offset) => {
-	let command = ''
-	for (let i = 0; i < fields.length; i++) {
-		command += `set ${ fields[i] } = $${i + offset},`
+const genSqlCommands = (fields, offset) => {
+	let command = 'set '
+	const last = fields.length-1
+	for (let i = 0; i < last; i++) {
+		command += `${ fields[i] } = $${i + offset}, `
 	}
+	command += `${ fields[last] } = $${last + offset}`
 	return command
 }
 
 module.exports = {
-	genUpdateCommands,
+	genSqlCommands,
 }

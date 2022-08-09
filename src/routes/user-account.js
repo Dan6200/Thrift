@@ -19,7 +19,7 @@ const {
 router
 	.route('/')
 		.get(getUserAccount)
-	//	.patch(updateUserAccount)
+		.patch(updateUserAccount)
 	//	.delete(deleteUserAccount)
 
 router

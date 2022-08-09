@@ -1,18 +1,22 @@
-const db = require('../db')
-const { StatusCodes } = require('http-status-codes')
-const { BadRequestError, UnauthenticatedError } = require('../errors')
-const path = require('path')
-const fileName = path.basename(__filename)
-// Verify with a call and sms api...
-const validatePhoneNumber = require('../security/validate-phone')
-const validateEmail = require('../security/validate-email')
-const { hashPassword, validatePassword } = require('../security/password')
-const createToken = require('../security/create-token')
-const locateIP = require('../security/ipgeolocator')
+const db = require('../db'),
+	 { StatusCodes } = require('http-status-codes'),
+	 { BadRequestError, UnauthenticatedError } = require('../errors'),
+	 path = require('path'),
+	 fileName = path.basename(__filename),
+	 validatePhoneNumber = require('../security/validate-phone'),
+	 validateEmail = require('../security/validate-email'),
+	 { hashPassword, validatePassword } = require('../security/password'),
+	 { createToken } = require('../security/create-token'),
+	 locateIP = require('../security/ipgeolocator')
 
 const register = async (request, response) => {
-	const userData = request.body
-	const {phone, email, password} = userData
+	const userData = request.body,
+		 { 
+			first_name: firstName,
+			last_name:  lastName,
+			phone, email, password 
+		 }	  = userData
+
 	if (!phone && !email) {
 		throw new BadRequestError(`please provide an email address or phone number`)
 	}
@@ -40,28 +44,31 @@ const register = async (request, response) => {
 		contact = 'email'
 	}
 	userData.password = await hashPassword(password)
+	userData.initials = firstName.charAt(0) + lastName.charAt(0)
 	await db.query(`
 		insert into  marketplace.user_account (
 			first_name,
 			last_name,
-			initials,
 			${contact},
 			password,
 			ip_address,
 			country,
 			dob,
 			is_vendor,
-			is_customer
+			is_customer,
+			initials
 		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
 		Object.values(userData)
 	)
 	const result = await db.query(`
-		select user_id, phone, email from marketplace.user_account
-	`)
-	const lastInsert = result.rowCount-1
-	const newUser = result.rows[lastInsert]
-	const token = createToken(newUser)
-	const { user_id: newUserId } = newUser
+		select user_id, phone, email 
+		from marketplace.user_account`),
+
+		lastInsert = result.rowCount-1,
+		newUser = result.rows[lastInsert],
+		token = createToken(newUser),
+		{ user_id: newUserId } = newUser
+
 	response.status(StatusCodes.CREATED).json({
 		newUserId,
 		token
@@ -97,6 +104,8 @@ const login = async (request, response) => {
 		throw new UnauthenticatedError('Invalid Credentials')
 
 	// TODO: confirm user if there is a different IP Address
+	// TODO: create separate IP Address tables as users may login 
+	// ...different IP Addresses
 	
 	const token = createToken(user)
 	const {user_id: userId} = user

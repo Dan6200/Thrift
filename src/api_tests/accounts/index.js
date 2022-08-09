@@ -5,6 +5,7 @@ const chaiHttp			= require('chai-http')
 const db				= require('../../db')
 const { StatusCodes }	= require('http-status-codes')
 const { token } 	 	= require('../authentication')
+const { testData }      = require('../authentication/test-data') 
 
 chai.use(chaiHttp)
 const should = chai.should()
@@ -14,16 +15,15 @@ const testGetUserAccount = () => {
 	describe('/GET user account', () => {
 		it ('it should retrieve the User account',
 			async () => {
-					for (id in token) {
+					for (ID in token) {
 						const response = await chai.request(application)
 							.get('/api/v1/user-account')
-							.auth(token[id], { type: "bearer" })
+							.auth(token[ID], { type: "bearer" })
 						response.should.have.status(StatusCodes.OK)
 						response.body.should.be.an('object')
 						const responseData = response.body
 						responseData.should.have.property('userAccount')
 						const userAccount = responseData.userAccount
-						userAccount.should.have.property('user_id')
 						userAccount.should.have.property('first_name')
 						userAccount.should.have.property('last_name')
 						userAccount.should.satisfy( account =>
@@ -32,12 +32,29 @@ const testGetUserAccount = () => {
 						userAccount.should.have.property('ip_address')
 						userAccount.should.have.property('country')
 						userAccount.should.have.property('dob')
-						userAccount.should.satisfy( account =>
-							('vendor_id' in account 
-								|| 'customer_id' in account)
-						)
+						userAccount.should.have.property('is_vendor')
+						userAccount.should.have.property('is_customer')
 				}
 			})
+	})
+}
+
+
+const testUpdateUserAccount = () => {
+	describe('/PATCH: update user account', () => {
+		it ('it should update the user\'s account', () => {
+			async () => {
+				for (ID in token) {
+					const response = await chai.request (application)
+						.patch('/api/v1/user-account')
+						.send({
+							updatedUser
+						})
+						.auth(token[ID], { type: "bearer" })
+					response.should.have.status(StatusCodes.OK)
+				}
+			}
+		})
 	})
 }
 
@@ -48,17 +65,17 @@ const testCreateCustomerAccount = () => {
 	describe('/POST: create customer account', () => {
 		it ('it should create a customer account for the user',
 			async () => {
-				for (id in token) {
+				for (ID in token) {
 					const response = await chai.request(application)
 						.post('/api/v1/user-account/customer')
-						.send({ id })
-						.auth(token[id], { type: "bearer" })
+						.send({ ID })
+						.auth(token[ID], { type: "bearer" })
 					response.should.have.status(StatusCodes.CREATED)
 					response.body.should.be.an('object')
 					const responseData = response.body
 					responseData.should.have.property('newCustomerId')
 					const { newCustomerId } = responseData
-					newCustomerId.should.equal(id)
+					newCustomerId.should.equal(ID)
 				}
 			})
 	})
@@ -71,17 +88,17 @@ const testCreateVendorAccount = () => {
 	describe('/POST: create vendor account', () => {
 		it ('it should create a vendor account for the user',
 			async () => {
-				for (id in token) {
+				for (ID in token) {
 					const response = await chai.request(application)
 						.post('/api/v1/user-account/vendor')
-						.send({ id })
-						.auth(token[id], { type: "bearer" })
+						.send({ ID })
+						.auth(token[ID], { type: "bearer" })
 					response.should.have.status(StatusCodes.CREATED)
 					response.body.should.be.an('object')
 					const responseData = response.body
 					responseData.should.have.property('newVendorId')
 					const { newVendorId } = responseData
-					newVendorId.should.equal(id)
+					newVendorId.should.equal(ID)
 				}
 			})
 	})

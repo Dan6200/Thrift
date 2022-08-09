@@ -12,21 +12,23 @@ const locateIP = require('../security/ipgeolocator')
 
 const register = async (request, response) => {
 	const userData = request.body
-	const {phoneNum, email, password} = userData
-	if ((!phoneNum && !email)) {
+	const {phone, email, password} = userData
+	if (!phone && !email) {
 		throw new BadRequestError(`please provide an email address or phone number`)
 	}
 	if (!password) {
 		throw new BadRequestError(`please provide a password`)
 	}
+	let contact
 	if (!email) {
-		// TODO: const validPhoneNumber = validatePhoneNumber(phoneNum)
+		// TODO: const validPhoneNumber = validatePhoneNumber(phone)
 		const validPhoneNumber = true
 		if (!validPhoneNumber)
 			throw new BadRequestError(`
 				please provide a valid phone number
 			`)
-		// TODO: Email verification
+		// TODO: SMS verification
+		contact = 'phone'
 	} else {
 		// TODO: const validEmail = validateEmail(email)
 		const validEmail = true
@@ -34,7 +36,8 @@ const register = async (request, response) => {
 			throw new BadRequestError(`
 				please provide a valid email address
 			`)
-		// TODO: SMS verification
+		// TODO: Email verification
+		contact = 'email'
 	}
 	userData.password = await hashPassword(password)
 	await db.query(`
@@ -42,13 +45,14 @@ const register = async (request, response) => {
 			first_name,
 			last_name,
 			initials,
-			email,
-			phone,
+			${contact},
 			password,
 			ip_address,
 			country,
-			dob
-		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+			dob,
+			is_vendor,
+			is_customer
+		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
 		Object.values(userData)
 	)
 	const result = await db.query(`
@@ -91,6 +95,9 @@ const login = async (request, response) => {
 	const pwdIsValid = await validatePassword(password, user.password.toString())
 	if (!pwdIsValid)
 		throw new UnauthenticatedError('Invalid Credentials')
+
+	// TODO: confirm user if there is a different IP Address
+	
 	const token = createToken(user)
 	const {user_id: userId} = user
 	response.status(StatusCodes.OK).json({

@@ -9,8 +9,10 @@ create table if not exists user_account (
 	password				bytea			not null,
 	ip_address				varchar			not null,
 	country					varchar			not null,
-	dob						date			not null
-	check (current_date - dob > 17)
+	dob						date			not null,
+	is_vendor				boolean			not null,
+	is_customer				boolean			not null,
+	check (current_date - dob > 11)
 );
 
 create table if not exists customer (

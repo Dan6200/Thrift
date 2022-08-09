@@ -29,6 +29,7 @@ const testRegistration = () => {
 				const { newUserId, token: responseToken } = responseObject
 				token[newUserId] = responseToken
 			}
+			console.log(token)
 		})
 	})
 }
@@ -49,6 +50,7 @@ const testLogin = () => {
 				const { userId, token: responseToken } = responseObject
 				token[userId] = responseToken
 			}
+			console.log(token)
 		})
 	})
 }

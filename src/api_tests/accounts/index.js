@@ -41,7 +41,7 @@ const testGetUserAccount = () => {
 
 
 const testUpdateUserAccount = () => {
-	describe('/PATCH: update user account', () => {
+	describe('/PATCH user account', () => {
 		it ('it should update the user\'s account', () => {
 			async () => {
 				for (ID in token) {

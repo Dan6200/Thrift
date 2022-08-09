@@ -38,7 +38,6 @@ application.use(xss())
 
 // routes
 application.use('/api/v1/auth', authRouter)
-application.use('/api/v1/jobs', authenticateUser, jobsRouter)
 application.use('/api/v1/user-account', authenticateUser, userAccountsRouter)
 
 application.get('/', (...[,response]) => {
@@ -51,7 +50,7 @@ application.use(errorHandlerMiddleware)
 const port = process.env.PORT
 
 const start = async () => {
-	console.clear() // Remove at build
+	console.clear() // TODO: Remove at build
 	try {
 		if (require.main === module)
 			application.listen(port, () =>

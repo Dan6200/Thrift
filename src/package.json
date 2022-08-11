@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
 	"dev": "nodemon app.js",
-	"test": "psql -q -d marketplace -f sql/create-schema.sql -f sql/create-table.sql && mocha api_tests"
+	"test": "mocha api_tests"
   },
   "author": "",
   "license": "ISC",

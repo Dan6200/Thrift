@@ -45,7 +45,7 @@ const loginUsers = [
 		},
 
 		{
-			phone		: '2348063243958197',
+			phone		: '2348063245973',
 			password	: '123AishaBaggy9384',
 		},
 
@@ -62,7 +62,7 @@ const loginUsers = [
 		},
 
 		{
-			phone		: '2348063245973',
+			phone		: '2348063243958197',
 			password	: '123AishaBaggy9384',
 		},
 
@@ -70,6 +70,11 @@ const loginUsers = [
 			phone		: '23490253954889',
 			password	: 'jayafd3245XF*!&$',
 		},
+
+		{
+			email		:	'mustymomo1019@yahoo.com',
+			password	: '123AishaBaggy9384',
+		}
 	],
 ]
 

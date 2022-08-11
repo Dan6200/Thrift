@@ -20,7 +20,7 @@ router
 	.route('/')
 		.get(getUserAccount)
 		.patch(updateUserAccount)
-	//	.delete(deleteUserAccount)
+		.delete(deleteUserAccount)
 
 router
 	.route('/customer')

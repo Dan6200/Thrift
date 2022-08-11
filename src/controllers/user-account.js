@@ -2,18 +2,8 @@ const db = require('../db'),
 	 { StatusCodes } = require('http-status-codes'),
 	 { BadRequestError, NotFoundError } = require('../errors/'),
 	 { genSqlCommands } = require('./helper-functions'),
+	 fileName = (require('path')).basename(__filename),
 	 { hashPassword, validatePassword } = require('../security/password')
-
-//	getUserAccount,
-//	getCustomerAccount,
-//	getVendorAccount,
-//	createCustomerAccount,
-//	createVendorAccount,
-//	updateCustomerAccount,
-//	updateVendorAccount,
-//	deleteUserAccount,
-//	deleteCustomerAccount
-//	deleteVendorAccount
 
 const getUserAccount = async (request, response) => {
 	const { userId } = request.user,
@@ -31,6 +21,8 @@ const getUserAccount = async (request, response) => {
 			from marketplace.user_account 
 			where user_id = $1` 
 		, [ userId ])).rows[0]
+	if (!userAccount)
+		throw new NotFoundError ('User cannot be found')
 	response.status(StatusCodes.OK).json({
 		userAccount 
 	})
@@ -61,7 +53,7 @@ const updateUserAccount = async (request, response) => {
 			throw new UnauthenticatedError(`Invalid Credentials,
 				cannot update password`)
 
-		request.body.password = hashPassword (newPassword)
+		request.body.password = await hashPassword (newPassword)
 		delete request.body.old_password
 		delete request.body.new_password
 	}
@@ -88,7 +80,7 @@ const updateUserAccount = async (request, response) => {
 const deleteUserAccount = async (request, response) => {
 	const { userId } = request.user
 	await db.query (
-		`delete from user_account
+		`delete from marketplace.user_account
 		where user_id = $1`,
 		[ userId ])
 	response.status(StatusCodes.OK).end()

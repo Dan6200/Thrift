@@ -23,17 +23,8 @@ const register = async (request, response) => {
 	if (!password) {
 		throw new BadRequestError(`please provide a password`)
 	}
-	let contact
-	if (!email) {
-		// TODO: const validPhoneNumber = validatePhoneNumber(phone)
-		const validPhoneNumber = true
-		if (!validPhoneNumber)
-			throw new BadRequestError(`
-				please provide a valid phone number
-			`)
-		// TODO: SMS verification
-		contact = 'phone'
-	} else {
+	let contact = ''
+	if (email) {
 		// TODO: const validEmail = validateEmail(email)
 		const validEmail = true
 		if (!validEmail)
@@ -41,7 +32,17 @@ const register = async (request, response) => {
 				please provide a valid email address
 			`)
 		// TODO: Email verification
-		contact = 'email'
+		contact += 'email,\n'
+	} 
+	if (phone) {
+		// TODO: const validPhoneNumber = validatePhoneNumber(phone)
+		const validPhoneNumber = true
+		if (!validPhoneNumber)
+			throw new BadRequestError(`
+				please provide a valid phone number
+			`)
+		// TODO: SMS verification
+		contact += 'phone,\n'
 	}
 	userData.password = await hashPassword(password)
 	userData.initials = firstName.charAt(0) + lastName.charAt(0)
@@ -49,8 +50,7 @@ const register = async (request, response) => {
 		insert into  marketplace.user_account (
 			first_name,
 			last_name,
-			${contact},
-			password,
+			${contact} password,
 			ip_address,
 			country,
 			dob,
@@ -66,11 +66,10 @@ const register = async (request, response) => {
 
 		lastInsert = result.rowCount-1,
 		newUser = result.rows[lastInsert],
-		token = createToken(newUser),
-		{ user_id: newUserId } = newUser
+		token = createToken(newUser)
 
 	response.status(StatusCodes.CREATED).json({
-		newUserId,
+		newUser,
 		token
 	})
 }
@@ -82,21 +81,19 @@ const login = async (request, response) => {
 	}
 	if (!password) 
 		throw new BadRequestError('Please provide password')
-	let user, result
-	if (!email) {
-		result = await db.query(`
+	let user
+	if (email) {
+		user = (await db.query(`
 			select user_id, password
 			from marketplace.user_account 
-			where phone=$1`, [phone]) 
+			where email=$1`, [email])).rows[0] 
 	}
-	if (!phone) {
-		result = await db.query(`
+	else {
+		user = (await db.query(`
 			select user_id, password
 			from marketplace.user_account 
-			where email=$1`, [email])
+			where phone=$1`, [phone])).rows[0]
 	}
-	const lastInsert = result.rowCount-1
-	user = result.rows[lastInsert]
 	if (!user)
 		throw new UnauthenticatedError('Invalid Credentials')
 	const pwdIsValid = await validatePassword(password, user.password.toString())

@@ -86,85 +86,8 @@ const deleteUserAccount = async (request, response) => {
 	response.status(StatusCodes.OK).end()
 }
 
-const createCustomerAccount = async (request, response) => {
-	const { userId } = request.user
-	await db.query(
-		`insert into marketplace.customer values ($1)`, 
-		[ userId ])
-	const newCustomerId = (await db.query(
-		`select customer_id from marketplace.customer
-		where customer_id = $1`,
-	[ userId ])).rows[0].customer_id.toString()
-	response.status(StatusCodes.CREATED).json({
-		newCustomerId
-	})
-	/*
-	if (!shippingInfo.delivery_contact) {
-		if (phone) {
-			shippingInfo.delivery_contact = phone
-		} else {
-			throw new BadRequestError(
-				'Please provide a phone number contact'
-			)
-		}
-	}
-	await db.query(
-		`insert into marketplace.shipping_info (
-			customer_id,
-			recepient_first_name,
-			recepient_last_name,
-			recepient_initials,
-			street,
-			postal_code,
-			delivery_contact,
-		) values ($1)`, 
-		Object.values([
-			...Object.values(shippingInfo) 
-		])
-	)
-	*/
-}
-
-const getCustomerAccount = async (request, response) => {
-	const { userId } = request.user
-	const customerId = (await db.query (
-		`select customer_id from marketplace.customer
-		where customer_id=$1`,
-		[ userId ] )).rows[0]
-	response.status(StatusCodes.OK).json({
-		customerId
-	})
-}
-
-const updateCustomerAccount = async (request, response) => {}
-
-const deleteCustomerAccount = async (request, response) => {}
-
-const createVendorAccount = async (request, response) => {
-	const { userId } = request.user
-	await db.query(
-		`insert into marketplace.vendor values ($1)`
-		, [ userId ])
-	const newVendorId = (await db.query(
-		`select vendor_id from marketplace.vendor
-		where vendor_id = $1`,
-	[ userId ])).rows[0].vendor_id.toString()
-	response.status(StatusCodes.CREATED).json ({
-		newVendorId
-	})
-}
-
-const getVendorAccount = async (request, response) => {}
-
-const updateVendorAccount = async (request, response) => {}
-
-const deleteVendorAccount = async (request, response) => {}
-
 module.exports = {
 	getUserAccount,
 	updateUserAccount,
-	deleteUserAccount,
-	createVendorAccount,
-	createCustomerAccount,
-	getCustomerAccount,
+	deleteUserAccount
 }

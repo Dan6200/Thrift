@@ -67,14 +67,7 @@ const updateUserAccount = async (request, response) => {
 		where user_id = $1`,
 		[ userId, ...data ]
 	)
-	const updatedAccount = (await db.query(
-		`select ${fields.join(', ')}
-		from marketplace.user_account
-		where user_id = $1`,
-		[ userId ])).rows[0]
-	response.status(StatusCodes.OK).json({
-		updatedAccount
-	})
+	response.status(StatusCodes.OK).end()
 }
 
 const deleteUserAccount = async (request, response) => {

@@ -55,8 +55,8 @@ const testLogin = count => {
 		describe ('/POST user: Login', () => {
 			beforeEach( () => {
 				// clear the saved user tokens before registration
-				// user = {}
-				// console.log('runs')
+				 user = {}
+				// console.log('user tokens cleared')
 			})
 			const noOfUsers = loginUsers[n].length
 			it (`it should login ${noOfUsers} users`, async () => {

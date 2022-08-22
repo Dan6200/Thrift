@@ -4,6 +4,9 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
 import { updatedUser, users } from '../authentication/test-data';
+import path from 'path';
+
+let fileName = path.basename(__filename);
 
 chai.use(chaiHttp);
 const should = chai.should(),
@@ -15,7 +18,7 @@ const testCreateVendorAccount = () => {
 			try {
 				const userIds: Array<string> = await users.getUserIDs();
 				userIds.should.not.be.empty;
-				console.log(`\nusers: %O`, userIds);
+				console.log(`\nusers: %O`, userIds, fileName);
 				for (const ID of userIds) {
 					const userToken: string = await users.getUserToken(ID);
 					console.log(`\nUser ID: ${ID}, Data %o`, userToken);

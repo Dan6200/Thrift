@@ -1,7 +1,7 @@
-import { isValidPhoneNumber } from 'libphonenumber-js';
+export {};
 // const axios = require('axios');
 // const fileName = path.basename(__filename)
-//
+// 
 // module.exports = (phoneNumber) => {
 // 	if (isValidPhoneNumber(phoneNumber)) {
 // 		// Verify with sms verification api instead if possible...

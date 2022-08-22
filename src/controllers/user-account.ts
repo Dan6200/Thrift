@@ -18,7 +18,7 @@ let getUserAccount = async (
 	response: Response
 ) => {
 	let { userId }: UserPayload = request.user;
-	console.log('userId is %o', userId);
+	console.log('userId is %o', userId, fileName);
 	let userAccount: UserData = (
 		await db.query(
 			`select 

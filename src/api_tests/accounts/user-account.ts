@@ -6,6 +6,9 @@ import db from '../../db';
 import { StatusCodes } from 'http-status-codes';
 import { updatedUser, users } from '../authentication/test-data';
 import { NotFoundError } from '../../errors';
+import path from 'path';
+
+let fileName = path.basename(__filename);
 
 chai.use(chaiHttp);
 const should = chai.should(),
@@ -20,7 +23,7 @@ const testGetUserAccount = (deleted) => {
 		}retrieve the User account`, async () => {
 			const userIds: string[] = await users.getUserIDs();
 			deleted || userIds.should.not.be.empty;
-			console.log(`\nusers: %O`, userIds);
+			console.log(`\nusers: %O`, userIds, fileName);
 			for (const ID of userIds) {
 				const userToken: string = await users.getUserToken(ID);
 				console.log(`\nUser ID: ${ID}, Data: %o`, userToken);

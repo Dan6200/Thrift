@@ -3,6 +3,9 @@ import { RequestWithPayload, UserPayload } from '../types-and-interfaces';
 import { Response, NextFunction } from 'express';
 import db from '../db';
 import { UnauthenticatedError } from '../errors';
+import path from 'path';
+
+let fileName = path.basename(__filename);
 
 export default async (
 	request: RequestWithPayload,
@@ -20,7 +23,7 @@ export default async (
 			process.env.JWT_SECRET
 		) as UserPayload;
 		// attach the user id to the Job route
-		console.log('payload %o: ', payload);
+		console.log('payload %o: ', payload, fileName);
 		request.user = payload;
 		next();
 	} catch (err) {

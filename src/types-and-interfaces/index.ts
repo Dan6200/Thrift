@@ -2,16 +2,17 @@ import { Request } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
 interface UserData {
-	first_name: string;
-	last_name: string;
-	email: string;
-	phone: string;
-	password: Buffer;
-	ip_address: string;
-	country: string;
-	dob: Date;
-	is_vendor: boolean;
-	is_customer: boolean;
+	userId: string;
+	first_name?: string;
+	last_name?: string;
+	email?: string;
+	phone?: string;
+	password?: Buffer;
+	ip_address?: string;
+	country?: string;
+	dob?: Date;
+	is_vendor?: boolean;
+	is_customer?: boolean;
 }
 
 interface RequestWithPayload extends Request {

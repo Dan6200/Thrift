@@ -36,6 +36,9 @@ import errorHandlerMiddleware from './middleware/error-handler';
 // authentication
 import authenticateUser from './middleware/authentication';
 
+import path from 'path';
+
+let fileName = path.basename(__filename);
 ////////////// Middlewares //////////////
 
 let application: Express = express();
@@ -93,7 +96,7 @@ let start = async () => {
 				console.log(`Server is listening on port ${port}...`)
 			);
 	} catch (error) {
-		console.log(error);
+		console.log(error, fileName);
 	}
 };
 

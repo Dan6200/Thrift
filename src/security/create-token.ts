@@ -1,17 +1,7 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
-export const createToken = function (
-  user_id: string,
-  phone?: string,
-  email?: string
-): string {
-  return jwt.sign(
-    {
-      userId: user_id.toString(),
-      phone,
-      email,
-    },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_LIFETIME }
-  );
+export const createToken = function (userId: string): string {
+	return jwt.sign({ userId }, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_LIFETIME,
+	});
 };

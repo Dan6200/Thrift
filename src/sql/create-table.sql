@@ -38,7 +38,7 @@ create table if not exists vendor (
 
 create table if not exists shop (
 	shop_id					serial			primary key,	
-	shop_name				varchar			not null,
+	shop_name				varchar			not null 		default		"My Shop",
 	shop_owner				int				references	vendor	on	delete	cascade,
 	date_created			date			not null		default		current_date,
 	street					varchar,
@@ -55,13 +55,13 @@ create table if not exists shop_contact (
 
 create table if not exists product (
 	product_id			serial				primary key,
-	product_title		varchar,
-	product_category	varchar,
+	title				varchar,
+	category			varchar,
 	description			varchar,
 	list_price			numeric(19,4),
 	net_price			numeric(19,4),
-	vendor_id			int					not null		references	vendor		on	delete	cascade,
-	shop_id				int					unique			references	shop		on	delete	cascade,
+	vendor_id			int					unique			not null		references	vendor		on	delete	restrict,
+	shop_id				int					unique			references	shop		on	delete	restrict,
 	quantity_available	int					not null,
 	is_flagship			boolean				not null
 );
@@ -75,25 +75,30 @@ create table if not exists shopping_cart (
 );
 
 create table if not exists shopping_cart_item (
-	items_id				serial			primary	key,
+	item_id					serial			primary	key,
 	cart_id					int				not null		references	shopping_cart	on 	delete	cascade,
 	product_id				int				not null		references	product		on delete	cascade,
-	product_quantity		int				not null		default	1	check (product_quantity > 0)
+	product_quantity		int				not null		check (product_quantity > 0)
 );
 
 create table if not exists transaction (
 	transaction_id				serial			primary	key,
 	transaction_timestamp		timestamptz		not null		default	now()	unique,
-	transacted_items_id			int				not null		references shopping_cart	on delete	cascade,
-	customer_id					int				not null		references	customer	on	delete	cascade,
+	customer_id					int				not null		references	customer	on	delete	restrict,
 	vendor_id					int				not null,
 	transaction_amount			numeric(19,4)	not null,
-	foreign key	(vendor_id)		references	vendor		on	delete	cascade,
+	foreign key	(vendor_id)		references	vendor		on	delete	restrict,
 	check (customer_id <> vendor_id)
 );
 
+create table if not exists transaction_item (
+	item_id					serial			primary	key,
+	product_id				int				not null		references	product		on delete	restrict,
+	product_quantity		int				not null		default	1	check (product_quantity > 0)
+);
+
 create table if not exists reversed_transaction (
-	rev_transaction_id		int			primary	key	references	transaction		on	delete	cascade,
+	rev_transaction_id		int			primary	key	references	transaction		on	delete	restrict,
 	rev_trans_timestamp			timestamptz		not null	default	now()	unique
 );
 
@@ -121,7 +126,5 @@ create table if not exists product_media (
 	sec_product_image1			varchar,
 	sec_product_image2			varchar,
 	sec_product_image3			varchar,
-	sec_product_image4			varchar,
-	sec_product_image5			varchar,
 	product_video				varchar
 );

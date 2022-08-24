@@ -1,0 +1,1 @@
+global.appRoot = __dirname;

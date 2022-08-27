@@ -23,7 +23,7 @@ export default async (
 			process.env.JWT_SECRET
 		) as UserPayload;
 		// attach the user id to the Job route
-		console.log('payload %o: ', payload, fileName);
+		// console.log('payload %o: ', payload, fileName);
 		request.user = payload;
 		next();
 	} catch (err) {

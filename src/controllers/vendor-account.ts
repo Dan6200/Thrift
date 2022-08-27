@@ -1,7 +1,6 @@
 import db from '../db';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, NotFoundError } from '../errors/';
-const fileName = require('path').basename(__filename);
 
 const createVendorAccount = async (request, response) => {
 	const { userId } = request.user;
@@ -31,7 +30,7 @@ const deleteVendorAccount = async (request, response) => {
 		where vendor_id=$1`,
 		[userId]
 	);
-	response.status(StatusCodes.OK).end();
+	response.status(StatusCodes.OK).send();
 };
 
 export {

@@ -1,13 +1,11 @@
-import 'express-async-errors';
 import application from '../../app';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import db from '../../db';
 import { newUsers, loginUsers, users } from './test-data';
 import { StatusCodes } from 'http-status-codes';
-import path from 'path';
-const fileName = path.basename(__filename),
-	should = chai.should();
+
+const should = chai.should();
 
 chai.use(chaiHttp);
 
@@ -20,7 +18,7 @@ const testRegistration = () => {
 	describe('/POST user: Registration', () => {
 		it(`it should register ${newUsers.length} new users`, async () => {
 			for (let i = 0; i < newUsers.length; i++) {
-				console.log(`\nUser ${i + 1}: %o`, newUsers[i], fileName);
+				console.log(`\nUser ${i + 1}: %o`, newUsers[i], __filename);
 				const response = await chai
 					.request(application)
 					.post('/api/v1/auth/register')
@@ -28,13 +26,12 @@ const testRegistration = () => {
 				response.should.have.status(StatusCodes.CREATED);
 				response.body.should.be.an('object');
 				const responseObject = response.body;
-				console.log(`\nresponse %o`, responseObject, fileName);
-				responseObject.should.have.property('userId');
+				console.log(`\nresponse %o`, responseObject, __filename);
 				responseObject.should.have.property('token');
-				const { userId, token } = responseObject;
-				await users.addUser(userId, token);
+				const { token } = responseObject;
+				await users.push(token);
 			}
-			console.log(users, fileName);
+			console.log(users, __filename);
 		});
 	});
 };
@@ -46,12 +43,16 @@ const testLogin = (count: number) => {
 		beforeEach(() => {
 			// clear the saved user tokens before registration
 			// user = {}
-			console.log('user tokens cleared', fileName);
+			console.log('user tokens cleared', __filename);
 		});
 		const noOfUsers = loginUsers[n].length;
 		it(`it should login ${noOfUsers} users`, async () => {
 			for (let i = 0; i < noOfUsers; i++) {
-				console.log(`\nUser ${i + 1}: %o`, loginUsers[n][i], fileName);
+				console.log(
+					`\nUser ${i + 1}: %o`,
+					loginUsers[n][i],
+					__filename
+				);
 				const response = await chai
 					.request(application)
 					.post('/api/v1/auth/login')
@@ -59,14 +60,13 @@ const testLogin = (count: number) => {
 				response.should.have.status(StatusCodes.OK);
 				response.body.should.be.an('object');
 				const responseObject = response.body;
-				console.log(`\nresponse %o`, responseObject, fileName);
-				responseObject.should.have.property('userId');
+				console.log(`\nresponse %o`, responseObject, __filename);
 				responseObject.should.have.property('token');
-				const { userId, token } = responseObject;
-				await users.addUser(userId, token);
+				const { token } = responseObject;
+				await users.push(token);
 			}
 		});
 	});
 };
 
-export { testRegistration, testLogin, users };
+export { testRegistration, testLogin };

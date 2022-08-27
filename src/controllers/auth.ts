@@ -8,7 +8,6 @@ import { hashPassword, validatePassword } from '../security/password';
 import { createToken } from '../security/create-token';
 import { UserData } from '../types-and-interfaces';
 // import locateIP from '../security/ipgeolocator';
-const fileName = path.basename(__filename);
 
 const register = async (request, response) => {
 	const userData = request.body,
@@ -19,7 +18,6 @@ const register = async (request, response) => {
 			email,
 			password,
 		} = userData;
-
 	if (!phone && !email) {
 		throw new BadRequestError(
 			`please provide an email address or phone number`
@@ -37,7 +35,7 @@ const register = async (request, response) => {
 				please provide a valid email address
 			`);
 		// TODO: Email verification
-		contact += 'email,\n';
+		contact += 'email,';
 	}
 	if (phone) {
 		// TODO: const validPhoneNumber = validatePhoneNumber(phone)
@@ -47,7 +45,7 @@ const register = async (request, response) => {
 				please provide a valid phone number
 			`);
 		// TODO: SMS verification
-		contact += 'phone,\n';
+		contact += 'phone,';
 	}
 	userData.password = await hashPassword(password);
 	userData.initials = firstName.charAt(0) + lastName.charAt(0);
@@ -56,7 +54,8 @@ const register = async (request, response) => {
 		insert into  marketplace.user_account (
 			first_name,
 			last_name,
-			${contact} password,
+			${contact}
+			password,
 			ip_address,
 			country,
 			dob,
@@ -66,17 +65,19 @@ const register = async (request, response) => {
 		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
 		Object.values(userData)
 	);
-	let result = await db.query('select user_id from marketplace.user_account'),
-		lastInsert = result.rowCount - 1,
+	let result: any = await db.query(
+			'select user_id from marketplace.user_account'
+		),
+		lastInsert: any = result.rowCount - 1,
 		userId: string = result.rows[lastInsert].user_id,
-		token = createToken(userId);
+		token: string = createToken(userId);
 	response.status(StatusCodes.CREATED).json({
-		userId,
 		token,
 	});
 };
 
 const login = async (request, response) => {
+	console.log(request.body, __filename);
 	const { email, phone, password } = request.body;
 	if (!email && !phone) {
 		throw new BadRequestError('Please provide email or phone number!');
@@ -110,15 +111,11 @@ const login = async (request, response) => {
 		user.password.toString()
 	);
 	if (!pwdIsValid) throw new UnauthenticatedError('Invalid Credentials');
-
 	// TODO: confirm user if there is a different IP Address
 	// TODO: create separate IP Address tables as users may login
 	// ...different IP Addresses
-
-	const userId = user.user_id;
-	const token = createToken(userId);
+	const token = createToken(user.user_id);
 	response.status(StatusCodes.OK).json({
-		userId,
 		token,
 	});
 };

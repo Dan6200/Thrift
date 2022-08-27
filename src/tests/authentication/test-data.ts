@@ -77,35 +77,23 @@ const loginUsers: Array<Array<Object>> = [
 	],
 ];
 
-interface User {
-	[key: string]: string;
-}
-
 interface Users {
-	_user: User;
-	addUser(id: string, data: string): Promise<void>;
-	delUser(id: string): Promise<void>;
+	_user: string[];
+	push(token: string): Promise<void>;
 	clear(): Promise<void>;
-	getUserIDs(): Promise<Array<string>>;
-	getUserToken(id: string): Promise<string>;
+	getUserTokens(): Promise<Array<string>>;
 }
 
 const users: Users = {
-	_user: {},
-	async addUser(id, data) {
-		this._user[id] = data;
-	},
-	async delUser(id) {
-		delete this._user[id];
+	_user: [],
+	async push(data) {
+		this._user.push(data);
 	},
 	async clear() {
-		this._user = {};
+		this._user = [];
 	},
-	async getUserIDs() {
-		return Object.keys(this._user);
-	},
-	async getUserToken(id) {
-		return this._user[id];
+	async getUserTokens() {
+		return this._user;
 	},
 };
 

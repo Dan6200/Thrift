@@ -34,7 +34,7 @@ let getUserAccount = async (
 				is_customer
 			from marketplace.user_account 
 			where user_id = $1`,
-			[parseInt(userId)]
+			[userId]
 		)
 	).rows[0];
 	if (!userAccount) throw new NotFoundError('User cannot be found');

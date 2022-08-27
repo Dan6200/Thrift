@@ -28,7 +28,7 @@ import authRouter from './routes/auth';
 import userAccountRouter from './routes/user-account';
 import customerAccountRouter from './routes/customer-account';
 import vendorAccountRouter from './routes/vendor-account';
-import productsRouter from './routes/products';
+// import productsRouter from './routes/products';
 
 // error handler
 import errorHandlerMiddleware from './middleware/error-handler';
@@ -43,6 +43,9 @@ let fileName = path.basename(__filename);
 
 let application: Express = express();
 
+application.set('views', __dirname + '/view');
+application.set('view engine', 'pug');
+
 application.set('trust proxy', 1);
 
 application.use(
@@ -55,6 +58,8 @@ application.use(
 );
 
 application.use(express.json());
+
+application.use(express.static('public'));
 
 application.use(helmet());
 
@@ -82,7 +87,11 @@ application.use(
 );
 
 application.get('/', (_request: Request, response: Response) => {
-	response.send('</h1>ecommerce application</h1>');
+	response.render('index');
+});
+
+application.get('/login', (_request: Request, response: Response) => {
+	response.render('login');
 });
 
 application.use(errorHandlerMiddleware);
@@ -92,9 +101,10 @@ const port = process.env.PORT;
 let start = async () => {
 	try {
 		if (require.main === module)
-			application.listen(port, () =>
-				console.log(`Server is listening on port ${port}...`)
-			);
+			application.listen(port, () => {
+				//console.clear();
+				console.log(`Server is listening on port ${port}...`);
+			});
 	} catch (error) {
 		console.log(error, fileName);
 	}

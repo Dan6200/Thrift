@@ -9,6 +9,13 @@ const errorHandlerMiddleware = async (err, req, res, next) => {
 	};
 	console.error(err);
 	console.error('last query was ', db.lastQuery);
+	if (customError.statusCode === StatusCodes.NOT_FOUND)
+		res.status(customError.statusCode).send(
+			`<h1>
+			${customError.msg}
+		</h1>
+	`
+		);
 	return res.status(customError.statusCode).json({
 		msg: customError.msg,
 	});

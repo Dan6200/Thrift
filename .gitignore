@@ -1,6 +1,6 @@
-*.sw*
-.env
 *~
-*node_modules/*
+*.sw*
+*node_modules
+*/.env
 todo*
 .prettierrc.json

@@ -4,16 +4,20 @@ html
 		meta(charset="utf-8")
 		meta(http-equiv="X-UA-Compatible" content="IE=edge")
 		title='Login'
-		link(rel='stylesheet' href='../view/output.css')
+		link(rel='stylesheet' href='../dist/output.css')
 		script(defer type='module' src='../dist/bundle.js')
 	body
 		p Login with your email or phone number, and password
 		Form#login(method='post')
 			fieldset
-				label(for='email') Email:
-				input#email(type='email')
-				label(for='phone') Phone number:
-				input#phone(type='text')
-				label(for='password') Password:
-				input#password(type='password')
-				button(class='bg-sky-500 hover_bg-sky-700' type='submit') login
+				.container
+					label(for='email') Email:
+					input#email(type='email')
+				.container
+					label(for='phone') Phone number:
+					input#phone(type='tel')
+				.container
+					label(for='password') Password:
+					input#password(type='password')
+				.container
+					button(class='bg-sky-500 hover:bg-sky-700' type='submit') login

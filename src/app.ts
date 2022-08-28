@@ -38,7 +38,6 @@ import authenticateUser from './middleware/authentication';
 
 import path from 'path';
 
-let fileName = path.basename(__filename);
 ////////////// Middlewares //////////////
 
 let application: Express = express();
@@ -102,11 +101,11 @@ let start = async () => {
 	try {
 		if (require.main === module)
 			application.listen(port, () => {
-				//console.clear();
+				console.clear();
 				console.log(`Server is listening on port ${port}...`);
 			});
 	} catch (error) {
-		console.log(error, fileName);
+		console.log(error, __filename);
 	}
 };
 

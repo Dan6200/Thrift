@@ -1,14 +1,18 @@
+import axios from 'axios';
+import { loginEventHandler } from './auth/event-handlers';
+
 let loginForm: HTMLFormElement = document.querySelector('#login');
 let emailInputEl: HTMLInputElement = document.querySelector('#email');
 let phoneInputEl: HTMLInputElement = document.querySelector('#phone');
 let passwordInputEl: HTMLInputElement = document.querySelector('#password');
 
-async function postData(url = '', data = {}) {
-	const response = await fetch(url, {
-		method: 'POST', // *GET, POST, PUT, DELETE, etc.
-		body: JSON.stringify(data), // body data type must match "Content-Type" header
-	});
-	return response.json(); // parses JSON response into native JavaScript objects
+async function postData(url: string, data: any) {
+	try {
+		const response = await axios(url, data);
+		return response.data();
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 type UserInfo = {
@@ -22,17 +26,17 @@ let loginEventHandler: (event: Event) => Promise<void> = async (event) => {
 	let phone: string = phoneInputEl.value;
 	let password: string = passwordInputEl.value;
 	try {
-		let { userId, token }: UserInfo = await postData('/api/v1/auth/login', {
+		let response = await axios.post('/api/v1/auth/login', {
 			email,
 			phone,
 			password,
 		});
-		// store token with session storage
-		// fetch a get request from /api/v1/user-account with Bearer token
-		// Do a client-side rerouting with history api
+		let { token }: UserInfo = response.data;
+		sessionStorage.setItem('token', token);
+		location.replace('/user-account');
 	} catch (error) {
 		console.error(error);
 	}
 };
 
-loginForm.addEventListener('submit', async (event: Event): Promise<void> => {});
+loginForm.addEventListener('submit', loginEventHandler);

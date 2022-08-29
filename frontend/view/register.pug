@@ -10,20 +10,29 @@ html
 		p Login with your email or phone number, and password
 		Form#register(class='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4' method='post')
 			fieldset
-				label(for='first_name') First Name:
-				input#first(type='text')
-				label(for='last_name') Last Name:
-				input#last(type='text')
-				label(for='email') Email:
-				input#email(type='email')
-				label(for='phone') Phone number:
-				input#phone(type='tel')
-				label(for='country') Country of residence:
-				input#country(type='text')
-				label(for='dob') Date of birth:
-				input#dob(type='date')
-				label(for='password') Password:
-				input#password(type='password')
-				label(for='password') Re-enter password:
-				input#password(type='password')
-				button(class='bg-sky-500 hover_bg-sky-700' type='submit') login
+				.container
+					label(for='first_name') First Name:
+					input#first(type='text')
+				.container
+					label(for='last_name') Last Name:
+					input#last(type='text')
+				.container
+					label(for='email') Email:
+					input#email(type='email')
+				.container
+					label(for='phone') Phone number:
+					input#phone(type='tel')
+				.container
+					label(for='country') Country of residence:
+					input#country(type='text')
+				.container
+					label(for='dob') Date of birth:
+					input#dob(type='date')
+				.container
+					label(for='password') Password:
+					input#password(type='password')
+				.container
+					label(for='password') Re-enter password:
+					input#password(type='password')
+				.container
+					button(class='bg-sky-500 hover_bg-sky-700' type='submit') login

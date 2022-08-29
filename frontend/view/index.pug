@@ -3,8 +3,13 @@ html
 	head
 		meta(charset="utf-8")
 		title='Market Place'
+		link(rel='stylesheet' href='../dist/output.css')
 	body
-		h1='Welcome to Market Place'
-		p='Browse products...'
-		p
-			a(href='/login')='Login'
+		.container_mx-auto
+			h1='Welcome to Market Place'
+			p='Browse products...'
+			p
+				button
+					a(class='mr-2' href='/login')='Login'
+				button
+					a(class='ml-2' href='/register')='Register'

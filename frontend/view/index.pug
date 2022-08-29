@@ -5,11 +5,18 @@ html
 		title='Market Place'
 		link(rel='stylesheet' href='../dist/output.css')
 	body
-		.container_mx-auto
-			h1='Welcome to Market Place'
-			p='Browse products...'
-			p
-				button
-					a(class='mr-2' href='/login')='Login'
-				button
-					a(class='ml-2' href='/register')='Register'
+		- var divStyle = ['p-24', 'mx-auto', 'my-16', 'font-mono']
+		- var h1Style = ['text-center', 'font-serif', 'text-4xl', 'mb-8', 'mx-auto']
+		- var pStyle = ['py-4', 'text-center', 'mx-auto']
+		- var buttonStyle = ['inline-block', 'py-1', 'rounded', 'bg-sky-500', 'hover_bg-sky-700', 'px-8', 'mr-6']
+		- var aStyle = []
+		.container(class=divStyle)
+			h1.my-2(class=h1Style)='Welcome to'
+				em.pl-2(class='text-5xl')='Thrift.co.ng'
+			p(class=pStyle)
+				button(class=buttonStyle)
+					a(class=aStyle href='/login')='Login'
+				button(class=buttonStyle)
+					a(class=aStyle href='/register')='Register'
+			p(class=pStyle)
+				a(class=aStyle class='underline' href='/products')='Browse products...'

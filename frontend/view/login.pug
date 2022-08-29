@@ -7,17 +7,43 @@ html
 		link(rel='stylesheet' href='../dist/output.css')
 		script(defer type='module' src='../dist/bundle.js')
 	body
-		p Login with your email or phone number, and password
-		Form#login(method='post')
-			fieldset
-				.container
-					label(for='email') Email:
-					input#email(type='email')
-				.container
-					label(for='phone') Phone number:
-					input#phone(type='tel')
-				.container
-					label(for='password') Password:
-					input#password(type='password')
-				.container
-					button(class='bg-sky-500 hover:bg-sky-700 px-8' type='submit') login
+		-
+			var divStyle = [ 'w-4/5', 
+				'py-20', 
+				'p-24', 
+				'mx-auto', 
+				'my-16', 
+				'font-serif', 
+				'rounded', 
+				'border-4' ]
+			var buttonStyle = [ 'text-white',
+					'block',
+					'py-1',
+					'rounded',
+					'bg-sky-500',
+					'hover_bg-sky-700',
+					'px-8',
+					'w-50',
+					'mx-auto' ]
+		- var formStyle = ['mx-auto']
+		- var hStyle = ['py-4', 'text-xl', 'w-full', 'text-center']
+		- var inputStyle = ['text-center', 'w-2/3', 'border-2']
+		- var labelStyle = ['inline-block', 'w-36']
+		- var fieldBox = []
+		- var field = ['py-1', 'w-5/6', 'mx-auto']
+		.container(class=divStyle)
+			.container(class=hStyle)
+				h Enter either your email or phone number...
+			Form#login(class=formStyle method='post')
+				fieldset(class=fieldBox)
+					.container(class=field)
+						label(class = labelStyle for='email') Email:
+						input#email(class=inputStyle type='email')
+					.container(class=field)
+						label(class = labelStyle for='phone') Phone number:
+						input#phone(class=inputStyle type='tel')
+					.container(class=field)
+						label(class = labelStyle for='password') Password:
+						input#password(class=inputStyle type='password')
+					.container(class=field)
+						button(class=buttonStyle type='submit') login

@@ -1,5 +1,4 @@
 import { loginEventHandler } from './auth/event-handler';
+import $ from 'jquery';
 
-let loginForm: HTMLFormElement = document.querySelector('#login');
-
-loginForm.addEventListener('submit', loginEventHandler);
+$('#login').on('submit', loginEventHandler);

@@ -9,12 +9,13 @@ html
 	body
 		p Login with your email or phone number, and password
 		Form#register(class='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4' method='post')
+		- var buttonStyle = ['bg-sky-500', 'hover_bg-sky-700', 'px-8']
 			fieldset
 				.container
-					label(for='first_name') First Name:
+					label(for='first') First Name:
 					input#first(type='text')
 				.container
-					label(for='last_name') Last Name:
+					label(for='last') Last Name:
 					input#last(type='text')
 				.container
 					label(for='email') Email:
@@ -35,4 +36,4 @@ html
 					label(for='password') Re-enter password:
 					input#password(type='password')
 				.container
-					button(class='bg-sky-500 hover_bg-sky-700' type='submit') login
+					button(class=buttonStyle type='submit') login

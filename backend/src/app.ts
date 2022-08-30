@@ -85,34 +85,6 @@ application.use(
 	customerAccountRouter
 );
 
-application.get('/', (_request: Request, response: Response) => {
-	response.render('index');
-});
-
-application.get('/register', (_request: Request, response: Response) => {
-	response.render('register');
-});
-
-application.get('/login', (_request: Request, response: Response) => {
-	response.render('login');
-});
-
 application.use(errorHandlerMiddleware);
-
-const port = process.env.PORT;
-
-let start: () => Promise<void> = async () => {
-	try {
-		if (require.main === module)
-			application.listen(port, () => {
-				console.clear();
-				console.log(`Server is listening on port ${port}...`);
-			});
-	} catch (error) {
-		console.log(error, __filename);
-	}
-};
-
-start();
 
 export default application;

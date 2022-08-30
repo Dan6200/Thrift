@@ -1,17 +1,25 @@
 import axios from 'axios';
-import $ from 'jquery';
 
 type UserInfo = {
 	userId: string;
 	token: string;
 };
 
-let loginEventHandler = async (event: JQuery.Event) => {
+const emailInput: HTMLInputElement = document.querySelector('#email');
+const phoneInput: HTMLInputElement = document.querySelector('#phone');
+const passwordInput: HTMLInputElement = document.querySelector('#password');
+
+let debounce = false;
+
+let loginEventHandler = async (event: Event) => {
 	event.preventDefault();
-	let email = <string>$('#email').val();
-	let phone = <string>$('#phone').val();
-	let password = <string>$('#password').val();
+	if (debounce) return;
+	let email = emailInput.value;
+	let phone = phoneInput.value;
+	let password = passwordInput.value;
 	try {
+		setTimeout(() => (debounce = !debounce));
+		setTimeout(() => (debounce = !debounce), 2000);
 		let response = await axios.post('/api/v1/auth/login', {
 			email,
 			phone,

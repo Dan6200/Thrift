@@ -7,43 +7,28 @@ html
 		link(rel='stylesheet' href='../dist/output.css')
 		script(defer type='module' src='../dist/bundle.js')
 	body
-		-
-			var divStyle = [ 'w-4/5', 
-				'py-20', 
-				'p-24', 
-				'mx-auto', 
-				'my-16', 
-				'font-serif', 
-				'rounded', 
-				'border-4' ]
-			var buttonStyle = [ 'text-white',
-					'block',
-					'py-1',
-					'rounded',
-					'bg-sky-500',
-					'hover_bg-sky-700',
-					'px-8',
-					'w-50',
-					'mx-auto' ]
+		- var divStyle = ['block', 'max-w-lg', 'lg:w-1/2', 'lg:p-10', 'md:px-0', 'my-15', 'mx-auto', 'my-16', 'font-sans', 'rounded', 'border-4' ]
+		- var buttonStyle = ['my-4', 'lg:inline-block', 'py-1', 'rounded', 'bg-sky-500', 'hover:bg-sky-700', 'focus:bg-sky-700', 'px-8', 'w-50', 'focus:outline-none', 'mx-auto' ]
 		- var formStyle = ['mx-auto']
 		- var hStyle = ['py-4', 'text-xl', 'w-full', 'text-center']
-		- var inputStyle = ['text-center', 'w-2/3', 'border-2']
-		- var labelStyle = ['inline-block', 'w-36']
+		- var inputStyle = ['mx-auto', 'md:block', 'lg:inline-block', 'text-center', 'lg:w-72', 'border-gray-400', 'rounded', 'focus:outline-none', 'border']
+		- var labelStyle = ['mx-auto', 'md:block', 'lg:inline-block', 'lg:w-20']
 		- var fieldBox = []
-		- var field = ['py-1', 'w-5/6', 'mx-auto']
+		- var field = ['py-1', 'w-fit', 'mx-auto']
+
 		.container(class=divStyle)
 			.container(class=hStyle)
-				h Enter either your email or phone number...
+				h1 Enter either your email or phone number...
 			Form#login(class=formStyle method='post')
 				fieldset(class=fieldBox)
 					.container(class=field)
 						label(class = labelStyle for='email') Email:
 						input#email(class=inputStyle type='email')
 					.container(class=field)
-						label(class = labelStyle for='phone') Phone number:
+						label(class = labelStyle for='phone') Phone:
 						input#phone(class=inputStyle type='tel')
 					.container(class=field)
 						label(class = labelStyle for='password') Password:
 						input#password(class=inputStyle type='password')
-					.container(class=field)
-						button(class=buttonStyle type='submit') login
+				.container(class=field)
+					button(class=buttonStyle type='submit') login

@@ -1,0 +1,48 @@
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		title='Login'
+		link(rel='stylesheet' href='../dist/output.css')
+		script(defer type='module' src='../dist/bundle.js')
+	body(class='bg-gray-100')
+		- var divStyle = ['bg-white', 'block', 'max-w-lg', 'lg:w-1/2', 'lg:p-10', 'md:px-0', 'my-15', 'mx-auto', 'my-16', 'font-sans', 'rounded', 'border-1', 'shadow-md' ]
+		- var formStyle = ['mx-auto']
+		- var hStyle = ['py-4', 'text-lg', 'w-full', 'text-center', 'font-serif']
+		- var inputStyle = ['lg:py-0.5', 'lg:my-0.5', 'lg:px-4', 'lg:mx-auto', 'md:block', 'lg:inline-block', 'lg:w-64', 'border-gray-400', 'rounded', 'focus:outline-none', 'border']
+		- var labelStyle = ['mx-auto', 'md:block', 'lg:inline-block', 'lg:w-40']
+		- var fieldBox = []
+		- var field = ['py-1', 'w-fit', 'mx-auto']
+		- var buttonStyle = ['my-4', 'lg:block', 'py-1', 'rounded', 'bg-sky-500', 'hover:bg-sky-700', 'focus:bg-sky-700', 'px-8', 'w-50', 'focus:outline-none', 'mx-auto' ]
+
+		.container(class=divStyle)
+			h1(class=hStyle) Let's create a new Account...
+			Form#register(method='post')
+				fieldset
+					.container
+						label(for='first' class=labelStyle) First Name:
+						input#first(type='text' class=inputStyle)
+					.container
+						label(for='last' class=labelStyle) Last Name:
+						input#last(type='text' class=inputStyle)
+					.container
+						label(for='email' class=labelStyle) Email:
+						input#email(type='email' class=inputStyle)
+					.container
+						label(for='phone' class=labelStyle) Phone number:
+						input#phone(type='tel' class=inputStyle)
+					.container
+						label(for='country' class=labelStyle) Country of residence:
+						input#country(type='text' class=inputStyle)
+					.container
+						label(for='dob' class=labelStyle) Date of birth:
+						input#dob(type='date' class=inputStyle)
+					.container
+						label(for='password' class=labelStyle) Password:
+						input#password(type='password' class=inputStyle)
+					.container
+						label(for='password' class=labelStyle) Re-enter password:
+						input#confirmPassword(type='password' class=inputStyle)
+					.container
+						button(class=buttonStyle type='submit') register

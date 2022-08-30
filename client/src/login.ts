@@ -1,3 +1,5 @@
-import { loginEventHandler } from './auth/event-handler';
+import { loginEventHandler } from './event-handlers/login';
 
-document.querySelector('#login').addEventListener('submit', loginEventHandler);
+const login = document.querySelector('#login');
+
+if (login) login.addEventListener('submit', loginEventHandler);

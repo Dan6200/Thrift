@@ -11,30 +11,30 @@ let registerEventHandler = async (event: Event) => {
 	event.preventDefault();
 	if (debounce) return;
 
-	const firstName: string = (<HTMLInputElement>(
-		document.querySelector('#first')
-	)).value;
-	const lastName: string = (<HTMLInputElement>document.querySelector('#last'))
-		.value;
-	const email: string = (<HTMLInputElement>document.querySelector('#email'))
-		.value;
-	const phone: string = (<HTMLInputElement>document.querySelector('#phone'))
-		.value;
-	const country: string = (<HTMLInputElement>(
-		document.querySelector('#country')
-	)).value;
-	const dob: string = (<HTMLInputElement>document.querySelector('#dob'))
-		.value;
-	const password: string = (<HTMLInputElement>(
-		document.querySelector('#password')
-	)).value;
-	const confirmPassword: string = (<HTMLInputElement>(
-		document.querySelector('#confirmPassword')
-	)).value;
+	let firstNameInput: HTMLInputElement = document.querySelector('#first');
+	let lastNameInput: HTMLInputElement = document.querySelector('#last');
+	let emailInput: HTMLInputElement = document.querySelector('#email');
+	let phoneInput: HTMLInputElement = document.querySelector('#phone');
+	let countryInput: HTMLInputElement = document.querySelector('#country');
+	let dobInput: HTMLInputElement = document.querySelector('#dob');
+	let passwordInput: HTMLInputElement = document.querySelector('#password');
+	let confirmPasswordInput: HTMLInputElement =
+		document.querySelector('#confirmPassword');
+
+	let firstName: string = firstNameInput.value;
+	let lastName: string = lastNameInput.value;
+	let email: string = emailInput.value;
+	let phone: string = phoneInput.value;
+	let country: string = countryInput.value;
+	let dob: string = dobInput.value;
+	let password: string = passwordInput.value;
+	let confirmPassword: string = confirmPasswordInput.value;
 
 	try {
 		// work on throttling this
-		setTimeout(() => (debounce = !debounce));
+		setTimeout(() => {
+			debounce = !debounce;
+		});
 		setTimeout(() => {
 			debounce = !debounce;
 		}, 2000);

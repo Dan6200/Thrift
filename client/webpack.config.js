@@ -2,6 +2,7 @@ const path = require('path');
 module.exports = {
 	mode: 'development',
 	watch: true,
+	devtool: false,
 	watchOptions: {
 		ignored: /node_modules/,
 	},

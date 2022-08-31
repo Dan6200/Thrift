@@ -14,14 +14,15 @@ let loginEventHandler = async (event: Event) => {
 	let email = emailInput.value;
 	let phone = phoneInput.value;
 	let password = passwordInput.value;
+	if (debounce) return true;
 	event.preventDefault();
-	if (debounce) return;
 	try {
-		debugger;
 		setTimeout(() => {
 			debounce = !debounce;
 		});
-		setTimeout(() => (debounce = !debounce), 2000);
+		setTimeout(() => {
+			debounce = !debounce;
+		}, 2000);
 		let response = await axios.post('/api/v1/auth/login', {
 			email,
 			phone,

@@ -1,5 +1,5 @@
 import { loginEventHandler } from './event-handlers/login';
 
-const login = document.querySelector('#login');
+const login: HTMLFormElement = document.querySelector('#login');
 
-if (login) login.addEventListener('submit', loginEventHandler);
+if (login) login.onsubmit = loginEventHandler;

@@ -1,10 +1,11 @@
 const path = require('path');
 module.exports = {
+	mode: 'development',
 	watch: true,
 	watchOptions: {
 		ignored: /node_modules/,
 	},
-	entry: './src/login.ts',
+	entry: './src/',
 	module: {
 		rules: [
 			{

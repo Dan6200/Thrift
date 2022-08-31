@@ -7,11 +7,11 @@ create table if not exists user_account (
 	check (email ~* '^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'),			
 	phone		 			varchar(40)		unique,			
 	password				bytea			not null,
-	ip_address				varchar			not null,
+	ip_address				varchar,
 	country					varchar			not null,
 	dob						date			not null,
-	is_vendor				boolean			not null,
-	is_customer				boolean			not null,
+	is_customer				boolean			not null		default true,
+	is_vendor				boolean			not null        default false,
 	check (current_date - dob > 11)
 );
 
@@ -38,7 +38,7 @@ create table if not exists vendor (
 
 create table if not exists shop (
 	shop_id					serial			primary key,	
-	shop_name				varchar			not null 		default		"My Shop",
+	shop_name				varchar			not null,
 	shop_owner				int				references	vendor	on	delete	cascade,
 	date_created			date			not null		default		current_date,
 	street					varchar,

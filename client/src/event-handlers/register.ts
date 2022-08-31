@@ -8,6 +8,9 @@ type UserInfo = {
 let debounce = false;
 
 let registerEventHandler = async (event: Event) => {
+	event.preventDefault();
+	if (debounce) return;
+
 	const firstName: string = (<HTMLInputElement>(
 		document.querySelector('#first')
 	)).value;
@@ -29,11 +32,12 @@ let registerEventHandler = async (event: Event) => {
 		document.querySelector('#confirmPassword')
 	)).value;
 
-	event.preventDefault();
-	if (debounce) return;
 	try {
+		// work on throttling this
 		setTimeout(() => (debounce = !debounce));
-		setTimeout(() => (debounce = !debounce), 2000);
+		setTimeout(() => {
+			debounce = !debounce;
+		}, 2000);
 		if (password !== confirmPassword)
 			throw new Error(
 				'The password does not match please re-enter password'
@@ -49,10 +53,10 @@ let registerEventHandler = async (event: Event) => {
 		});
 		let { token }: UserInfo = response.data;
 		sessionStorage.setItem('token', token);
-		location.replace('/user-account');
+		location.replace('/user');
 		console.log(sessionStorage);
 	} catch (error) {
-		console.error(error);
+		console.error(error.response.data);
 	}
 };
 

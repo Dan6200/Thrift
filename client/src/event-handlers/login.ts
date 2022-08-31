@@ -11,14 +11,16 @@ let loginEventHandler = async (event: Event) => {
 	const emailInput: HTMLInputElement = document.querySelector('#email');
 	const phoneInput: HTMLInputElement = document.querySelector('#phone');
 	const passwordInput: HTMLInputElement = document.querySelector('#password');
-
-	event.preventDefault();
-	if (debounce) return;
 	let email = emailInput.value;
 	let phone = phoneInput.value;
 	let password = passwordInput.value;
+	event.preventDefault();
+	if (debounce) return;
 	try {
-		setTimeout(() => (debounce = !debounce));
+		debugger;
+		setTimeout(() => {
+			debounce = !debounce;
+		});
 		setTimeout(() => (debounce = !debounce), 2000);
 		let response = await axios.post('/api/v1/auth/login', {
 			email,
@@ -27,10 +29,10 @@ let loginEventHandler = async (event: Event) => {
 		});
 		let { token }: UserInfo = response.data;
 		sessionStorage.setItem('token', token);
-		location.replace('/user-account');
+		location.replace('/user');
 		console.log(sessionStorage);
 	} catch (error) {
-		console.error(error);
+		console.error(error.response.data);
 	}
 };
 

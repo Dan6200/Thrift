@@ -2,11 +2,11 @@
 	"name": "marketplace",
 	"version": "1.0.0",
 	"description": "",
-	"main": "backend/src/server.ts",
+	"main": "server/src/server.ts",
 	"scripts": {
-		"start": "cd backend && ts-node src/server.ts",
-		"test": "cd backend && ts-mocha src/tests",
-		"dev": "concurrently --kill-others \"cd frontend && yarn tailwindcss -i view/input.css -o dist/output.css --watch\" \"cd frontend && yarn webpack\" \"cd backend && nodemon src/server.ts\""
+		"start": "cd server && ts-node src/server.ts",
+		"test": "cd server && ts-mocha src/tests",
+		"dev": "concurrently --kill-others \"cd client && yarn tailwindcss -i view/input.css -o dist/output.css --watch\" \"cd client && yarn webpack\" \"cd server && nodemon src/server.ts\""
 	},
 	"license": "ISC",
 	"author": "daniel <danielnyong66@gmail.com>",

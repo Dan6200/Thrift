@@ -1,7 +1,6 @@
 import db from '../db';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, UnauthenticatedError } from '../errors';
-import path from 'path';
 // import validatePhoneNumber from '../security/validate-phone';
 // import validateEmail from '../security/validate-email';
 import { hashPassword, validatePassword } from '../security/password';
@@ -11,13 +10,7 @@ import { UserData } from '../types-and-interfaces';
 
 const register = async (request, response) => {
 	const userData = request.body,
-		{
-			first_name: firstName,
-			last_name: lastName,
-			phone,
-			email,
-			password,
-		} = userData;
+		{ firstName, lastName, phone, email, password } = userData;
 	if (!phone && !email) {
 		throw new BadRequestError(
 			`please provide an email address or phone number`
@@ -26,7 +19,6 @@ const register = async (request, response) => {
 	if (!password) {
 		throw new BadRequestError(`please provide a password`);
 	}
-	let contact = '';
 	if (email) {
 		// TODO: const validEmail = validateEmail(email)
 		const validEmail = true;
@@ -35,7 +27,6 @@ const register = async (request, response) => {
 				please provide a valid email address
 			`);
 		// TODO: Email verification
-		contact += 'email,';
 	}
 	if (phone) {
 		// TODO: const validPhoneNumber = validatePhoneNumber(phone)
@@ -45,7 +36,6 @@ const register = async (request, response) => {
 				please provide a valid phone number
 			`);
 		// TODO: SMS verification
-		contact += 'phone,';
 	}
 	userData.password = await hashPassword(password);
 	userData.initials = firstName.charAt(0) + lastName.charAt(0);
@@ -54,15 +44,13 @@ const register = async (request, response) => {
 		insert into  marketplace.user_account (
 			first_name,
 			last_name,
-			${contact}
+			email,
+			phone,
 			password,
-			ip_address,
 			country,
 			dob,
-			is_vendor,
-			is_customer,
 			initials
-		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
 		Object.values(userData)
 	);
 	let result: any = await db.query(
@@ -72,12 +60,12 @@ const register = async (request, response) => {
 		userId: string = result.rows[lastInsert].user_id,
 		token: string = createToken(userId);
 	response.status(StatusCodes.CREATED).json({
+		userId,
 		token,
 	});
 };
 
 const login = async (request, response) => {
-	console.log(request.body, __filename);
 	const { email, phone, password } = request.body;
 	if (!email && !phone) {
 		throw new BadRequestError('Please provide email or phone number!');
@@ -116,6 +104,7 @@ const login = async (request, response) => {
 	// ...different IP Addresses
 	const token = createToken(user.user_id);
 	response.status(StatusCodes.OK).json({
+		userId: user.user_id,
 		token,
 	});
 };

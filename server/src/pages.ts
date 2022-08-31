@@ -12,3 +12,7 @@ application.get('/register', (_request: Request, response: Response) => {
 application.get('/login', (_request: Request, response: Response) => {
 	response.render('login');
 });
+
+application.get('/user', (_request: Request, response: Response) => {
+	response.render('user');
+});

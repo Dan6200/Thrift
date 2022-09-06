@@ -1,0 +1,21 @@
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		meta(http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval'")
+		title='My Account'
+		link(rel='stylesheet' href='../dist/output.css')
+		script(defer type='module' src='../dist/bundle.js')
+
+		- var bodyStyle = ['bg-gray-100']
+		- var divStyle = []
+		- var buttonStyle = []
+		- var formStyle = []
+		- var hStyle = []
+		- var inputStyle = []
+		- var labelStyle = []
+		- var fieldBox = []
+		- var field = []
+
+	body(class=bodyStyle)
+		.container(class=divStyle)

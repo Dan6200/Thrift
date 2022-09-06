@@ -1,4 +1,5 @@
 import axios from 'axios';
+// Switch to svelte
 
 type UserInfo = {
 	userId: string;
@@ -8,6 +9,7 @@ type UserInfo = {
 let debounce = false;
 
 let loginEventHandler = async (event: Event) => {
+	// switch to svelte
 	const emailInput: HTMLInputElement = document.querySelector('#email');
 	const phoneInput: HTMLInputElement = document.querySelector('#phone');
 	const passwordInput: HTMLInputElement = document.querySelector('#password');
@@ -31,7 +33,6 @@ let loginEventHandler = async (event: Event) => {
 		let { token }: UserInfo = response.data;
 		sessionStorage.setItem('token', token);
 		location.replace('/user');
-		console.log(sessionStorage);
 	} catch (error) {
 		console.error(error.response.data);
 	}

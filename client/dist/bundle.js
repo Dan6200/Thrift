@@ -2546,7 +2546,6 @@ var loginEventHandler = function (event) { return __awaiter(void 0, void 0, void
                 token = response.data.token;
                 sessionStorage.setItem('token', token);
                 location.replace('/user');
-                console.log(sessionStorage);
                 return [3 /*break*/, 4];
             case 3:
                 error_1 = _a.sent();
@@ -2617,6 +2616,7 @@ var registerEventHandler = function (event) { return __awaiter(void 0, void 0, v
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                // switch to svelte
                 event.preventDefault();
                 if (debounce)
                     return [2 /*return*/];
@@ -2662,7 +2662,6 @@ var registerEventHandler = function (event) { return __awaiter(void 0, void 0, v
                 token = response.data.token;
                 sessionStorage.setItem('token', token);
                 location.replace('/user');
-                console.log(sessionStorage);
                 return [3 /*break*/, 4];
             case 3:
                 error_1 = _a.sent();
@@ -2709,6 +2708,19 @@ if (register)
     register.addEventListener('submit', register_1.registerEventHandler);
 
 
+/***/ }),
+
+/***/ "./src/user.ts":
+/*!*********************!*\
+  !*** ./src/user.ts ***!
+  \*********************/
+/***/ (() => {
+
+// Learn svelte
+console.log(sessionStorage);
+// if we are in the user page and the token is not in the storage redirect to the login page.
+
+
 /***/ })
 
 /******/ 	});
@@ -2750,6 +2762,7 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __webpack_require__(/*! ./login */ "./src/login.ts");
 __webpack_require__(/*! ./register */ "./src/register.ts");
+__webpack_require__(/*! ./user */ "./src/user.ts");
 
 })();
 

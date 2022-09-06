@@ -13,5 +13,8 @@
 	"repository": "https://github.com/Dan6200/Marketplace.git",
 	"devDependencies": {
 		"concurrently": "^7.3.0"
+	},
+	"dependencies": {
+		"nodemon": "^2.0.19"
 	}
 }

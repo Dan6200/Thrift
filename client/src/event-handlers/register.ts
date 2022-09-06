@@ -8,6 +8,7 @@ type UserInfo = {
 let debounce = false;
 
 let registerEventHandler = async (event: Event) => {
+	// switch to svelte
 	event.preventDefault();
 	if (debounce) return;
 
@@ -54,7 +55,6 @@ let registerEventHandler = async (event: Event) => {
 		let { token }: UserInfo = response.data;
 		sessionStorage.setItem('token', token);
 		location.replace('/user');
-		console.log(sessionStorage);
 	} catch (error) {
 		console.error(error.response.data);
 	}

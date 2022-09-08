@@ -1,38 +1,38 @@
 const newUsers: Array<Object> = [
 	{
-		first_name: 'Ebuka',
-		last_name: 'Eze',
+		firstName: 'Ebuka',
+		lastName: 'Eze',
 		email: 'ebukachibueze5489@gmail.com',
 		password: 'EbukaDa1!',
-		ip_address: '168.89.91.45',
+		ipAddress: '168.89.91.45',
 		country: 'Nigeria',
 		dob: '1999-07-01',
-		is_vendor: false,
-		is_customer: true,
+		isVendor: false,
+		isCustomer: true,
 	},
 
 	{
-		first_name: 'Mustapha',
-		last_name: 'Mohammed',
+		firstName: 'Mustapha',
+		lastName: 'Mohammed',
 		phone: '2348063245973',
 		password: '123AishaBaggy9384',
-		ip_address: '198.79.78.23',
+		ipAddress: '198.79.78.23',
 		country: 'Nigeria',
 		dob: '2000-10-19',
-		is_vendor: true,
-		is_customer: false,
+		isVendor: true,
+		isCustomer: false,
 	},
 
 	{
-		first_name: 'Aisha',
-		last_name: 'Mohammed',
+		firstName: 'Aisha',
+		lastName: 'Mohammed',
 		phone: '23490253954889',
 		password: '236!A15HA04',
-		ip_address: '198.79.78.45',
+		ipAddress: '198.79.78.45',
 		country: 'Nigeria',
 		dob: '2004-6-23',
-		is_vendor: false,
-		is_customer: true,
+		isVendor: false,
+		isCustomer: true,
 	},
 ];
 
@@ -100,22 +100,22 @@ const users: Users = {
 const updatedUser: Array<Object> = [
 	{
 		dob: '1995-12-31',
-		last_name: 'Joyce',
-		is_vendor: false,
+		lastName: 'Joyce',
+		isVendor: false,
 	},
 
 	{
 		email: 'mustymomo1019@yahoo.com',
 		phone: '2348063243958197',
-		is_vendor: false,
+		isVendor: false,
 	},
 
 	{
 		dob: '1995-12-31',
-		old_password: '236!A15HA04',
-		new_password: 'jayafd3245XF*!&$',
-		is_vendor: true,
-		is_customer: true,
+		oldPassword: '236!A15HA04',
+		newPassword: 'jayafd3245XF*!&$',
+		isVendor: true,
+		isCustomer: true,
 	},
 ];
 

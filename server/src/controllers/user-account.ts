@@ -32,7 +32,7 @@ let getUserAccount = async (
 				dob,
 				is_vendor,
 				is_customer
-			from marketplace.user_account 
+			from user_account 
 			where user_id = $1`,
 			[userId]
 		)
@@ -62,7 +62,7 @@ let updateUserAccount = async (
 	if (oldPassword) {
 		let { password }: { password: Buffer } = (
 			await db.query(
-				`select password from marketplace.user_account
+				`select password from user_account
 			where user_id = $1`,
 				[userId]
 			)
@@ -87,7 +87,7 @@ let updateUserAccount = async (
 		offset: number = 2;
 
 	await db.query(
-		`update marketplace.user_account
+		`update user_account
 		${genSqlUpdateCommands(fields, offset)}
 		where user_id = $1`,
 		[userId, ...data]
@@ -101,7 +101,7 @@ let deleteUserAccount = async (
 ) => {
 	let { userId }: UserPayload = request.user;
 	await db.query(
-		`delete from marketplace.user_account
+		`delete from user_account
 		where user_id = $1`,
 		[userId]
 	);

@@ -8,7 +8,7 @@ const fileName = require('path').basename(__filename);
 let createProduct = async (request, response) => {
 	let { userId }: UserPayload = request.user;
 	await db.query(
-		`insert into marketplace.product values (
+		`insert into product values (
 			title,
 			category,
 			description,
@@ -26,7 +26,7 @@ let createProduct = async (request, response) => {
 let getProduct = async (request, response) => {
 	let result = (
 		await db.query(
-			`select * from marketplace.product
+			`select * from product
 		where product_id=$1`,
 			[userId]
 		)
@@ -41,7 +41,7 @@ let updateProduct = async (request, response) => {};
 
 let deleteProduct = async (request, response) => {
 	await db.query(
-		`delete from marketplace.product
+		`delete from product
 		where product_id=$1`,
 		[userId]
 	);

@@ -4,7 +4,7 @@ import { BadRequestError, NotFoundError } from '../errors/';
 
 const createVendorAccount = async (request, response) => {
 	const { userId } = request.user;
-	await db.query(`insert into marketplace.vendor values ($1)`, [userId]);
+	await db.query(`insert into vendor values ($1)`, [userId]);
 	response.status(StatusCodes.CREATED).send();
 };
 
@@ -12,7 +12,7 @@ const getVendorAccount = async (request, response) => {
 	const { userId } = request.user;
 	const res = (
 		await db.query(
-			`select vendor_id from marketplace.vendor
+			`select vendor_id from vendor
 		where vendor_id=$1`,
 			[userId]
 		)
@@ -26,7 +26,7 @@ const updateVendorAccount = async (request, response) => {};
 const deleteVendorAccount = async (request, response) => {
 	const { userId } = request.user;
 	await db.query(
-		`delete from marketplace.vendor
+		`delete from vendor
 		where vendor_id=$1`,
 		[userId]
 	);

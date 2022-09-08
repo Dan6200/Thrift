@@ -2,7 +2,7 @@ import application from '../../app';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import db from '../../db';
-import { newUsers, loginUsers, users } from './test-data';
+import { newUsers, loginUsers, users } from './user-data';
 import { StatusCodes } from 'http-status-codes';
 
 const should = chai.should();
@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 
 const testRegistration = () => {
 	beforeEach(async () => {
-		await db.query('delete from marketplace.user_account');
+		await db.query('delete from user_account');
 		await users.clear();
 	});
 	// Testing the register route
@@ -43,7 +43,7 @@ const testLogin = (count: number) => {
 		beforeEach(() => {
 			// clear the saved user tokens before registration
 			// user = {}
-			console.log('user tokens cleared', __filename);
+			console.log('user tokens cleared before login', __filename);
 		});
 		const noOfUsers = loginUsers[n].length;
 		it(`it should login ${noOfUsers} users`, async () => {

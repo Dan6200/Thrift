@@ -4,3 +4,4 @@
 */.env
 todo*
 .prettierrc.json
+.vscode/*

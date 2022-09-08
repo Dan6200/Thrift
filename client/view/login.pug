@@ -8,7 +8,7 @@ html
 		script(defer type='module' src='../dist/bundle.js')
 
 		- var bodyStyle = ['bg-gray-100']
-		- var divStyle = ['bg-white', 'block', 'max-w-lg', 'lg:w-1/2', 'lg:p-10', 'md:px-0', 'mx-auto', 'lg:my-36', 'font-sans', 'rounded', 'border-1', 'shadow-md' ]
+		- var divStyle = []
 		- var buttonStyle = ['my-4', 'lg:inline-block', 'py-1', 'rounded', 'bg-sky-500', 'hover:bg-sky-700', 'focus:bg-sky-700', 'px-8', 'w-50', 'focus:outline-none', 'mx-auto' ]
 		- var formStyle = ['mx-auto']
 		- var hStyle = ['py-4', 'text-lg', 'w-full', 'text-center', 'font-serif']
@@ -18,7 +18,7 @@ html
 		- var field = ['py-0', 'w-fit', 'mx-auto']
 
 	body(class=bodyStyle)
-		.container(class=divStyle)
+		.container.bg-white.block.max-w-lg.lg:w-1/2.lg:p-10.md:px-0.mx-auto.lg:my-36.font-sans.rounded.border-1.shadow-md
 			.container(class=hStyle)
 				h1 Enter either your email or phone number...
 			Form#login(class=formStyle method='post')

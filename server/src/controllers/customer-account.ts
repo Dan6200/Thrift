@@ -14,7 +14,7 @@ const createCustomerAccount = async (
 	response: Response
 ) => {
 	const { userId }: UserPayload = request.user;
-	await db.query(`insert into marketplace.customer values ($1)`, [userId]);
+	await db.query(`insert into customer values ($1)`, [userId]);
 	response.status(StatusCodes.CREATED).send();
 };
 
@@ -25,7 +25,7 @@ const getCustomerAccount = async (
 	const { userId }: UserPayload = request.user;
 	const customerData = (
 		await db.query(
-			`select * from marketplace.customer
+			`select * from customer
 		where customer_id=$1`,
 			[userId]
 		)
@@ -46,7 +46,7 @@ const deleteCustomerAccount = async (
 ) => {
 	const { userId }: UserPayload = request.user;
 	await db.query(
-		`delete from marketplace.customer
+		`delete from customer
 			where customer_id=$1`,
 		[userId]
 	);

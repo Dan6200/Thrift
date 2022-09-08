@@ -13,9 +13,6 @@ import { UserData } from '../types-and-interfaces';
 const register = async (request: Request, response: Response) => {
 	const userData = request.body,
 		{ firstName, lastName, phone, email, password } = userData;
-	for (const key in userData) {
-		if (!userData[key]) userData[key] = null;
-	}
 	if (!phone && !email) {
 		throw new BadRequestError(
 			`please provide an email address or phone number`
@@ -43,7 +40,6 @@ const register = async (request: Request, response: Response) => {
 		// TODO: SMS verification
 	}
 	userData.password = await hashPassword(password);
-	userData.initials = firstName.charAt(0) + lastName.charAt(0);
 	await db.query(
 		`
 		insert into user_account (
@@ -52,10 +48,12 @@ const register = async (request: Request, response: Response) => {
 			email,
 			phone,
 			password,
-			country,
 			dob,
-			initials
-		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
+			country,
+			ip_address,
+			is_vendor,
+			is_customer
+		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
 		Object.values(userData)
 	);
 	let result: any = await db.query('select user_id from user_account'),

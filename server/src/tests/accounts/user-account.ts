@@ -4,7 +4,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import db from '../../db';
 import { StatusCodes } from 'http-status-codes';
-import { updatedUser, users } from '../authentication/test-data';
+import { updatedUser, users } from '../authentication/user-data';
 import { NotFoundError } from '../../errors';
 import path from 'path';
 

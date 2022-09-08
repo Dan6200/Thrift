@@ -12,9 +12,6 @@ import cors from 'cors';
 import xss from 'xss-clean';
 import rateLimiter from 'express-rate-limit';
 
-// 	database
-import db from './db';
-
 // logger
 import morgan from 'morgan';
 

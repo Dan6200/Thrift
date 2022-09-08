@@ -3,7 +3,7 @@ import application from '../../app';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
-import { updatedUser, users } from '../authentication/test-data';
+import { updatedUser, users } from '../authentication/user-data';
 import path from 'path';
 
 let fileName = path.basename(__filename);

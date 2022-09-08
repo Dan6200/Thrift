@@ -11,6 +11,10 @@ chai.use(chaiHttp);
 
 const testRegistration = () => {
 	beforeEach(async () => {
+		// deletes all entries from user_account
+		// console.log(
+		// 	'deletes all entries from user_account and clears token array'
+		// );
 		await db.query('delete from user_account');
 		await users.clear();
 	});
@@ -18,7 +22,7 @@ const testRegistration = () => {
 	describe('/POST user: Registration', () => {
 		it(`it should register ${newUsers.length} new users`, async () => {
 			for (let i = 0; i < newUsers.length; i++) {
-				console.log(`\nUser ${i + 1}: %o`, newUsers[i], __filename);
+				// console.log(`\nUser ${i + 1}: %o`, newUsers[i], __filename);
 				const response = await chai
 					.request(application)
 					.post('/api/v1/auth/register')
@@ -26,12 +30,12 @@ const testRegistration = () => {
 				response.should.have.status(StatusCodes.CREATED);
 				response.body.should.be.an('object');
 				const responseObject = response.body;
-				console.log(`\nresponse %o`, responseObject, __filename);
+				// console.log(`\nresponse %o`, responseObject, __filename);
 				responseObject.should.have.property('token');
 				const { token } = responseObject;
 				await users.push(token);
 			}
-			console.log(users, __filename);
+			// console.log(users, __filename);
 		});
 	});
 };
@@ -43,16 +47,16 @@ const testLogin = (count: number) => {
 		beforeEach(() => {
 			// clear the saved user tokens before registration
 			// user = {}
-			console.log('user tokens cleared before login', __filename);
+			// console.log('user tokens cleared before login', __filename);
 		});
 		const noOfUsers = loginUsers[n].length;
 		it(`it should login ${noOfUsers} users`, async () => {
 			for (let i = 0; i < noOfUsers; i++) {
-				console.log(
-					`\nUser ${i + 1}: %o`,
-					loginUsers[n][i],
-					__filename
-				);
+				// console.log(
+				// 	`\nUser ${i + 1}: %o`,
+				// 	loginUsers[n][i],
+				// 	__filename
+				// );
 				const response = await chai
 					.request(application)
 					.post('/api/v1/auth/login')
@@ -60,7 +64,7 @@ const testLogin = (count: number) => {
 				response.should.have.status(StatusCodes.OK);
 				response.body.should.be.an('object');
 				const responseObject = response.body;
-				console.log(`\nresponse %o`, responseObject, __filename);
+				// console.log(`\nresponse %o`, responseObject, __filename);
 				responseObject.should.have.property('token');
 				const { token } = responseObject;
 				await users.push(token);

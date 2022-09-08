@@ -1,15 +1,13 @@
 import { Response } from 'express';
-import { RequestWithPayload } from '../types-and-interfaces';
-import db from '../db';
+import { RequestWithPayload } from '../../types-and-interfaces';
+import db from '../../db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, NotFoundError } from '../errors/';
+import { BadRequestError, NotFoundError } from '../../errors/';
 import './helper-functions';
-import { hashPassword, validatePassword } from '../security/password';
-import path from 'path';
-import { UserPayload } from '../types-and-interfaces';
-const fileName = path.basename(__filename);
+import { UserPayload } from '../../types-and-interfaces';
 
-const createCustomerAccount = async (
+// Convert customerAccountRouter to shippingAddressRouter
+const createShippingAddress = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
@@ -18,7 +16,7 @@ const createCustomerAccount = async (
 	response.status(StatusCodes.CREATED).send();
 };
 
-const getCustomerAccount = async (
+const getShippingAddress = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
@@ -35,12 +33,12 @@ const getCustomerAccount = async (
 	response.status(StatusCodes.OK).send();
 };
 
-const updateCustomerAccount = async (
+const updateShippingAddress = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {};
 
-const deleteCustomerAccount = async (
+const deleteShippingAddress = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
@@ -54,8 +52,8 @@ const deleteCustomerAccount = async (
 };
 
 export {
-	createCustomerAccount,
-	getCustomerAccount,
-	updateCustomerAccount,
-	deleteCustomerAccount,
+	createShippingAddress,
+	getShippingAddress,
+	updateShippingAddress,
+	deleteShippingAddress,
 };

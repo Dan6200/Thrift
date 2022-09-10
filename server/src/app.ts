@@ -23,7 +23,7 @@ import fileUpload from 'express-fileupload';
 import authRouter from './routes/auth';
 
 import userAccountRouter from './routes/user-account';
-import customerAccountRouter from './routes/customer-account';
+import shippingInfoRouter from './routes/shipping-info';
 import vendorAccountRouter from './routes/vendor-account';
 // import productsRouter from './routes/products';
 
@@ -79,7 +79,7 @@ application.use(
 application.use(
 	'/api/v1/user-account/customer',
 	authenticateUser,
-	customerAccountRouter
+	shippingInfoRouter
 );
 
 application.use(errorHandlerMiddleware);

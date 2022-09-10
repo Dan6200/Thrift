@@ -6,7 +6,7 @@ import {
 	getCustomerAccount,
 	updateCustomerAccount,
 	deleteCustomerAccount,
-} from '../controllers/customer-account/shipping-address';
+} from '../controllers/customer-account/shipping-info';
 
 router
 	.route('/')

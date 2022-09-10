@@ -32,7 +32,10 @@ const createShippingInfo = async (
 		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
 		[userId, ...Object.values(shippingInfo)]
 	);
-	response.status(StatusCodes.CREATED).send();
+	let shippingAddress = (
+		await db.query('select address_id from shipping_info')
+	).rows[0];
+	response.status(StatusCodes.CREATED).send(shippingAddress);
 };
 
 const getShippingInfo = async (

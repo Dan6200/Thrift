@@ -7,7 +7,7 @@ import {
 	NotFoundError,
 	UnauthenticatedError,
 } from '../errors/';
-import { genSqlUpdateCommands, changeUserPasswd } from './helper-functions';
+import { genSqlUpdateCommands, validateUserPassword } from './helper-functions';
 import { hashPassword, validatePassword } from '../security/password';
 import { UserData, UserPayload } from '../types-and-interfaces';
 
@@ -60,7 +60,7 @@ let updateUserAccount = async (
 	} = request.body;
 
 	if (oldPassword) {
-		let pwdIsValid = changeUserPasswd(userId, oldPassword, newPassword);
+		let pwdIsValid = validateUserPassword(userId, oldPassword);
 
 		if (!pwdIsValid)
 			throw new UnauthenticatedError(`Invalid Credentials,
@@ -77,9 +77,9 @@ let updateUserAccount = async (
 		offset: number = 2;
 
 	await db.query(
-		`update user_account
-		${genSqlUpdateCommands(fields, offset)}
-		where user_id = $1`,
+		// Generates A sql update command.
+		// Takes the database name, the column name of the first item of the array
+		`${genSqlUpdateCommands('user_account', 'user_id', fields, offset)}`,
 		[userId, ...data]
 	);
 	response.status(StatusCodes.OK).end();

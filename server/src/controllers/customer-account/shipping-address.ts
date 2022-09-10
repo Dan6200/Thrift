@@ -5,6 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, NotFoundError } from '../../errors/';
 import './helper-functions';
 import { UserPayload } from '../../types-and-interfaces';
+import { genSqlUpdateCommands } from '../helper-functions';
 
 const createShippingInfo = async (
 	request: RequestWithPayload,
@@ -71,9 +72,9 @@ const updateShippingInfo = async (
 	let data = Object.values(shippingData);
 	await db.query(
 		`update shipping_info
-		${genSqlUpdateCommands(fields, offset)}
-		where user_id = $1`,
-		[userId, ...data]
+		${genSqlUpdateCommands(fields, 2)}
+		where address_id = $1`,
+		[addressId, ...data]
 	);
 };
 

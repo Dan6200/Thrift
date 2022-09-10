@@ -6,7 +6,6 @@ import { BadRequestError, NotFoundError } from '../../errors/';
 import './helper-functions';
 import { UserPayload } from '../../types-and-interfaces';
 
-// Convert customerAccountRouter to shippingInfoRouter
 const createShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
@@ -42,10 +41,10 @@ const getShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	const { userId }: UserPayload = request.user;
+	const addressId = request.params;
 	const shippingInfo = (
-		await db.query(`select * from shipping_info where customer_id=$1`, [
-			userId,
+		await db.query(`select * from shipping_info where address_id=$1`, [
+			addressId,
 		])
 	).rows[0];
 	if (!shippingInfo)

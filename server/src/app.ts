@@ -23,7 +23,7 @@ import fileUpload from 'express-fileupload';
 import authRouter from './routes/auth';
 
 import userAccountRouter from './routes/user-account';
-import shippingInfoRouter from './routes/shipping-info';
+import shippingInfoRouter from './routes/customer-account/shipping-info';
 import vendorAccountRouter from './routes/vendor-account';
 // import productsRouter from './routes/products';
 

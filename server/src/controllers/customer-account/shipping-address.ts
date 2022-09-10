@@ -11,8 +11,9 @@ const createShippingInfo = async (
 	response: Response
 ) => {
 	const { userId }: UserPayload = request.user;
-	const shippingInfo = request.body;
-	let shippingDataLength = Object.values(shippingInfo).length;
+	let customerId = userId;
+	const shippingData = request.body;
+	let shippingDataLength = Object.values(shippingData).length;
 	if (shippingDataLength === 0)
 		throw new BadRequestError('Request Body cannot be empty');
 
@@ -28,8 +29,16 @@ const createShippingInfo = async (
 		// delivery_instructions	varchar,
 		// is_default				boolean			not null
 		`insert into shipping_info(
-		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-		[userId, ...Object.values(shippingInfo)]
+			customer_id,
+			recepient_first_name,
+			recepient_last_name,
+			street,
+			postal_code,
+			delivery_contact,
+			delivery_instructions,
+			is_default
+		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
+		[customerId, ...Object.values(shippingData)]
 	);
 	let shippingAddress = (
 		await db.query('select address_id from shipping_info')
@@ -56,8 +65,16 @@ const updateShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	const { userId }: UserPayload = request.user;
-	const shippingInfo = request.body;
+	const addressId = request.params;
+	const shippingData = request.body;
+	let fields = Object.keys(shippingData);
+	let data = Object.values(shippingData);
+	await db.query(
+		`update shipping_info
+		${genSqlUpdateCommands(fields, offset)}
+		where user_id = $1`,
+		[userId, ...data]
+	);
 };
 
 const deleteShippingInfo = async (
@@ -66,8 +83,8 @@ const deleteShippingInfo = async (
 ) => {
 	const { userId }: UserPayload = request.user;
 	await db.query(
-		`delete from customer
-			where customer_id=$1`,
+		`delete from shipping_info
+			where address_id=$1`,
 		[userId]
 	);
 	response.status(StatusCodes.OK).send();

@@ -23,7 +23,6 @@ create table if not exists shipping_info (
 	customer_id				int				not null		references	user_account	on	delete	cascade,
 	recepient_first_name	varchar(30)		not null,
 	recepient_last_name		varchar(30)		not null,
-	recepient_initials		char(2)			not null,
 	street					varchar			not null,
 	postal_code				varchar			not null,
 	delivery_contact		varchar			not	null,

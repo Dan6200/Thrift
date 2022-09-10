@@ -7,7 +7,7 @@ import {
 	NotFoundError,
 	UnauthenticatedError,
 } from '../errors/';
-import { genSqlUpdateCommands } from './helper-functions';
+import { genSqlUpdateCommands, changeUserPasswd } from './helper-functions';
 import { hashPassword, validatePassword } from '../security/password';
 import { UserData, UserPayload } from '../types-and-interfaces';
 
@@ -48,7 +48,7 @@ let updateUserAccount = async (
 	response: Response
 ) => {
 	let { userId }: UserPayload = request.user;
-	if (!Object.keys(request.body).length)
+	if (Object.keys(request.body).length === 0)
 		throw new BadRequestError('request data cannot be empty');
 	// TODO: validate and verify updated email and phone numbers
 	let {
@@ -60,24 +60,14 @@ let updateUserAccount = async (
 	} = request.body;
 
 	if (oldPassword) {
-		let { password }: { password: Buffer } = (
-			await db.query(
-				`select password from user_account
-			where user_id = $1`,
-				[userId]
-			)
-		).rows[0];
-
-		let pwdIsValid: boolean = await validatePassword(
-			oldPassword,
-			password.toString()
-		);
+		let pwdIsValid = changeUserPasswd(userId, oldPassword, newPassword);
 
 		if (!pwdIsValid)
 			throw new UnauthenticatedError(`Invalid Credentials,
 				cannot update password`);
 
 		request.body.password = await hashPassword(newPassword);
+
 		delete request.body.old_password;
 		delete request.body.new_password;
 	}

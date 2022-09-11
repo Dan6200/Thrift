@@ -40,10 +40,11 @@ const createShippingInfo = async (
 		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
 		[customerId, ...Object.values(shippingData)]
 	);
-	let shippingAddress = (
-		await db.query('select address_id from shipping_info')
-	).rows[0];
-	response.status(StatusCodes.CREATED).send(shippingAddress);
+	let addressId = (await db.query('select address_id from shipping_info'))
+		.rows[0];
+	response.status(StatusCodes.CREATED).send({
+		addressId,
+	});
 };
 
 const getShippingInfo = async (
@@ -79,6 +80,7 @@ const updateShippingInfo = async (
 		)}`,
 		[addressId, ...data]
 	);
+	response.status(StatusCodes.OK).send();
 };
 
 const deleteShippingInfo = async (

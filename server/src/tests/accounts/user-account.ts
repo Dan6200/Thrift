@@ -2,10 +2,8 @@ import 'express-async-errors';
 import application from '../../app';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import db from '../../db';
 import { StatusCodes } from 'http-status-codes';
 import { updatedUser, users } from '../authentication/user-data';
-import { NotFoundError } from '../../errors';
 import path from 'path';
 
 let fileName = path.basename(__filename);
@@ -14,19 +12,18 @@ chai.use(chaiHttp);
 const should = chai.should(),
 	expect = chai.expect;
 
-const testGetUserAccount = (deleted) => {
+const testGetUserAccount = (deleted: boolean) => {
 	describe('/GET user account', () => {
 		// Prints it should retrieve the User account if the user exists
 		// Prints it should fail to retrieve the User account if the user doesn't exist
 		it(`it should ${
 			(deleted && 'fail to ') || ''
 		}retrieve the User account`, async () => {
-			const userIds: string[] = await users.getUserIDs();
-			deleted || userIds.should.not.be.empty;
-			console.log(`\nusers: %O`, userIds, fileName);
-			for (const ID of userIds) {
-				const userToken: string = await users.getUserToken(ID);
-				console.log(`\nUser ID: ${ID}, Data: %o`, userToken);
+			const userTokens: string[] = await users.getUserTokens();
+			userTokens.should.not.be.empty;
+			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
+			for (const userToken of userTokens) {
+				// console.log(`\nUser ID: ${ID}, Data: %o`, userToken);
 				const response = await chai
 					.request(application)
 					.get('/api/v1/user-account')
@@ -38,7 +35,7 @@ const testGetUserAccount = (deleted) => {
 				response.should.have.status(StatusCodes.OK);
 				response.body.should.be.an('object');
 				const responseData = response.body;
-				console.log(`\nresponse %o`, responseData);
+				// console.log(`\nresponse %o`, responseData);
 				responseData.should.have.property('userAccount');
 				const userAccount = responseData.userAccount;
 				userAccount.should.have.property('first_name');
@@ -63,9 +60,9 @@ const testUpdateUserAccount = () => {
 			let n = 0;
 			const userIds: string[] = await users.getUserIDs();
 			userIds.should.not.be.empty;
-			console.log(`\nusers: %O`, userIds);
+			// console.log(`\nusers: %O`, userIds);
 			for (const ID of userIds) {
-				console.log(`\nUser ID: ${ID}, Data: %o`, updatedUser[n]);
+				// console.log(`\nUser ID: ${ID}, Data: %o`, updatedUser[n]);
 				const userToken: string = await users.getUserToken(ID);
 				const response = await chai
 					.request(application)
@@ -84,10 +81,10 @@ const testDeleteUserAccount = () => {
 		it("it should delete the user's account", async () => {
 			const userIds: string[] = await users.getUserIDs();
 			userIds.should.not.be.empty;
-			console.log(`\nusers: %O`, userIds);
+			// console.log(`\nusers: %O`, userIds);
 			for (const ID of userIds) {
 				const userToken: string = await users.getUserToken(ID);
-				console.log(`\nUser ID: ${ID}, Data: %o`, userToken);
+				// console.log(`\nUser ID: ${ID}, Data: %o`, userToken);
 				const response = await chai
 					.request(application)
 					.delete('/api/v1/user-account')

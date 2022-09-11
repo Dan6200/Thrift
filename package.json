@@ -3,6 +3,11 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "server/src/server.ts",
+	"private": true,
+	"workspaces": [
+		"server",
+		"client"
+	],
 	"scripts": {
 		"start": "cd server && ts-node src/server.ts",
 		"test": "cd server && ts-mocha src/tests",
@@ -10,7 +15,7 @@
 	},
 	"license": "ISC",
 	"author": "daniel <danielnyong66@gmail.com>",
-	"repository": "https://github.com/Dan6200/Marketplace.git",
+	"repository": "https://github.com/Dan6200/Thrift.git",
 	"devDependencies": {
 		"concurrently": "^7.3.0",
 		"mocha": "^10.X.X"

@@ -5,7 +5,7 @@ import chaiHttp from 'chai-http';
 import db from '../../../db';
 import { StatusCodes } from 'http-status-codes';
 import { updatedUser, users } from '../../authentication/user-data';
-import { NotFoundError } from '../../../errors';
+import { newShippingData, updateShippingData } from './shipping-data';
 
 chai.use(chaiHttp);
 const should = chai.should(),
@@ -64,7 +64,7 @@ const testUpdateShippingInfo = () => {
 				const response = await chai
 					.request(application)
 					.post('/api/v1/user-account/customer-account/shipping-info')
-					.send(changeShippingData)
+					.send(updateShippingData)
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
 			}

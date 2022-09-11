@@ -14,15 +14,12 @@ import {
 
 const deleted = true;
 
-/*
 describe('Authentication Routes', testRegistration);
 describe('Authentication Routes', testLogin.bind(null, 1));
-*/
 
 describe('User Accounts Route', testGetUserAccount.bind(null, !deleted));
 describe('User Accounts Route', testUpdateUserAccount);
 describe('User Accounts Route', testGetUserAccount.bind(null, !deleted));
-describe('Authentication Routes', testLogin.bind(null, 2));
 
 /*
 describe('User Accounts Route', testDeleteUserAccount);

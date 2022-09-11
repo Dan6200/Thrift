@@ -23,7 +23,6 @@ const testGetUserAccount = (deleted: boolean) => {
 			userTokens.should.not.be.empty;
 			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
 			for (const userToken of userTokens) {
-				// console.log(`\nUser ID: ${ID}, Data: %o`, userToken);
 				const response = await chai
 					.request(application)
 					.get('/api/v1/user-account')
@@ -40,9 +39,8 @@ const testGetUserAccount = (deleted: boolean) => {
 				const userAccount = responseData.userAccount;
 				userAccount.should.have.property('first_name');
 				userAccount.should.have.property('last_name');
-				userAccount.should.satisfy(
-					(account) => 'email' in account || 'phone' in account
-				);
+				userAccount.should.have.property('email');
+				userAccount.should.have.property('phone');
 				userAccount.should.have.property('password');
 				userAccount.should.have.property('ip_address');
 				userAccount.should.have.property('country');
@@ -58,12 +56,10 @@ const testUpdateUserAccount = () => {
 	describe('/PATCH user account', () => {
 		it("it should update the user's account", async () => {
 			let n = 0;
-			const userIds: string[] = await users.getUserIDs();
-			userIds.should.not.be.empty;
-			// console.log(`\nusers: %O`, userIds);
-			for (const ID of userIds) {
-				// console.log(`\nUser ID: ${ID}, Data: %o`, updatedUser[n]);
-				const userToken: string = await users.getUserToken(ID);
+			const userTokens: string[] = await users.getUserTokens();
+			userTokens.should.not.be.empty;
+			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
+			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
 					.patch('/api/v1/user-account')
@@ -79,12 +75,10 @@ const testUpdateUserAccount = () => {
 const testDeleteUserAccount = () => {
 	describe('/DELETE user account', () => {
 		it("it should delete the user's account", async () => {
-			const userIds: string[] = await users.getUserIDs();
-			userIds.should.not.be.empty;
-			// console.log(`\nusers: %O`, userIds);
-			for (const ID of userIds) {
-				const userToken: string = await users.getUserToken(ID);
-				// console.log(`\nUser ID: ${ID}, Data: %o`, userToken);
+			const userTokens: string[] = await users.getUserTokens();
+			userTokens.should.not.be.empty;
+			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
+			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
 					.delete('/api/v1/user-account')

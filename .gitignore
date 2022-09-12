@@ -7,3 +7,4 @@ todo*
 .vscode/*
 *built/
 *build/
+*bundle.js

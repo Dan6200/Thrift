@@ -1,3 +1,3 @@
-import './login';
-import './register';
-import './user';
+import 'login';
+import 'register';
+import 'user';

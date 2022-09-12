@@ -1,11 +1,22 @@
 {
 	"compilerOptions": {
-		"outDir": "./built",
+		"outDir": "built",
 		"allowJs": true,
 		"target": "es5",
 		"esModuleInterop": true,
-		"moduleResolution": "Node"
+		"moduleResolution": "Node",
+		"baseUrl": "./src",
+		"paths": {
+			"*": [
+				"*",
+				"tests/*",
+				"routes/*",
+				"controllers/*",
+				"errors/*",
+				"middleware/*"
+			]
+		}
 	},
 	"include": ["./src/"],
-	"exclude": ["./tests/", "./node_modules/", "./dist/"]
+	"exclude": ["node_modules/", "dist/"]
 }

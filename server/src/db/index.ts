@@ -1,8 +1,6 @@
 import { Pool } from 'pg';
 import path from 'path';
 
-let fileName = path.basename(__filename);
-
 const pool = new Pool({
 	user: process.env.PGUSER,
 	host: process.env.PGHOST,
@@ -26,11 +24,7 @@ export default {
 		});
 		const res = await pool.query(text, params);
 		const duration = Date.now() - start;
-		console.log(
-			'\nexecuted query',
-			{ text, duration, rows: res.rowCount },
-			fileName
-		);
+		// console.log('\nexecuted query', { text, duration, rows: res.rowCount });
 		return res;
 	},
 

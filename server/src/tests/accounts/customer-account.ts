@@ -1,11 +1,11 @@
 import 'express-async-errors';
-import application from '../../app';
+import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import db from '../../db';
+import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { updatedUser, users } from '../authentication/user-data';
-import { NotFoundError } from '../../errors';
+import { updatedUser, users } from 'authentication/user-data';
+import { NotFoundError } from 'errors';
 
 chai.use(chaiHttp);
 const should = chai.should(),
@@ -57,10 +57,14 @@ const testDeleteCustomerAccount = () => {
 			try {
 				const userIds = await users.getUserIDs();
 				userIds.should.not.be.empty;
-				console.log(`\nusers: %O`, userIds);
+				console.log(`\nusers: %O`, userIds, __filename);
 				for (const ID of userIds) {
 					const userToken = await users.getUserToken(ID);
-					console.log(`\nUser ID: ${ID}, Data: %o`, userToken);
+					console.log(
+						`\nUser ID: ${ID}, Data: %o`,
+						userToken,
+						__filename
+					);
 					const response = await chai
 						.request(application)
 						.delete('/api/v1/user-account/customer')

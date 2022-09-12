@@ -1,4 +1,4 @@
-import { registerEventHandler } from './event-handlers/register';
+import { registerEventHandler } from 'event-handlers/register';
 
 const register = document.querySelector('#register');
 

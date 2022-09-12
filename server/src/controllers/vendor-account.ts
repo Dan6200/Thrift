@@ -1,6 +1,6 @@
-import db from '../db';
+import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, NotFoundError } from '../errors/';
+import { BadRequestError, NotFoundError } from 'errors/';
 
 const createVendorAccount = async (request, response) => {
 	const { userId } = request.user;

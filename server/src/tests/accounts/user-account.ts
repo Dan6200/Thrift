@@ -1,9 +1,9 @@
 import 'express-async-errors';
-import application from '../../app';
+import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
-import { updatedUser, users } from '../authentication/user-data';
+import { updatedUser, users } from 'authentication/user-data';
 import path from 'path';
 
 let fileName = path.basename(__filename);
@@ -20,7 +20,7 @@ const testGetUserAccount = (deleted: boolean) => {
 			(deleted && 'fail to ') || ''
 		}retrieve the User account`, async () => {
 			const userTokens: string[] = await users.getUserTokens();
-			userTokens.should.not.be.empty;
+			deleted || userTokens.should.not.be.empty;
 			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
 			for (const userToken of userTokens) {
 				const response = await chai
@@ -60,6 +60,7 @@ const testUpdateUserAccount = () => {
 			userTokens.should.not.be.empty;
 			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
 			for (const userToken of userTokens) {
+				// console.log(updatedUser[n], __filename);
 				const response = await chai
 					.request(application)
 					.patch('/api/v1/user-account')

@@ -1,16 +1,14 @@
-import { testRegistration, testLogin } from './authentication';
+import { testRegistration, testLogin } from 'authentication';
 
 import {
 	testGetUserAccount,
 	testUpdateUserAccount,
 	testDeleteUserAccount,
-	testCreateCustomerAccount,
-	testGetCustomerAccount,
-	testDeleteCustomerAccount,
-	testCreateVendorAccount,
-	testGetVendorAccount,
-	testDeleteVendorAccount,
-} from './accounts';
+	testCreateShippingInfo,
+	testGetShippingInfo,
+	testUpdateShippingInfo,
+	testDeleteShippingInfo,
+} from 'accounts';
 
 const deleted = true;
 
@@ -20,31 +18,12 @@ describe('Authentication Routes', testLogin.bind(null, 1));
 describe('User Accounts Route', testGetUserAccount.bind(null, !deleted));
 describe('User Accounts Route', testUpdateUserAccount);
 describe('User Accounts Route', testGetUserAccount.bind(null, !deleted));
-
-/*
 describe('User Accounts Route', testDeleteUserAccount);
 describe('User Accounts Route', testGetUserAccount.bind(null, deleted));
-
 describe('Authentication Routes', testRegistration);
-describe('User Accounts Routes, Vendor account', testCreateVendorAccount);
-describe(
-	'User Accounts Routes, Vendor account',
-	testGetVendorAccount.bind(null, !deleted)
-);
-describe('User Accounts Routes, Vendor account', testDeleteVendorAccount);
-describe(
-	'User Accounts Routes, Vendor account',
-	testGetVendorAccount.bind(null, deleted)
-);
 
-describe('User Accounts Routes, Customer account', testCreateCustomerAccount);
+describe('Create Customer Shipping Information', testCreateShippingInfo);
 describe(
-	'User Accounts Routes, Customer account',
-	testGetCustomerAccount.bind(null, !deleted)
+	'Customer Shipping Information',
+	testGetShippingInfo.bind(null, !deleted)
 );
-describe('User Accounts Routes, Customer account', testDeleteCustomerAccount);
-describe(
-	'User Accounts Routes, Customer account',
-	testGetCustomerAccount.bind(null, deleted)
-);
-*/

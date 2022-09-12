@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import db from '../db';
+import db from 'db';
 
 const errorHandlerMiddleware = async (err, req, res, next) => {
 	let customError = {

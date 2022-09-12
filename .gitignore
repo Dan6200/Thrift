@@ -5,3 +5,5 @@
 todo*
 .prettierrc.json
 .vscode/*
+*built/
+*build/

@@ -6,7 +6,7 @@ module.exports = {
 	watchOptions: {
 		ignored: /node_modules/,
 	},
-	entry: './src/',
+	entry: 'src/',
 	module: {
 		rules: [
 			{

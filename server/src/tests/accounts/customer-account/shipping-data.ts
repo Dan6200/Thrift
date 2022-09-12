@@ -11,7 +11,6 @@
 //
 const newShippingData = [
 	{
-		customer_id: 132,
 		recepient_first_name: 'John',
 		recepient_last_name: 'Doe',
 		street: '24 Street',

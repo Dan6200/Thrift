@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
-import db from '../db';
+import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, UnauthenticatedError } from '../errors';
-// import validatePhoneNumber from '../security/validate-phone';
-// import validateEmail from '../security/validate-email';
-import { hashPassword, validatePassword } from '../security/password';
-import { createToken } from '../security/create-token';
-import { UserData } from '../types-and-interfaces';
+import { BadRequestError, UnauthenticatedError } from 'errors';
+// import validatePhoneNumber from 'security/validate-phone';
+// import validateEmail from 'security/validate-email';
+import { hashPassword, validatePassword } from 'security/password';
+import { createToken } from 'security/create-token';
 // TODO: IP address
 // https://github.com/neekware/fullerstack/tree/main/libs/nax-ipware
 

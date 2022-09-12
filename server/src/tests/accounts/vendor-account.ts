@@ -1,12 +1,10 @@
 import 'express-async-errors';
-import application from '../../app';
+import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
-import { updatedUser, users } from '../authentication/user-data';
+import { updatedUser, users } from 'authentication/user-data';
 import path from 'path';
-
-let fileName = path.basename(__filename);
 
 chai.use(chaiHttp);
 const should = chai.should(),
@@ -18,7 +16,7 @@ const testCreateVendorAccount = () => {
 			try {
 				const userIds: Array<string> = await users.getUserIDs();
 				userIds.should.not.be.empty;
-				console.log(`\nusers: %O`, userIds, fileName);
+				console.log(`\nusers: %O`, userIds, __filename);
 				for (const ID of userIds) {
 					const userToken: string = await users.getUserToken(ID);
 					console.log(`\nUser ID: ${ID}, Data %o`, userToken);
@@ -45,10 +43,14 @@ const testGetVendorAccount = (deleted: boolean) => {
 			try {
 				const userIds: Array<string> = await users.getUserIDs();
 				userIds.should.not.be.empty;
-				console.log(`\nusers: %O`, userIds);
+				console.log(`\nusers: %O`, userIds, __filename);
 				for (const ID of userIds) {
 					const userToken: string = await users.getUserToken(ID);
-					console.log(`\nUser ID: ${ID}, Data %o`, userToken);
+					console.log(
+						`\nUser ID: ${ID}, Data %o`,
+						userToken,
+						__filename
+					);
 					const response = await chai
 						.request(application)
 						.get('/api/v1/user-account/vendor')
@@ -75,10 +77,14 @@ const testDeleteVendorAccount = () => {
 			try {
 				const userIds: string[] = await users.getUserIDs();
 				userIds.should.not.be.empty;
-				console.log(`\nusers: %O`, userIds);
+				console.log(`\nusers: %O`, userIds, __filename);
 				for (const ID of userIds) {
 					const userToken: string = await users.getUserToken(ID);
-					console.log(`\nUser ID: ${ID}, Data %o`, userToken);
+					console.log(
+						`\nUser ID: ${ID}, Data %o`,
+						userToken,
+						__filename
+					);
 					const response = await chai
 						.request(application)
 						.delete('/api/v1/user-account/vendor')

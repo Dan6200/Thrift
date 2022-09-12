@@ -1,41 +1,44 @@
+// Note do not convert to camelCase, keep at hyphen-separated.
+// For efficiency and to reduce complexity when sending the data to the database.
+// Programmatically converting to hyphen-separated for a large table can be expensive
 const newUsers: Array<Object> = [
 	{
-		firstName: 'Ebuka',
-		lastName: 'Eze',
+		first_name: 'Ebuka',
+		last_name: 'Eze',
 		email: 'ebukachibueze5489@gmail.com',
 		phone: null,
 		password: 'EbukaDa1!',
 		dob: '1999-07-01',
 		country: 'Nigeria',
 		ipAddress: '168.89.91.45',
-		isVendor: false,
-		isCustomer: true,
+		is_vendor: false,
+		is_customer: true,
 	},
 
 	{
-		firstName: 'Mustapha',
-		lastName: 'Mohammed',
+		first_name: 'Mustapha',
+		last_name: 'Mohammed',
 		email: null,
 		phone: '2348063245973',
 		password: '123AishaBaggy9384',
 		dob: '2000-10-19',
 		country: 'Nigeria',
-		ipAddress: '198.79.78.23',
-		isVendor: true,
-		isCustomer: false,
+		ip_address: '198.79.78.23',
+		is_vendor: true,
+		is_customer: false,
 	},
 
 	{
-		firstName: 'Aisha',
-		lastName: 'Mohammed',
+		first_name: 'Aisha',
+		last_name: 'Mohammed',
 		email: null,
 		phone: '23490253954889',
 		password: '236!A15HA04',
 		dob: '2004-6-23',
 		country: 'Nigeria',
-		ipAddress: '198.79.78.45',
-		isVendor: false,
-		isCustomer: true,
+		ip_address: '198.79.78.45',
+		is_vendor: false,
+		is_customer: true,
 	},
 ];
 
@@ -103,22 +106,22 @@ const users: Users = {
 const updatedUser: Array<Object> = [
 	{
 		dob: '1995-12-31',
-		lastName: 'Joyce',
-		isVendor: false,
+		last_name: 'Joyce',
+		is_vendor: false,
 	},
 
 	{
 		email: 'mustymomo1019@yahoo.com',
 		phone: '2348063243958197',
-		isVendor: false,
+		is_vendor: false,
 	},
 
 	{
 		dob: '1995-12-31',
-		oldPassword: '236!A15HA04',
-		newPassword: 'jayafd3245XF*!&$',
-		isVendor: true,
-		isCustomer: true,
+		old_password: '236!A15HA04',
+		new_password: 'jayafd3245XF*!&$',
+		is_vendor: true,
+		is_customer: true,
 	},
 ];
 

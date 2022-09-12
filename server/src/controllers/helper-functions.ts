@@ -1,5 +1,5 @@
-import db from '../db';
-import { validatePassword } from '../security/password';
+import db from 'db';
+import { validatePassword } from 'security/password';
 
 const validateUserPassword = async (
 	Id: string,

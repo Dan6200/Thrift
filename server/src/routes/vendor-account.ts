@@ -7,7 +7,7 @@ import {
     getVendorAccount,
     updateVendorAccount,
     deleteVendorAccount,
-} from '../controllers/vendor-account';
+} from 'controllers/vendor-account';
 
 router
 	.route('/')

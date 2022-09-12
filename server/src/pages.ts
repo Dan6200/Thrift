@@ -1,6 +1,6 @@
-import application from './app';
+import application from 'application';
 import { Request, Response } from 'express';
-import authenticateUser from './middleware/authentication';
+import authenticateUser from 'middleware/authentication';
 
 application.get('/', (_request: Request, response: Response) => {
 	response.render('index');

@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router()
 
 
-import { getUserAccount, deleteUserAccount, updateUserAccount } from '../controllers/user-account';
+import { getUserAccount, deleteUserAccount, updateUserAccount } from 'controllers/user-account';
 
 router
 	.route('/')

@@ -2,10 +2,10 @@
 	"name": "server",
 	"version": "1.0.0",
 	"description": "",
-	"main": "src/app.ts",
+	"main": "src/application.ts",
 	"scripts": {
-		"start": "ts-node src/app.ts",
-		"dev": "nodemon src/app.ts",
+		"start": "ts-node src/application.ts",
+		"dev": "nodemon src/application.ts",
 		"test": "ts-mocha src/tests/index.ts"
 	},
 	"author": "daniel <danielnyong66@gmail.com>",
@@ -53,6 +53,7 @@
 		"nodemon": "^2.0.9",
 		"prettier": "2.7.1",
 		"ts-mocha": "^10.0.0",
+		"tsconfig-paths": "^4.1.0",
 		"xss-clean": "^0.1.1"
 	},
 	"repository": "https://github.com/Dan6200/Marketplace.git"

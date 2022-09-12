@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router()
 
-import { createProduct, getProduct, updateProduct, deleteProduct } from '../controllers/products';
+import { createProduct, getProduct, updateProduct, deleteProduct } from 'controllers/products';
 
 router
 	.route('/')

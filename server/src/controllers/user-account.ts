@@ -1,24 +1,20 @@
 import { Response } from 'express';
-import { RequestWithPayload } from '../types-and-interfaces';
-import db from '../db';
+import { RequestWithPayload } from 'types-and-interfaces';
+import db from 'db';
 import { StatusCodes } from 'http-status-codes';
+import { BadRequestError, NotFoundError, UnauthenticatedError } from 'errors/';
 import {
-	BadRequestError,
-	NotFoundError,
-	UnauthenticatedError,
-} from '../errors/';
-import { genSqlUpdateCommands, validateUserPassword } from './helper-functions';
-import { hashPassword, validatePassword } from '../security/password';
-import { UserData, UserPayload } from '../types-and-interfaces';
-
-const fileName = require('path').basename(__filename);
+	genSqlUpdateCommands,
+	validateUserPassword,
+} from 'controllers/helper-functions';
+import { hashPassword, validatePassword } from 'security/password';
+import { UserData, UserPayload } from 'types-and-interfaces';
 
 let getUserAccount = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
 	let { userId }: UserPayload = request.user;
-	console.log('userId is %o', userId, fileName);
 	let userAccount: UserData = (
 		await db.query(
 			`select 
@@ -48,6 +44,7 @@ let updateUserAccount = async (
 	response: Response
 ) => {
 	let { userId }: UserPayload = request.user;
+	// console.log(request.body, __filename);
 	if (Object.keys(request.body).length === 0)
 		throw new BadRequestError('request data cannot be empty');
 	// TODO: validate and verify updated email and phone numbers

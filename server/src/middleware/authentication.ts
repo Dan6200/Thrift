@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
-import { RequestWithPayload, UserPayload } from '../types-and-interfaces';
+import { RequestWithPayload, UserPayload } from 'types-and-interfaces';
 import { Response, NextFunction } from 'express';
-import db from '../db';
-import { UnauthenticatedError } from '../errors';
+import db from 'db';
+import { UnauthenticatedError } from 'errors';
 import path from 'path';
 
 let fileName = path.basename(__filename);

@@ -1,5 +1,5 @@
-import application from './app';
-import './pages';
+import application from 'application';
+import 'pages';
 
 const port = process.env.PORT;
 

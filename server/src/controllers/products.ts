@@ -1,8 +1,8 @@
-import db from '../db';
+import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, NotFoundError } from '../errors/';
-import './helper-functions';
-import { UserPayload } from '../types-and-interfaces';
+import { BadRequestError, NotFoundError } from 'errors/';
+import 'helper-functions';
+import { UserPayload } from 'types-and-interfaces';
 const fileName = require('path').basename(__filename);
 
 let createProduct = async (request, response) => {

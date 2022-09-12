@@ -1,10 +1,10 @@
 import { Response } from 'express';
-import { RequestWithPayload } from '../../types-and-interfaces';
-import db from '../../db';
+import { RequestWithPayload } from 'types-and-interfaces';
+import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, NotFoundError } from '../../errors/';
-import { UserPayload } from '../../types-and-interfaces';
-import { genSqlUpdateCommands } from '../helper-functions';
+import { BadRequestError, NotFoundError } from 'errors/';
+import { UserPayload } from 'types-and-interfaces';
+import { genSqlUpdateCommands } from 'controllers/helper-functions';
 
 const createShippingInfo = async (
 	request: RequestWithPayload,
@@ -42,6 +42,8 @@ const createShippingInfo = async (
 	);
 	let addressId = (await db.query('select address_id from shipping_info'))
 		.rows[0];
+	console.log('addressId: %O', addressId);
+	console.log('from: ' + __filename);
 	response.status(StatusCodes.CREATED).send({
 		addressId,
 	});

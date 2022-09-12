@@ -1,4 +1,4 @@
-import { loginEventHandler } from './event-handlers/login';
+import { loginEventHandler } from 'event-handlers/login';
 
 const login: HTMLFormElement = document.querySelector('#login');
 

@@ -1,8 +1,8 @@
-import application from '../../app';
+import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import db from '../../db';
-import { newUsers, loginUsers, users } from './user-data';
+import db from 'db';
+import { newUsers, loginUsers, users } from 'authentication/user-data';
 import { StatusCodes } from 'http-status-codes';
 
 const should = chai.should();
@@ -44,19 +44,13 @@ const testLogin = (count: number) => {
 	// Testing the login route
 	describe('/POST user: Login', () => {
 		const n = count - 1;
-		beforeEach(() => {
+		beforeEach(async () => {
 			// clear the saved user tokens before registration
-			// user = {}
-			// console.log('user tokens cleared before login', __filename);
+			await users.clear();
 		});
 		const noOfUsers = loginUsers[n].length;
 		it(`it should login ${noOfUsers} users`, async () => {
 			for (let i = 0; i < noOfUsers; i++) {
-				// console.log(
-				// 	`\nUser ${i + 1}: %o`,
-				// 	loginUsers[n][i],
-				// 	__filename
-				// );
 				const response = await chai
 					.request(application)
 					.post('/api/v1/auth/login')

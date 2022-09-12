@@ -19,9 +19,29 @@ const newShippingData = [
 		delivery_instructions: 'Call me before you arrive!',
 		is_default: true,
 	},
+	{
+		recepient_first_name: 'John',
+		recepient_last_name: 'Doe',
+		street: '24 Street',
+		postal_code: '123435',
+		delivery_contact: '23460581795',
+		delivery_instructions: 'Call me before you arrive!',
+		is_default: true,
+	},
+	{
+		recepient_first_name: 'John',
+		recepient_last_name: 'Doe',
+		street: '24 Street',
+		postal_code: '123435',
+		delivery_contact: '23460581795',
+		delivery_instructions: 'Call me before you arrive!',
+		is_default: true,
+	},
 ];
 
 const updateShippingData = [
+	{ recepient_first_name: 'Jane', delivery_contact: '234957292623654' },
+	{ recepient_first_name: 'Jane', delivery_contact: '234957292623654' },
 	{ recepient_first_name: 'Jane', delivery_contact: '234957292623654' },
 ];
 

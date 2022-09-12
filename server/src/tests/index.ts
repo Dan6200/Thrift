@@ -27,3 +27,13 @@ describe(
 	'Customer Shipping Information',
 	testGetShippingInfo.bind(null, !deleted)
 );
+describe('Update Customer Shipping Information', testUpdateShippingInfo);
+describe(
+	'Customer Shipping Information',
+	testGetShippingInfo.bind(null, !deleted)
+);
+describe('Delete Customer Shipping Information', testDeleteShippingInfo);
+describe(
+	'Customer Shipping Information',
+	testGetShippingInfo.bind(null, deleted)
+);

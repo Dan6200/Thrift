@@ -41,9 +41,7 @@ const createShippingInfo = async (
 		[customerId, ...Object.values(shippingData)]
 	);
 	let addressId = (await db.query('select address_id from shipping_info'))
-		.rows[0];
-	console.log('addressId: %O', addressId);
-	console.log('from: ' + __filename);
+		.rows[0].address_id;
 	response.status(StatusCodes.CREATED).send({
 		addressId,
 	});
@@ -53,7 +51,7 @@ const getShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	const addressId = request.params;
+	const { addressId } = request.params;
 	const shippingInfo = (
 		await db.query(`select * from shipping_info where address_id=$1`, [
 			addressId,
@@ -68,7 +66,7 @@ const updateShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	const addressId = request.params,
+	const { addressId } = request.params,
 		shippingData = request.body;
 	let fields = Object.keys(shippingData),
 		data = Object.values(shippingData),
@@ -89,11 +87,11 @@ const deleteShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	const { userId }: UserPayload = request.user;
+	const { addressId } = request.params;
 	await db.query(
 		`delete from shipping_info
 			where address_id=$1`,
-		[userId]
+		[addressId]
 	);
 	response.status(StatusCodes.OK).send();
 };

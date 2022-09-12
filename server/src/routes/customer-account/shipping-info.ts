@@ -11,7 +11,7 @@ import {
 router.route('/').post(createShippingInfo);
 
 router
-	.route('/id')
+	.route('/:addressId')
 	.get(getShippingInfo)
 	.patch(updateShippingInfo)
 	.delete(deleteShippingInfo);

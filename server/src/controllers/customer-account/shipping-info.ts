@@ -12,6 +12,16 @@ const createShippingInfo = async (
 ) => {
 	const { userId }: UserPayload = request.user;
 	let customerId = userId;
+	// limit amount of shippingInfo to 5...
+	const LIMIT = 3;
+	let overLimit: boolean =
+		LIMIT <=
+		(await db.query('select count(address_id) from shipping_info')).rows[0]
+			.count;
+	if (overLimit)
+		throw new BadRequestError(
+			`Each customer is limited to only ${LIMIT} shipping addresses`
+		);
 	const shippingData = request.body;
 	let shippingDataLength = Object.values(shippingData).length;
 	if (shippingDataLength === 0)
@@ -45,6 +55,21 @@ const createShippingInfo = async (
 	response.status(StatusCodes.CREATED).send({
 		addressId,
 	});
+};
+
+const getAllShippingInfo = async (
+	request: RequestWithPayload,
+	response: Response
+) => {
+	const { userId } = request.user;
+	const shippingInfos = (
+		await db.query(`select * from shipping_info where user_id=$1`, [userId])
+	).rows[0];
+	if (!shippingInfos)
+		return response
+			.status(StatusCodes.NOT_FOUND)
+			.send('User has no shipping information available');
+	response.status(StatusCodes.OK).send(shippingInfos);
 };
 
 const getShippingInfo = async (

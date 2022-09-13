@@ -36,8 +36,8 @@ create table if not exists shipping_info (
 
 create table if not exists shop (
 	shop_id					serial			primary key,	
-	shop_name				varchar			not null,
-	shop_owner				int				references	user_account	on	delete	cascade,
+	shop_name				varchar			not null 	default 	'My Shop',
+	shop_owner_id			int				references	user_account	on	delete	cascade,
 	date_created			date			not null		default		current_date,
 	street					varchar,
 	postal_code				varchar,
@@ -58,8 +58,7 @@ create table if not exists product (
 	description			varchar,
 	list_price			numeric(19,4),
 	net_price			numeric(19,4),
-	vendor_id			int					unique			not null		references	user_account		on	delete	restrict,
-	shop_id				int					unique			references	shop		on	delete	restrict,
+	shop_id				int					unique			not null		references	shop		on	delete	restrict,
 	quantity_available	int					not null,
 	is_flagship			boolean				not null
 );

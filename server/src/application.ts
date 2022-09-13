@@ -10,7 +10,7 @@ import morgan from 'morgan';
 import authRouter from 'auth';
 import userAccountRouter from 'user-account';
 import shippingInfoRouter from 'customer-account/shipping-info';
-import vendorAccountRouter from 'vendor-account';
+import shopRouter from 'vendor-account/shops';
 // import productsRouter from 'routes/products';
 // middlewares
 import errorHandlerMiddleware from 'error-handler';
@@ -43,9 +43,9 @@ application.use(morgan('tiny'));
 application.use('/api/v1/auth', authRouter);
 application.use('/api/v1/user-account', authenticateUser, userAccountRouter);
 application.use(
-	'/api/v1/user-account/vendor',
+	'/api/v1/user-account/vendor/shops',
 	authenticateUser,
-	vendorAccountRouter
+	shopRouter
 );
 application.use(
 	'/api/v1/user-account/customer/shipping-info',

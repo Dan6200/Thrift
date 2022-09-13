@@ -10,11 +10,8 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 const testRegistration = () => {
-	beforeEach(async () => {
-		// deletes all entries from user_account
-		// console.log(
-		// 	'deletes all entries from user_account and clears token array'
-		// );
+	before(async () => {
+		// deletes all entries from user_account and clears the user token array
 		await db.query('delete from user_account');
 		await users.clear();
 	});
@@ -44,7 +41,7 @@ const testLogin = (count: number) => {
 	// Testing the login route
 	describe('/POST user: Login', () => {
 		const n = count - 1;
-		beforeEach(async () => {
+		before(async () => {
 			// clear the saved user tokens before registration
 			await users.clear();
 		});

@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { RequestWithPayload } from 'types-and-interfaces';
 import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, NotFoundError, UnauthenticatedError } from 'errors/';
+import { BadRequestError, UnauthenticatedError } from 'errors/';
 import {
 	genSqlUpdateCommands,
 	validateUserPassword,
@@ -33,7 +33,10 @@ let getUserAccount = async (
 			[userId]
 		)
 	).rows[0];
-	if (!userAccount) throw new NotFoundError('User cannot be found');
+	if (!userAccount)
+		return response
+			.status(StatusCodes.NOT_FOUND)
+			.send('User cannot be found');
 	response.status(StatusCodes.OK).json({
 		userAccount,
 	});

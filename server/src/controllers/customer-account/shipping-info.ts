@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { RequestWithPayload } from 'types-and-interfaces';
 import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, NotFoundError } from 'errors/';
+import { BadRequestError } from 'errors/';
 import { UserPayload } from 'types-and-interfaces';
 import { genSqlUpdateCommands } from 'controllers/helper-functions';
 
@@ -58,7 +58,9 @@ const getShippingInfo = async (
 		])
 	).rows[0];
 	if (!shippingInfo)
-		throw new NotFoundError('Shipping Information cannot be found');
+		return response
+			.status(StatusCodes.NOT_FOUND)
+			.send('Shipping Information cannot be found');
 	response.status(StatusCodes.OK).send(shippingInfo);
 };
 

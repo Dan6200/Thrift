@@ -1,6 +1,6 @@
 import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, NotFoundError } from 'errors/';
+import { BadRequestError } from 'errors/';
 import 'helper-functions';
 import { UserPayload } from 'types-and-interfaces';
 const fileName = require('path').basename(__filename);
@@ -31,7 +31,8 @@ let getProduct = async (request, response) => {
 			[userId]
 		)
 	).rows[0];
-	if (!result) throw new NotFoundError('product  cannot be found');
+	if (!result)
+		response.status(StatusCodes.NOT_FOUND).send('product  cannot be found');
 	response.status(StatusCodes.OK).json({
 		productId: userId,
 	});

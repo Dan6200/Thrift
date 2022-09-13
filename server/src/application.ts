@@ -15,6 +15,7 @@ import vendorAccountRouter from 'vendor-account';
 // middlewares
 import errorHandlerMiddleware from 'error-handler';
 import authenticateUser from 'middleware/authentication';
+import notFound from 'middleware/not-found';
 // import cookieParser from 'cookie-parser';
 // import fileUpload from 'express-fileupload';
 import path from 'path';
@@ -41,7 +42,6 @@ application.use(morgan('tiny'));
 // routes
 application.use('/api/v1/auth', authRouter);
 application.use('/api/v1/user-account', authenticateUser, userAccountRouter);
-// TODO: Make a get route for customer and vendor accounts
 application.use(
 	'/api/v1/user-account/vendor',
 	authenticateUser,
@@ -53,4 +53,5 @@ application.use(
 	shippingInfoRouter
 );
 application.use(errorHandlerMiddleware);
+application.use(notFound);
 export default application;

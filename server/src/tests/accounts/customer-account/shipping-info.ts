@@ -69,11 +69,11 @@ const testUpdateShippingInfo = () => {
 			let count = 0;
 			const userTokens: string[] = await users.getUserTokens();
 			userTokens.should.not.be.empty;
-			console.log(`\nusers: %O\n%s`, userTokens, __filename);
+			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
-					.post(
+					.patch(
 						`/api/v1/user-account/customer/shipping-info/${addressId}`
 					)
 					.send(updateShippingData[count++])
@@ -90,7 +90,7 @@ const testDeleteShippingInfo = () => {
 			try {
 				const userTokens: string[] = await users.getUserTokens();
 				userTokens.should.not.be.empty;
-				console.log(`\nusers: %O\n%s`, userTokens, __filename);
+				// console.log(`\nusers: %O\n%s`, userTokens, __filename);
 				for (const userToken of userTokens) {
 					const response = await chai
 						.request(application)

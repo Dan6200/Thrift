@@ -88,9 +88,6 @@ const testDeleteUserAccount = () => {
 			}
 		});
 	});
-	afterEach(async () => {
-		await users.clear();
-	});
 };
 
 export { testGetUserAccount, testUpdateUserAccount, testDeleteUserAccount };

@@ -7,6 +7,7 @@ import {
 import {
 	testCreateShippingInfo,
 	testGetShippingInfo,
+	testGetAllShippingInfo,
 	testUpdateShippingInfo,
 	testDeleteShippingInfo,
 } from 'accounts/customer-account/shipping-info';
@@ -17,6 +18,7 @@ export {
 	testDeleteUserAccount,
 	testCreateShippingInfo,
 	testGetShippingInfo,
+	testGetAllShippingInfo,
 	testUpdateShippingInfo,
 	testDeleteShippingInfo,
 };

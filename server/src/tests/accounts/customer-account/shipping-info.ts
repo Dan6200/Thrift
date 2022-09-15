@@ -38,6 +38,23 @@ const testCreateShippingInfo = () => {
 	});
 };
 
+const testGetAllShippingInfo = (): void => {
+	describe('/GET shipping info', () => {
+		it(`it should retrieve all the customer shipping accounts`, async () => {
+			const userTokens: string[] = await users.getUserTokens();
+			userTokens.should.not.be.empty;
+			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
+			for (const userToken of userTokens) {
+				const response = await chai
+					.request(application)
+					.get(`/api/v1/user-account/customer/shipping-info/`)
+					.auth(userToken, { type: 'bearer' });
+				response.should.have.status(StatusCodes.OK);
+			}
+		});
+	});
+};
+
 const testGetShippingInfo = (deleted: boolean): void => {
 	describe('/GET shipping info', () => {
 		it(`it should ${
@@ -58,6 +75,15 @@ const testGetShippingInfo = (deleted: boolean): void => {
 					continue;
 				}
 				response.should.have.status(StatusCodes.OK);
+				response.should.have.property('shippingInfo');
+				customer_id,
+					recepient_first_name,
+					recepient_last_name,
+					street,
+					postal_code,
+					delivery_contact,
+					delivery_instructions,
+					is_default;
 			}
 		});
 	});
@@ -111,6 +137,7 @@ const testDeleteShippingInfo = () => {
 export {
 	testCreateShippingInfo,
 	testGetShippingInfo,
+	testGetAllShippingInfo,
 	testUpdateShippingInfo,
 	testDeleteShippingInfo,
 };

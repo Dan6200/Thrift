@@ -51,15 +51,17 @@ const getAllShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	const { userId } = request.user;
+	const { userId: customerId } = request.user;
 	const shippingInfos = (
-		await db.query(`select * from shipping_info where user_id=$1`, [userId])
+		await db.query(`select * from shipping_info where customer_id=$1`, [
+			customerId,
+		])
 	).rows;
 	if (!shippingInfos)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('User has no shipping information available');
-	response.status(StatusCodes.OK).send(shippingInfos);
+	response.status(StatusCodes.OK).send({ shippingInfos });
 };
 
 const getShippingInfo = async (
@@ -76,7 +78,7 @@ const getShippingInfo = async (
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('Shipping Information cannot be found');
-	response.status(StatusCodes.OK).send(shippingInfo);
+	response.status(StatusCodes.OK).send({ shippingInfo });
 };
 
 const updateShippingInfo = async (

@@ -50,6 +50,8 @@ const testGetAllShippingInfo = (): void => {
 					.get(`/api/v1/user-account/customer/shipping-info/`)
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
+				response.body.should.have.property('shippingInfos');
+				response.body.shippingInfos.should.be.an('array');
 			}
 		});
 	});
@@ -64,7 +66,7 @@ const testGetShippingInfo = (deleted: boolean): void => {
 			userTokens.should.not.be.empty;
 			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
 			for (const userToken of userTokens) {
-				const response = await chai
+				const response: any = await chai
 					.request(application)
 					.get(
 						`/api/v1/user-account/customer/shipping-info/${addressId}`
@@ -75,15 +77,23 @@ const testGetShippingInfo = (deleted: boolean): void => {
 					continue;
 				}
 				response.should.have.status(StatusCodes.OK);
-				response.should.have.property('shippingInfo');
-				customer_id,
-					recepient_first_name,
-					recepient_last_name,
-					street,
-					postal_code,
-					delivery_contact,
-					delivery_instructions,
-					is_default;
+				response.body.should.have.property('shippingInfo');
+				response.body.shippingInfo.should.have.property('customer_id');
+				response.body.shippingInfo.should.have.property(
+					'recepient_first_name'
+				);
+				response.body.shippingInfo.should.have.property(
+					'recepient_last_name'
+				);
+				response.body.shippingInfo.should.have.property('street');
+				response.body.shippingInfo.should.have.property('postal_code');
+				response.body.shippingInfo.should.have.property(
+					'delivery_contact'
+				);
+				response.body.shippingInfo.should.have.property(
+					'delivery_instructions'
+				);
+				response.body.shippingInfo.should.have.property('is_default');
 			}
 		});
 	});
@@ -113,22 +123,17 @@ const testUpdateShippingInfo = () => {
 const testDeleteShippingInfo = () => {
 	describe('/DELETE shipping info', () => {
 		it('it should delete the shipping info', async () => {
-			try {
-				const userTokens: string[] = await users.getUserTokens();
-				userTokens.should.not.be.empty;
-				// console.log(`\nusers: %O\n%s`, userTokens, __filename);
-				for (const userToken of userTokens) {
-					const response = await chai
-						.request(application)
-						.delete(
-							`/api/v1/user-account/customer/shipping-info/${addressId}`
-						)
-						.auth(userToken, { type: 'bearer' });
-					response.should.have.status(StatusCodes.OK);
-				}
-			} catch (error) {
-				console.error(error);
-				throw error;
+			const userTokens: string[] = await users.getUserTokens();
+			userTokens.should.not.be.empty;
+			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
+			for (const userToken of userTokens) {
+				const response = await chai
+					.request(application)
+					.delete(
+						`/api/v1/user-account/customer/shipping-info/${addressId}`
+					)
+					.auth(userToken, { type: 'bearer' });
+				response.should.have.status(StatusCodes.OK);
 			}
 		});
 	});

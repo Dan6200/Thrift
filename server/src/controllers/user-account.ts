@@ -15,9 +15,8 @@ let getUserAccount = async (
 	response: Response
 ) => {
 	let { userId }: UserPayload = request.user;
-	let userAccount: UserData = (
-		await db.query(
-			`select 
+	let dbResult = await db.query(
+		`select 
 				first_name,
 				last_name,
 				email,
@@ -30,16 +29,17 @@ let getUserAccount = async (
 				is_customer
 			from user_account 
 			where user_id = $1`,
-			[userId]
-		)
-	).rows[0];
-	if (!userAccount)
+		[userId]
+	);
+	if (dbResult.rows.length === 0)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('User cannot be found');
-	response.status(StatusCodes.OK).json({
-		userAccount,
-	});
+	let userData: any = dbResult.rows[0];
+	delete userData.dob;
+	let userAccount: UserData = new UserData(userData);
+	console.log(userAccount instanceof UserData);
+	response.status(StatusCodes.OK).send(userAccount);
 };
 
 let updateUserAccount = async (

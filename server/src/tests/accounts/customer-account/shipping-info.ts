@@ -2,9 +2,8 @@ import 'express-async-errors';
 import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { updatedUser, users } from 'authentication/user-data';
+import { users } from 'authentication/user-data';
 import {
 	newShippingData,
 	updateShippingData,
@@ -93,7 +92,7 @@ const testGetShippingInfo = (deleted: boolean): void => {
 				response.body.shippingInfo.should.have.property(
 					'delivery_instructions'
 				);
-				response.body.shippingInfo.should.have.property('is_default');
+				response.body.shippingInfo.should.have.property('is_primary');
 			}
 		});
 	});

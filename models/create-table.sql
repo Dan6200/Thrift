@@ -27,7 +27,7 @@ create table if not exists shipping_info (
 	postal_code				varchar			not null,
 	delivery_contact		varchar			not	null,
 	delivery_instructions	varchar,
-	is_default				boolean			not null
+	is_primary				boolean			not null
 );
 
 -- create table if not exists vendor (

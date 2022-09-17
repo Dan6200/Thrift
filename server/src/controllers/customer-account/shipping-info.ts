@@ -13,7 +13,7 @@ const createShippingInfo = async (
 	const { userId }: UserPayload = request.user;
 	let customerId = userId;
 	// limit amount of shippingInfo to 5...
-	const LIMIT = 3;
+	const LIMIT = 5;
 	let overLimit: boolean =
 		LIMIT <=
 		(await db.query('select count(address_id) from shipping_info')).rows[0]
@@ -36,7 +36,7 @@ const createShippingInfo = async (
 			postal_code,
 			delivery_contact,
 			delivery_instructions,
-			is_default
+			is_primary
 		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
 		[customerId, ...Object.values(shippingData)]
 	);

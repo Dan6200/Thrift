@@ -23,27 +23,15 @@ const createShop = async (request: RequestWithPayload, response: Response) => {
 	let shippingDataLength = Object.values(shippingData).length;
 	if (shippingDataLength === 0)
 		throw new BadRequestError('Request Body cannot be empty');
-
 	await db.query(
-		// address_id				serial			primary key,
-		// customer_id				int				not null		references	user_account	on	delete	cascade,
-		// recepient_first_name	varchar(30)		not null,
-		// recepient_last_name		varchar(30)		not null,
-		// recepient_initials		char(2)			not nll,
-		// street					varchar			not null,
-		// postal_code				varchar			not null,
-		// delivery_contact		varchar			not	null,
-		// delivery_instructions	varchar,
-		// is_default				boolean			not null
-		`insert into shipping_info(
-			customer_id,
-			recepient_first_name,
-			recepient_last_name,
-			street,
-			postal_code,
-			delivery_contact,
-			delivery_instructions,
-			is_default
+		`insert into shop(
+			shop_id
+			shop_name
+			shop_owner_id
+			date_created
+			street
+			postal_code
+			banner_image_link
 		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
 		[customerId, ...Object.values(shippingData)]
 	);

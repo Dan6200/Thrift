@@ -5,6 +5,7 @@ import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
 import { updatedUser, users } from 'authentication/user-data';
 import path from 'path';
+import { UserData } from 'types-and-interfaces';
 
 let fileName = path.basename(__filename);
 
@@ -32,21 +33,8 @@ const testGetUserAccount = (deleted: boolean) => {
 					continue;
 				}
 				response.should.have.status(StatusCodes.OK);
-				response.body.should.be.an('object');
-				const responseData = response.body;
-				// console.log(`\nresponse %o`, responseData);
-				responseData.should.have.property('userAccount');
-				const userAccount = responseData.userAccount;
-				userAccount.should.have.property('first_name');
-				userAccount.should.have.property('last_name');
-				userAccount.should.have.property('email');
-				userAccount.should.have.property('phone');
-				userAccount.should.have.property('password');
-				userAccount.should.have.property('ip_address');
-				userAccount.should.have.property('country');
-				userAccount.should.have.property('dob');
-				userAccount.should.have.property('is_vendor');
-				userAccount.should.have.property('is_customer');
+				// Runtime type-check
+				new UserData(response.body as UserData);
 			}
 		});
 	});

@@ -1,16 +1,19 @@
 import { Response } from 'express';
-import { RequestWithPayload } from 'types-and-interfaces';
+import {
+	RequestUserPayload,
+	RequestWithPayload,
+} from 'types-and-interfaces/request';
 import db from 'db';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError } from 'errors/';
-import { UserPayload } from 'types-and-interfaces';
 import { genSqlUpdateCommands } from 'controllers/helper-functions';
+import { ShippingInfoSchema } from 'app-schema/customer/shipping';
 
 const createShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	const { userId }: UserPayload = request.user;
+	const { userId }: RequestUserPayload = request.user;
 	let customerId = userId;
 	// limit amount of shippingInfo to 5...
 	const LIMIT = 5;
@@ -22,7 +25,12 @@ const createShippingInfo = async (
 		throw new BadRequestError(
 			`Each customer is limited to only ${LIMIT} shipping addresses`
 		);
-	const shippingData = request.body;
+	const validData = ShippingInfoSchema.validate(request.body);
+	if (validData.error)
+		throw new BadRequestError(
+			'Invalid Data Schema: ' + validData.error.message
+		);
+	const shippingData = validData.value;
 	let shippingDataLength = Object.values(shippingData).length;
 	if (shippingDataLength === 0)
 		throw new BadRequestError('Request Body cannot be empty');
@@ -40,8 +48,9 @@ const createShippingInfo = async (
 		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
 		[customerId, ...Object.values(shippingData)]
 	);
-	let addressId = (await db.query('select address_id from shipping_info'))
-		.rows[0].address_id;
+	let addressId: string = (
+		await db.query('select address_id from shipping_info')
+	).rows[0].address_id;
 	response.status(StatusCodes.CREATED).send({
 		addressId,
 	});
@@ -69,6 +78,7 @@ const getShippingInfo = async (
 	response: Response
 ) => {
 	const { addressId } = request.params;
+	if (!addressId) throw new BadRequestError('Id parameter not available');
 	const shippingInfo = (
 		await db.query(`select * from shipping_info where address_id=$1`, [
 			addressId,

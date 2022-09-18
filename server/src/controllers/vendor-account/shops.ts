@@ -1,23 +1,25 @@
 import { Response } from 'express';
-import { RequestWithPayload } from 'types-and-interfaces';
+import {
+	RequestUserPayload,
+	RequestWithPayload,
+} from 'types-and-interfaces/request';
 import db from 'db';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError } from 'errors/';
-import { UserPayload } from 'types-and-interfaces';
 import { genSqlUpdateCommands } from 'controllers/helper-functions';
 
 const createShop = async (request: RequestWithPayload, response: Response) => {
-	const { userId }: UserPayload = request.user;
+	const { userId }: RequestUserPayload = request.user;
 	let customerId = userId;
-	// limit amount of shippingInfo to 5...
-	const LIMIT = 3;
+	// limit amount of shops to 5...
+	const LIMIT = 5;
 	let overLimit: boolean =
 		LIMIT <=
-		(await db.query('select count(address_id) from shipping_info')).rows[0]
+		(await db.query('select count(vendor_id) from shipping_info')).rows[0]
 			.count;
 	if (overLimit)
 		throw new BadRequestError(
-			`Each customer is limited to only ${LIMIT} shipping addresses`
+			`Each vendor is limited to only ${LIMIT} shipping addresses`
 		);
 	const shippingData = request.body;
 	let shippingDataLength = Object.values(shippingData).length;

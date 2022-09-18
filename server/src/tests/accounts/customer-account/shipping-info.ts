@@ -26,7 +26,7 @@ const testCreateShippingInfo = () => {
 				// console.log(newShippingData[count]);
 				const response = await chai
 					.request(application)
-					.post('/api/v1/user-account/customer/shipping-info')
+					.post('/api/v1/user/customer/shipping-info')
 					.send(newShippingData[count++])
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.CREATED);
@@ -46,7 +46,7 @@ const testGetAllShippingInfo = (): void => {
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
-					.get(`/api/v1/user-account/customer/shipping-info/`)
+					.get(`/api/v1/user/customer/shipping-info/`)
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
 				response.body.should.have.property('shippingInfos');
@@ -67,9 +67,7 @@ const testGetShippingInfo = (deleted: boolean): void => {
 			for (const userToken of userTokens) {
 				const response: any = await chai
 					.request(application)
-					.get(
-						`/api/v1/user-account/customer/shipping-info/${addressId}`
-					)
+					.get(`/api/v1/user/customer/shipping-info/${addressId}`)
 					.auth(userToken, { type: 'bearer' });
 				if (deleted) {
 					response.should.have.status(StatusCodes.NOT_FOUND);
@@ -108,9 +106,7 @@ const testUpdateShippingInfo = () => {
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
-					.patch(
-						`/api/v1/user-account/customer/shipping-info/${addressId}`
-					)
+					.patch(`/api/v1/user/customer/shipping-info/${addressId}`)
 					.send(updateShippingData[count++])
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
@@ -128,9 +124,7 @@ const testDeleteShippingInfo = () => {
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
-					.delete(
-						`/api/v1/user-account/customer/shipping-info/${addressId}`
-					)
+					.delete(`/api/v1/user/customer/shipping-info/${addressId}`)
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
 			}

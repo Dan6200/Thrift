@@ -5,7 +5,7 @@ import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
 import { updatedUser, users } from 'authentication/user-data';
 import { UserDataSchemaResJSON } from 'app-schema/users';
-import Joi from 'joi';
+import joi from 'joi';
 
 chai.use(chaiHttp);
 const should = chai.should(),
@@ -24,7 +24,7 @@ const testGetUserAccount = (deleted: boolean) => {
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
-					.get('/api/v1/user-account')
+					.get('/api/v1/user')
 					.auth(userToken, { type: 'bearer' });
 				if (deleted) {
 					response.should.have.status(StatusCodes.NOT_FOUND);
@@ -32,7 +32,7 @@ const testGetUserAccount = (deleted: boolean) => {
 				}
 				response.should.have.status(StatusCodes.OK);
 				response.body.should.be.an('object');
-				Joi.assert(response.body, UserDataSchemaResJSON);
+				joi.assert(response.body, UserDataSchemaResJSON);
 			}
 		});
 	});
@@ -49,10 +49,12 @@ const testUpdateUserAccount = () => {
 				// console.log(updatedUser[n], __filename);
 				const response = await chai
 					.request(application)
-					.patch('/api/v1/user-account')
+					.patch('/api/v1/user')
 					.send(updatedUser[n])
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
+				response.body.should.be.an('object');
+				joi.assert(response.body, UserDataSchemaResJSON);
 				n++;
 			}
 		});
@@ -68,7 +70,7 @@ const testDeleteUserAccount = () => {
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
-					.delete('/api/v1/user-account')
+					.delete('/api/v1/user')
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
 			}

@@ -39,7 +39,6 @@ let getUserAccount = async (
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('User cannot be found');
-
 	const validateSchema = UserDataSchemaDB.validate(dbResult.rows[0]);
 	if (validateSchema.error) {
 		throw new ServerError(
@@ -66,31 +65,51 @@ let updateUserAccount = async (
 		old_password?: string;
 		new_password?: string;
 	} = request.body;
-
 	if (oldPassword) {
 		delete request.body.old_password;
 		delete request.body.new_password;
 		let pwdIsValid = validateUserPassword(userId, oldPassword);
-
 		if (!pwdIsValid)
 			throw new UnauthenticatedError(`Invalid Credentials,
 				cannot update password`);
-
 		const password: string = await hashPassword(newPassword as string);
 		request.body.password = password;
 	}
-
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body),
 		offset: number = 2;
-
 	await db.query(
 		// Generates A sql update command.
 		// Takes the database name, the column name of the first item of the array
 		`${genSqlUpdateCommands('user_account', 'user_id', fields, offset)}`,
 		[userId, ...data]
 	);
-	response.status(StatusCodes.OK).end();
+	let dbResult = await db.query(
+		`select 
+				first_name,
+				last_name,
+				email,
+				phone,
+				password,
+				ip_address,
+				country,
+				dob,
+				is_vendor,
+				is_customer
+			from user_account 
+			where user_id = $1`,
+		[userId]
+	);
+	if (dbResult.rows.length === 0)
+		throw new ServerError('Update unsuccessful');
+	const validateSchema = UserDataSchemaDB.validate(dbResult.rows[0]);
+	if (validateSchema.error) {
+		throw new ServerError(
+			'Invalid Data Schema: ' + validateSchema.error.message
+		);
+	}
+	let userAccount: UserData = validateSchema.value;
+	response.status(StatusCodes.OK).json(userAccount);
 };
 
 let deleteUserAccount = async (

@@ -3,8 +3,7 @@ import { validatePassword } from 'security/password';
 
 const validateUserPassword = async (
 	Id: string,
-	oldPassword: string
-	// TODO: not complete fix this
+	candidatePassword: string
 ): Promise<boolean> => {
 	let { password }: { password: Buffer } = (
 		await db.query(
@@ -13,8 +12,7 @@ const validateUserPassword = async (
 			[Id]
 		)
 	).rows[0];
-
-	return await validatePassword(oldPassword, password.toString());
+	return await validatePassword(candidatePassword, password.toString());
 };
 
 const genSqlUpdateCommands = (

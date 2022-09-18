@@ -4,10 +4,8 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
 import { updatedUser, users } from 'authentication/user-data';
-import path from 'path';
-import { UserData } from 'types-and-interfaces';
-
-let fileName = path.basename(__filename);
+import { UserDataSchemaResJSON } from 'app-schema/users';
+import Joi from 'joi';
 
 chai.use(chaiHttp);
 const should = chai.should(),
@@ -33,8 +31,8 @@ const testGetUserAccount = (deleted: boolean) => {
 					continue;
 				}
 				response.should.have.status(StatusCodes.OK);
-				// Runtime type-check
-				new UserData(response.body as UserData);
+				response.body.should.be.an('object');
+				Joi.assert(response.body, UserDataSchemaResJSON);
 			}
 		});
 	});

@@ -6,39 +6,39 @@ const newUsers: Array<Object> = [
 		first_name: 'Ebuka',
 		last_name: 'Eze',
 		email: 'ebukachibueze5489@gmail.com',
-		phone: null,
+		phone: '+2348063249250',
 		password: 'EbukaDa1!',
 		dob: '1999-07-01',
 		country: 'Nigeria',
-		ipAddress: '168.89.91.45',
 		is_vendor: false,
 		is_customer: true,
+		ip_address: '168.89.91.45',
 	},
 
 	{
 		first_name: 'Mustapha',
 		last_name: 'Mohammed',
-		email: null,
+		email: 'mustymomo1019@outlook.com',
 		phone: '2348063245973',
 		password: '123AishaBaggy9384',
 		dob: '2000-10-19',
 		country: 'Nigeria',
-		ip_address: '198.79.78.23',
 		is_vendor: true,
 		is_customer: false,
+		ip_address: '198.79.78.23',
 	},
 
 	{
 		first_name: 'Aisha',
 		last_name: 'Mohammed',
-		email: null,
-		phone: '23490253954889',
+		email: 'aishamomo@school.edu',
+		phone: '234902539488',
 		password: '236!A15HA04',
 		dob: '2004-6-23',
 		country: 'Nigeria',
-		ip_address: '198.79.78.45',
 		is_vendor: false,
 		is_customer: true,
+		ip_address: '198.79.78.45',
 	},
 ];
 
@@ -55,7 +55,7 @@ const loginUsers: Array<Array<Object>> = [
 		},
 
 		{
-			phone: '23490253954889',
+			phone: '234902539488',
 			password: '236!A15HA04',
 		},
 	],
@@ -67,7 +67,7 @@ const loginUsers: Array<Array<Object>> = [
 		},
 
 		{
-			phone: '2348063243958197',
+			phone: '2348063248197',
 			password: '123AishaBaggy9384',
 		},
 
@@ -112,7 +112,7 @@ const updatedUser: Array<Object> = [
 
 	{
 		email: 'mustymomo1019@yahoo.com',
-		phone: '2348063243958197',
+		phone: '2348063248197',
 		is_vendor: false,
 	},
 

@@ -1,20 +1,24 @@
 import { Response } from 'express';
-import { RequestWithPayload } from 'types-and-interfaces';
+import {
+	RequestWithPayload,
+	RequestUserPayload,
+} from 'types-and-interfaces/request';
 import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, UnauthenticatedError } from 'errors/';
+import { BadRequestError, UnauthenticatedError, ServerError } from 'errors/';
 import {
 	genSqlUpdateCommands,
 	validateUserPassword,
 } from 'controllers/helper-functions';
-import { hashPassword, validatePassword } from 'security/password';
-import { UserData, UserPayload } from 'types-and-interfaces';
+import { UserData } from 'types-and-interfaces/user';
+import { UserDataSchemaDB } from 'app-schema/users';
+import { hashPassword } from 'security/password';
 
 let getUserAccount = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	let { userId }: UserPayload = request.user;
+	let { userId }: RequestUserPayload = request.user;
 	let dbResult = await db.query(
 		`select 
 				first_name,
@@ -35,18 +39,22 @@ let getUserAccount = async (
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('User cannot be found');
-	let userData: any = dbResult.rows[0];
-	delete userData.dob;
-	let userAccount: UserData = new UserData(userData);
-	console.log(userAccount instanceof UserData);
-	response.status(StatusCodes.OK).send(userAccount);
+
+	const validateSchema = UserDataSchemaDB.validate(dbResult.rows[0]);
+	if (validateSchema.error) {
+		throw new ServerError(
+			'Invalid Data Schema: ' + validateSchema.error.message
+		);
+	}
+	let userAccount: UserData = validateSchema.value;
+	response.status(StatusCodes.OK).json(userAccount);
 };
 
 let updateUserAccount = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	let { userId }: UserPayload = request.user;
+	let { userId }: RequestUserPayload = request.user;
 	// console.log(request.body, __filename);
 	if (Object.keys(request.body).length === 0)
 		throw new BadRequestError('request data cannot be empty');
@@ -60,16 +68,16 @@ let updateUserAccount = async (
 	} = request.body;
 
 	if (oldPassword) {
+		delete request.body.old_password;
+		delete request.body.new_password;
 		let pwdIsValid = validateUserPassword(userId, oldPassword);
 
 		if (!pwdIsValid)
 			throw new UnauthenticatedError(`Invalid Credentials,
 				cannot update password`);
 
-		request.body.password = await hashPassword(newPassword);
-
-		delete request.body.old_password;
-		delete request.body.new_password;
+		const password: string = await hashPassword(newPassword as string);
+		request.body.password = password;
 	}
 
 	let fields: string[] = Object.keys(request.body),
@@ -89,7 +97,7 @@ let deleteUserAccount = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	let { userId }: UserPayload = request.user;
+	let { userId }: RequestUserPayload = request.user;
 	await db.query(
 		`delete from user_account
 		where user_id = $1`,

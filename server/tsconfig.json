@@ -15,7 +15,8 @@
 				"routes/*",
 				"controllers/*",
 				"errors/*",
-				"middleware/*"
+				"middleware/*",
+				"app-schema/*"
 			]
 		}
 	},

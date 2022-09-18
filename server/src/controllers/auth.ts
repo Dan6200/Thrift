@@ -6,12 +6,18 @@ import { BadRequestError, UnauthenticatedError } from 'errors';
 // import validateEmail from 'security/validate-email';
 import { hashPassword, validatePassword } from 'security/password';
 import { createToken } from 'security/create-token';
+import { UserDataSchemaRequest } from 'app-schema/users';
 // TODO: IP address
 // https://github.com/neekware/fullerstack/tree/main/libs/nax-ipware
 
 const register = async (request: Request, response: Response) => {
-	const userData = request.body,
-		{ firstName, lastName, phone, email, password } = userData;
+	const schemaValidate = UserDataSchemaRequest.validate(request.body);
+	if (schemaValidate.error)
+		throw new BadRequestError(
+			'Invalid User Data: ' + schemaValidate.error.message
+		);
+	const userData = schemaValidate.value,
+		{ phone, email, password } = userData;
 	if (!phone && !email) {
 		throw new BadRequestError(
 			`please provide an email address or phone number`
@@ -49,9 +55,9 @@ const register = async (request: Request, response: Response) => {
 			password,
 			dob,
 			country,
-			ip_address,
 			is_vendor,
-			is_customer
+			is_customer,
+			ip_address
 		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
 		Object.values(userData)
 	);
@@ -64,7 +70,7 @@ const register = async (request: Request, response: Response) => {
 	});
 };
 
-const login = async (request, response) => {
+const login = async (request: Request, response: Response) => {
 	const { email, phone, password } = request.body;
 	if (!email && !phone) {
 		throw new BadRequestError('Please provide email or phone number!');

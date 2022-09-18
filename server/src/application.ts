@@ -41,14 +41,10 @@ application.use(xss());
 application.use(morgan('tiny'));
 // routes
 application.use('/api/v1/auth', authRouter);
-application.use('/api/v1/user-account', authenticateUser, userAccountRouter);
+application.use('/api/v1/user', authenticateUser, userAccountRouter);
+application.use('/api/v1/user/vendor/shops', authenticateUser, shopRouter);
 application.use(
-	'/api/v1/user-account/vendor/shops',
-	authenticateUser,
-	shopRouter
-);
-application.use(
-	'/api/v1/user-account/customer/shipping-info',
+	'/api/v1/user/customer/shipping-info',
 	authenticateUser,
 	shippingInfoRouter
 );

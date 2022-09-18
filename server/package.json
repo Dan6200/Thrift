@@ -35,6 +35,7 @@
 		"yarn": "^1.22.19"
 	},
 	"devDependencies": {
+		"@types/bcryptjs": "^2.4.2",
 		"@types/chai": "^4.3.3",
 		"@types/chai-http": "^4.2.0",
 		"@types/cookie-parser": "^1.4.3",

@@ -40,16 +40,7 @@ create table if not exists shop (
 	shop_name				varchar			not null 	default 	'My Shop',
 	vendor_id 				int				references	user_account	on	delete	cascade,
 	date_created			date			not null		default		current_date,
-	street					varchar,
-	postal_code				varchar,
-	banner_image			varchar
-);
-
-create table if not exists shop_contact (
-	contact_id				serial		primary key,
-	shop_id					int			not null,	
-	email					varchar,
-	phone					varchar
+	banner_image_path			varchar
 );
 
 create table if not exists product (

@@ -13,8 +13,7 @@ const createShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	const { userId }: RequestUserPayload = request.user;
-	let customerId = userId;
+	const { userId: customerId }: RequestUserPayload = request.user;
 	// limit amount of shippingInfo to 5...
 	const LIMIT = 5;
 	let overLimit: boolean =
@@ -31,10 +30,6 @@ const createShippingInfo = async (
 			'Invalid Data Schema: ' + validData.error.message
 		);
 	const shippingData = validData.value;
-	let shippingDataLength = Object.values(shippingData).length;
-	if (shippingDataLength === 0)
-		throw new BadRequestError('Request Body cannot be empty');
-
 	await db.query(
 		`insert into shipping_info(
 			customer_id,
@@ -69,7 +64,7 @@ const getAllShippingInfo = async (
 	if (!shippingInfos)
 		return response
 			.status(StatusCodes.NOT_FOUND)
-			.send('User has no shipping information available');
+			.send('customer has no shipping information available');
 	response.status(StatusCodes.OK).send({ shippingInfos });
 };
 

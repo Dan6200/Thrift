@@ -3,8 +3,12 @@ import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
-import { updatedUser, users } from 'authentication/user-data';
-import { UserDataSchemaResJSON } from 'app-schema/users';
+import {
+	updateUser,
+	updateUserPassword,
+	users,
+} from 'authentication/user-data';
+import { UserDataSchemaDB } from 'app-schema/users';
 import joi from 'joi';
 
 chai.use(chaiHttp);
@@ -32,7 +36,7 @@ const testGetUserAccount = (deleted: boolean) => {
 				}
 				response.should.have.status(StatusCodes.OK);
 				response.body.should.be.an('object');
-				joi.assert(response.body, UserDataSchemaResJSON);
+				joi.assert(response.body, UserDataSchemaDB);
 			}
 		});
 	});
@@ -40,7 +44,7 @@ const testGetUserAccount = (deleted: boolean) => {
 
 const testUpdateUserAccount = () => {
 	describe('/PATCH user account', () => {
-		it("it should update the user's account", async () => {
+		it('it should update the user info', async () => {
 			let n = 0;
 			const userTokens: string[] = await users.getUserTokens();
 			userTokens.should.not.be.empty;
@@ -49,12 +53,33 @@ const testUpdateUserAccount = () => {
 				// console.log(updatedUser[n], __filename);
 				const response = await chai
 					.request(application)
-					.patch('/api/v1/user')
-					.send(updatedUser[n])
+					.patch('/api/v1/user/info')
+					.send(updateUser[n])
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
 				response.body.should.be.an('object');
-				joi.assert(response.body, UserDataSchemaResJSON);
+				joi.assert(response.body, UserDataSchemaDB);
+				n++;
+			}
+		});
+	});
+};
+
+const testUpdateUserPassword = () => {
+	describe('/PATCH user password', () => {
+		it("it should update the user's password", async () => {
+			let n = 0;
+			const userTokens: string[] = await users.getUserTokens();
+			userTokens.should.not.be.empty;
+			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
+			for (const userToken of userTokens) {
+				// console.log(updatedUser[n], __filename);
+				const response = await chai
+					.request(application)
+					.patch('/api/v1/user/password')
+					.send(updateUserPassword[n])
+					.auth(userToken, { type: 'bearer' });
+				response.should.have.status(StatusCodes.NO_CONTENT);
 				n++;
 			}
 		});
@@ -78,4 +103,9 @@ const testDeleteUserAccount = () => {
 	});
 };
 
-export { testGetUserAccount, testUpdateUserAccount, testDeleteUserAccount };
+export {
+	testGetUserAccount,
+	testUpdateUserAccount,
+	testUpdateUserPassword,
+	testDeleteUserAccount,
+};

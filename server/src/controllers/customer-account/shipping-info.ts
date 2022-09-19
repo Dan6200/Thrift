@@ -104,7 +104,7 @@ const updateShippingInfo = async (
 		)}`,
 		[addressId, ...data]
 	);
-	response.status(StatusCodes.OK).send();
+	response.status(StatusCodes.NO_CONTENT).send();
 };
 
 const deleteShippingInfo = async (
@@ -117,7 +117,7 @@ const deleteShippingInfo = async (
 			where address_id=$1`,
 		[addressId]
 	);
-	response.status(StatusCodes.OK).send();
+	response.status(StatusCodes.NO_CONTENT).send();
 };
 
 export {

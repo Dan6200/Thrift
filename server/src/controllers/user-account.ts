@@ -25,7 +25,6 @@ let getUserAccount = async (
 				last_name,
 				email,
 				phone,
-				password,
 				ip_address,
 				country,
 				dob,
@@ -58,23 +57,6 @@ let updateUserAccount = async (
 	if (Object.keys(request.body).length === 0)
 		throw new BadRequestError('request data cannot be empty');
 	// TODO: validate and verify updated email and phone numbers
-	let {
-		old_password: oldPassword,
-		new_password: newPassword,
-	}: {
-		old_password?: string;
-		new_password?: string;
-	} = request.body;
-	if (oldPassword) {
-		delete request.body.old_password;
-		delete request.body.new_password;
-		let pwdIsValid = validateUserPassword(userId, oldPassword);
-		if (!pwdIsValid)
-			throw new UnauthenticatedError(`Invalid Credentials,
-				cannot update password`);
-		const password: string = await hashPassword(newPassword as string);
-		request.body.password = password;
-	}
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body),
 		offset: number = 2;
@@ -90,7 +72,6 @@ let updateUserAccount = async (
 				last_name,
 				email,
 				phone,
-				password,
 				ip_address,
 				country,
 				dob,
@@ -131,6 +112,7 @@ let updateUserPassword = async (
 		throw new UnauthenticatedError(`Invalid Credentials,
 				cannot update password`);
 	const password: string = await hashPassword(newPassword);
+	delete request.body.new_password;
 	request.body.password = password;
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body),
@@ -141,32 +123,7 @@ let updateUserPassword = async (
 		`${genSqlUpdateCommands('user_account', 'user_id', fields, offset)}`,
 		[userId, ...data]
 	);
-	let dbResult = await db.query(
-		`select 
-				first_name,
-				last_name,
-				email,
-				phone,
-				password,
-				ip_address,
-				country,
-				dob,
-				is_vendor,
-				is_customer
-			from user_account 
-			where user_id = $1`,
-		[userId]
-	);
-	if (dbResult.rows.length === 0)
-		throw new ServerError('Update unsuccessful');
-	const validateSchema = UserDataSchemaDB.validate(dbResult.rows[0]);
-	if (validateSchema.error) {
-		throw new ServerError(
-			'Invalid Data Schema: ' + validateSchema.error.message
-		);
-	}
-	let userAccount: UserData = validateSchema.value;
-	response.status(StatusCodes.OK).json(userAccount);
+	response.status(StatusCodes.NO_CONTENT).json();
 };
 
 let deleteUserAccount = async (
@@ -182,4 +139,9 @@ let deleteUserAccount = async (
 	response.status(StatusCodes.OK).end();
 };
 
-export { getUserAccount, updateUserAccount, deleteUserAccount };
+export {
+	getUserAccount,
+	updateUserAccount,
+	updateUserPassword,
+	deleteUserAccount,
+};

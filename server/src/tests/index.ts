@@ -3,6 +3,7 @@ import { testRegistration, testLogin } from 'authentication';
 import {
 	testGetUserAccount,
 	testUpdateUserAccount,
+	testUpdateUserPassword,
 	testDeleteUserAccount,
 	testCreateShippingInfo,
 	testGetShippingInfo,
@@ -17,7 +18,8 @@ describe('Authentication Routes', testRegistration);
 describe('Authentication Routes', testLogin.bind(null, 1));
 
 describe('User Accounts Route', testGetUserAccount.bind(null, !deleted));
-describe('User Accounts Route', testUpdateUserAccount);
+describe('User Info Route', testUpdateUserAccount);
+describe('User Password Route', testUpdateUserPassword);
 describe('User Accounts Route', testGetUserAccount.bind(null, !deleted));
 describe('User Accounts Route', testDeleteUserAccount);
 describe('User Accounts Route', testGetUserAccount.bind(null, deleted));

@@ -1,6 +1,7 @@
 import {
 	testGetUserAccount,
 	testUpdateUserAccount,
+	testUpdateUserPassword,
 	testDeleteUserAccount,
 } from 'accounts/user-account';
 
@@ -15,6 +16,7 @@ import {
 export {
 	testGetUserAccount,
 	testUpdateUserAccount,
+	testUpdateUserPassword,
 	testDeleteUserAccount,
 	testCreateShippingInfo,
 	testGetShippingInfo,

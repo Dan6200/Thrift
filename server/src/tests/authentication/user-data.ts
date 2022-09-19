@@ -103,7 +103,7 @@ const users: Users = {
 	},
 };
 
-const updatedUser: Array<Object> = [
+const updateUser: Array<Object> = [
 	{
 		dob: '1995-12-31',
 		last_name: 'Joyce',
@@ -118,11 +118,15 @@ const updatedUser: Array<Object> = [
 
 	{
 		dob: '1995-12-31',
-		old_password: '236!A15HA04',
-		new_password: 'jayafd3245XF*!&$',
 		is_vendor: true,
 		is_customer: true,
 	},
 ];
 
-export { newUsers, loginUsers, updatedUser, users };
+const updateUserPassword: Array<Object> = [
+	{ password: '236!A15HA04', new_password: 'jayafd3245XF*!&$' },
+	{ password: '123AishaBaggy9384', new_password: '2t295AishaBaby$<5%>!' },
+	{ password: '236!A15HA04', new_password: 'sgsdlaWEWRsdf23@#%#@' },
+];
+
+export { newUsers, loginUsers, updateUser, updateUserPassword, users };

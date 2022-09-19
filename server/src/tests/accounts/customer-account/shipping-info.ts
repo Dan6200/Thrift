@@ -2,12 +2,14 @@ import 'express-async-errors';
 import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import joi from 'joi';
 import { StatusCodes } from 'http-status-codes';
 import { users } from 'authentication/user-data';
 import {
 	newShippingData,
 	updateShippingData,
 } from 'accounts/customer-account/shipping-data';
+import { ShippingInfoSchema } from 'app-schema/customer/shipping';
 
 chai.use(chaiHttp);
 const should = chai.should(),
@@ -74,23 +76,7 @@ const testGetShippingInfo = (deleted: boolean): void => {
 					continue;
 				}
 				response.should.have.status(StatusCodes.OK);
-				response.body.should.have.property('shippingInfo');
-				response.body.shippingInfo.should.have.property('customer_id');
-				response.body.shippingInfo.should.have.property(
-					'recepient_first_name'
-				);
-				response.body.shippingInfo.should.have.property(
-					'recepient_last_name'
-				);
-				response.body.shippingInfo.should.have.property('street');
-				response.body.shippingInfo.should.have.property('postal_code');
-				response.body.shippingInfo.should.have.property(
-					'delivery_contact'
-				);
-				response.body.shippingInfo.should.have.property(
-					'delivery_instructions'
-				);
-				response.body.shippingInfo.should.have.property('is_primary');
+				joi.assert(response.body, ShippingInfoSchema);
 			}
 		});
 	});
@@ -110,6 +96,7 @@ const testUpdateShippingInfo = () => {
 					.send(updateShippingData[count++])
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
+				joi.assert(response.body, ShippingInfoSchema);
 			}
 		});
 	});
@@ -126,7 +113,7 @@ const testDeleteShippingInfo = () => {
 					.request(application)
 					.delete(`/api/v1/user/customer/shipping-info/${addressId}`)
 					.auth(userToken, { type: 'bearer' });
-				response.should.have.status(StatusCodes.OK);
+				response.should.have.status(StatusCodes.NO_CONTENT);
 			}
 		});
 	});

@@ -5,7 +5,7 @@ import {
 } from 'types-and-interfaces/request';
 import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, ServerError } from 'errors/';
+import { BadRequestError } from 'errors/';
 import { genSqlUpdateCommands } from 'controllers/helper-functions';
 import { ShopSchema } from 'app-schema/vendor/shop';
 
@@ -54,13 +54,8 @@ const getShop = async (request: RequestWithPayload, response: Response) => {
 	const { shopId } = request.params;
 	const dbData = (
 		await db.query(`select * from shop where shop_id=$1`, [shopId])
-	).rows[0];
-	const validData = ShopSchema.validate(dbData);
-	if (validData.error)
-		throw new ServerError(
-			'Invalid data from database: ' + validData.error.message
-		);
-	const shop = validData.value;
+	).rows;
+	const shop = dbData[0];
 	if (!shop)
 		return response
 			.status(StatusCodes.NOT_FOUND)
@@ -88,6 +83,7 @@ const updateShop = async (request: RequestWithPayload, response: Response) => {
 		await db.query(`select * from shop where shop_id=$1`, [shopId])
 	).rows[0];
 	validData = ShopSchema.validate(dbData);
+	joi.assert(dbData, ShopSchema);
 	if (validData.error)
 		throw new ServerError(
 			'Invalid data from database: ' + validData.error.message

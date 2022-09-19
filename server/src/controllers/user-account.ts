@@ -1,9 +1,11 @@
 import { Response } from 'express';
+import assert from 'node:assert/strict';
 import {
 	RequestWithPayload,
 	RequestUserPayload,
 } from 'types-and-interfaces/request';
 import db from 'db';
+import joi from 'joi';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, UnauthenticatedError, ServerError } from 'errors/';
 import {
@@ -38,13 +40,9 @@ let getUserAccount = async (
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('User cannot be found');
-	const validateSchema = UserDataSchemaDB.validate(dbResult.rows[0]);
-	if (validateSchema.error) {
-		throw new ServerError(
-			'Invalid Data Schema: ' + validateSchema.error.message
-		);
-	}
-	let userAccount: UserData = validateSchema.value;
+	let userData = dbResult.rows[0];
+	joi.assert(userData, UserDataSchemaDB);
+	let userAccount: UserData = userData;
 	response.status(StatusCodes.OK).json(userAccount);
 };
 
@@ -81,15 +79,8 @@ let updateUserAccount = async (
 			where user_id = $1`,
 		[userId]
 	);
-	if (dbResult.rows.length === 0)
-		throw new ServerError('Update unsuccessful');
-	const validateSchema = UserDataSchemaDB.validate(dbResult.rows[0]);
-	if (validateSchema.error) {
-		throw new ServerError(
-			'Invalid Data Schema: ' + validateSchema.error.message
-		);
-	}
-	let userAccount: UserData = validateSchema.value;
+	assert.equal(dbResult.rows.length, 1);
+	const userAccount = dbResult.rows[0];
 	response.status(StatusCodes.OK).json(userAccount);
 };
 

@@ -4,6 +4,7 @@ import {
 	RequestWithPayload,
 } from 'types-and-interfaces/request';
 import db from 'db';
+import joi from 'joi';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError } from 'errors/';
 import { genSqlUpdateCommands } from 'controllers/helper-functions';
@@ -104,7 +105,17 @@ const updateShippingInfo = async (
 		)}`,
 		[addressId, ...data]
 	);
-	response.status(StatusCodes.NO_CONTENT).send();
+	const shippingInfo = (
+		await db.query(`select * from shipping_info where address_id=$1`, [
+			addressId,
+		])
+	).rows[0];
+	joi.assert(shippingInfo, ShippingInfoSchema);
+	if (!shippingInfo)
+		return response
+			.status(StatusCodes.NOT_FOUND)
+			.send('Shipping Information cannot be found');
+	response.status(StatusCodes.OK).send();
 };
 
 const deleteShippingInfo = async (

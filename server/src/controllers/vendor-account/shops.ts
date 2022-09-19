@@ -5,7 +5,7 @@ import {
 } from 'types-and-interfaces/request';
 import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError } from 'errors/';
+import { BadRequestError, ServerError } from 'errors/';
 import { genSqlUpdateCommands } from 'controllers/helper-functions';
 import { ShopSchema } from 'app-schema/vendor/shop';
 
@@ -52,9 +52,15 @@ const getAllShops = async (request: RequestWithPayload, response: Response) => {
 
 const getShop = async (request: RequestWithPayload, response: Response) => {
 	const { shopId } = request.params;
-	const shop = (
+	const dbData = (
 		await db.query(`select * from shop where shop_id=$1`, [shopId])
 	).rows[0];
+	const validData = ShopSchema.validate(dbData);
+	if (validData.error)
+		throw new ServerError(
+			'Invalid data from database: ' + validData.error.message
+		);
+	const shop = validData.value;
 	if (!shop)
 		return response
 			.status(StatusCodes.NOT_FOUND)
@@ -63,17 +69,32 @@ const getShop = async (request: RequestWithPayload, response: Response) => {
 };
 
 const updateShop = async (request: RequestWithPayload, response: Response) => {
-	const { shopId } = request.params,
-		shippingData = request.body;
-	let fields = Object.keys(shippingData),
-		data = Object.values(shippingData),
+	// TODO: change to put
+	const { shopId } = request.params;
+	let validData = ShopSchema.validate(request.body);
+	if (validData.error)
+		throw new BadRequestError(
+			'Invalid request data' + validData.error.message
+		);
+	const shopData = validData.value;
+	let fields = Object.keys(shopData),
+		data = Object.values(shopData),
 		offset = 2;
 	await db.query(
 		`${genSqlUpdateCommands('shop', 'shop_id', fields, offset)}`,
 		[shopId, ...data]
 	);
-
-	response.status(StatusCodes.OK).send();
+	const dbData = (
+		await db.query(`select * from shop where shop_id=$1`, [shopId])
+	).rows[0];
+	validData = ShopSchema.validate(dbData);
+	if (validData.error)
+		throw new ServerError(
+			'Invalid data from database: ' + validData.error.message
+		);
+	const newShop = validData.value;
+	if (!newShop) throw new BadRequestError('Put request was unsuccessful');
+	response.status(StatusCodes.OK).send(newShop);
 };
 
 const deleteShop = async (request: RequestWithPayload, response: Response) => {

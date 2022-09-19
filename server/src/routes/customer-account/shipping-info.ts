@@ -14,7 +14,7 @@ router.route('/').post(createShippingInfo).get(getAllShippingInfo);
 router
 	.route('/:addressId')
 	.get(getShippingInfo)
-	.patch(updateShippingInfo)
+	.put(updateShippingInfo)
 	.delete(deleteShippingInfo);
 
 export default router;

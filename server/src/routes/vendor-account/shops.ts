@@ -11,6 +11,6 @@ import {
 
 router.route('/').post(createShop).get(getAllShops);
 
-router.route('/:addressId').get(getShop).patch(updateShop).delete(deleteShop);
+router.route('/:shopId').get(getShop).put(updateShop).delete(deleteShop);
 
 export default router;

@@ -7,7 +7,7 @@ import {
 import db from 'db';
 import joi from 'joi';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, UnauthenticatedError, ServerError } from 'errors/';
+import { BadRequestError, UnauthenticatedError } from 'errors/';
 import {
 	genSqlUpdateCommands,
 	validateUserPassword,

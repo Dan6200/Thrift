@@ -8,14 +8,18 @@ import { StatusCodes } from 'http-status-codes';
 import { BadRequestError } from 'errors/';
 import { genSqlUpdateCommands } from 'controllers/helper-functions';
 import { ShopSchema } from 'app-schema/vendor/shop';
+import assert from 'node:assert/strict';
+import Joi from 'joi';
 
 const createShop = async (request: RequestWithPayload, response: Response) => {
 	const { userId: vendorId }: RequestUserPayload = request.user;
 	// limit amount of shops to 5...
 	const LIMIT = 5;
-	let overLimit: boolean =
-		LIMIT <=
-		(await db.query('select count(vendor_id) from shop')).rows[0].count;
+	let recordCount: number = (
+		await db.query('select count(vendor_id) from shop')
+	).rows[0].count;
+	assert.ok(typeof recordCount === 'number');
+	let overLimit: boolean = LIMIT <= recordCount;
 	if (overLimit)
 		throw new BadRequestError(
 			`Each vendor is limited to only ${LIMIT} shops`
@@ -32,9 +36,10 @@ const createShop = async (request: RequestWithPayload, response: Response) => {
 		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
 		[vendorId, ...Object.values(shopData)]
 	);
-	let shopId = (await db.query('select shop_id from shop')).rows[0].shop_id;
+	let shop = (await db.query('select * from shop')).rows[0];
+	Joi.assert(shop, ShopSchema);
 	response.status(StatusCodes.CREATED).json({
-		shopId,
+		shop,
 	});
 };
 
@@ -43,19 +48,19 @@ const getAllShops = async (request: RequestWithPayload, response: Response) => {
 	const shops = (
 		await db.query(`select * from shop where vendor_id=$1`, [vendorId])
 	).rows;
-	if (!shops)
+	if (shops.length === 0)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('Vendor has no shops available');
+	Joi.assert(shops[0], ShopSchema);
 	response.status(StatusCodes.OK).send(shops);
 };
 
 const getShop = async (request: RequestWithPayload, response: Response) => {
 	const { shopId } = request.params;
-	const dbData = (
+	const shop = (
 		await db.query(`select * from shop where shop_id=$1`, [shopId])
-	).rows;
-	const shop = dbData[0];
+	).rows[0];
 	if (!shop)
 		return response
 			.status(StatusCodes.NOT_FOUND)
@@ -79,18 +84,12 @@ const updateShop = async (request: RequestWithPayload, response: Response) => {
 		`${genSqlUpdateCommands('shop', 'shop_id', fields, offset)}`,
 		[shopId, ...data]
 	);
-	const dbData = (
+	const shop = (
 		await db.query(`select * from shop where shop_id=$1`, [shopId])
 	).rows[0];
-	validData = ShopSchema.validate(dbData);
-	joi.assert(dbData, ShopSchema);
-	if (validData.error)
-		throw new ServerError(
-			'Invalid data from database: ' + validData.error.message
-		);
-	const newShop = validData.value;
-	if (!newShop) throw new BadRequestError('Put request was unsuccessful');
-	response.status(StatusCodes.OK).send(newShop);
+	Joi.assert(shop, ShopSchema);
+	if (!shop) throw new BadRequestError('Put request was unsuccessful');
+	response.status(StatusCodes.OK).send(shop);
 };
 
 const deleteShop = async (request: RequestWithPayload, response: Response) => {

@@ -42,45 +42,19 @@ const newUsers: Array<Object> = [
 	},
 ];
 
-const loginUsers: Array<Array<Object>> = [
-	[
-		{
-			email: 'ebukachibueze5489@gmail.com',
-			password: 'EbukaDa1!',
-		},
-
-		{
-			phone: '2348063245973',
-			password: '123AishaBaggy9384',
-		},
-
-		{
-			phone: '234902539488',
-			password: '236!A15HA04',
-		},
-	],
-
-	[
-		{
-			email: 'ebukachibueze5489@gmail.com',
-			password: 'EbukaDa1!',
-		},
-
-		{
-			phone: '2348063248197',
-			password: '123AishaBaggy9384',
-		},
-
-		{
-			phone: '23490253954889',
-			password: 'jayafd3245XF*!&$',
-		},
-
-		{
-			email: 'mustymomo1019@yahoo.com',
-			password: '123AishaBaggy9384',
-		},
-	],
+const loginUsers: Array<Object> = [
+	{
+		email: 'ebukachibueze5489@gmail.com',
+		password: 'EbukaDa1!',
+	},
+	{
+		phone: '2348063245973',
+		password: '123AishaBaggy9384',
+	},
+	{
+		phone: '234902539488',
+		password: '236!A15HA04',
+	},
 ];
 
 interface Users {

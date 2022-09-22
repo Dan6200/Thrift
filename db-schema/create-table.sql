@@ -1,5 +1,5 @@
 create table if not exists user_account (
-	user_id					serial 			primary key,
+	user_id					bigserial 			primary key,
 	first_name				varchar(30)		not null,
 	last_name				varchar(30)		not null,
 	email					varchar(320)	unique
@@ -20,7 +20,7 @@ create table if not exists user_account (
 -- );
 
 create table if not exists shipping_info (
-	address_id				serial			primary key,
+	address_id				bigserial			primary key,
 	customer_id				int				not null		references	user_account	on	delete	cascade,
 	recepient_first_name	varchar(30)		not null,
 	recepient_last_name		varchar(30)		not null,
@@ -36,7 +36,7 @@ create table if not exists shipping_info (
 -- );
 
 create table if not exists shop (
-	shop_id					serial			primary key,	
+	shop_id					bigserial			primary key,	
 	shop_name				varchar			not null 	default 	'My Shop',
 	vendor_id 				int				references	user_account	on	delete	cascade,
 	date_created			date			not null		default		current_date,
@@ -44,7 +44,7 @@ create table if not exists shop (
 );
 
 create table if not exists product (
-	product_id			serial				primary key,
+	product_id			bigserial				primary key,
 	title				varchar,
 	category			varchar,
 	description			varchar,
@@ -58,20 +58,20 @@ create table if not exists product (
 /* TODO: review this shopping cart functionality to see if it is rigorous enough
 	...this is would be a transaction type of operation. */
 create table if not exists shopping_cart (
-	cart_id				serial			primary key,
+	cart_id				bigserial			primary key,
 	customer_id			int				not null	references	user_account	on	delete	cascade,
 	made				timestamptz		not null	default	now()
 );
 
 create table if not exists shopping_cart_item (
-	item_id					serial			primary	key,
+	item_id					bigserial			primary	key,
 	cart_id					int				not null		references	shopping_cart	on 	delete	cascade,
 	product_id				int				not null		references	product		on delete	cascade,
 	product_quantity		int				not null		check (product_quantity > 0)
 );
 
 create table if not exists transaction (
-	transaction_id				serial			primary	key,
+	transaction_id				bigserial			primary	key,
 	transaction_timestamp		timestamptz		not null		default	now()	unique,
 	customer_id					int				not null		references	user_account	on	delete	restrict,
 	vendor_id					int				not null		references	user_account	on	delete	restrict,
@@ -81,7 +81,7 @@ create table if not exists transaction (
 );
 
 create table if not exists transaction_item (
-	item_id					serial			primary	key,
+	item_id					bigserial			primary	key,
 	product_id				int				not null		references	product		on delete	restrict,
 	product_quantity		int				not null		default	1	check (product_quantity > 0)
 );
@@ -92,7 +92,7 @@ create table if not exists reversed_transaction (
 );
 
 create table if not exists product_review (
-	review_id				serial			primary key,
+	review_id				bigserial			primary key,
 	product_id				int				not null	references	product		on	delete	cascade,
 	transaction_id			int				not null	references	transaction	on	delete	cascade,
 	rating					numeric(3,2)	not null,
@@ -101,7 +101,7 @@ create table if not exists product_review (
 );
 
 create table if not exists vendor_review (
-	review_id				serial			primary key,
+	review_id				bigserial			primary key,
 	vendor_id				int				not	null		references	user_account on delete cascade,
 	customer_id				int				not null		references	user_account on delete cascade,
 	transaction_id			int				not null		references	transaction on delete cascade,

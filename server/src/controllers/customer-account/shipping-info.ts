@@ -8,7 +8,10 @@ import joi from 'joi';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError } from 'errors/';
 import { genSqlUpdateCommands } from 'controllers/helper-functions';
-import { ShippingInfoSchema } from 'app-schema/customer/shipping';
+import {
+	ShippingInfoSchemaReq,
+	ShippingInfoSchemaDB,
+} from 'app-schema/customer/shipping';
 import assert from 'node:assert/strict';
 
 const selectShippingInfo = `
@@ -38,7 +41,7 @@ const createShippingInfo = async (
 		throw new BadRequestError(
 			`Each customer is limited to only ${LIMIT} shipping addresses`
 		);
-	const validData = ShippingInfoSchema.validate(request.body);
+	const validData = ShippingInfoSchemaReq.validate(request.body);
 	if (validData.error)
 		throw new BadRequestError(
 			'Invalid Data Schema: ' + validData.error.message
@@ -76,7 +79,7 @@ const getAllShippingInfo = async (
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('customer has no shipping information available');
-	joi.assert(shippingInfos[0], ShippingInfoSchema);
+	joi.assert(shippingInfos[0], ShippingInfoSchemaDB);
 	response.status(StatusCodes.OK).send({ shippingInfos });
 };
 
@@ -92,7 +95,7 @@ const getShippingInfo = async (
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('Shipping Information cannot be found');
-	joi.assert(shippingInfo, ShippingInfoSchema);
+	joi.assert(shippingInfo, ShippingInfoSchemaDB);
 	response.status(StatusCodes.OK).send({ shippingInfo });
 };
 
@@ -116,7 +119,7 @@ const updateShippingInfo = async (
 	);
 	const shippingInfo = (await db.query(selectShippingInfo, [addressId]))
 		.rows[0];
-	joi.assert(shippingInfo, ShippingInfoSchema);
+	joi.assert(shippingInfo, ShippingInfoSchemaDB);
 	if (!shippingInfo)
 		return response
 			.status(StatusCodes.NOT_FOUND)

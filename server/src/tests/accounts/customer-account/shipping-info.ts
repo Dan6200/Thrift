@@ -9,7 +9,7 @@ import {
 	newShippingData,
 	updateShippingData,
 } from 'accounts/customer-account/shipping-data';
-import { ShippingInfoSchema } from 'app-schema/customer/shipping';
+import { ShippingInfoSchemaDB } from 'app-schema/customer/shipping';
 
 chai.use(chaiHttp);
 const should = chai.should(),
@@ -60,7 +60,7 @@ const testGetAllShippingInfo = (deleted: boolean): void => {
 					continue;
 				}
 				shippingInfos.should.not.be.empty;
-				joi.assert(shippingInfos[0], ShippingInfoSchema);
+				joi.assert(shippingInfos[0], ShippingInfoSchemaDB);
 			}
 		});
 	});
@@ -84,7 +84,7 @@ const testGetShippingInfo = (deleted: boolean): void => {
 					continue;
 				}
 				response.should.have.status(StatusCodes.OK);
-				joi.assert(response.body, ShippingInfoSchema);
+				joi.assert(response.body, ShippingInfoSchemaDB);
 			}
 		});
 	});
@@ -104,7 +104,7 @@ const testUpdateShippingInfo = () => {
 					.send(updateShippingData[count++])
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
-				joi.assert(response.body, ShippingInfoSchema);
+				joi.assert(response.body, ShippingInfoSchemaDB);
 			}
 		});
 	});

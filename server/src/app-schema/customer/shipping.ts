@@ -1,9 +1,6 @@
 import joi from 'joi';
 
-const ShippingInfoSchema = joi.object({
-	address_id: joi
-		.alternatives()
-		.try(joi.string().pattern(/d+/), joi.number()),
+const ShippingInfoSchemaReq = joi.object({
 	recepient_first_name: joi.string().alphanum().min(3).max(30).required(),
 	recepient_last_name: joi.string().alphanum().min(3).max(30).required(),
 	street: joi.string().required(),
@@ -18,4 +15,20 @@ const ShippingInfoSchema = joi.object({
 	is_primary: joi.boolean().required(),
 });
 
-export { ShippingInfoSchema };
+const ShippingInfoSchemaDB = joi.object({
+	address_id: joi.string().required(),
+	recepient_first_name: joi.string().alphanum().min(3).max(30).required(),
+	recepient_last_name: joi.string().alphanum().min(3).max(30).required(),
+	street: joi.string().required(),
+	postal_code: joi.string().required(),
+	delivery_contact: joi
+		.string()
+		.pattern(
+			/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
+		)
+		.required(),
+	delivery_instructions: joi.string().required(),
+	is_primary: joi.boolean().required(),
+});
+
+export { ShippingInfoSchemaReq, ShippingInfoSchemaDB };

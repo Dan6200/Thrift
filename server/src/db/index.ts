@@ -1,5 +1,4 @@
 import { Pool } from 'pg';
-import path from 'path';
 
 const pool = new Pool({
 	user: process.env.PGUSER,

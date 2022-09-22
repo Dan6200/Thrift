@@ -9,6 +9,7 @@ import { StatusCodes } from 'http-status-codes';
 import { BadRequestError } from 'errors/';
 import { genSqlUpdateCommands } from 'controllers/helper-functions';
 import { ShippingInfoSchema } from 'app-schema/customer/shipping';
+import assert from 'node:assert/strict';
 
 const selectShippingInfo = `
 select 
@@ -29,8 +30,10 @@ const createShippingInfo = async (
 	const { userId: customerId }: RequestUserPayload = request.user;
 	// limit amount of shippingInfo to 5...
 	const LIMIT = 5;
-	let overLimit: boolean =
-		LIMIT <= (await db.query('select * from shipping_info')).row;
+	const rowCount = (await db.query('select * from shipping_info')).rowCount;
+	assert.ok(typeof rowCount === 'number');
+	// TODO: make sure only one is_primary value exists
+	let overLimit: boolean = LIMIT <= rowCount;
 	if (overLimit)
 		throw new BadRequestError(
 			`Each customer is limited to only ${LIMIT} shipping addresses`

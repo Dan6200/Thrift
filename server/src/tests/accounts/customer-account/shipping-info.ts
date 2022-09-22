@@ -41,20 +41,20 @@ const testCreateShippingInfo = () => {
 };
 
 const testGetAllShippingInfo = (deleted: boolean): void => {
-	describe('/GET shipping info', () => {
-		it(`it should retrieve all the customer shipping accounts`, async () => {
+	describe('/GET all shipping info', () => {
+		it(`it should ${
+			(deleted && 'fail to ') || ''
+		}retrieve all the customer shipping accounts`, async () => {
 			const userTokens: string[] = await users.getUserTokens();
 			userTokens.should.not.be.empty;
-			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
 					.get(`/api/v1/user/customer/shipping-info/`)
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
-				response.body.should.have.property('shippingInfos');
-				response.body.shippingInfos.should.be.an('array');
-				let shippingInfos = response.body.shippingInfos;
+				response.body.should.be.an('array');
+				let shippingInfos = response.body;
 				if (deleted) {
 					shippingInfos.should.be.empty;
 					continue;
@@ -91,7 +91,7 @@ const testGetShippingInfo = (deleted: boolean): void => {
 };
 
 const testUpdateShippingInfo = () => {
-	describe('/PATCH shipping info', () => {
+	describe('/PUT shipping info', () => {
 		it('it should update the shipping info for the user', async () => {
 			let count = 0;
 			const userTokens: string[] = await users.getUserTokens();
@@ -100,7 +100,7 @@ const testUpdateShippingInfo = () => {
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
-					.patch(`/api/v1/user/customer/shipping-info/${AddressId}`)
+					.put(`/api/v1/user/customer/shipping-info/${AddressId}`)
 					.send(updateShippingData[count++])
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);

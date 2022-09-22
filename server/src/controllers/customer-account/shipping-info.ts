@@ -14,7 +14,7 @@ import {
 } from 'app-schema/customer/shipping';
 import assert from 'node:assert/strict';
 
-const selectShippingInfo = `
+const selectShippingInfoWithCustomer = `
 select 
 	address_id,
 	recepient_first_name,
@@ -25,6 +25,18 @@ select
 	delivery_instructions,
 	is_primary
 from shipping_info where customer_id=$1`;
+
+const selectShippingInfoWithAddress = `
+select 
+	address_id,
+	recepient_first_name,
+	recepient_last_name,
+	street,
+	postal_code,
+	delivery_contact,
+	delivery_instructions,
+	is_primary
+from shipping_info where address_id=$1`;
 
 const createShippingInfo = async (
 	request: RequestWithPayload,
@@ -60,9 +72,10 @@ const createShippingInfo = async (
 		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
 		[customerId, ...Object.values(shippingData)]
 	);
+	let lastInsert = rowCount;
 	let addressId: string = (
 		await db.query('select address_id from shipping_info')
-	).rows[0].address_id;
+	).rows[lastInsert].address_id;
 	response.status(StatusCodes.CREATED).send({
 		addressId,
 	});
@@ -73,14 +86,15 @@ const getAllShippingInfo = async (
 	response: Response
 ) => {
 	const { userId: customerId } = request.user;
-	const shippingInfos = (await db.query(selectShippingInfo, [customerId]))
-		.rows;
+	const shippingInfos = (
+		await db.query(selectShippingInfoWithCustomer, [customerId])
+	).rows;
 	if (!shippingInfos)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('customer has no shipping information available');
 	joi.assert(shippingInfos[0], ShippingInfoSchemaDB);
-	response.status(StatusCodes.OK).send({ shippingInfos });
+	response.status(StatusCodes.OK).send(shippingInfos);
 };
 
 const getShippingInfo = async (
@@ -89,14 +103,15 @@ const getShippingInfo = async (
 ) => {
 	const { addressId } = request.params;
 	if (!addressId) throw new BadRequestError('Id parameter not available');
-	const shippingInfo = (await db.query(selectShippingInfo, [addressId]))
-		.rows[0];
+	const shippingInfo = (
+		await db.query(selectShippingInfoWithAddress, [addressId])
+	).rows[0];
 	if (!shippingInfo)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('Shipping Information cannot be found');
 	joi.assert(shippingInfo, ShippingInfoSchemaDB);
-	response.status(StatusCodes.OK).send({ shippingInfo });
+	response.status(StatusCodes.OK).send(shippingInfo);
 };
 
 const updateShippingInfo = async (
@@ -117,14 +132,15 @@ const updateShippingInfo = async (
 		)}`,
 		[addressId, ...data]
 	);
-	const shippingInfo = (await db.query(selectShippingInfo, [addressId]))
-		.rows[0];
+	const shippingInfo = (
+		await db.query(selectShippingInfoWithAddress, [addressId])
+	).rows[0];
 	joi.assert(shippingInfo, ShippingInfoSchemaDB);
 	if (!shippingInfo)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('Shipping Information cannot be found');
-	response.status(StatusCodes.OK).send();
+	response.status(StatusCodes.OK).send(shippingInfo);
 };
 
 const deleteShippingInfo = async (

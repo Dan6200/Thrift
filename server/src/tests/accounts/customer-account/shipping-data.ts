@@ -56,9 +56,9 @@ const newShippingData = [
 ];
 
 const updateShippingData = [
-	{ recepient_first_name: 'Jane', delivery_contact: '234957292623654' },
-	{ recepient_first_name: 'Jane', delivery_contact: '234957292623654' },
-	{ recepient_first_name: 'Jane', delivery_contact: '234957292623654' },
+	{ recepient_first_name: 'Jane', delivery_contact: '2347292623654' },
+	{ recepient_last_name: 'Jane', delivery_contact: '2349572623654' },
+	{ recepient_first_name: 'Dan', delivery_contact: '2349572923654' },
 ];
 
 export { newShippingData, updateShippingData };

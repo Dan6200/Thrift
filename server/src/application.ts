@@ -38,7 +38,7 @@ application.use(express.static(path.resolve(__dirname, 'client')));
 application.use(helmet());
 application.use(cors());
 application.use(xss());
-application.use(morgan('tiny'));
+application.use(morgan('dev'));
 // routes
 application.use('/api/v1/auth', authRouter);
 application.use('/api/v1/user', authenticateUser, userAccountRouter);

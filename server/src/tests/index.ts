@@ -20,9 +20,9 @@ describe('Authentication Routes', testLogin.bind(null, 1));
 describe('User Accounts Route', testGetUserAccount.bind(null, !deleted));
 describe('User Info Route', testUpdateUserAccount);
 describe('User Password Route', testUpdateUserPassword);
-describe('User Accounts Route', testGetUserAccount.bind(null, !deleted));
-describe('User Accounts Route', testDeleteUserAccount);
-describe('User Accounts Route', testGetUserAccount.bind(null, deleted));
+describe('User Info Route', testGetUserAccount.bind(null, !deleted));
+describe('User Info Route', testDeleteUserAccount);
+describe('User Info Route', testGetUserAccount.bind(null, deleted));
 describe('Authentication Routes', testRegistration);
 
 describe('Create Customer Shipping Information', testCreateShippingInfo);

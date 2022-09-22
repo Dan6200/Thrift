@@ -15,7 +15,7 @@ chai.use(chaiHttp);
 const should = chai.should(),
 	expect = chai.expect;
 
-let addressId = null;
+let AddressId: string | null = null;
 
 const testCreateShippingInfo = () => {
 	describe('/POST shipping info', () => {
@@ -33,13 +33,14 @@ const testCreateShippingInfo = () => {
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.CREATED);
 				response.body.should.have.property('addressId');
-				addressId = response.body.addressId;
+				response.body.addressId.should.be.a('string');
+				AddressId = response.body.addressId;
 			}
 		});
 	});
 };
 
-const testGetAllShippingInfo = (): void => {
+const testGetAllShippingInfo = (deleted: boolean): void => {
 	describe('/GET shipping info', () => {
 		it(`it should retrieve all the customer shipping accounts`, async () => {
 			const userTokens: string[] = await users.getUserTokens();
@@ -53,6 +54,13 @@ const testGetAllShippingInfo = (): void => {
 				response.should.have.status(StatusCodes.OK);
 				response.body.should.have.property('shippingInfos');
 				response.body.shippingInfos.should.be.an('array');
+				let shippingInfos = response.body.shippingInfos;
+				if (deleted) {
+					shippingInfos.should.be.empty;
+					continue;
+				}
+				shippingInfos.should.not.be.empty;
+				joi.assert(shippingInfos[0], ShippingInfoSchema);
 			}
 		});
 	});
@@ -69,7 +77,7 @@ const testGetShippingInfo = (deleted: boolean): void => {
 			for (const userToken of userTokens) {
 				const response: any = await chai
 					.request(application)
-					.get(`/api/v1/user/customer/shipping-info/${addressId}`)
+					.get(`/api/v1/user/customer/shipping-info/${AddressId}`)
 					.auth(userToken, { type: 'bearer' });
 				if (deleted) {
 					response.should.have.status(StatusCodes.NOT_FOUND);
@@ -92,7 +100,7 @@ const testUpdateShippingInfo = () => {
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
-					.patch(`/api/v1/user/customer/shipping-info/${addressId}`)
+					.patch(`/api/v1/user/customer/shipping-info/${AddressId}`)
 					.send(updateShippingData[count++])
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.OK);
@@ -111,7 +119,7 @@ const testDeleteShippingInfo = () => {
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
-					.delete(`/api/v1/user/customer/shipping-info/${addressId}`)
+					.delete(`/api/v1/user/customer/shipping-info/${AddressId}`)
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.NO_CONTENT);
 			}

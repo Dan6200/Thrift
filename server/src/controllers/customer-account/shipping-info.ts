@@ -10,6 +10,18 @@ import { BadRequestError } from 'errors/';
 import { genSqlUpdateCommands } from 'controllers/helper-functions';
 import { ShippingInfoSchema } from 'app-schema/customer/shipping';
 
+const selectShippingInfo = `
+select 
+	address_id,
+	recepient_first_name,
+	recepient_last_name,
+	street,
+	postal_code,
+	delivery_contact,
+	delivery_instructions,
+	is_primary
+from shipping_info where customer_id=$1`;
+
 const createShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
@@ -18,9 +30,7 @@ const createShippingInfo = async (
 	// limit amount of shippingInfo to 5...
 	const LIMIT = 5;
 	let overLimit: boolean =
-		LIMIT <=
-		(await db.query('select count(address_id) from shipping_info')).rows[0]
-			.count;
+		LIMIT <= (await db.query('select * from shipping_info')).row;
 	if (overLimit)
 		throw new BadRequestError(
 			`Each customer is limited to only ${LIMIT} shipping addresses`
@@ -57,15 +67,13 @@ const getAllShippingInfo = async (
 	response: Response
 ) => {
 	const { userId: customerId } = request.user;
-	const shippingInfos = (
-		await db.query(`select * from shipping_info where customer_id=$1`, [
-			customerId,
-		])
-	).rows;
+	const shippingInfos = (await db.query(selectShippingInfo, [customerId]))
+		.rows;
 	if (!shippingInfos)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('customer has no shipping information available');
+	joi.assert(shippingInfos[0], ShippingInfoSchema);
 	response.status(StatusCodes.OK).send({ shippingInfos });
 };
 
@@ -75,15 +83,13 @@ const getShippingInfo = async (
 ) => {
 	const { addressId } = request.params;
 	if (!addressId) throw new BadRequestError('Id parameter not available');
-	const shippingInfo = (
-		await db.query(`select * from shipping_info where address_id=$1`, [
-			addressId,
-		])
-	).rows[0];
+	const shippingInfo = (await db.query(selectShippingInfo, [addressId]))
+		.rows[0];
 	if (!shippingInfo)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('Shipping Information cannot be found');
+	joi.assert(shippingInfo, ShippingInfoSchema);
 	response.status(StatusCodes.OK).send({ shippingInfo });
 };
 
@@ -105,11 +111,8 @@ const updateShippingInfo = async (
 		)}`,
 		[addressId, ...data]
 	);
-	const shippingInfo = (
-		await db.query(`select * from shipping_info where address_id=$1`, [
-			addressId,
-		])
-	).rows[0];
+	const shippingInfo = (await db.query(selectShippingInfo, [addressId]))
+		.rows[0];
 	joi.assert(shippingInfo, ShippingInfoSchema);
 	if (!shippingInfo)
 		return response

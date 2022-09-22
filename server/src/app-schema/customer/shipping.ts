@@ -1,6 +1,9 @@
 import joi from 'joi';
 
 const ShippingInfoSchema = joi.object({
+	address_id: joi
+		.alternatives()
+		.try(joi.string().pattern(/d+/), joi.number()),
 	recepient_first_name: joi.string().alphanum().min(3).max(30).required(),
 	recepient_last_name: joi.string().alphanum().min(3).max(30).required(),
 	street: joi.string().required(),

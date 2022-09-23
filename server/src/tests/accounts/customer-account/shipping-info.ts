@@ -11,6 +11,7 @@ import {
 } from 'accounts/customer-account/shipping-data';
 import { ShippingInfoSchemaDB } from 'app-schema/customer/shipping';
 import db from 'db';
+import { registration } from 'tests/helpers';
 
 chai.use(chaiHttp).should();
 
@@ -23,27 +24,7 @@ export default async function testShippingInfo() {
 	});
 	// Testing the register route
 	describe('/POST user: Registration', () => {
-		it(`it should register ${newUsers.length} new users`, async () => {
-			let lastUser: Object = {},
-				lastToken: string = '';
-			for (let i = 0; i < newUsers.length; i++) {
-				const newUser = newUsers[i];
-				newUser.should.not.be.equal(lastUser);
-				const response = await chai
-					.request(application)
-					.post('/api/v1/auth/register')
-					.send(newUser);
-				response.should.have.status(StatusCodes.CREATED);
-				response.body.should.be.an('object');
-				const responseObject = response.body;
-				responseObject.should.have.property('token');
-				const { token } = responseObject;
-				token.should.not.be.equal.to(lastToken);
-				await users.push(token);
-				lastUser = newUsers[i];
-				lastToken = token;
-			}
-		});
+		it(`it should register ${newUsers.length} new users`, registration);
 	});
 
 	// Testing the shipping route

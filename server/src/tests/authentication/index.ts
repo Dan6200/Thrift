@@ -35,19 +35,6 @@ export default async function (): Promise<void> {
 	// Testing the login route
 	describe('/POST user: Login', () => {
 		const noOfUsers = loginUsers.length;
-		it(`it should login ${noOfUsers} users`, async () => {
-			for (let i = 0; i < noOfUsers; i++) {
-				const response = await chai
-					.request(application)
-					.post('/api/v1/auth/login')
-					.send(loginUsers[i]);
-				response.should.have.status(StatusCodes.CREATED);
-				response.body.should.be.an('object');
-				const responseObject = response.body;
-				responseObject.should.have.property('token');
-				const { token } = responseObject;
-				await users.push(token);
-			}
-		});
+		it(`it should login ${noOfUsers} users`, async () => {});
 	});
 }

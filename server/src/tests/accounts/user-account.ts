@@ -4,53 +4,62 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
 import {
+	newUsers,
 	updateUser,
 	updateUserPassword,
 	users,
 } from 'authentication/user-data';
 import { UserDataSchemaDB } from 'app-schema/users';
 import joi from 'joi';
+import db from 'db';
 
-chai.use(chaiHttp);
-const should = chai.should(),
-	expect = chai.expect;
+chai.use(chaiHttp).should();
 
-const testGetUserAccount = (deleted: boolean) => {
-	describe('/GET user account', () => {
-		// Prints it should retrieve the User account if the user exists
-		// Prints it should fail to retrieve the User account if the user doesn't exist
-		it(`it should ${
-			(deleted && 'fail to ') || ''
-		}retrieve the User account`, async () => {
+export default function testUserAccount() {
+	before(async () => {
+		// deletes all entries from user_account
+		await db.query('delete from user_account');
+		// clears the user token array
+		await users.clear();
+	});
+	// Testing the register route
+	describe('/POST user: Registration', () => {
+		it(`it should register ${newUsers.length} new users`, async () => {
+			for (let i = 0; i < newUsers.length; i++) {
+				const response = await chai
+					.request(application)
+					.post('/api/v1/auth/register')
+					.send(newUsers[i]);
+				response.should.have.status(StatusCodes.CREATED);
+				response.body.should.be.an('object');
+				const responseObject = response.body;
+				responseObject.should.have.property('token');
+				const { token } = responseObject;
+				await users.push(token);
+			}
+		});
+	});
+	describe('/GET user', () => {
+		it(`it should retrieve the User account`, async () => {
 			const userTokens: string[] = await users.getUserTokens();
-			deleted || userTokens.should.not.be.empty;
-			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
+			userTokens.should.not.be.empty;
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
 					.get('/api/v1/user')
 					.auth(userToken, { type: 'bearer' });
-				if (deleted) {
-					response.should.have.status(StatusCodes.NOT_FOUND);
-					continue;
-				}
 				response.should.have.status(StatusCodes.OK);
 				response.body.should.be.an('object');
 				joi.assert(response.body, UserDataSchemaDB);
 			}
 		});
 	});
-};
-
-const testUpdateUserAccount = () => {
-	describe('/PATCH user account', () => {
+	describe('/PATCH user', () => {
 		it('it should update the user info', async () => {
 			let n = 0;
 			const userTokens: string[] = await users.getUserTokens();
 			userTokens.should.not.be.empty;
-			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
 			for (const userToken of userTokens) {
-				// console.log(updatedUser[n], __filename);
 				const response = await chai
 					.request(application)
 					.patch('/api/v1/user/info')
@@ -63,9 +72,6 @@ const testUpdateUserAccount = () => {
 			}
 		});
 	});
-};
-
-const testUpdateUserPassword = () => {
 	describe('/PATCH user password', () => {
 		it("it should update the user's password", async () => {
 			let n = 0;
@@ -84,14 +90,10 @@ const testUpdateUserPassword = () => {
 			}
 		});
 	});
-};
-
-const testDeleteUserAccount = () => {
 	describe('/DELETE user account', () => {
 		it("it should delete the user's account", async () => {
 			const userTokens: string[] = await users.getUserTokens();
 			userTokens.should.not.be.empty;
-			// console.log(`\nusers: %O\n%s`, userTokens, __filename);
 			for (const userToken of userTokens) {
 				const response = await chai
 					.request(application)
@@ -101,11 +103,17 @@ const testDeleteUserAccount = () => {
 			}
 		});
 	});
-};
-
-export {
-	testGetUserAccount,
-	testUpdateUserAccount,
-	testUpdateUserPassword,
-	testDeleteUserAccount,
-};
+	describe('/GET user', () => {
+		it(`it should fail to retrieve the User account`, async () => {
+			const userTokens: string[] = await users.getUserTokens();
+			userTokens.should.not.be.empty;
+			for (const userToken of userTokens) {
+				const response = await chai
+					.request(application)
+					.get('/api/v1/user')
+					.auth(userToken, { type: 'bearer' });
+				response.should.have.status(StatusCodes.NOT_FOUND);
+			}
+		});
+	});
+}

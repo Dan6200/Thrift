@@ -11,11 +11,11 @@ import {
 } from 'accounts/customer-account/shipping-data';
 import { ShippingInfoSchemaDB } from 'app-schema/customer/shipping';
 
-chai.use(chaiHttp);
-const should = chai.should(),
-	expect = chai.expect;
+chai.use(chaiHttp).should();
 
-let AddressId: string | null = null;
+export default async function testShippingInfo() {
+	let AddressId: string | null = null;
+}
 
 const testCreateShippingInfo = () => {
 	describe('/POST shipping info', () => {

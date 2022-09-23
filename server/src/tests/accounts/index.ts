@@ -1,9 +1,4 @@
-import {
-	testGetUserAccount,
-	testUpdateUserAccount,
-	testUpdateUserPassword,
-	testDeleteUserAccount,
-} from 'accounts/user-account';
+import testUserAccount from 'accounts/user-account';
 
 import {
 	testCreateShippingInfo,
@@ -14,10 +9,7 @@ import {
 } from 'accounts/customer-account/shipping-info';
 
 export {
-	testGetUserAccount,
-	testUpdateUserAccount,
-	testUpdateUserPassword,
-	testDeleteUserAccount,
+	testUserAccount,
 	testCreateShippingInfo,
 	testGetShippingInfo,
 	testGetAllShippingInfo,

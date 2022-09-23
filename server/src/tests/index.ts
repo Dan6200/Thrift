@@ -1,4 +1,4 @@
-import { testRegistration, testLogin } from 'authentication';
+import Authentication from 'authentication';
 
 import {
 	testGetUserAccount,
@@ -14,9 +14,8 @@ import {
 
 const deleted = true;
 
-describe('Authentication Routes', testRegistration);
-describe('Authentication Routes', testLogin.bind(null, 1));
-
+describe('Authentication Routes', Authentication);
+/*
 describe('User Accounts Route', testGetUserAccount.bind(null, !deleted));
 describe('User Info Route', testUpdateUserAccount);
 describe('User Password Route', testUpdateUserPassword);
@@ -44,3 +43,4 @@ describe(
 	'Customer Shipping Information',
 	testGetShippingInfo.bind(null, deleted)
 );
+*/

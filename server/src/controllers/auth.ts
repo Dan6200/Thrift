@@ -108,7 +108,7 @@ const login = async (request: Request, response: Response) => {
 	// TODO: create separate IP Address tables as users may login
 	// ...different IP Addresses
 	const token = createToken(user.user_id);
-	response.status(StatusCodes.OK).json({
+	response.status(StatusCodes.CREATED).json({
 		token,
 	});
 };

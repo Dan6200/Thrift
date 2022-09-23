@@ -89,7 +89,8 @@ const getAllShippingInfo = async (
 	const shippingInfos = (
 		await db.query(selectShippingInfoWithCustomer, [customerId])
 	).rows;
-	if (!shippingInfos)
+	assert.ok(Array.isArray(shippingInfos));
+	if (shippingInfos.length === 0)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('customer has no shipping information available');

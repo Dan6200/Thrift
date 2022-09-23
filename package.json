@@ -10,7 +10,7 @@
 	],
 	"scripts": {
 		"start": "cd server && ts-node -p tsconfig.json",
-		"test": "cd server && ts-mocha --paths src/tests -p tsconfig.json src/tests/*.ts",
+		"test": "cd server && ts-mocha --exit --paths src/tests -p tsconfig.json src/tests/*.ts",
 		"dev": "concurrently --kill-others \"cd client && yarn tailwindcss -i view/input.css -o dist/output.css --watch\" \"cd client && yarn webpack\" \"cd server && nodemon src/server.ts\""
 	},
 	"license": "ISC",

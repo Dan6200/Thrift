@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { application } from 'express';
+import application from 'application';
 import { StatusCodes } from 'http-status-codes';
 import { loginUsers, users } from 'tests/authentication/user-data';
 
@@ -21,7 +21,7 @@ export default async function login() {
 		const responseObject = response.body;
 		responseObject.should.have.property('token');
 		const { token } = responseObject;
-		token.should.not.be.equal.to(lastToken);
+		token.should.not.be.equal(lastToken);
 		await users.push(token);
 		lastUser = user;
 		lastToken = token;

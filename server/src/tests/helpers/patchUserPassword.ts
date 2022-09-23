@@ -1,7 +1,10 @@
 import application from 'application';
 import { StatusCodes } from 'http-status-codes';
 import { updateUserPassword, users } from 'tests/authentication/user-data';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
 
+chai.use(chaiHttp).should();
 export default async function patchUserPassword() {
 	let n = 0;
 	const userTokens: string[] = await users.getUserTokens();

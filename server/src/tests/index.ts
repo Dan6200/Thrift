@@ -4,4 +4,4 @@ import testShippingInfo from 'accounts/customer-account/shipping-info';
 
 describe('Authentication Routes', Authentication);
 describe('User Account Routes', testUserAccount);
-// describe('Customer Shipping Routes', testShippingInfo);
+describe('Customer Shipping Routes', testShippingInfo);

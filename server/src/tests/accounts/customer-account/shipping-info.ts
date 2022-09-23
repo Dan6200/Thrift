@@ -35,7 +35,6 @@ export default async function testShippingInfo() {
 			const userTokens: string[] = await users.getUserTokens();
 			userTokens.should.not.be.empty;
 			for (const userToken of userTokens) {
-				console.log(userToken);
 				const response = await chai
 					.request(application)
 					.post('/api/v1/user/customer/shipping-info')
@@ -54,7 +53,6 @@ export default async function testShippingInfo() {
 			let count = 0;
 			userTokens.should.not.be.empty;
 			for (const userToken of userTokens) {
-				console.log(userToken);
 				const response: any = await chai
 					.request(application)
 					.get(
@@ -73,7 +71,6 @@ export default async function testShippingInfo() {
 			const userTokens: string[] = await users.getUserTokens();
 			userTokens.should.not.be.empty;
 			for (const userToken of userTokens) {
-				console.log(userToken);
 				const response = await chai
 					.request(application)
 					.get(`/api/v1/user/customer/shipping-info/`)
@@ -92,7 +89,6 @@ export default async function testShippingInfo() {
 			const userTokens: string[] = await users.getUserTokens();
 			userTokens.should.not.be.empty;
 			for (const userToken of userTokens) {
-				console.log(userToken);
 				const response = await chai
 					.request(application)
 					.put(
@@ -129,7 +125,6 @@ export default async function testShippingInfo() {
 			const userTokens: string[] = await users.getUserTokens();
 			userTokens.should.not.be.empty;
 			for (const userToken of userTokens) {
-				console.log(userToken);
 				const response: any = await chai
 					.request(application)
 					.get(
@@ -152,7 +147,6 @@ export default async function testShippingInfo() {
 					.get(`/api/v1/user/customer/shipping-info/`)
 					.auth(userToken, { type: 'bearer' });
 				response.should.have.status(StatusCodes.NOT_FOUND);
-				response.body.should.be.an('array');
 				let shippingInfos = response.body;
 				shippingInfos.should.be.empty;
 			}

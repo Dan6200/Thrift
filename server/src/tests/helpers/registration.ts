@@ -20,7 +20,7 @@ export default async function registration() {
 		const responseObject = response.body;
 		responseObject.should.have.property('token');
 		const { token } = responseObject;
-		token.should.not.be.deep.equal(lastToken);
+		token.should.not.be.equal(lastToken);
 		await users.push(token);
 		lastUser = newUser;
 		lastToken = token;

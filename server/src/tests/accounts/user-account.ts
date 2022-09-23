@@ -11,6 +11,7 @@ import {
 	patchUserPassword,
 	registration,
 } from 'tests/helpers';
+import deleteUser from 'tests/helpers/deleteUser';
 
 chai.use(chaiHttp).should();
 
@@ -35,17 +36,7 @@ export default function testUserAccount() {
 		it("it should update the user's password", patchUserPassword);
 	});
 	describe('/DELETE user account', () => {
-		it("it should delete the user's account", async () => {
-			const userTokens: string[] = await users.getUserTokens();
-			userTokens.should.not.be.empty;
-			for (const userToken of userTokens) {
-				const response = await chai
-					.request(application)
-					.delete('/api/v1/user')
-					.auth(userToken, { type: 'bearer' });
-				response.should.have.status(StatusCodes.OK);
-			}
-		});
+		it("it should delete the user's account", deleteUser);
 	});
 	describe('/GET user', () => {
 		it(`it should fail to retrieve the User account`, async () => {

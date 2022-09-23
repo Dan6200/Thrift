@@ -1,7 +1,10 @@
+import chai from 'chai';
+import chaiHttp from 'chai-http';
 import { application } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { newUsers, users } from 'tests/authentication/user-data';
 
+chai.use(chaiHttp).should();
 export default async function registration() {
 	let lastUser: Object = {},
 		lastToken: string = '';

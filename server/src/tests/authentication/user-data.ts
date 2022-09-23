@@ -1,7 +1,7 @@
 // Note do not convert to camelCase, keep at hyphen-separated.
 // For efficiency and to reduce complexity when sending the data to the database.
 // Programmatically converting to hyphen-separated for a large table can be expensive
-const newUsers: Array<Object> = [
+const newUsers: Array<object> = [
 	{
 		first_name: 'Ebuka',
 		last_name: 'Eze',
@@ -42,7 +42,7 @@ const newUsers: Array<Object> = [
 	},
 ];
 
-const loginUsers: Array<Object> = [
+const loginUsers: Array<object> = [
 	{
 		email: 'ebukachibueze5489@gmail.com',
 		password: 'EbukaDa1!',
@@ -77,7 +77,7 @@ const users: Users = {
 	},
 };
 
-const updateUser: Array<Object> = [
+const updateUser: Array<object> = [
 	{
 		dob: '1995-12-31',
 		last_name: 'Joyce',
@@ -97,7 +97,7 @@ const updateUser: Array<Object> = [
 	},
 ];
 
-const updateUserPassword: Array<Object> = [
+const updateUserPassword: Array<object> = [
 	{ password: '236!A15HA04', new_password: 'jayafd3245XF*!&$' },
 	{ password: '123AishaBaggy9384', new_password: '2t295AishaBaby$<5%>!' },
 	{ password: '236!A15HA04', new_password: 'sgsdlaWEWRsdf23@#%#@' },

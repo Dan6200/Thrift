@@ -28,24 +28,12 @@ export default async function testShippingInfo() {
 	});
 
 	// Testing the shipping route
-	let AddressId: Array<string> = [];
+	let addressIds: Array<string> = [];
 	describe('/POST shipping info', () => {
-		it('it should create a shipping info for the customer', async () => {
-			let count = 0;
-			const userTokens: string[] = await users.getUserTokens();
-			userTokens.should.not.be.empty;
-			for (const userToken of userTokens) {
-				const response = await chai
-					.request(application)
-					.post('/api/v1/user/customer/shipping-info')
-					.send(newShippingData[count++])
-					.auth(userToken, { type: 'bearer' });
-				response.should.have.status(StatusCodes.CREATED);
-				response.body.should.have.property('addressId');
-				response.body.addressId.should.be.a('string');
-				AddressId.push(response.body.addressId);
-			}
-		});
+		it(
+			'it should create a shipping info for the customer',
+			postShipping.bind(addressIds)
+		);
 	});
 	describe('/GET shipping info', () => {
 		it(`it should retrieve the customer shipping account`, async () => {
@@ -57,7 +45,7 @@ export default async function testShippingInfo() {
 					.request(application)
 					.get(
 						`/api/v1/user/customer/shipping-info/${
-							AddressId[count++]
+							addressIds[count++]
 						}`
 					)
 					.auth(userToken, { type: 'bearer' });
@@ -92,7 +80,7 @@ export default async function testShippingInfo() {
 				const response = await chai
 					.request(application)
 					.put(
-						`/api/v1/user/customer/shipping-info/${AddressId[count]}`
+						`/api/v1/user/customer/shipping-info/${addressIds[count]}`
 					)
 					.send(updateShippingData[count++])
 					.auth(userToken, { type: 'bearer' });
@@ -111,7 +99,7 @@ export default async function testShippingInfo() {
 					.request(application)
 					.delete(
 						`/api/v1/user/customer/shipping-info/${
-							AddressId[count++]
+							addressIds[count++]
 						}`
 					)
 					.auth(userToken, { type: 'bearer' });
@@ -129,7 +117,7 @@ export default async function testShippingInfo() {
 					.request(application)
 					.get(
 						`/api/v1/user/customer/shipping-info/${
-							AddressId[count++]
+							addressIds[count++]
 						}`
 					)
 					.auth(userToken, { type: 'bearer' });

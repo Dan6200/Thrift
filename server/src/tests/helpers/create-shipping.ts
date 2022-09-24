@@ -2,6 +2,9 @@ import application from 'application';
 import { StatusCodes } from 'http-status-codes';
 import { newShippingData } from 'tests/accounts/customer-account/shipping-data';
 import { users } from 'tests/authentication/user-data';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+chai.use(chaiHttp).should();
 
 export default async (addressIds: string[]) => {
 	let count = 0;

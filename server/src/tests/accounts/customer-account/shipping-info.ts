@@ -32,7 +32,7 @@ export default async function testShippingInfo() {
 	describe('/POST shipping info', () => {
 		it(
 			'it should create a shipping info for the customer',
-			createShipping.bind(addressIds)
+			createShipping.bind(null, addressIds)
 		);
 	});
 	describe('/GET shipping info', () => {

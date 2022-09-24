@@ -59,6 +59,7 @@ const createShippingInfo = async (
 			'Invalid Data Schema: ' + validData.error.message
 		);
 	const shippingData = validData.value;
+	console.log(shippingData);
 	await db.query(
 		`insert into shipping_info(
 			customer_id,

@@ -11,7 +11,7 @@ import {
 } from 'accounts/customer-account/shipping-data';
 import { ShippingInfoSchemaDB } from 'app-schema/customer/shipping';
 import db from 'db';
-import { registration } from 'tests/helpers';
+import { createShipping, registration } from 'tests/helpers';
 
 chai.use(chaiHttp).should();
 
@@ -32,7 +32,7 @@ export default async function testShippingInfo() {
 	describe('/POST shipping info', () => {
 		it(
 			'it should create a shipping info for the customer',
-			postShipping.bind(addressIds)
+			createShipping.bind(addressIds)
 		);
 	});
 	describe('/GET shipping info', () => {

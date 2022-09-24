@@ -1,8 +1,6 @@
 import 'express-async-errors';
-import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { StatusCodes } from 'http-status-codes';
 import { newUsers, users } from 'authentication/user-data';
 import db from 'db';
 import {

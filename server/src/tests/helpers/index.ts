@@ -5,6 +5,7 @@ import getDeletedUser from './get-deleted-user';
 import patchUser from './patch-user';
 import patchUserPassword from './patch-user-password';
 import deleteUser from './delete-user';
+import createShipping from './create-shipping';
 
 export {
 	registration,
@@ -14,4 +15,5 @@ export {
 	patchUserPassword,
 	deleteUser,
 	getDeletedUser,
+	createShipping,
 };

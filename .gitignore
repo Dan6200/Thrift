@@ -9,3 +9,4 @@ todo*
 *build/
 *bundle.js
 *.sh
+*.vim

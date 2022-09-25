@@ -1,17 +1,20 @@
 import 'express-async-errors';
-import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import joi from 'joi';
-import { StatusCodes } from 'http-status-codes';
 import { newUsers, users } from 'authentication/user-data';
-import {
-	newShippingData,
-	updateShippingData,
-} from 'accounts/customer-account/shipping-data';
-import { ShippingInfoSchemaDB } from 'app-schema/customer/shipping';
 import db from 'db';
-import { createShipping, registration } from 'tests/helpers';
+import {
+	createShipping,
+	deleteShipping,
+	deleteUser,
+	getAllDeletedShipping,
+	getAllShipping,
+	getDeletedShipping,
+	getDeletedUser,
+	getShipping,
+	registration,
+	updateShipping,
+} from 'tests/helpers';
 
 chai.use(chaiHttp).should();
 
@@ -22,6 +25,7 @@ export default async function testShippingInfo() {
 		// clears the user token array
 		await users.clear();
 	});
+
 	// Testing the register route
 	describe('/POST user: Registration', () => {
 		it(`it should register ${newUsers.length} new users`, registration);
@@ -36,136 +40,47 @@ export default async function testShippingInfo() {
 		);
 	});
 	describe('/GET shipping info', () => {
-		it(`it should retrieve the customer shipping account`, async () => {
-			const userTokens: string[] = await users.getUserTokens();
-			let count = 0;
-			userTokens.should.not.be.empty;
-			for (const userToken of userTokens) {
-				const response: any = await chai
-					.request(application)
-					.get(
-						`/api/v1/user/customer/shipping-info/${
-							addressIds[count++]
-						}`
-					)
-					.auth(userToken, { type: 'bearer' });
-				response.should.have.status(StatusCodes.OK);
-				joi.assert(response.body, ShippingInfoSchemaDB);
-			}
-		});
+		it(
+			`it should retrieve the customer shipping account`,
+			getShipping.bind(null, addressIds)
+		);
 	});
 	describe('/GET all shipping info', () => {
-		it(`it should retrieve all the customer shipping accounts`, async () => {
-			const userTokens: string[] = await users.getUserTokens();
-			userTokens.should.not.be.empty;
-			for (const userToken of userTokens) {
-				const response = await chai
-					.request(application)
-					.get(`/api/v1/user/customer/shipping-info/`)
-					.auth(userToken, { type: 'bearer' });
-				response.should.have.status(StatusCodes.OK);
-				response.body.should.be.an('array');
-				let shippingInfos = response.body;
-				shippingInfos.should.not.be.empty;
-				joi.assert(shippingInfos[0], ShippingInfoSchemaDB);
-			}
-		});
+		it(
+			`it should retrieve all the customer shipping accounts`,
+			getAllShipping
+		);
 	});
 	describe('/PUT shipping info', () => {
-		it('it should update the shipping info for the user', async () => {
-			let count = 0;
-			const userTokens: string[] = await users.getUserTokens();
-			userTokens.should.not.be.empty;
-			for (const userToken of userTokens) {
-				const response = await chai
-					.request(application)
-					.put(
-						`/api/v1/user/customer/shipping-info/${addressIds[count]}`
-					)
-					.send(updateShippingData[count++])
-					.auth(userToken, { type: 'bearer' });
-				response.should.have.status(StatusCodes.OK);
-				joi.assert(response.body, ShippingInfoSchemaDB);
-			}
-		});
+		it(
+			'it should update the shipping info for the user',
+			updateShipping.bind(null, addressIds)
+		);
 	});
 	describe('/DELETE shipping info', () => {
-		it('it should delete the shipping info', async () => {
-			let count = 0;
-			const userTokens: string[] = await users.getUserTokens();
-			userTokens.should.not.be.empty;
-			for (const userToken of userTokens) {
-				const response = await chai
-					.request(application)
-					.delete(
-						`/api/v1/user/customer/shipping-info/${
-							addressIds[count++]
-						}`
-					)
-					.auth(userToken, { type: 'bearer' });
-				response.should.have.status(StatusCodes.NO_CONTENT);
-			}
-		});
+		it(
+			'it should delete the shipping info',
+			deleteShipping.bind(null, addressIds)
+		);
 	});
 	describe('/GET shipping info', () => {
-		it(`it should fail to retrieve the customer shipping account`, async () => {
-			let count = 0;
-			const userTokens: string[] = await users.getUserTokens();
-			userTokens.should.not.be.empty;
-			for (const userToken of userTokens) {
-				const response: any = await chai
-					.request(application)
-					.get(
-						`/api/v1/user/customer/shipping-info/${
-							addressIds[count++]
-						}`
-					)
-					.auth(userToken, { type: 'bearer' });
-				response.should.have.status(StatusCodes.NOT_FOUND);
-			}
-		});
+		it(
+			`it should fail to retrieve the customer shipping account`,
+			getDeletedShipping.bind(null, addressIds)
+		);
 	});
 	describe('/GET all shipping info', () => {
-		it(`it should fail to retrieve all the customer shipping accounts`, async () => {
-			const userTokens: string[] = await users.getUserTokens();
-			userTokens.should.not.be.empty;
-			for (const userToken of userTokens) {
-				const response = await chai
-					.request(application)
-					.get(`/api/v1/user/customer/shipping-info/`)
-					.auth(userToken, { type: 'bearer' });
-				response.should.have.status(StatusCodes.NOT_FOUND);
-				let shippingInfos = response.body;
-				shippingInfos.should.be.empty;
-			}
-		});
+		it(
+			`it should fail to retrieve all the customer shipping accounts`,
+			getAllDeletedShipping
+		);
 	});
 
 	// Delete user account
 	describe('/DELETE user account', () => {
-		it('it should delete the user account', async () => {
-			const userTokens: string[] = await users.getUserTokens();
-			userTokens.should.not.be.empty;
-			for (const userToken of userTokens) {
-				const response = await chai
-					.request(application)
-					.delete('/api/v1/user')
-					.auth(userToken, { type: 'bearer' });
-				response.should.have.status(StatusCodes.OK);
-			}
-		});
+		it("it should delete the user's account", deleteUser);
 	});
 	describe('/GET user', () => {
-		it(`it should fail to retrieve the User account`, async () => {
-			const userTokens: string[] = await users.getUserTokens();
-			userTokens.should.not.be.empty;
-			for (const userToken of userTokens) {
-				const response = await chai
-					.request(application)
-					.get('/api/v1/user')
-					.auth(userToken, { type: 'bearer' });
-				response.should.have.status(StatusCodes.NOT_FOUND);
-			}
-		});
+		it(`it should retrieve the User account`, getDeletedUser);
 	});
 }

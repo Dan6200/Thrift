@@ -1,3 +1,4 @@
+//vim mark
 import 'dotenv/config';
 import 'express-async-errors';
 import express, { Express } from 'express';
@@ -42,7 +43,7 @@ application.use(morgan('dev'));
 // routes
 application.use('/api/v1/auth', authRouter);
 application.use('/api/v1/user', authenticateUser, userAccountRouter);
-application.use('/api/v1/user/vendor/shops', authenticateUser, shopRouter);
+application.use('/api/v1/user/vendor/shop', authenticateUser, shopRouter);
 application.use(
 	'/api/v1/user/customer/shipping-info',
 	authenticateUser,

@@ -5,18 +5,18 @@ import { newUsers, users } from 'authentication/user-data';
 import db from 'db';
 import registration from 'tests/helpers/registration';
 import {
-	createShipping,
-	getShipping,
-	getAllShipping,
-	updateShipping,
-	deleteShipping,
-	getDeletedShipping,
-	getAllDeletedShipping,
-} from 'tests/helpers/shipping';
+	createShop,
+	getShop,
+	getAllShop,
+	updateShop,
+	deleteShop,
+	getDeletedShop,
+	getAllDeletedShop,
+} from 'tests/helpers/shop';
 import { deleteUser, getDeletedUser } from 'tests/helpers/user';
 chai.use(chaiHttp).should();
 
-export default async function testShippingInfo() {
+export default async function testShop() {
 	before(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
@@ -29,48 +29,42 @@ export default async function testShippingInfo() {
 		it(`it should register ${newUsers.length} new users`, registration);
 	});
 
-	// Testing the shipping route
-	let addressIds: Array<string> = [];
-	describe('/POST shipping info', () => {
+	// Testing the shop route
+	let shopIds: Array<string> = [];
+	describe('/POST shop', () => {
 		it(
-			'it should create a shipping info for the customer',
-			createShipping.bind(null, addressIds)
+			'it should create a shop for the customer',
+			createShop.bind(null, shopIds)
 		);
 	});
-	describe('/GET shipping info', () => {
+	describe('/GET shop', () => {
 		it(
-			`it should retrieve the customer shipping account`,
-			getShipping.bind(null, addressIds)
+			`it should retrieve the customer shop account`,
+			getShop.bind(null, shopIds)
 		);
 	});
-	describe('/GET all shipping info', () => {
+	describe('/GET all shop', () => {
+		it(`it should retrieve all the customer shop accounts`, getAllShop);
+	});
+	describe('/PUT shop', () => {
 		it(
-			`it should retrieve all the customer shipping accounts`,
-			getAllShipping
+			'it should update the shop for the user',
+			updateShop.bind(null, shopIds)
 		);
 	});
-	describe('/PUT shipping info', () => {
+	describe('/DELETE shop', () => {
+		it('it should delete the shop', deleteShop.bind(null, shopIds));
+	});
+	describe('/GET shop', () => {
 		it(
-			'it should update the shipping info for the user',
-			updateShipping.bind(null, addressIds)
+			`it should fail to retrieve the customer shop account`,
+			getDeletedShop.bind(null, shopIds)
 		);
 	});
-	describe('/DELETE shipping info', () => {
+	describe('/GET all shop', () => {
 		it(
-			'it should delete the shipping info',
-			deleteShipping.bind(null, addressIds)
-		);
-	});
-	describe('/GET shipping info', () => {
-		it(
-			`it should fail to retrieve the customer shipping account`,
-			getDeletedShipping.bind(null, addressIds)
-		);
-	});
-	describe('/GET all shipping info', () => {
-		it(
-			`it should fail to retrieve all the customer shipping accounts`,
-			getAllDeletedShipping
+			`it should fail to retrieve all the customer shop accounts`,
+			getAllDeletedShop
 		);
 	});
 

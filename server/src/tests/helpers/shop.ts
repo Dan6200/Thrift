@@ -7,7 +7,7 @@ import {
 import { users } from 'tests/authentication/user-data';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { ShopSchema } from 'app-schema/vendor/shop';
+import { ShopSchemaDB } from 'app-schema/vendor/shop';
 import joi from 'joi';
 chai.use(chaiHttp).should();
 
@@ -44,7 +44,7 @@ const getShop = async (shopIds: string[]) => {
 			.get(`/api/v1/user/vendor/shop/${shopIds[count++]}`)
 			.auth(userToken, { type: 'bearer' });
 		response.should.have.status(StatusCodes.OK);
-		joi.assert(response.body, ShopSchema);
+		joi.assert(response.body, ShopSchemaDB);
 	}
 };
 
@@ -60,7 +60,7 @@ const getAllShop = async () => {
 		response.body.should.be.an('array');
 		let shopInfos = response.body;
 		shopInfos.should.not.be.empty;
-		joi.assert(shopInfos[0], ShopSchema);
+		joi.assert(shopInfos[0], ShopSchemaDB);
 	}
 };
 
@@ -75,7 +75,7 @@ const updateShop = async (shopIds: string[]) => {
 			.send(updateShopData[count++])
 			.auth(userToken, { type: 'bearer' });
 		response.should.have.status(StatusCodes.OK);
-		joi.assert(response.body, ShopSchema);
+		joi.assert(response.body, ShopSchemaDB);
 	}
 };
 

@@ -14,6 +14,7 @@ import {
 } from 'app-schema/customer/shipping';
 import assert from 'node:assert/strict';
 import { QueryResult } from 'pg';
+import log from 'tests/helpers/log';
 
 const selectShippingInfo = `
 select 
@@ -52,8 +53,10 @@ const createShippingInfo = async (
 		[customerId, ...Object.values(shippingData)]
 	);
 	let dbQuery: QueryResult = await db.query(selectShippingInfo);
-	console.log(dbQuery);
-	let shippingInfo = dbQuery.rows[dbQuery.rowCount];
+	let { rowCount }: { rowCount: number } = dbQuery;
+	let lastInsert = rowCount ? rowCount - 1 : rowCount;
+	assert.ok(lastInsert >= 0 && lastInsert < rowCount);
+	let shippingInfo = dbQuery.rows[lastInsert];
 	joi.assert(shippingInfo, ShippingInfoSchemaDB);
 	response.status(StatusCodes.CREATED).send(shippingInfo);
 };

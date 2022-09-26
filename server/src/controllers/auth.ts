@@ -1,12 +1,14 @@
-import { Request, Response } from 'express';
+import assert from 'node:assert/strict';
 import db from 'db';
-import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, UnauthenticatedError } from 'errors';
+import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 // import validatePhoneNumber from 'security/validate-phone';
 // import validateEmail from 'security/validate-email';
-import { hashPassword, validatePassword } from 'security/password';
-import { createToken } from 'security/create-token';
 import { UserDataSchemaRequest } from 'app-schema/users';
+import { QueryResult } from 'pg';
+import { createToken } from 'security/create-token';
+import { hashPassword, validatePassword } from 'security/password';
 // TODO: IP address
 // https://github.com/neekware/fullerstack/tree/main/libs/nax-ipware
 
@@ -61,9 +63,13 @@ const register = async (request: Request, response: Response) => {
 		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
 		Object.values(userData)
 	);
-	let result: any = await db.query('select user_id from user_account'),
-		lastInsert: any = result.rowCount - 1,
-		userId: string = result.rows[lastInsert].user_id,
+	let dbQuery: QueryResult = await db.query(
+		'select user_id from user_account'
+	);
+	let { rowCount }: { rowCount: number } = dbQuery;
+	let lastInsert = rowCount ? rowCount - 1 : rowCount;
+	assert.ok(lastInsert >= 0 && lastInsert < rowCount);
+	const userId: string = dbQuery.rows[lastInsert].user_id,
 		token: string = createToken(userId);
 	response.status(StatusCodes.CREATED).json({
 		token,

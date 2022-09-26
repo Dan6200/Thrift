@@ -7,7 +7,6 @@ import { loginUsers, users } from 'tests/authentication/user-data';
 chai.use(chaiHttp).should();
 export default async function login() {
 	let lastUser: Object = {},
-		lastToken: string = '',
 		noOfUsers = loginUsers.length;
 	for (let i = 0; i < noOfUsers; i++) {
 		let user = loginUsers[i];
@@ -21,9 +20,7 @@ export default async function login() {
 		const responseObject = response.body;
 		responseObject.should.have.property('token');
 		const { token } = responseObject;
-		token.should.not.be.equal(lastToken);
 		await users.push(token);
 		lastUser = user;
-		lastToken = token;
 	}
 }

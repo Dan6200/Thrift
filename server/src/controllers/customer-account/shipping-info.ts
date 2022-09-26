@@ -14,7 +14,7 @@ import {
 } from 'app-schema/customer/shipping';
 import assert from 'node:assert/strict';
 
-const selectShippingInfoWithCustomer = `
+const selectShippingInfo = `
 select 
 	address_id,
 	recepient_first_name,
@@ -24,19 +24,7 @@ select
 	delivery_contact,
 	delivery_instructions,
 	is_primary
-from shipping_info where customer_id=$1`;
-
-const selectShippingInfoWithAddress = `
-select 
-	address_id,
-	recepient_first_name,
-	recepient_last_name,
-	street,
-	postal_code,
-	delivery_contact,
-	delivery_instructions,
-	is_primary
-from shipping_info where address_id=$1`;
+from shipping_info`;
 
 const createShippingInfo = async (
 	request: RequestWithPayload,
@@ -59,7 +47,6 @@ const createShippingInfo = async (
 			'Invalid Data Schema: ' + validData.error.message
 		);
 	const shippingData = validData.value;
-	console.log(shippingData);
 	await db.query(
 		`insert into shipping_info(
 			customer_id,
@@ -74,12 +61,11 @@ const createShippingInfo = async (
 		[customerId, ...Object.values(shippingData)]
 	);
 	let lastInsert = rowCount;
-	let addressId: string = (
-		await db.query('select address_id from shipping_info')
-	).rows[lastInsert].address_id;
-	response.status(StatusCodes.CREATED).send({
-		addressId,
-	});
+	let shippingInfo: object = (await db.query(selectShippingInfo)).rows[
+		lastInsert
+	];
+	joi.assert(shippingInfo, ShippingInfoSchemaDB);
+	response.status(StatusCodes.CREATED).send(shippingInfo);
 };
 
 const getAllShippingInfo = async (
@@ -88,7 +74,9 @@ const getAllShippingInfo = async (
 ) => {
 	const { userId: customerId } = request.user;
 	const shippingInfos = (
-		await db.query(selectShippingInfoWithCustomer, [customerId])
+		await db.query(selectShippingInfo + ' where customer_id=$1', [
+			customerId,
+		])
 	).rows;
 	assert.ok(Array.isArray(shippingInfos));
 	if (shippingInfos.length === 0)
@@ -106,7 +94,7 @@ const getShippingInfo = async (
 	const { addressId } = request.params;
 	if (!addressId) throw new BadRequestError('Id parameter not available');
 	const shippingInfo = (
-		await db.query(selectShippingInfoWithAddress, [addressId])
+		await db.query(selectShippingInfo + ' where address_id=$1', [addressId])
 	).rows[0];
 	if (!shippingInfo)
 		return response
@@ -135,7 +123,7 @@ const updateShippingInfo = async (
 		[addressId, ...data]
 	);
 	const shippingInfo = (
-		await db.query(selectShippingInfoWithAddress, [addressId])
+		await db.query(selectShippingInfo + ' where address_id=$1', [addressId])
 	).rows[0];
 	joi.assert(shippingInfo, ShippingInfoSchemaDB);
 	if (!shippingInfo)

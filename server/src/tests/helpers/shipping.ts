@@ -22,9 +22,9 @@ const createShipping = async (addressIds: string[]) => {
 			.send(newShippingData[count++])
 			.auth(userToken, { type: 'bearer' });
 		response.should.have.status(StatusCodes.CREATED);
-		response.body.should.have.property('addressId');
-		response.body.addressId.should.be.a('string');
-		addressIds.push(response.body.addressId);
+		response.body.should.have.property('address_id');
+		response.body.address_id.should.be.a('string');
+		addressIds.push(response.body.address_id);
 	}
 };
 

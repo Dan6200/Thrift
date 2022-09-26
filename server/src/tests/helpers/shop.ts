@@ -11,6 +11,12 @@ import { ShopSchema } from 'app-schema/vendor/shop';
 import joi from 'joi';
 chai.use(chaiHttp).should();
 
+//shop_id
+//shop_name
+//vendor_id
+//date_created
+//banner_image_path
+
 const createShop = async (shopIds: string[]) => {
 	let count = 0;
 	const userTokens: string[] = await users.getUserTokens();

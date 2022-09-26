@@ -1,6 +1,3 @@
-// Note do not convert to camelCase, keep at hyphen-separated.
-// For efficiency and to reduce complexity when sending the data to the database.
-// Programmatically converting to hyphen-separated for a large table can be expensive
 const newUsers: Array<object> = [
 	{
 		first_name: 'Ebuka',

@@ -43,9 +43,9 @@ drop table if exists shop cascade cascade;
 
 create table if not exists shop (
 	shop_id					bigserial			primary key,	
-	shop_name				varchar			not null 	default 	'My Shop',
-	vendor_id 				bigserial				references	user_account	on	delete	cascade,
-	date_created			date			not null		default		current_date,
+	shop_name				varchar				not null 	default 	'My Shop',
+	vendor_id 				bigserial			not null 	unique 		references	user_account	on	delete	cascade,
+	date_created			date				not null	default		current_date,
 	banner_image_path			varchar
 );
 
@@ -63,10 +63,19 @@ create table if not exists product (
 	is_flagship			boolean				not null
 );
 
+drop table if exists product_media cascade;
+
+create table if not exists product_media (
+	product_id					bigserial				primary key		references	product	on	delete	cascade,
+	main_product_image			varchar,
+	sec_product_image1			varchar,
+	sec_product_image2			varchar,
+	sec_product_image3			varchar,
+	product_video				varchar
+);
+
 /* TODO: review this shopping cart functionality to see if it is rigorous enough
 	...this is would be a transaction type of operation. */
-drop table if exists shopping_cart cascade;
-
 drop table if exists shopping_cart cascade;
 
 create table if not exists shopping_cart (
@@ -131,15 +140,4 @@ create table if not exists vendor_review (
 	transaction_id			bigserial				not null		references	transaction on delete cascade,
 	rating					numeric(3,2)	not null,
 	customer_remark			varchar
-);
-
-drop table if exists product_media cascade;
-
-create table if not exists product_media (
-	product_id					bigserial				primary key		references	product	on	delete	cascade,
-	main_product_image			varchar,
-	sec_product_image1			varchar,
-	sec_product_image2			varchar,
-	sec_product_image3			varchar,
-	product_video				varchar
 );

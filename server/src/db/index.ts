@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Pool, QueryResult } from 'pg';
 
 const pool = new Pool({
 	user: process.env.PGUSER,
@@ -16,13 +16,13 @@ export default {
 	lastQuery: null,
 
 	// Copied from official docs, slightly modified
-	async query(text: string, params?: Array<any>): Promise<any> {
-		const start = Date.now();
+	async query(text: string, params?: Array<any>): Promise<QueryResult<any>> {
+		// const start = Date.now();
 		setTimeout(function () {
 			this.lastQuery = arguments;
 		});
 		const res = await pool.query(text, params);
-		const duration = Date.now() - start;
+		// const duration = Date.now() - start;
 		// console.log('\nexecuted query', { text, duration, rows: res.rowCount });
 		return res;
 	},

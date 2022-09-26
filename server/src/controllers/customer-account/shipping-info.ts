@@ -13,6 +13,7 @@ import {
 	ShippingInfoSchemaDB,
 } from 'app-schema/customer/shipping';
 import assert from 'node:assert/strict';
+import { QueryResult } from 'pg';
 
 const selectShippingInfo = `
 select 
@@ -31,16 +32,6 @@ const createShippingInfo = async (
 	response: Response
 ) => {
 	const { userId: customerId }: RequestUserPayload = request.user;
-	// limit amount of shippingInfo to 5...
-	const LIMIT = 5;
-	const rowCount = (await db.query('select * from shipping_info')).rowCount;
-	assert.ok(typeof rowCount === 'number');
-	// TODO: make sure only one is_primary value exists
-	let overLimit: boolean = LIMIT <= rowCount;
-	if (overLimit)
-		throw new BadRequestError(
-			`Each customer is limited to only ${LIMIT} shipping addresses`
-		);
 	const validData = ShippingInfoSchemaReq.validate(request.body);
 	if (validData.error)
 		throw new BadRequestError(
@@ -60,10 +51,9 @@ const createShippingInfo = async (
 		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
 		[customerId, ...Object.values(shippingData)]
 	);
-	let lastInsert = rowCount;
-	let shippingInfo: object = (await db.query(selectShippingInfo)).rows[
-		lastInsert
-	];
+	let dbQuery: QueryResult = await db.query(selectShippingInfo);
+	console.log(dbQuery);
+	let shippingInfo = dbQuery.rows[dbQuery.rowCount];
 	joi.assert(shippingInfo, ShippingInfoSchemaDB);
 	response.status(StatusCodes.CREATED).send(shippingInfo);
 };
@@ -73,7 +63,7 @@ const getAllShippingInfo = async (
 	response: Response
 ) => {
 	const { userId: customerId } = request.user;
-	const shippingInfos = (
+	const shippingInfos: any[] = (
 		await db.query(selectShippingInfo + ' where customer_id=$1', [
 			customerId,
 		])

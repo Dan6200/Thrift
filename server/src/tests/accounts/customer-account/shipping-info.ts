@@ -3,19 +3,17 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { newUsers, users } from 'authentication/user-data';
 import db from 'db';
+import registration from 'tests/helpers/registration';
 import {
 	createShipping,
-	deleteShipping,
-	deleteUser,
-	getAllDeletedShipping,
-	getAllShipping,
-	getDeletedShipping,
-	getDeletedUser,
 	getShipping,
-	registration,
+	getAllShipping,
 	updateShipping,
-} from 'tests/helpers';
-
+	deleteShipping,
+	getDeletedShipping,
+	getAllDeletedShipping,
+} from 'tests/helpers/shipping';
+import { deleteUser, getDeletedUser } from 'tests/helpers/user';
 chai.use(chaiHttp).should();
 
 export default async function testShippingInfo() {

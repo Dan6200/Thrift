@@ -1,6 +1,7 @@
 import db from 'db';
 import { newUsers, loginUsers, users } from 'authentication/user-data';
-import { login, registration } from 'tests/helpers';
+import registration from 'tests/helpers/registration';
+import login from 'tests/helpers/login';
 
 export default async function (): Promise<void> {
 	before(async () => {

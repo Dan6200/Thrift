@@ -3,15 +3,14 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { newUsers, users } from 'authentication/user-data';
 import db from 'db';
+import registration from 'tests/helpers/registration';
 import {
-	deleteUser,
-	getDeletedUser,
 	getUser,
 	patchUser,
 	patchUserPassword,
-	registration,
-} from 'tests/helpers';
-
+	deleteUser,
+	getDeletedUser,
+} from 'tests/helpers/user';
 chai.use(chaiHttp).should();
 
 export default function testUserAccount() {

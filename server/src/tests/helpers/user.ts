@@ -48,11 +48,9 @@ async function patchUserPassword() {
 	const userTokens: string[] = await users.getUserTokens();
 	userTokens.should.not.be.empty;
 	// console.log(`\nusers: %O\n%s`, userTokens, __filename);
-	let lastPassword = {},
-		lastToken = '';
+	let lastPassword = {};
 	for (const userToken of userTokens) {
 		// console.log(updatedUser[n], __filename);
-		userToken.should.not.equal(lastToken);
 		let password = updateUserPassword[n++];
 		password.should.not.deep.equal(lastPassword);
 		const response = await chai
@@ -61,7 +59,6 @@ async function patchUserPassword() {
 			.send(password)
 			.auth(userToken, { type: 'bearer' });
 		response.should.have.status(StatusCodes.NO_CONTENT);
-		lastToken = userToken;
 		lastPassword = password;
 	}
 }

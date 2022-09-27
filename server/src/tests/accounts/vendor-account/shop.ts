@@ -20,6 +20,7 @@ export default async function testShop() {
 	before(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
+		await db.query('delete from shop');
 		// clears the user token array
 		await users.clear();
 	});

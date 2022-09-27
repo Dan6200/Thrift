@@ -15,9 +15,15 @@ import log from 'tests/helpers/log';
 const createShop = async (request: RequestWithPayload, response: Response) => {
 	const { userId: vendorId }: RequestUserPayload = request.user;
 	// limit amount of shops to 5...
+	log(vendorId, __filename);
 	const LIMIT = 5;
 	let recordCount: number = parseInt(
-		(await db.query('select count(vendor_id) from shop')).rows[0].count
+		(
+			await db.query(
+				'select count(vendor_id) from shop where vendor_id=$1',
+				[vendorId]
+			)
+		).rows[0].count
 	);
 	assert.ok(typeof recordCount === 'number');
 	let overLimit: boolean = LIMIT <= recordCount;
@@ -34,14 +40,14 @@ const createShop = async (request: RequestWithPayload, response: Response) => {
 			vendor_id,
 			shop_name,
 			banner_image_path
-		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
+		) values ($1, $2, $3)`,
 		[vendorId, ...Object.values(shopData)]
 	);
-	let shop = (await db.query('select * from shop')).rows[0];
+	let shop = (
+		await db.query('select * from shop where vendor_id=$1', [vendorId])
+	).rows[0];
 	Joi.assert(shop, ShopSchemaDB);
-	response.status(StatusCodes.CREATED).json({
-		shop,
-	});
+	response.status(StatusCodes.CREATED).json(shop);
 };
 
 const getAllShops = async (request: RequestWithPayload, response: Response) => {
@@ -100,7 +106,7 @@ const deleteShop = async (request: RequestWithPayload, response: Response) => {
 			where shop_id=$1`,
 		[shopId]
 	);
-	response.status(StatusCodes.OK).send();
+	response.status(StatusCodes.NO_CONTENT).send();
 };
 
 // stopped @

@@ -9,6 +9,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { ShopSchemaDB } from 'app-schema/vendor/shop';
 import joi from 'joi';
+import log from './log';
 chai.use(chaiHttp).should();
 
 //shop_id
@@ -28,9 +29,10 @@ const createShop = async (shopIds: string[]) => {
 			.send(newShopData[count++])
 			.auth(userToken, { type: 'bearer' });
 		response.should.have.status(StatusCodes.CREATED);
-		response.body.should.have.property('shopId');
-		response.body.shopId.should.be.a('string');
-		shopIds.push(response.body.shopId);
+		response.body.should.have.property('shop_id');
+		response.body.shop_id.should.be.a('string');
+		log(userToken, response.body);
+		shopIds.push(response.body.shop_id);
 	}
 };
 
@@ -84,6 +86,7 @@ const deleteShop = async (shopIds: string[]) => {
 	const userTokens: string[] = await users.getUserTokens();
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
+		log(shopIds[count]);
 		const response = await chai
 			.request(application)
 			.delete(`/api/v1/user/vendor/shop/${shopIds[count++]}`)

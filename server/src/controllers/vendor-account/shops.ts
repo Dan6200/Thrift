@@ -43,9 +43,11 @@ const createShop = async (request: RequestWithPayload, response: Response) => {
 		) values ($1, $2, $3)`,
 		[vendorId, ...Object.values(shopData)]
 	);
-	let shop = (
+	let shops = (
 		await db.query('select * from shop where vendor_id=$1', [vendorId])
-	).rows[0];
+	).rows;
+	assert.ok(shops.length === 1);
+	let shop = shops[0];
 	Joi.assert(shop, ShopSchemaDB);
 	response.status(StatusCodes.CREATED).json(shop);
 };

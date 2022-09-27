@@ -32,11 +32,16 @@ const getShipping = async (addressIds: string[]) => {
 	const userTokens: string[] = await users.getUserTokens();
 	let count = 0;
 	userTokens.should.not.be.empty;
+	let lastAddressId = '';
 	for (const userToken of userTokens) {
+		let addressId = addressIds[count];
+		addressId.should.not.equal(lastAddressId);
 		const response: any = await chai
 			.request(application)
-			.get(`/api/v1/user/customer/shipping-info/${addressIds[count++]}`)
+			.get(`/api/v1/user/customer/shipping-info/${addressId}`)
 			.auth(userToken, { type: 'bearer' });
+		lastAddressId = addressId;
+		count++;
 		response.should.have.status(StatusCodes.OK);
 		joi.assert(response.body, ShippingInfoSchemaDB);
 	}
@@ -62,12 +67,17 @@ const updateShipping = async (addressIds: string[]) => {
 	let count = 0;
 	const userTokens: string[] = await users.getUserTokens();
 	userTokens.should.not.be.empty;
+	let lastAddressId = '';
 	for (const userToken of userTokens) {
+		let addressId = addressIds[count];
+		addressId.should.not.equal(lastAddressId);
 		const response = await chai
 			.request(application)
-			.put(`/api/v1/user/customer/shipping-info/${addressIds[count]}`)
-			.send(updateShippingData[count++])
+			.put(`/api/v1/user/customer/shipping-info/${addressId}`)
+			.send(updateShippingData[count])
 			.auth(userToken, { type: 'bearer' });
+		lastAddressId = addressId;
+		count++;
 		response.should.have.status(StatusCodes.OK);
 		joi.assert(response.body, ShippingInfoSchemaDB);
 	}
@@ -77,13 +87,16 @@ const deleteShipping = async (addressIds: string[]) => {
 	let count = 0;
 	const userTokens: string[] = await users.getUserTokens();
 	userTokens.should.not.be.empty;
+	let lastAddressId = '';
 	for (const userToken of userTokens) {
+		let addressId = addressIds[count];
+		addressId.should.not.equal(lastAddressId);
 		const response = await chai
 			.request(application)
-			.delete(
-				`/api/v1/user/customer/shipping-info/${addressIds[count++]}`
-			)
+			.delete(`/api/v1/user/customer/shipping-info/${addressId}`)
 			.auth(userToken, { type: 'bearer' });
+		lastAddressId = addressId;
+		count++;
 		response.should.have.status(StatusCodes.NO_CONTENT);
 	}
 };
@@ -92,11 +105,16 @@ const getDeletedShipping = async (addressIds: string[]) => {
 	const userTokens: string[] = await users.getUserTokens();
 	let count = 0;
 	userTokens.should.not.be.empty;
+	let lastAddressId = '';
 	for (const userToken of userTokens) {
+		let addressId = addressIds[count];
+		addressId.should.not.equal(lastAddressId);
 		const response: any = await chai
 			.request(application)
-			.get(`/api/v1/user/customer/shipping-info/${addressIds[count++]}`)
+			.get(`/api/v1/user/customer/shipping-info/${addressId}`)
 			.auth(userToken, { type: 'bearer' });
+		lastAddressId = addressId;
+		count++;
 		response.should.have.status(StatusCodes.NOT_FOUND);
 		response.body.should.be.empty;
 	}

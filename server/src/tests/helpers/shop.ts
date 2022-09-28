@@ -31,7 +31,6 @@ const createShop = async (shopIds: string[]) => {
 		response.should.have.status(StatusCodes.CREATED);
 		response.body.should.have.property('shop_id');
 		response.body.shop_id.should.be.a('string');
-		log(userToken, response.body);
 		shopIds.push(response.body.shop_id);
 		count++;
 	}

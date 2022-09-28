@@ -74,6 +74,6 @@ export default async function testShop() {
 		it("it should delete the user's account", deleteUser);
 	});
 	describe('/GET user', () => {
-		it(`it should retrieve the User account`, getDeletedUser);
+		it(`it should fail to retrieve the User account`, getDeletedUser);
 	});
 }

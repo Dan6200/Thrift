@@ -1,4 +1,5 @@
 //vim mark
+// TODO: Implement customer and vendor account routes
 import 'dotenv/config';
 import 'express-async-errors';
 import express, { Express } from 'express';

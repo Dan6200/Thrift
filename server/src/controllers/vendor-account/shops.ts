@@ -15,7 +15,6 @@ import log from 'tests/helpers/log';
 const createShop = async (request: RequestWithPayload, response: Response) => {
 	const { userId: vendorId }: RequestUserPayload = request.user;
 	// limit amount of shops to 5...
-	log(vendorId, __filename);
 	const LIMIT = 5;
 	let recordCount: number = parseInt(
 		(
@@ -78,7 +77,6 @@ const getShop = async (request: RequestWithPayload, response: Response) => {
 };
 
 const updateShop = async (request: RequestWithPayload, response: Response) => {
-	// TODO: change to put
 	const { shopId } = request.params;
 	let validData = ShopSchemaReq.validate(request.body);
 	if (validData.error)

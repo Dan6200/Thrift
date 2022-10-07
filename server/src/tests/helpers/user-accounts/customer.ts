@@ -12,6 +12,27 @@ import {
 
 chai.use(chaiHttp).should();
 
+/* TODO: make these functions more modular... for the next route we'll work on
+  async function processRoute({
+		name,
+  		tokens,
+  		server,
+  		verb,
+  		url,
+  		data,
+  		constraints
+  		}) {
+  			tokens.should.not.be.empty;
+  			for (let token of tokens) {
+  				let response;
+				response = await chai.request(server)[verb](url)
+  				if (data) response = await response.send(data)
+				response = await response.auth(token, {type: 'bearer' });
+  				constraints(response);
+  			}
+  		}
+ */
+
 async function getUser() {
 	const userTokens: string[] = await users.getUserTokens();
 	userTokens.should.not.be.empty;

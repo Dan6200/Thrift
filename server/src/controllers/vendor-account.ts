@@ -1,14 +1,22 @@
+import { Response } from 'express';
+import { RequestWithPayload } from 'types-and-interfaces/request';
 import db from 'db';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, NotFoundError } from 'errors/';
 
-const createVendorAccount = async (request, response) => {
+const createVendorAccount = async (
+	request: RequestWithPayload,
+	response: Response
+) => {
 	const { userId } = request.user;
 	await db.query(`insert into vendor values ($1)`, [userId]);
 	response.status(StatusCodes.CREATED).send();
 };
 
-const getVendorAccount = async (request, response) => {
+const getVendorAccount = async (
+	request: RequestWithPayload,
+	response: Response
+) => {
 	const { userId } = request.user;
 	const res = (
 		await db.query(
@@ -17,13 +25,22 @@ const getVendorAccount = async (request, response) => {
 			[userId]
 		)
 	).rows[0];
-	if (!res) throw new NotFoundError('Vendor account cannot be found');
+	if (!res)
+		return response
+			.status(StatusCodes.NOT_FOUND)
+			.send({ msg: 'User does not have a vendor account' });
 	response.status(StatusCodes.OK).send();
 };
 
-const updateVendorAccount = async (request, response) => {};
+const updateVendorAccount = async (
+	_request: RequestWithPayload,
+	_response: Response
+) => {};
 
-const deleteVendorAccount = async (request, response) => {
+const deleteVendorAccount = async (
+	request: RequestWithPayload,
+	response: Response
+) => {
 	const { userId } = request.user;
 	await db.query(
 		`delete from vendor

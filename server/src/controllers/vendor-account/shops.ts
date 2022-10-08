@@ -109,5 +109,4 @@ const deleteShop = async (request: RequestWithPayload, response: Response) => {
 	response.status(StatusCodes.NO_CONTENT).send();
 };
 
-// stopped @
 export { createShop, getShop, getAllShops, updateShop, deleteShop };

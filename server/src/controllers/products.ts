@@ -3,22 +3,25 @@ import { StatusCodes } from 'http-status-codes';
 import { BadRequestError } from 'errors/';
 import 'helper-functions';
 import processRoute from './helpers/processRoute';
+import { ProductSchemaReq } from 'app-schema/product';
 const fileName = require('path').basename(__filename);
 
-let insertProductTable = `insert into product values (title, category, description, list_price, net_price, vendor_id)`,
-	dbQueries = [
-		async ({ userId }) => {
-			await db.query(insertProductTable, [userId]);
-		},
-	],
-	validateBody = (data: object): object => {
-		const validData = ProductSchemaReq.validate(data);
-		if (validData.error)
-			throw new BadRequestError(
-				'Invalid Data Schema: ' + validData.error.message
-			);
-		return validData.value;
-	};
+let insertProductTable = `insert into product values (title, category, description, list_price, net_price, vendor_id)`;
+
+let dbQueries = [
+	async ({ userId }) => {
+		await db.query(insertProductTable, [userId]);
+	},
+];
+
+let validateBody = (data: object): object => {
+	const validData = ProductSchemaReq.validate(data);
+	if (validData.error)
+		throw new BadRequestError(
+			'Invalid Data Schema: ' + validData.error.message
+		);
+	return validData.value;
+};
 
 let createProduct = processRoute(dbQueries, validateBody);
 /*

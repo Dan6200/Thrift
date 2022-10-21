@@ -1,4 +1,5 @@
-//vim mark
+// vim mark
+// cspell:ignore middlewares
 // TODO: Implement customer and vendor account routes
 import 'dotenv/config';
 import 'express-async-errors';
@@ -11,9 +12,9 @@ import morgan from 'morgan';
 // routers
 import authRouter from 'auth';
 import userAccountRouter from 'user-account';
-import shippingInfoRouter from 'customer-account/shipping-info';
-import shopRouter from 'vendor-account/shops';
-// import productsRouter from 'routes/products';
+import shippingInfoRouter from 'user-account/customer-account/shipping-info';
+import shopRouter from 'user-account/vendor-account/shops';
+// import productsRouter from 'routes/vendor-account/shops/products';
 // middlewares
 import errorHandlerMiddleware from 'error-handler';
 import authenticateUser from 'middleware/authentication';
@@ -42,14 +43,28 @@ application.use(cors());
 application.use(xss());
 application.use(morgan('dev'));
 // routes
+// public
 application.use('/api/v1/auth', authRouter);
+// user account
 application.use('/api/v1/user', authenticateUser, userAccountRouter);
+// vendor Account
+//application.use('/api/v1/user/vendor', authenticateUser, vendorAccountRouter);
 application.use('/api/v1/user/vendor/shop', authenticateUser, shopRouter);
+/*
+application.use(
+	'/api/v1/user/vendor/shop/products',
+	authenticateUser,
+	productsRouter
+);
+*/
+// customer account
+// application.use('/api/v1/user/vendor', authenticateUser, vendorAccountRouter);
 application.use(
 	'/api/v1/user/customer/shipping-info',
 	authenticateUser,
 	shippingInfoRouter
 );
+// helper middlewares
 application.use(errorHandlerMiddleware);
 application.use(notFound);
 export default application;

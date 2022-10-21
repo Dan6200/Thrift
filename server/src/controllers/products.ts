@@ -6,7 +6,14 @@ import processRoute from './helpers/processRoute';
 import { ProductSchemaReq } from 'app-schema/product';
 const fileName = require('path').basename(__filename);
 
-let insertProductTable = `insert into product values (title, category, description, list_price, net_price, vendor_id)`;
+let insertProductTable = `insert into product values (
+	title,
+	category,
+	description,
+	list_price,
+	net_price,
+	vendor_id
+)`;
 
 let dbQueries = [
 	async ({ userId }) => {

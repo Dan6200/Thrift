@@ -4,9 +4,9 @@ import { RequestWithPayload } from 'types-and-interfaces/request';
 // TODO: scrutinize this function
 export default (
 	dbQueries: ((sqlData: object) => any)[],
-	validateBody: (data: object) => any,
-	validateResult: (data: object) => any,
-	processData: (data: object) => any
+	validateBody: ((data: object) => any) | null,
+	validateResult: ((data: object) => any) | null,
+	processData: ((data: object) => any) | null
 ) => {
 	return async (request: RequestWithPayload, response: Response) => {
 		let userId: string | null = null,
@@ -16,14 +16,18 @@ export default (
 				data: {},
 			};
 		userId = request.user.userId;
-		if (request.body) requestData = validateBody(request.body);
+		// Validate request data
+		if (request.body && validateBody)
+			requestData = validateBody(request.body);
+		// Process the requestData
+		if (processData) requestData = processData(requestData);
 		for (let query of dbQueries) {
 			result = query({
 				userId,
 				params: request.params,
 				requestData,
 			});
-			result && validateResult(result);
+			result && validateResult && validateResult(result);
 		}
 		return response.status(result.status).send(result.data);
 	};

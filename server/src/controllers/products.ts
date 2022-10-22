@@ -17,7 +17,7 @@ let insertProductTable = `insert into product values (
 
 let dbQueries = [
 	async ({ userId }) => {
-		await db.query(insertProductTable, [userId]);
+		return await db.query(insertProductTable, [userId]);
 	},
 ];
 

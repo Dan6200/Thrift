@@ -7,12 +7,12 @@ import {
 	updateCustomerAccount,
 	deleteCustomerAccount,
 	getDeletedCustomerAccount,
-} from 'tests/helpers/user/customer-account';
+} from 'tests/helpers/user/customer';
 chai.use(chaiHttp).should();
 
 export default function testCustomerAccount() {
 	describe('/POST customer account', () => {
-		it(`it should create new customer accounts`, createCustomerAccount);
+		it(`it should create new customer account`, createCustomerAccount);
 	});
 	describe('/GET customer account', () => {
 		it(`it should retrieve the customer account`, getCustomerAccount);
@@ -21,7 +21,7 @@ export default function testCustomerAccount() {
 		it('it should update the customer account info', updateCustomerAccount);
 	});
 	describe('/DELETE customer account', () => {
-		it("it should delete the customer's account", deleteCustomerAccount);
+		it('it should delete the customer account', deleteCustomerAccount);
 	});
 	describe('/GET customer', () => {
 		it(

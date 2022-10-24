@@ -1,9 +1,6 @@
 import 'express-async-errors';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { newUsers, users } from 'authentication/user-data';
-import db from 'db';
-import registration from 'tests/helpers/registration';
 import {
 	createCustomerAccount,
 	getCustomerAccount,
@@ -13,29 +10,22 @@ import {
 } from 'tests/helpers/user/customer-account';
 chai.use(chaiHttp).should();
 
-export default function testUserAccount() {
-	before(async () => {
-		// deletes all entries from user_account
-		await db.query('delete from user_account');
-		// clears the user token array
-		await users.clear();
+export default function testCustomerAccount() {
+	describe('/POST customer account', () => {
+		it(`it should create new customer accounts`, createCustomerAccount);
 	});
-	// Testing the register route
-	describe('/POST user: Registration', () => {
-		it(`it should register ${newUsers.length} new users`, registration);
+	describe('/GET customer account', () => {
+		it(`it should retrieve the customer account`, getCustomerAccount);
 	});
-	describe('/GET user', () => {
-		it(`it should retrieve the User account`, getCustomerAccount);
+	describe('/PATCH customer account', () => {
+		it('it should update the customer account info', updateCustomerAccount);
 	});
-	describe('/PATCH user', () => {
-		it('it should update the user info', updateCustomerAccount);
+	describe('/DELETE customer account', () => {
+		it("it should delete the customer's account", deleteCustomerAccount);
 	});
-	describe('/DELETE user account', () => {
-		it("it should delete the user's account", deleteCustomerAccount);
-	});
-	describe('/GET user', () => {
+	describe('/GET customer', () => {
 		it(
-			`it should fail to retrieve the User account`,
+			`it should fail to retrieve the customer account`,
 			getDeletedCustomerAccount
 		);
 	});

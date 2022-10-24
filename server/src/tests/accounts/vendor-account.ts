@@ -4,8 +4,8 @@ import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
-import { updatedUser, users } from 'authentication/user-data';
 import path from 'path';
+import { users } from 'tests/authentication/user-data';
 
 chai.use(chaiHttp);
 const should = chai.should(),

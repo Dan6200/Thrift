@@ -1,0 +1,29 @@
+{
+	"name": "marketplace",
+	"version": "1.0.0",
+	"description": "",
+	"main": "server/src/server.ts",
+	"private": true,
+	"workspaces": [
+		"server",
+		"client"
+	],
+	"scripts": {
+		"start": "cd server && ts-node -p tsconfig.json",
+		"test": "ts-mocha --exit --paths tests -p tsconfig.json tests/*.ts",
+		"dev": "concurrently --kill-others \"cd client && yarn tailwindcss -i view/input.css -o dist/output.css --watch\" \"cd client && yarn webpack\" \"cd server && nodemon src/server.ts\""
+	},
+	"license": "ISC",
+	"author": "daniel <danielnyong66@gmail.com>",
+	"repository": "https://github.com/Dan6200/Thrift.git",
+	"devDependencies": {
+		"concurrently": "^7.3.0",
+		"ts-mocha": "^10.0.0",
+		"mocha": "^10.X.X"
+	},
+	"dependencies": {
+		"@types/pg": "^8.6.5",
+		"nodemon": "^2.0.19",
+		"typescript": "^4.8.2"
+	}
+}

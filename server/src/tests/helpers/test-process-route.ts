@@ -9,7 +9,7 @@ interface routeProcessorParams {
 	verb: string;
 	url?: string;
 	data?: object;
-	constraints?: (response: any) => Promise<void>;
+	checks?: (response: any) => Promise<void>;
 }
 
 export default function ({
@@ -18,7 +18,7 @@ export default function ({
 	verb,
 	url,
 	data,
-	constraints,
+	checks,
 }: routeProcessorParams) {
 	return async () => {
 		if (tokens) {
@@ -28,7 +28,7 @@ export default function ({
 				response = await chai.request(server)[verb](url);
 				if (data) response = await response.send(data);
 				response = await response.auth(token, { type: 'bearer' });
-				constraints && constraints(response);
+				checks && checks(response);
 			}
 		}
 	};

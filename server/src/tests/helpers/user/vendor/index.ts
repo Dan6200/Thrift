@@ -15,8 +15,6 @@ async function createVendor() {
 			.post('/api/v1/user/vendor')
 			.auth(userToken, { type: 'bearer' });
 		response.should.have.status(StatusCodes.OK);
-		response.body.should.be.an('object');
-		response.body.should.have.property('vendor_id');
 	}
 }
 
@@ -29,8 +27,6 @@ async function getVendor() {
 			.get('/api/v1/user/vendor')
 			.auth(userToken, { type: 'bearer' });
 		response.should.have.status(StatusCodes.OK);
-		response.body.should.be.an('object');
-		response.body.should.have.property('vendor_id');
 	}
 }
 

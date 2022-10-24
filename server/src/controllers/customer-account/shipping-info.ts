@@ -14,7 +14,6 @@ import {
 } from 'app-schema/customer/shipping';
 import assert from 'node:assert/strict';
 import { QueryResult } from 'pg';
-import log from 'tests/helpers/log';
 
 const selectShippingInfo = `
 select 

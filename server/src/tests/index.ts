@@ -1,7 +1,7 @@
 import Authentication from 'authentication';
-import testUserAccount from 'accounts/user-account';
-import testShippingInfo from 'accounts/customer-account/shipping-info';
-import testShop from './accounts/vendor-account/shop';
+import testUserAccount from 'accounts/user';
+import testShippingInfo from 'accounts/user/customer-account/shipping-info';
+import testShop from './accounts/user/vendor-account/shop';
 
 describe('Authentication Routes', Authentication);
 describe('User Account Routes', testUserAccount);

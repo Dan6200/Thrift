@@ -1,15 +1,14 @@
 import application from 'application';
 import { StatusCodes } from 'http-status-codes';
-import {
-	newShopData,
-	updateShopData,
-} from 'tests/accounts/vendor-account/shop-data';
 import { users } from 'tests/authentication/user-data';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { ShopSchemaDB } from 'app-schema/vendor/shop';
 import joi from 'joi';
-import log from './log';
+import {
+	newShopData,
+	updateShopData,
+} from 'tests/accounts/user/vendor-account/shop-data';
 chai.use(chaiHttp).should();
 
 //shop_id

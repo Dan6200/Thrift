@@ -3,7 +3,6 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { newUsers, users } from 'authentication/user-data';
 import db from 'db';
-import registration from 'tests/helpers/registration';
 import {
 	getUser,
 	patchUser,
@@ -11,6 +10,8 @@ import {
 	deleteUser,
 	getDeletedUser,
 } from 'tests/helpers/user';
+import registration from 'tests/helpers/auth/registration';
+
 chai.use(chaiHttp).should();
 
 export default function testUserAccount() {

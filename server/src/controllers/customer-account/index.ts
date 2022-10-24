@@ -1,4 +1,4 @@
-import processRoute from 'controllers/helpers/processRoute';
+import processRoute from 'controllers/helpers/process-route';
 import db from 'db';
 
 const CRUDdbQueries = [

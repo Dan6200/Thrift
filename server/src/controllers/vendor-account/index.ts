@@ -1,21 +1,22 @@
-import processRoute from 'controllers/helpers/processRoute';
+import processRoute from 'controllers/helpers/process-route';
 import db from 'db';
-import { BadRequestError } from 'errors';
 
-// might need to be a 2d array, one for each route controller, and then the queries made by each controller
-let dbQueries = [
-	async ({ userId }) => {
-		await db.query(``, [userId]);
-	},
+const CRUDdbQueries = [
+	[
+		({ userId }) => {
+			db.query(`insert into vendor values($1)`, userId);
+		},
+	],
+	[
+		({ userId }) => {
+			db.query(`select from vendor where vendor_id=$1`, userId);
+		},
+	],
+	[() => db.query(`delete from vendor`)],
 ];
 
-let validateBody = (data: object): object => {
-	const validData = VendorSchemaReq.validate(data);
-	if (validData.error)
-		throw new BadRequestError(
-			'Invalid Data Schema: ' + validData.error.message
-		);
-	return validData.value;
-};
+let createVendorAccount = processRoute(CRUDdbQueries[0]),
+	getVendorAccount = processRoute(CRUDdbQueries[1]),
+	deleteVendorAccount = processRoute(CRUDdbQueries[2]);
 
-let createVendor = processRoute(dbQueries, validateBody);
+export { createVendorAccount, getVendorAccount, deleteVendorAccount };

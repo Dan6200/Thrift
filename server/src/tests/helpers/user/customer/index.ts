@@ -2,16 +2,11 @@ import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
-import { users } from 'tests/authentication/user-data';
 import testProcessRoute from 'tests/helpers/test-process-route';
-
+import path from 'path';
 chai.use(chaiHttp).should();
 
-let userTokens: string[] = [];
-users.getUserTokens().then((tokens) => (userTokens = tokens));
-
 const routeParams = {
-	tokens: userTokens,
 	server: application,
 	url: '/api/v1/user/customer',
 };
@@ -19,25 +14,25 @@ const routeParams = {
 const testCreateCustomer = testProcessRoute({
 	...routeParams,
 	verb: 'post',
-	checks: (response) => response.should.have.status(StatusCodes.CREATED),
+	statusCode: StatusCodes.CREATED,
 });
 
 const testGetCustomer = testProcessRoute({
 	...routeParams,
 	verb: 'get',
-	checks: (response) => response.should.have.status(StatusCodes.NO_CONTENT),
+	statusCode: StatusCodes.NO_CONTENT,
 });
 
 const testDeleteCustomer = testProcessRoute({
 	...routeParams,
 	verb: 'delete',
-	checks: (response) => response.should.have.status(StatusCodes.NO_CONTENT),
+	statusCode: StatusCodes.NO_CONTENT,
 });
 
 const testGetDeletedCustomer = testProcessRoute({
 	...routeParams,
 	verb: 'get',
-	checks: (response) => response.should.have.status(StatusCodes.NOT_FOUND),
+	statusCode: StatusCodes.NOT_FOUND,
 });
 
 export {

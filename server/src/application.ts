@@ -12,6 +12,7 @@ import morgan from 'morgan';
 // routers
 import authRouter from 'auth';
 import userAccountRouter from 'user-account';
+import customerAccountRouter from 'user-account/customer-account';
 import shippingInfoRouter from 'user-account/customer-account/shipping-info';
 import shopRouter from 'user-account/vendor-account/shops';
 // import productsRouter from 'routes/vendor-account/shops/products';
@@ -58,7 +59,11 @@ application.use(
 );
 */
 // customer account
-// application.use('/api/v1/user/vendor', authenticateUser, vendorAccountRouter);
+application.use(
+	'/api/v1/user/customer',
+	authenticateUser,
+	customerAccountRouter
+);
 application.use(
 	'/api/v1/user/customer/shipping-info',
 	authenticateUser,

@@ -1,3 +1,4 @@
+/*
 import { users } from 'tests/authentication/user-data';
 import testProcessRoute from './testProcessRoute';
 
@@ -140,3 +141,4 @@ export {
 	getDeletedShipping,
 	getAllDeletedShipping,
 };
+*/

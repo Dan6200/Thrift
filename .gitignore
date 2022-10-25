@@ -4,7 +4,7 @@
 */.env
 todo*
 .prettierrc.json
-.vscode/*
+**/.vscode/*
 *built/
 *build/
 *bundle.js

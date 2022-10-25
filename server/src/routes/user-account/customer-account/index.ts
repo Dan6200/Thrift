@@ -1,8 +1,16 @@
 import express from 'express';
 const router = express.Router();
 
-import { getCustomerAccount } from 'customer-account';
+import {
+	createCustomerAccount,
+	getCustomerAccount,
+	deleteCustomerAccount,
+} from 'customer-account';
 
-router.route('/').get(getCustomerAccount);
+router
+	.route('/')
+	.post(createCustomerAccount)
+	.get(getCustomerAccount)
+	.delete(deleteCustomerAccount);
 
 export default router;

@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "server/src/server.ts",
 	"private": true,
+	"type": "module",
 	"workspaces": [
 		"server",
 		"client"

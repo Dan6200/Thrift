@@ -22,29 +22,29 @@ export default function testCustomerAccount() {
 	});
 
 	// Testing the register route
-	describe('/POST user: Registration', () => {
+	describe('\n\n/POST user: Registration', () => {
 		it(`it should register ${newUsers.length} new users`, registration);
 	});
-	describe('/POST customer account', () => {
+	describe('\n\n/POST customer account', () => {
 		it(`it should create new customer account`, testCreateCustomer);
 	});
-	describe('/GET customer account', () => {
+	describe('\n\n/GET customer account', () => {
 		it(`it should retrieve the customer account`, testGetCustomer);
 	});
-	describe('/DELETE customer account', () => {
+	describe('\n\n/DELETE customer account', () => {
 		it('it should delete the customer account', testDeleteCustomer);
 	});
-	describe('/GET customer', () => {
+	describe('\n\n/GET customer', () => {
 		it(
 			`it should fail to retrieve the customer account`,
 			testGetDeletedCustomer
 		);
 	});
 	// Delete user account
-	describe('/DELETE user account', () => {
+	describe('\n\n/DELETE user account', () => {
 		it("it should delete the user's account", deleteUser);
 	});
-	describe('/GET user', () => {
+	describe('\n\n/GET user', () => {
 		it(`it should retrieve the User account`, getDeletedUser);
 	});
 }

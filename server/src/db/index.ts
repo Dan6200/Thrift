@@ -1,5 +1,4 @@
 import { Pool, QueryResult } from 'pg';
-import log from 'tests/helpers/log';
 
 const pool = new Pool({
 	user: process.env.PGUSER,
@@ -25,7 +24,7 @@ export default {
 		const res = await pool.query(text, params);
 		const duration = Date.now() - start;
 		/*
-		log('\nexecuted query', {
+		console.log('\nexecuted query', {
 			text,
 			duration,
 			rows: res.rowCount,

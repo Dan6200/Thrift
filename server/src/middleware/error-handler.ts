@@ -8,7 +8,7 @@ const errorHandlerMiddleware = async (err, req, res, next) => {
 		msg: err.message || 'Something went wrong try again later',
 	};
 	console.log(err);
-	// console.log('last query was ', db.lastQuery);
+	console.log('last query was ', db.lastQuery);
 	if (customError.statusCode === StatusCodes.NOT_FOUND)
 		res.status(customError.statusCode).send(
 			`<h1>

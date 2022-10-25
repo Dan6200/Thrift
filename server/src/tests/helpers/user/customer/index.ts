@@ -20,7 +20,7 @@ const testCreateCustomer = testProcessRoute({
 const testGetCustomer = testProcessRoute({
 	...routeParams,
 	verb: 'get',
-	statusCode: StatusCodes.NO_CONTENT,
+	statusCode: StatusCodes.OK,
 });
 
 const testDeleteCustomer = testProcessRoute({

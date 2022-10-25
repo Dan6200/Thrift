@@ -4,7 +4,6 @@ import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
-import path from 'path';
 import { users } from 'tests/authentication/user-data';
 
 chai.use(chaiHttp);

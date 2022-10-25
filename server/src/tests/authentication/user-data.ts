@@ -7,8 +7,6 @@ const newUsers: Array<object> = [
 		password: 'EbukaDa1!',
 		dob: '1999-07-01',
 		country: 'Nigeria',
-		is_vendor: false,
-		is_customer: true,
 		ip_address: '168.89.91.45',
 	},
 
@@ -20,8 +18,6 @@ const newUsers: Array<object> = [
 		password: '123AishaBaggy9384',
 		dob: '2000-10-19',
 		country: 'Nigeria',
-		is_vendor: true,
-		is_customer: false,
 		ip_address: '198.79.78.23',
 	},
 
@@ -33,8 +29,6 @@ const newUsers: Array<object> = [
 		password: '236!A15HA04',
 		dob: '2004-6-23',
 		country: 'Nigeria',
-		is_vendor: false,
-		is_customer: true,
 		ip_address: '198.79.78.45',
 	},
 ];
@@ -79,19 +73,15 @@ const updateUser: Array<object> = [
 	{
 		dob: '1995-12-31',
 		last_name: 'Joyce',
-		is_vendor: false,
 	},
 
 	{
 		email: 'mustymomo1019@yahoo.com',
 		phone: '2348063248197',
-		is_vendor: false,
 	},
 
 	{
 		dob: '1995-12-31',
-		is_vendor: true,
-		is_customer: true,
 	},
 ];
 

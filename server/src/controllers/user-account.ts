@@ -29,9 +29,7 @@ let getUserAccount = async (
 				phone,
 				ip_address,
 				country,
-				dob,
-				is_vendor,
-				is_customer
+				dob
 			from user_account 
 			where user_id = $1`,
 		[userId]
@@ -72,9 +70,7 @@ let updateUserAccount = async (
 				phone,
 				ip_address,
 				country,
-				dob,
-				is_vendor,
-				is_customer
+				dob
 			from user_account 
 			where user_id = $1`,
 		[userId]

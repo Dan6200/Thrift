@@ -37,7 +37,7 @@ create table if not exists vendor (
 	vendor_id		bigserial 		primary key	references	user_account	on	delete	cascade
 );
 
-drop table if exists shop cascade cascade;
+drop table if exists shop cascade;
 
 create table if not exists shop (
 	shop_id					bigserial			primary key,	

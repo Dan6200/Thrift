@@ -19,8 +19,6 @@ const UserDataSchemaRequest = joi
 		password: joi.string().required(),
 		dob: joi.date().required(),
 		country: joi.string(),
-		is_vendor: joi.boolean().required(),
-		is_customer: joi.boolean().required(),
 		ip_address: joi.string(),
 	})
 	.required();
@@ -45,8 +43,6 @@ const UserDataSchemaDB = joi
 			.alternatives()
 			.try(joi.date().required(), joi.string().required()),
 		country: joi.string(),
-		is_vendor: joi.boolean().required(),
-		is_customer: joi.boolean().required(),
 		ip_address: joi.string(),
 	})
 	.required();

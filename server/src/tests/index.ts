@@ -8,4 +8,4 @@ import testShop from './accounts/user/vendor-account/shop';
 //describe('User Account Routes', testUserAccount);
 describe('Customer Account Routes', testCustomerAccount);
 //describe('Customer Shipping Routes', testShippingInfo);
-describe('Vendor Shop Routes', testShop);
+//describe('Vendor Shop Routes', testShop);

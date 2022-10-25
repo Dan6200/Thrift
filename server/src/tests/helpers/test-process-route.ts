@@ -27,7 +27,7 @@ export default function ({
 	statusCode,
 	checks,
 }: routeProcessorParams) {
-	return async () => {
+	return async function () {
 		const tokens = await users.getUserTokens();
 		tokens.should.not.be.empty;
 		for (let token of tokens) {

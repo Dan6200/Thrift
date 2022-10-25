@@ -57,10 +57,8 @@ const register = async (request: Request, response: Response) => {
 			password,
 			dob,
 			country,
-			is_vendor,
-			is_customer,
 			ip_address
-		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
 		Object.values(userData)
 	);
 	let dbQuery: QueryResult = await db.query(

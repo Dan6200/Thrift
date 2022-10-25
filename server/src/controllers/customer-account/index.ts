@@ -22,7 +22,7 @@ const createQuery = [
 				data: 'Route does not exit',
 			};
 		return {
-			status: 404,
+			status: 200,
 			data: result.rows[result.rowCount - 1],
 		};
 	};
@@ -31,11 +31,13 @@ let createCustomerAccount = processRoute(createQuery, { status: CREATED }),
 	getCustomerAccount = processRoute(
 		readQuery,
 		{ status: OK },
+		undefined,
 		validateResult
 	),
 	deleteCustomerAccount = processRoute(
 		deleteQuery,
 		{ status: NO_CONTENT },
+		undefined,
 		validateResult
 	);
 

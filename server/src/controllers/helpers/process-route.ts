@@ -6,28 +6,32 @@ import path from 'path';
 
 // TODO: scrutinize this function
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
-type responseData = {
+type ResponseMsg = {
 	status: typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND;
 	data?: string | object;
 };
 export default (
 	dbQueries: ((sqlData: object) => any)[],
-	{ status, data }: responseData,
+	responseMsg: ResponseMsg,
 	validateBody?: (data: object) => any,
-	validateResult?: (data: object) => responseData,
+	validateResult?: (data: object) => ResponseMsg,
 	processData?: (data: object) => any
 ) => {
 	// return the route processor middleware
 	return async (request: RequestWithPayload, response: Response) => {
 		// variables
 		let result: any,
-			{ userId } = request.user;
+			{ userId } = request.user,
+			status: number,
+			data: object | string | undefined;
+		// set status code and response data
 		// Validate request data
-		if (request.body && validateBody)
+		if (request.body && validateBody) {
 			// validateBody returns error status code and message if body is invalid
-			({ status, data } = validateBody(request.body));
-		// check for errors
-		if (status >= 400) return response.status(status).send(data);
+			const { status, data } = validateBody(request.body);
+			// check for errors
+			if (status >= 400) return response.status(status).send(data);
+		}
 		// Process the requestData
 		if (processData && data) data = processData(data as object);
 		for (let query of dbQueries) {
@@ -36,6 +40,7 @@ export default (
 				params: request.params,
 				data,
 			});
+			debugger;
 			if (result && validateResult) {
 				// validateBody returns error status code and message if data is invalid
 				({ status, data } = validateResult(result));
@@ -43,6 +48,8 @@ export default (
 				if (status >= 400) return response.status(status).send(data);
 			}
 		}
-		response.status(status).send(data);
+		// Update the data with the same status code
+		// TODO:choose a better name for this
+		response.status(responseMsg.status).send(data);
 	};
 };

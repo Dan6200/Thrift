@@ -64,7 +64,6 @@ const users: Users = {
 		this._user = [];
 	},
 	async getUserTokens() {
-		debugger;
 		return this._user;
 	},
 };

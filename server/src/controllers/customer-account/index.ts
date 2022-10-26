@@ -1,14 +1,8 @@
 import processRoute from 'controllers/helpers/process-route';
 import db from 'db';
+import { ResponseData, Status } from 'types-and-interfaces/routes-processor';
 import { StatusCodes } from 'http-status-codes';
-const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
-
-type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND;
-
-type responseData = {
-	status: Status;
-	data?: string | object;
-};
+const { CREATED, OK, NO_CONTENT } = StatusCodes;
 
 const createQuery = [
 		({ userId }) => db.query(`insert into customer values($1)`, [userId]),
@@ -18,7 +12,7 @@ const createQuery = [
 			db.query(`select * from customer where customer_id=$1`, [userId]),
 	],
 	deleteQuery = [() => db.query(`delete from customer`)],
-	validateResult = (result: any, status: Status): responseData => {
+	validateResult = (result: any, status: Status): ResponseData => {
 		if (result.rowCount === 0)
 			return {
 				status: 404,

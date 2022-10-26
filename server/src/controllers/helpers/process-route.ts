@@ -4,7 +4,6 @@ import { StatusCodes } from 'http-status-codes';
 import path from 'path';
 // const filename = path.join(path.basename(__dirname), path.basename(__filename));
 
-// TODO: scrutinize this function
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
 
 type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND;
@@ -43,7 +42,6 @@ export default (
 				params: request.params,
 				reqData,
 			});
-			debugger;
 			if (result && validateResult) {
 				// validateBody returns error status code and message if data is invalid
 				({ status, data } = validateResult(

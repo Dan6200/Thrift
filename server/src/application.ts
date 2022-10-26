@@ -30,6 +30,7 @@ let application: Express = express();
 application.set('views', path.resolve(__dirname, 'client/view'));
 application.set('view engine', 'pug');
 application.set('trust proxy', 1);
+/*
 application.use(
 	rateLimiter({
 		windowMs: 15 * 60 * 1000,
@@ -38,6 +39,7 @@ application.use(
 		legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 	})
 );
+*/
 application.use(express.json());
 application.use(express.static(path.resolve(__dirname, 'client')));
 application.use(helmet());

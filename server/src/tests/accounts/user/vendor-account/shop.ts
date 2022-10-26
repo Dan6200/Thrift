@@ -14,6 +14,7 @@ import {
 	getShop,
 	updateShop,
 } from 'tests/helpers/user/vendor/shop';
+import { testCreateVendor } from 'tests/helpers/user/vendor';
 chai.use(chaiHttp).should();
 
 export default async function testShop() {
@@ -28,6 +29,11 @@ export default async function testShop() {
 	// Testing the register route
 	describe('/POST user: Registration', () => {
 		it(`it should register ${newUsers.length} new users`, registration);
+	});
+
+	// create the vendor acc
+	describe('/POST vendor account', () => {
+		it(`it should create a new vendor account`, testCreateVendor);
 	});
 
 	// Testing the shop route

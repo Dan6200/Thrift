@@ -5,7 +5,7 @@ import {
 	createCustomerAccount,
 	getCustomerAccount,
 	deleteCustomerAccount,
-} from 'customer-account';
+} from 'controllers/customer-account';
 
 router
 	.route('/')

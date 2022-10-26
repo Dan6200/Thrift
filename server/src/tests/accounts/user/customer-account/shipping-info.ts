@@ -14,6 +14,7 @@ import {
 	getDeletedShipping,
 	getAllDeletedShipping,
 } from 'tests/helpers/user/customer/shipping';
+import { testCreateCustomer } from 'tests/helpers/user/customer';
 chai.use(chaiHttp).should();
 
 export default async function testShippingInfo() {
@@ -27,6 +28,11 @@ export default async function testShippingInfo() {
 	// Testing the register route
 	describe('/POST user: Registration', () => {
 		it(`it should register ${newUsers.length} new users`, registration);
+	});
+
+	// Testing the register route
+	describe('/POST customer account', () => {
+		it(`it should create new customer accounts`, testCreateCustomer);
 	});
 
 	// Testing the shipping route

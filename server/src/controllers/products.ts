@@ -92,6 +92,20 @@ let getAllProducts = processRoute(
 	validateResult
 );
 
+let updateProduct = processRoute(
+	readQuery,
+	{ status: OK },
+	validateBody,
+	validateResult
+);
+
+let deleteProduct = processRoute(
+	readQuery,
+	{ status: OK },
+	validateBody,
+	validateResult
+);
+
 let getProduct = processRoute(
 	readQuery,
 	{ status: OK },
@@ -99,4 +113,10 @@ let getProduct = processRoute(
 	validateResult
 );
 
-export { createProduct, getAllProducts, getProduct };
+export {
+	createProduct,
+	getAllProducts,
+	getProduct,
+	updateProduct,
+	deleteProduct,
+};

@@ -2,9 +2,11 @@ import db from 'db';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError } from 'errors/';
 import 'helper-functions';
-import processRoute from './helpers/processRoute';
 import { ProductSchemaReq } from 'app-schema/product';
-const fileName = require('path').basename(__filename);
+import processRoute from './helpers/process-route';
+import { ResponseData, Status } from 'types-and-interfaces/routes-processor';
+// const fileName = require('path').basename(__filename);
+const { CREATED, OK, NO_CONTENT } = StatusCodes;
 
 let insertProductTable = `insert into product values (
 	title,
@@ -15,9 +17,43 @@ let insertProductTable = `insert into product values (
 	vendor_id
 )`;
 
-let dbQueries = [
-	async ({ userId }) => {
-		return await db.query(insertProductTable, [userId]);
+const createQuery = [
+	async ({ reqData }) => {
+		// TODO: check if an insert statement returns a value
+		return await db.query(insertProductTable, [reqData]);
+	},
+	async () => {
+		return await db.query('select product_id from product');
+	},
+];
+
+const readAllQuery = [
+	async () => {
+		await db.query(`select * from product`);
+	},
+];
+
+const readQuery = [
+	async ({ params }) => {
+		let { productId } = params;
+		await db.query(`select * from product where product_id=$1`, [
+			productId,
+		]);
+	},
+];
+
+// TODO: make this a patch not put
+const updateQuery = [
+	async ({ params }) => {
+		let { productId } = params;
+		await db.query(`update product where product_id=$1`, [productId]);
+	},
+];
+
+const deleteQuery = [
+	async ({ params }) => {
+		let { productId } = params;
+		await db.query(`delete from product where product_id=$1`, [productId]);
 	},
 ];
 
@@ -30,44 +66,37 @@ let validateBody = (data: object): object => {
 	return validData.value;
 };
 
-let createProduct = processRoute(dbQueries, validateBody);
-/*
-let createProduct = async (request, response) => {
-	let { userId }: UserPayload = request.user;
-	await db.query(
-,
-		[userId]
-	);
-	response.status(StatusCodes.CREATED).json({
-		newProductId: userId,
-	});
-};
-*/
-
-let getProduct = async (request, response) => {
-	let result = (
-		await db.query(
-			`select * from product
-		where product_id=$1`,
-			[userId]
-		)
-	).rows[0];
-	if (!result)
-		response.status(StatusCodes.NOT_FOUND).send('product  cannot be found');
-	response.status(StatusCodes.OK).json({
-		productId: userId,
-	});
+let validateResult = (result: any, status: Status): ResponseData => {
+	if (result.rowCount === 0)
+		return {
+			status: 404,
+			data: { msg: 'Route does not exit' },
+		};
+	return {
+		status,
+		data: result.rows[result.rowCount - 1],
+	};
 };
 
-let updateProduct = async (request, response) => {};
+let createProduct = processRoute(
+	createQuery,
+	{ status: OK },
+	validateBody,
+	validateResult
+);
 
-let deleteProduct = async (request, response) => {
-	await db.query(
-		`delete from product
-		where product_id=$1`,
-		[userId]
-	);
-	response.status(StatusCodes.OK).end();
-};
+let getAllProducts = processRoute(
+	readAllQuery,
+	{ status: OK },
+	validateBody,
+	validateResult
+);
 
-export { createProduct, getProduct, updateProduct, deleteProduct };
+let getProduct = processRoute(
+	readQuery,
+	{ status: OK },
+	validateBody,
+	validateResult
+);
+
+export { createProduct, getAllProducts, getProduct };

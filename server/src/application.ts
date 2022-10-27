@@ -16,6 +16,7 @@ import customerAccountRouter from 'user-account/customer-account';
 import vendorAccountRouter from 'user-account/vendor-account';
 import shippingInfoRouter from 'user-account/customer-account/shipping-info';
 import shopRouter from 'user-account/vendor-account/shops';
+import productsRouter from 'user-account/vendor-account/shops/products';
 // import productsRouter from 'routes/vendor-account/shops/products';
 // middlewares
 import errorHandlerMiddleware from 'error-handler';
@@ -54,13 +55,11 @@ application.use('/api/v1/user', authenticateUser, userAccountRouter);
 // vendor Account
 application.use('/api/v1/user/vendor', authenticateUser, vendorAccountRouter);
 application.use('/api/v1/user/vendor/shop', authenticateUser, shopRouter);
-/*
 application.use(
 	'/api/v1/user/vendor/shop/products',
 	authenticateUser,
 	productsRouter
 );
-*/
 // customer account
 application.use(
 	'/api/v1/user/customer',

@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { RequestWithPayload } from 'types-and-interfaces/request';
 import { StatusCodes } from 'http-status-codes';
-import path from 'path';
+// import path from 'path';
 // const filename = path.join(path.basename(__dirname), path.basename(__filename));
 
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
@@ -28,14 +28,13 @@ export default (
 		// set status code and response data
 		// Validate request data
 		if (request.body && validateBody) {
-			// validateBody returns error status code and message if body is invalid
-			const { status, reqData } = validateBody(request.body);
-			// check for errors
-			if (status >= 400) return response.status(status).send(reqData);
+			// validateBody throws error if body is invalid
+			reqData = validateBody(request.body);
 		}
 		// Process the requestData
 		if (processData && reqData) reqData = processData(reqData as object);
 		let { status, data } = responseData;
+		// Make a database query with the request data
 		for (let query of dbQueries) {
 			result = await query({
 				userId,

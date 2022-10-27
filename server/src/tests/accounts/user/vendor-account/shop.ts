@@ -14,7 +14,11 @@ import {
 	getShop,
 	updateShop,
 } from 'tests/helpers/user/vendor/shop';
-import { testCreateVendor } from 'tests/helpers/user/vendor';
+import {
+	testCreateVendor,
+	testDeleteVendor,
+	testGetDeletedVendor,
+} from 'tests/helpers/user/vendor';
 chai.use(chaiHttp).should();
 
 export default async function testShop() {
@@ -75,6 +79,16 @@ export default async function testShop() {
 		);
 	});
 
+	// Delete vendor account
+	describe('/DELETE vendor account', () => {
+		it('it should delete the vendor account', testDeleteVendor);
+	});
+	describe('/GET vendor account', () => {
+		it(
+			`it should fail to retrieve the Vendor account`,
+			testGetDeletedVendor
+		);
+	});
 	// Delete user account
 	describe('/DELETE user account', () => {
 		it("it should delete the user's account", deleteUser);

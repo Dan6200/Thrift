@@ -14,7 +14,11 @@ import {
 	getDeletedShipping,
 	getAllDeletedShipping,
 } from 'tests/helpers/user/customer/shipping';
-import { testCreateCustomer } from 'tests/helpers/user/customer';
+import {
+	testCreateCustomer,
+	testDeleteCustomer,
+	testGetDeletedCustomer,
+} from 'tests/helpers/user/customer';
 chai.use(chaiHttp).should();
 
 export default async function testShippingInfo() {
@@ -80,7 +84,15 @@ export default async function testShippingInfo() {
 		);
 	});
 
-	// Delete user account
+	// Delete customer account
+	describe('/DELETE customer account', () => {
+		it("it should delete the customer's account", testDeleteCustomer);
+	});
+	describe('/GET customer', () => {
+		it(`it should retrieve the User account`, testGetDeletedCustomer);
+	});
+
+	// Delete customer account
 	describe('/DELETE user account', () => {
 		it("it should delete the user's account", deleteUser);
 	});

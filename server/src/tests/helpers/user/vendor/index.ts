@@ -3,7 +3,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
 import testProcessRoute from 'tests/helpers/test-process-route';
-import path from 'path';
+// import path from 'path';
 chai.use(chaiHttp).should();
 
 const routeParams = {

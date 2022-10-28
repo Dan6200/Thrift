@@ -17,6 +17,7 @@ interface routeProcessorParams {
 		| typeof NOT_FOUND;
 	data?: object;
 	checks?: (response: any) => void;
+	outputData?: object;
 }
 
 export default function ({
@@ -26,6 +27,7 @@ export default function ({
 	data,
 	statusCode,
 	checks,
+	outputData,
 }: routeProcessorParams) {
 	return async function () {
 		const tokens = await users.getUserTokens();
@@ -38,6 +40,7 @@ export default function ({
 				.auth(token, { type: 'bearer' });
 			response.should.have.status(statusCode);
 			checks && checks(response);
+			outputData = response;
 		}
 	};
 }

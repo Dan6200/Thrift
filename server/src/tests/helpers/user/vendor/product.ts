@@ -3,15 +3,19 @@ import testProcessRoute from 'tests/helpers/test-process-route';
 import { StatusCodes } from 'http-status-codes';
 const { CREATED, OK, NOT_FOUND } = StatusCodes;
 
-let outputData: any = {};
+let outputData: any = {},
+	checkId = (data: any) => {
+		data.should.have.property('product_id');
+		data.product_id.should.be.a('string');
+	};
 
 const testCreateProduct = testProcessRoute({
 	server: application,
 	verb: 'post',
 	url: '/api/v1/user/vendor/shop/products',
 	statusCode: CREATED,
-	data: undefined,
-	checks: undefined,
+	data: productData,
+	checks: checkId,
 	outputData,
 });
 
@@ -49,7 +53,7 @@ const testGetDeletedProduct = testProcessRoute({
 	server: application,
 	verb: 'get',
 	url: `/api/v1/user/vendor/shop/products/${productId}`,
-	statusCode: OK,
+	statusCode: NOT_FOUND,
 });
 
 export {

@@ -8,7 +8,7 @@
 		quantity_available: joi.number().required(),
 	*/
 
-let newProductData = [
+let productData = [
 	{
 		title: 'Heat sensitive microwaveable ceramic mug',
 		category: 'Kitchen Ceramics',
@@ -29,4 +29,4 @@ let updateProductData = [
 	},
 ];
 
-export { updateProductData, newProductData };
+export { updateProductData, productData };

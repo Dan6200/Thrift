@@ -1,6 +1,11 @@
 import application from 'application';
 import testProcessRoute from 'tests/helpers/test-process-route';
 import { StatusCodes } from 'http-status-codes';
+import {
+	productData,
+	updateProductData,
+} from 'tests/accounts/user/vendor-account/product/data';
+
 const { CREATED, OK, NOT_FOUND } = StatusCodes;
 
 let outputData: any = {},
@@ -19,7 +24,8 @@ const testCreateProduct = testProcessRoute({
 	outputData,
 });
 
-const { product_id: productId } = outputData;
+const productIds: string[] = [];
+productIds.push(outputData.product_id);
 
 const testGetAllProduct = testProcessRoute({
 	server: application,
@@ -31,7 +37,10 @@ const testGetAllProduct = testProcessRoute({
 const testGetProduct = testProcessRoute({
 	server: application,
 	verb: 'get',
-	url: `/api/v1/user/vendor/shop/products/${productId}`,
+	// TODO: this is wrong, returns an array of urls
+	url: `${productIds.map(
+		(productId) => '/api/v1/user/vendor/shop/products/' + { productId }
+	)}`,
 	statusCode: OK,
 });
 
@@ -40,6 +49,7 @@ const testUpdateProduct = testProcessRoute({
 	verb: 'put',
 	url: `/api/v1/user/vendor/shop/products/${productId}`,
 	statusCode: OK,
+	data: updateProductData,
 });
 
 const testDeleteProduct = testProcessRoute({

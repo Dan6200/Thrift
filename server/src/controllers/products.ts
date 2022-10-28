@@ -5,8 +5,9 @@ import 'helper-functions';
 import { ProductSchemaReq } from 'app-schema/product';
 import processRoute from './helpers/process-route';
 import { ResponseData, Status } from 'types-and-interfaces/routes-processor';
+import { genSqlUpdateCommands } from 'helper-functions';
 // const fileName = require('path').basename(__filename);
-const { CREATED, OK, NO_CONTENT } = StatusCodes;
+const { CREATED, OK } = StatusCodes;
 
 let insertProductTable = `insert into product (
 	title,
@@ -42,7 +43,6 @@ const readQuery = [
 	},
 ];
 
-// TODO: make this a patch not put
 const updateQuery = [
 	async ({ params, reqData }) => {
 		let { productId } = params;
@@ -91,14 +91,14 @@ let createProduct = processRoute(
 let getAllProducts = processRoute(
 	readAllQuery,
 	{ status: OK },
-	validateBody,
+	undefined,
 	validateResult
 );
 
 let getProduct = processRoute(
 	readQuery,
 	{ status: OK },
-	validateBody,
+	undefined,
 	validateResult
 );
 
@@ -112,7 +112,7 @@ let updateProduct = processRoute(
 let deleteProduct = processRoute(
 	deleteQuery,
 	{ status: OK },
-	validateBody,
+	undefined,
 	validateResult
 );
 

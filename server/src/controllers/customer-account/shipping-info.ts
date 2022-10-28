@@ -103,15 +103,9 @@ const updateShippingInfo = async (
 	const { addressId } = request.params,
 		shippingData = request.body;
 	let fields = Object.keys(shippingData),
-		data = Object.values(shippingData),
-		offset = 2;
+		data = Object.values(shippingData);
 	await db.query(
-		`${genSqlUpdateCommands(
-			'shipping_info',
-			'address_id',
-			fields,
-			offset
-		)}`,
+		`${genSqlUpdateCommands('shipping_info', 'address_id', fields)}`,
 		[addressId, ...data]
 	);
 	const shippingInfo = (

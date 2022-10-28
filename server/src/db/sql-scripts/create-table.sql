@@ -50,15 +50,26 @@ create table if not exists shop (
 drop table if exists product cascade;
 
 create table if not exists product (
-	product_id			bigserial				primary key,
+	product_id			bigserial			primary key,
 	title				varchar,
 	category			varchar,
 	description			varchar,
 	list_price			numeric(19,4),
 	net_price			numeric(19,4),
-	shop_id				bigserial					unique			not null		references	shop		on	delete	restrict,
+	shop_id				bigserial			unique			not null		references	shop		on	delete	restrict,
 	quantity_available	int					not null,
-	is_flagship			boolean				not null
+);
+
+drop table if exists flagship_product cascade;
+
+create table if not exists flagship_product (
+	product_id			bigserial			unique			not null		references	product		on	delete	restrict,
+	title				varchar,
+	category			varchar,
+	description			varchar,
+	list_price			numeric(19,4),
+	net_price			numeric(19,4),
+	quantity_available	int					not null,
 );
 
 drop table if exists product_media cascade;

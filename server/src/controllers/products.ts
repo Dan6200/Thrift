@@ -8,14 +8,14 @@ import { ResponseData, Status } from 'types-and-interfaces/routes-processor';
 // const fileName = require('path').basename(__filename);
 const { CREATED, OK, NO_CONTENT } = StatusCodes;
 
-let insertProductTable = `insert into product values (
+let insertProductTable = `insert into product (
 	title,
 	category,
 	description,
 	list_price,
 	net_price,
 	vendor_id
-)`;
+) values ($1, $2, $3, $4, $5, $6)`;
 
 const createQuery = [
 	async ({ reqData }) => {
@@ -44,9 +44,12 @@ const readQuery = [
 
 // TODO: make this a patch not put
 const updateQuery = [
-	async ({ params }) => {
+	async ({ params, reqData }) => {
 		let { productId } = params;
-		await db.query(`update product where product_id=$1`, [productId]);
+		await db.query(
+			genSqlUpdateCommands('product', productId, Object.keys(reqData)),
+			[productId]
+		);
 	},
 ];
 
@@ -80,7 +83,7 @@ let validateResult = (result: any, status: Status): ResponseData => {
 
 let createProduct = processRoute(
 	createQuery,
-	{ status: OK },
+	{ status: CREATED },
 	validateBody,
 	validateResult
 );
@@ -92,22 +95,22 @@ let getAllProducts = processRoute(
 	validateResult
 );
 
-let updateProduct = processRoute(
+let getProduct = processRoute(
 	readQuery,
+	{ status: OK },
+	validateBody,
+	validateResult
+);
+
+let updateProduct = processRoute(
+	updateQuery,
 	{ status: OK },
 	validateBody,
 	validateResult
 );
 
 let deleteProduct = processRoute(
-	readQuery,
-	{ status: OK },
-	validateBody,
-	validateResult
-);
-
-let getProduct = processRoute(
-	readQuery,
+	deleteQuery,
 	{ status: OK },
 	validateBody,
 	validateResult

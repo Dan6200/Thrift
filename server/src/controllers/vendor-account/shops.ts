@@ -84,12 +84,11 @@ const updateShop = async (request: RequestWithPayload, response: Response) => {
 		);
 	const shopData = validData.value;
 	let fields = Object.keys(shopData),
-		data = Object.values(shopData),
-		offset = 2;
-	await db.query(
-		`${genSqlUpdateCommands('shop', 'shop_id', fields, offset)}`,
-		[shopId, ...data]
-	);
+		data = Object.values(shopData);
+	await db.query(`${genSqlUpdateCommands('shop', 'shop_id', fields)}`, [
+		shopId,
+		...data,
+	]);
 	const shop = (
 		await db.query(`select * from shop where shop_id=$1`, [shopId])
 	).rows[0];

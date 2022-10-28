@@ -45,18 +45,18 @@ export default async function testShop() {
 	let shopIds: Array<string> = [];
 	describe('/POST shop', () => {
 		it(
-			'it should create a shop for the customer',
+			'it should create a shop for the vendor',
 			createShop.bind(null, shopIds)
 		);
 	});
 	describe('/GET shop', () => {
 		it(
-			`it should retrieve the customer shop account`,
+			`it should retrieve the vendor shop account`,
 			getShop.bind(null, shopIds)
 		);
 	});
 	describe('/GET all shop', () => {
-		it(`it should retrieve all the customer shop accounts`, getAllShop);
+		it(`it should retrieve all the vendor shop accounts`, getAllShop);
 	});
 	describe('/PUT shop', () => {
 		it(
@@ -69,13 +69,13 @@ export default async function testShop() {
 	});
 	describe('/GET shop', () => {
 		it(
-			`it should fail to retrieve the customer shop account`,
+			`it should fail to retrieve the vendor shop account`,
 			getDeletedShop.bind(null, shopIds)
 		);
 	});
 	describe('/GET all shop', () => {
 		it(
-			`it should fail to retrieve all the customer shop accounts`,
+			`it should fail to retrieve all the vendor shop accounts`,
 			getAllDeletedShop
 		);
 	});

@@ -56,14 +56,15 @@ create table if not exists product (
 	description			varchar,
 	list_price			numeric(19,4),
 	net_price			numeric(19,4),
-	shop_id				bigserial			unique			not null		references	shop		on	delete	restrict,
+	vendor_id 			bigserial			not null 		unique 		references	vendor	on	delete	cascade,
+	shop_id				bigserial			unique			references	shop		on	delete	cascade,
 	quantity_available	int					not null,
 );
 
 drop table if exists flagship_product cascade;
 
 create table if not exists flagship_product (
-	product_id			bigserial			unique			not null		references	product		on	delete	restrict,
+	product_id			bigserial			unique			not null		references	product		on	delete	cascade,
 	title				varchar,
 	category			varchar,
 	description			varchar,
@@ -107,10 +108,9 @@ drop table if exists transaction cascade;
 create table if not exists transaction (
 	transaction_id				bigserial			primary	key,
 	transaction_timestamp		timestamptz		not null		default	now()	unique,
-	customer_id					bigserial				not null		references	customer	on	delete	restrict,
-	vendor_id					bigserial				not null		references	vendor	on	delete	restrict,
+	customer_id					bigserial				not null,
+	vendor_id					bigserial				not null,
 	transaction_amount			numeric(19,4)	not null,
-	foreign key	(vendor_id)		references	vendor		on	delete	restrict,
 	check (customer_id <> vendor_id)
 );
 
@@ -118,14 +118,14 @@ drop table if exists transaction_item cascade;
 
 create table if not exists transaction_item (
 	item_id					bigserial			primary	key,
-	product_id				bigserial				not null		references	product		on delete	restrict,
+	product_id				bigserial				not null		references	product		on delete	cascade,
 	product_quantity		int				not null		default	1	check (product_quantity > 0)
 );
 
 drop table if exists reversed_transaction cascade;
 
 create table if not exists reversed_transaction (
-	rev_transaction_id		bigserial			primary	key	references	transaction		on	delete	restrict,
+	rev_transaction_id		bigserial			primary	key	references	transaction		on	delete	cascade,
 	rev_trans_timestamp			timestamptz		not null	default	now()	unique
 );
 

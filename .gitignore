@@ -10,3 +10,4 @@ todo*
 *bundle.js
 *.sh
 *.vim
+**/tmp/**

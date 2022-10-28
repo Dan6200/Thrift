@@ -6,7 +6,7 @@ const ProductSchemaReq = joi
 		category: joi.string().min(3).max(100).required(),
 		description: joi.string().max(1000),
 		list_price: joi.number().required(),
-		shop_id: joi.string().required(),
+		shop_id: joi.string(),
 		quantity_available: joi.number().required(),
 	})
 	.required();

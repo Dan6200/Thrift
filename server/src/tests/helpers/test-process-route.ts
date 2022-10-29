@@ -9,12 +9,15 @@ const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
 interface routeProcessorParams {
 	server?: Express;
 	verb: string;
-	url?: string;
+	urls: string[];
+	statusCode: StatusCodes;
+	/*
 	statusCode:
 		| typeof CREATED
 		| typeof OK
 		| typeof NO_CONTENT
 		| typeof NOT_FOUND;
+		*/
 	data?: object;
 	checks?: (response: any) => void;
 	outputData?: object;
@@ -23,7 +26,7 @@ interface routeProcessorParams {
 export default function ({
 	server,
 	verb,
-	url,
+	urls,
 	data,
 	statusCode,
 	checks,
@@ -32,15 +35,17 @@ export default function ({
 	return async function () {
 		const tokens = await users.getUserTokens();
 		tokens.should.not.be.empty;
-		for (let token of tokens) {
-			const response = await chai
-				.request(server)
-				[verb](url)
-				.send(data)
-				.auth(token, { type: 'bearer' });
-			response.should.have.status(statusCode);
-			checks && checks(response);
-			outputData = response;
+		for (let url of urls) {
+			for (let token of tokens) {
+				const response = await chai
+					.request(server)
+					[verb](url)
+					.send(data)
+					.auth(token, { type: 'bearer' });
+				response.should.have.status(statusCode);
+				checks && checks(response);
+				outputData = response;
+			}
 		}
 	};
 }

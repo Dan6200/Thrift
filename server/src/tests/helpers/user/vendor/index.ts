@@ -8,7 +8,7 @@ chai.use(chaiHttp).should();
 
 const routeParams = {
 	server: application,
-	url: '/api/v1/user/vendor',
+	urls: ['/api/v1/user/vendor'],
 };
 
 const testCreateVendor = testProcessRoute({

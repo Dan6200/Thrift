@@ -37,6 +37,7 @@ export default function ({
 					.auth(token, { type: 'bearer' });
 				response.should.have.status(statusCode);
 				checks && checks(response.body);
+				debugger;
 				outputData = response.body;
 			}
 		}

@@ -29,6 +29,7 @@ export default (
 		// Validate request data
 		if (request.body && validateBody) {
 			// validateBody throws error if body is invalid
+			debugger;
 			reqData = validateBody(request.body);
 		}
 		// Process the requestData

@@ -24,7 +24,7 @@ const testCreateProduct = testProcessRoute({
 	...routeParams,
 	verb: 'post',
 	statusCode: CREATED,
-	data: productData,
+	dataList: productData,
 	checks: checkId,
 	outputData,
 });
@@ -44,7 +44,6 @@ const testGetProduct = testProcessRoute({
 	...routeParams,
 	verb: 'get',
 	urls,
-	// TODO: this is wrong, returns an array of urls
 	statusCode: OK,
 });
 
@@ -53,7 +52,7 @@ const testUpdateProduct = testProcessRoute({
 	verb: 'put',
 	urls,
 	statusCode: OK,
-	data: updateProductData,
+	dataList: updateProductData,
 });
 
 const testDeleteProduct = testProcessRoute({

@@ -20,11 +20,8 @@ let productData = [
 ];
 
 let updateProductData = [
-	,
 	{
 		list_price: 6650,
-	},
-	{
 		quantity_available: 11,
 	},
 ];

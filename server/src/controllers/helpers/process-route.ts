@@ -27,7 +27,11 @@ export default (
 			{ userId } = request.user;
 		// set status code and response data
 		// Validate request data
-		if (request.body && validateBody) {
+		if (
+			typeof request.body === 'object' &&
+			Object.values(request.body).length &&
+			validateBody
+		) {
 			// validateBody throws error if body is invalid
 			debugger;
 			reqData = validateBody(request.body);

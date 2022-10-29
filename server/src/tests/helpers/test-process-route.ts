@@ -7,20 +7,34 @@ chai.use(chaiHttp).should();
 
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
 interface routeProcessorParams {
-	server?: Express;
+	server: Express;
 	verb: string;
 	urls: string[];
 	statusCode: StatusCodes;
-	data?: object;
+	dataList?: object[];
 	checks?: (response: any) => void;
 	outputData?: object;
 }
+
+const chaiRequest = async (
+	token: string,
+	server: Express,
+	verb: string,
+	url: string,
+	data?: object
+) => {
+	return await chai
+		.request(server)
+		[verb](url)
+		.send(data)
+		.auth(token, { type: 'bearer' });
+};
 
 export default function ({
 	server,
 	verb,
 	urls,
-	data,
+	dataList,
 	statusCode,
 	checks,
 	outputData,
@@ -28,16 +42,24 @@ export default function ({
 	return async function () {
 		const tokens = await users.getUserTokens();
 		tokens.should.not.be.empty;
+		let response: any;
 		for (let url of urls) {
 			for (let token of tokens) {
-				const response = await chai
-					.request(server)
-					[verb](url)
-					.send(data)
-					.auth(token, { type: 'bearer' });
+				if (dataList && dataList.length) {
+					for (let data of dataList) {
+						response = await chaiRequest(
+							token,
+							server,
+							verb,
+							url,
+							data
+						);
+					}
+				} else {
+					response = await chaiRequest(token, server, verb, url);
+				}
 				response.should.have.status(statusCode);
 				checks && checks(response.body);
-				debugger;
 				outputData = response.body;
 			}
 		}

@@ -20,7 +20,7 @@ import {
 } from 'tests/helpers/user/vendor';
 chai.use(chaiHttp).should();
 
-export default async function testProduct() {
+export default function testProduct() {
 	before(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');

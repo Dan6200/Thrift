@@ -8,7 +8,7 @@ import joi from 'joi';
 import {
 	newShopData,
 	updateShopData,
-} from 'tests/accounts/user/vendor-account/shop-data';
+} from 'tests/accounts/user/vendor-account/shop/data';
 chai.use(chaiHttp).should();
 
 const createShop = async (shopIds: string[]) => {

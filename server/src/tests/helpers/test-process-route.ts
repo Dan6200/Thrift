@@ -11,13 +11,6 @@ interface routeProcessorParams {
 	verb: string;
 	urls: string[];
 	statusCode: StatusCodes;
-	/*
-	statusCode:
-		| typeof CREATED
-		| typeof OK
-		| typeof NO_CONTENT
-		| typeof NOT_FOUND;
-		*/
 	data?: object;
 	checks?: (response: any) => void;
 	outputData?: object;
@@ -43,8 +36,8 @@ export default function ({
 					.send(data)
 					.auth(token, { type: 'bearer' });
 				response.should.have.status(statusCode);
-				checks && checks(response);
-				outputData = response;
+				checks && checks(response.body);
+				outputData = response.body;
 			}
 		}
 	};

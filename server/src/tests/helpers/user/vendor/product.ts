@@ -31,6 +31,9 @@ const testCreateProduct = testProcessRoute({
 
 const productIds: string[] = [];
 productIds.push(outputData.product_id);
+const urls = productIds.map(
+	(productId) => '/api/v1/user/vendor/shop/products/' + { productId }
+);
 
 const testGetAllProduct = testProcessRoute({
 	...routeParams,
@@ -40,19 +43,15 @@ const testGetAllProduct = testProcessRoute({
 const testGetProduct = testProcessRoute({
 	...routeParams,
 	verb: 'get',
+	urls,
 	// TODO: this is wrong, returns an array of urls
-	urls: productIds.map(
-		(productId) => '/api/v1/user/vendor/shop/products/' + { productId }
-	),
 	statusCode: OK,
 });
 
 const testUpdateProduct = testProcessRoute({
 	server: application,
 	verb: 'put',
-	url: `${productIds.map(
-		(productId) => '/api/v1/user/vendor/shop/products/' + { productId }
-	)}`,
+	urls,
 	statusCode: OK,
 	data: updateProductData,
 });
@@ -60,18 +59,14 @@ const testUpdateProduct = testProcessRoute({
 const testDeleteProduct = testProcessRoute({
 	server: application,
 	verb: 'delete',
-	url: `${productIds.map(
-		(productId) => '/api/v1/user/vendor/shop/products/' + { productId }
-	)}`,
+	urls,
 	statusCode: OK,
 });
 
 const testGetDeletedProduct = testProcessRoute({
 	server: application,
 	verb: 'get',
-	url: `${productIds.map(
-		(productId) => '/api/v1/user/vendor/shop/products/' + { productId }
-	)}`,
+	urls,
 	statusCode: NOT_FOUND,
 });
 

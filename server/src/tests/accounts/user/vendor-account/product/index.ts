@@ -8,7 +8,6 @@ import registration from 'tests/helpers/auth/registration';
 import {
 	testCreateProduct,
 	testDeleteProduct,
-	testGetAllDeletedProduct,
 	testGetAllProduct,
 	testGetDeletedProduct,
 	testGetProduct,
@@ -46,40 +45,34 @@ export default async function testProduct() {
 	describe('/POST product', () => {
 		it(
 			'it should create a product for the vendor',
-			createProduct.bind(null, productIds)
+			testCreateProduct.bind(null, productIds)
 		);
 	});
 	describe('/GET product', () => {
 		it(
 			`it should retrieve the vendor product`,
-			getProduct.bind(null, productIds)
+			testGetProduct.bind(null, productIds)
 		);
 	});
 	describe('/GET all product', () => {
-		it(`it should retrieve all the vendor products`, getAllProduct);
+		it(`it should retrieve all the vendor products`, testGetAllProduct);
 	});
 	describe('/PUT product', () => {
 		it(
 			'it should update the product for the user',
-			updateProduct.bind(null, productIds)
+			testUpdateProduct.bind(null, productIds)
 		);
 	});
 	describe('/DELETE product', () => {
 		it(
 			'it should delete the product',
-			deleteProduct.bind(null, productIds)
+			testDeleteProduct.bind(null, productIds)
 		);
 	});
 	describe('/GET product', () => {
 		it(
 			`it should fail to retrieve the vendor product`,
-			getDeletedProduct.bind(null, productIds)
-		);
-	});
-	describe('/GET all product', () => {
-		it(
-			`it should fail to retrieve all the vendor products`,
-			getAllDeletedProduct
+			testGetDeletedProduct.bind(null, productIds)
 		);
 	});
 

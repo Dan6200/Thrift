@@ -58,7 +58,7 @@ create table if not exists product (
 	net_price			numeric(19,4),
 	vendor_id 			bigserial			not null 		unique 		references	vendor	on	delete	cascade,
 	shop_id				bigserial			unique			references	shop		on	delete	cascade,
-	quantity_available	int					not null,
+	quantity_available	int					not null
 );
 
 drop table if exists flagship_product cascade;
@@ -70,7 +70,7 @@ create table if not exists flagship_product (
 	description			varchar,
 	list_price			numeric(19,4),
 	net_price			numeric(19,4),
-	quantity_available	int					not null,
+	quantity_available	int					not null
 );
 
 drop table if exists product_media cascade;

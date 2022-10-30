@@ -38,18 +38,16 @@ export default function ({
 	checks,
 	setParams,
 }: routeProcessorParams) {
-	return async function (
-		urlParams: null | string[] = ['']
-	): Promise<string[]> {
+	return async function (urlParams: null | string[]): Promise<string[]> {
 		const tokens = await users.getUserTokens();
 		tokens.should.not.be.empty;
 		let response: any,
 			newUrlParams: string[] = [''];
-		try {
-			debugger;
-			for (let param of urlParams) {
+		debugger;
+		urlParams ??= [''];
+		for (let param of urlParams) {
 			// Add the parameter list to the url
-			//	url += param != '' ? '/' + param : param;
+			url += param != '' ? '/' + param : param;
 			for (let token of tokens) {
 				if (dataList && dataList.length) {
 					for (let data of dataList) {
@@ -67,12 +65,8 @@ export default function ({
 				response.should.have.status(statusCode);
 				checks && checks(response.body);
 			}
-			//}
-			setParams && setParams(newUrlParams, response.body);
-		} catch (err) {
-			console.error(err);
-		} finally {
-			return newUrlParams;
 		}
+		setParams && setParams(newUrlParams, response.body);
+		return newUrlParams;
 	};
 }

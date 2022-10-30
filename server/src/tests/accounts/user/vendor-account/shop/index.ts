@@ -86,12 +86,15 @@ export default async function testShop() {
 
 	// Delete vendor account
 	describe('/DELETE vendor account', () => {
-		it('it should delete the vendor account', testDeleteVendor);
+		it(
+			'it should delete the vendor account',
+			testDeleteVendor.bind(null, null)
+		);
 	});
 	describe('/GET vendor account', () => {
 		it(
 			`it should fail to retrieve the Vendor account`,
-			testGetDeletedVendor
+			testGetDeletedVendor.bind(null, null)
 		);
 	});
 	// Delete user account

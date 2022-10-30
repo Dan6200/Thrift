@@ -37,50 +37,56 @@ export default function testProduct() {
 
 	// create the vendor acc
 	describe('/POST vendor', () => {
-		it(`it should create a new vendor`, testCreateVendor);
+		it(`it should create a new vendor`, testCreateVendor.bind(null, null));
 	});
 
 	// Testing the product route
 	let productIds: Array<string> = [];
 	describe('/POST product', () => {
 		it('it should create a product for the vendor', async () => {
-			productIds = await testCreateProduct(null, undefined);
+			productIds = await testCreateProduct.bind(null, null);
 		});
 	});
 	describe('/GET product', () => {
 		it(
 			`it should retrieve the vendor product`,
-			testGetProduct.bind(null, null, productIds)
+			testGetProduct.bind(null, productIds)
 		);
 	});
 	describe('/GET all product', () => {
-		it(`it should retrieve all the vendor products`, testGetAllProduct);
+		it(
+			`it should retrieve all the vendor products`,
+			testGetAllProduct.bind(null, null)
+		);
 	});
 	describe('/PUT product', () => {
 		it(
 			'it should update the product for the user',
-			testUpdateProduct.bind(null, null, productIds)
+			testUpdateProduct.bind(null, productIds)
 		);
 	});
 	describe('/DELETE product', () => {
 		it(
 			'it should delete the product',
-			testDeleteProduct.bind(null, null, productIds)
+			testDeleteProduct.bind(null, productIds)
 		);
 	});
 	describe('/GET product', () => {
 		it(
 			`it should fail to retrieve the vendor product`,
-			testGetDeletedProduct.bind(null, null, productIds)
+			testGetDeletedProduct.bind(null, productIds)
 		);
 	});
 
 	// Delete vendor
 	describe('/DELETE vendor', () => {
-		it('it should delete the vendor', testDeleteVendor);
+		it('it should delete the vendor', testDeleteVendor.bind(null, null));
 	});
 	describe('/GET vendor', () => {
-		it(`it should fail to retrieve the Vendor`, testGetDeletedVendor);
+		it(
+			`it should fail to retrieve the Vendor`,
+			testGetDeletedVendor.bind(null, null)
+		);
 	});
 	// Delete user
 	describe('/DELETE user', () => {

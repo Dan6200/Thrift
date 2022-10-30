@@ -43,7 +43,6 @@ export default function ({
 		tokens.should.not.be.empty;
 		let response: any,
 			newUrlParams: string[] = [''];
-		debugger;
 		urlParams ??= [''];
 		for (let param of urlParams) {
 			// Add the parameter list to the url

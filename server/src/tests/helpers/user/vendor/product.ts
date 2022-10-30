@@ -13,7 +13,6 @@ let checkId = (data: any) => {
 		data.product_id.should.be.a('string');
 	},
 	setIdParam = (IdParam: string[], data: any) => {
-		debugger;
 		data.product_id && IdParam.push(data.product_id);
 	};
 

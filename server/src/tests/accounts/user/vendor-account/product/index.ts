@@ -43,9 +43,11 @@ export default function testProduct() {
 	// Testing the product route
 	let productIds: Array<string> = [];
 	describe('/POST product', () => {
-		it('it should create a product for the vendor', async () => {
-			productIds = await testCreateProduct.bind(null, null);
-		});
+		debugger;
+		it(
+			'it should create a product for the vendor',
+			testCreateProduct.bind(null, null)
+		);
 	});
 	describe('/GET product', () => {
 		it(

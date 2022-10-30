@@ -16,7 +16,7 @@ let outputData: any = {},
 
 const routeParams = {
 	server: application,
-	urls: [`/api/v1/user/vendor/shop/products`],
+	url: `/api/v1/user/vendor/shop/products`,
 	statusCode: OK,
 };
 
@@ -29,12 +29,6 @@ const testCreateProduct = testProcessRoute({
 	outputData,
 });
 
-const productIds: string[] = [];
-productIds.push(outputData.product_id);
-const urls = productIds.map(
-	(productId) => '/api/v1/user/vendor/shop/products/' + { productId }
-);
-
 const testGetAllProduct = testProcessRoute({
 	...routeParams,
 	verb: 'get',
@@ -43,29 +37,23 @@ const testGetAllProduct = testProcessRoute({
 const testGetProduct = testProcessRoute({
 	...routeParams,
 	verb: 'get',
-	urls,
 	statusCode: OK,
 });
 
 const testUpdateProduct = testProcessRoute({
-	server: application,
+	...routeParams,
 	verb: 'put',
-	urls,
-	statusCode: OK,
 	dataList: updateProductData,
 });
 
 const testDeleteProduct = testProcessRoute({
-	server: application,
+	...routeParams,
 	verb: 'delete',
-	urls,
-	statusCode: OK,
 });
 
 const testGetDeletedProduct = testProcessRoute({
-	server: application,
+	...routeParams,
 	verb: 'get',
-	urls,
 	statusCode: NOT_FOUND,
 });
 

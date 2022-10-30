@@ -9,7 +9,7 @@ const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
 interface routeProcessorParams {
 	server: Express;
 	verb: string;
-	urls: string[];
+	url: string;
 	statusCode: StatusCodes;
 	dataList?: object[];
 	checks?: (response: any) => void;
@@ -33,18 +33,19 @@ const chaiRequest = async (
 export default function ({
 	server,
 	verb,
-	urls,
+	url,
 	dataList,
 	statusCode,
 	checks,
-	outputData,
 }: routeProcessorParams) {
-	return async function () {
+	return async function (urlParams: string[] = ['']) {
 		const tokens = await users.getUserTokens();
 		tokens.should.not.be.empty;
 		let response: any;
 		debugger;
-		for (let url of urls) {
+		for (let param of urlParams) {
+			// Add the parameter list to the url
+			url += param;
 			for (let token of tokens) {
 				if (dataList && dataList.length) {
 					for (let data of dataList) {
@@ -61,7 +62,7 @@ export default function ({
 				}
 				response.should.have.status(statusCode);
 				checks && checks(response.body);
-				outputData = response.body;
+				return response.body;
 			}
 		}
 	};

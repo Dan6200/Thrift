@@ -8,10 +8,13 @@ import {
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes;
 
-let outputData: any = {},
-	checkId = (data: any) => {
+let checkId = (data: any) => {
 		data.should.have.property('product_id');
 		data.product_id.should.be.a('string');
+	},
+	setIdParam = (IdParam: string[], data: any) => {
+		debugger;
+		data.product_id && IdParam.push(data.product_id);
 	};
 
 const routeParams = {
@@ -26,7 +29,7 @@ const testCreateProduct = testProcessRoute({
 	statusCode: CREATED,
 	dataList: productData,
 	checks: checkId,
-	outputData,
+	setParams: setIdParam,
 });
 
 const testGetAllProduct = testProcessRoute({

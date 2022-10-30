@@ -38,7 +38,11 @@ export default async function testShop() {
 
 	// create the vendor acc
 	describe('/POST vendor account', () => {
-		it(`it should create a new vendor account`, testCreateVendor);
+		// NOTE: it passes in the argument done to the callback, if a preceding argument is not provided with bind, the callback will hang, as it has its own argument and does not call done directly.
+		it(
+			`it should create a new vendor account`,
+			testCreateVendor.bind(null, null)
+		);
 	});
 
 	// Testing the shop route

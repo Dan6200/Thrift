@@ -43,15 +43,14 @@ export default function testProduct() {
 	// Testing the product route
 	let productIds: Array<string> = [];
 	describe('/POST product', () => {
-		it(
-			'it should create a product for the vendor',
-			testCreateProduct.bind(null, productIds)
-		);
+		it('it should create a product for the vendor', async () => {
+			productIds = await testCreateProduct(null, undefined);
+		});
 	});
 	describe('/GET product', () => {
 		it(
 			`it should retrieve the vendor product`,
-			testGetProduct.bind(null, productIds)
+			testGetProduct.bind(null, null, productIds)
 		);
 	});
 	describe('/GET all product', () => {
@@ -60,19 +59,19 @@ export default function testProduct() {
 	describe('/PUT product', () => {
 		it(
 			'it should update the product for the user',
-			testUpdateProduct.bind(null, productIds)
+			testUpdateProduct.bind(null, null, productIds)
 		);
 	});
 	describe('/DELETE product', () => {
 		it(
 			'it should delete the product',
-			testDeleteProduct.bind(null, productIds)
+			testDeleteProduct.bind(null, null, productIds)
 		);
 	});
 	describe('/GET product', () => {
 		it(
 			`it should fail to retrieve the vendor product`,
-			testGetDeletedProduct.bind(null, productIds)
+			testGetDeletedProduct.bind(null, null, productIds)
 		);
 	});
 

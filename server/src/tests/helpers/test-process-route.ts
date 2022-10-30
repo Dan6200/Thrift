@@ -5,7 +5,6 @@ import { users } from 'tests/authentication/user-data';
 import { StatusCodes } from 'http-status-codes';
 chai.use(chaiHttp).should();
 
-const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
 interface routeProcessorParams {
 	server: Express;
 	verb: string;
@@ -13,7 +12,7 @@ interface routeProcessorParams {
 	statusCode: StatusCodes;
 	dataList?: object[];
 	checks?: (response: any) => void;
-	outputData?: object;
+	setParams?: (params: string[], data: any) => void;
 }
 
 const chaiRequest = async (
@@ -37,15 +36,20 @@ export default function ({
 	dataList,
 	statusCode,
 	checks,
+	setParams,
 }: routeProcessorParams) {
-	return async function (urlParams: string[] = ['']) {
+	return async function (
+		urlParams: null | string[] = ['']
+	): Promise<string[]> {
 		const tokens = await users.getUserTokens();
 		tokens.should.not.be.empty;
-		let response: any;
-		debugger;
-		for (let param of urlParams) {
+		let response: any,
+			newUrlParams: string[] = [''];
+		try {
+			debugger;
+			for (let param of urlParams) {
 			// Add the parameter list to the url
-			url += param;
+			//	url += param != '' ? '/' + param : param;
 			for (let token of tokens) {
 				if (dataList && dataList.length) {
 					for (let data of dataList) {
@@ -62,8 +66,13 @@ export default function ({
 				}
 				response.should.have.status(statusCode);
 				checks && checks(response.body);
-				return response.body;
 			}
+			//}
+			setParams && setParams(newUrlParams, response.body);
+		} catch (err) {
+			console.error(err);
+		} finally {
+			return newUrlParams;
 		}
 	};
 }

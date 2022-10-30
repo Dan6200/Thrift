@@ -23,12 +23,14 @@ export default {
 		});
 		const res = await pool.query(text, params);
 		const duration = Date.now() - start;
+		/*
 		console.log('\nexecuted query', {
 			text,
 			duration,
 			rows: res.rowCount,
 			params,
 		});
+		*/
 		return res;
 	},
 

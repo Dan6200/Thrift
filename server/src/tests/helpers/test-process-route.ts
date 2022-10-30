@@ -43,6 +43,7 @@ export default function ({
 		const tokens = await users.getUserTokens();
 		tokens.should.not.be.empty;
 		let response: any;
+		debugger;
 		for (let url of urls) {
 			for (let token of tokens) {
 				if (dataList && dataList.length) {

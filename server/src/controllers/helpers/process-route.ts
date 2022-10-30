@@ -33,7 +33,7 @@ export default (
 			validateBody
 		) {
 			// validateBody throws error if body is invalid
-			debugger;
+			// debugger;
 			reqData = validateBody(request.body);
 		}
 		// Process the requestData

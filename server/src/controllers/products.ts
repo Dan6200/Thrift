@@ -15,13 +15,17 @@ let insertProductTable = `insert into product (
 	description,
 	list_price,
 	net_price,
+	quantity_available,
 	vendor_id
-) values ($1, $2, $3, $4, $5, $6)`;
+) values ($1, $2, $3, $4, $5, $6, $7)`;
 
 const createQuery = [
-	async ({ reqData }) => {
+	async ({ reqData, userId }) => {
 		// TODO: check if an insert statement returns a value
-		return await db.query(insertProductTable, [reqData]);
+		return await db.query(insertProductTable, [
+			...Object.values(reqData),
+			userId,
+		]);
 	},
 	async () => {
 		return await db.query('select product_id from product');

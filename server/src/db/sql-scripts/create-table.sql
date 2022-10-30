@@ -57,7 +57,7 @@ create table if not exists product (
 	list_price			numeric(19,4),
 	net_price			numeric(19,4),
 	vendor_id 			bigserial			not null 		unique 		references	vendor	on	delete	cascade,
-	shop_id				bigserial			unique			references	shop		on	delete	cascade,
+	shop_id				bigserial			unique,
 	quantity_available	int					not null
 );
 

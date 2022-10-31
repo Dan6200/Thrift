@@ -7,6 +7,7 @@ import testShop from './accounts/user/vendor-account/shop';
 import testProduct from './accounts/user/vendor-account/product';
 
 /*
+ * TODO: fixed these tests, something is wrong
  */
 describe('Authentication Routes', Authentication);
 describe('User Account Routes', testUserAccount);

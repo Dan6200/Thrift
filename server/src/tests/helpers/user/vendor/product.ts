@@ -7,33 +7,31 @@ import {
 	updateProductData,
 } from 'tests/accounts/user/vendor-account/product/data';
 import path from 'path';
+import { users } from 'tests/authentication/user-data';
 const filename = path.basename(__filename);
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes;
 
 let checkId = (data: any) => {
-		data.should.have.property('product_id');
-		data.product_id.should.be.a('string');
-	},
-	setIdParam = async (data: any) => {
-		console.log(data.product_id, 'at ' + filename);
-		const { product_id: productId } = data;
-		productId && (await productIds.add(productId));
-	};
+	data.should.have.property('product_id');
+	data.product_id.should.be.a('string');
+};
 
 const routeParams = {
 	server: application,
 	url: `/api/v1/user/vendor/shop/products`,
 	statusCode: OK,
+	users,
+	productIds,
 };
 
 const testCreateProduct = testProcessRoute({
 	...routeParams,
+	productIds: undefined,
 	verb: 'post',
 	statusCode: CREATED,
 	dataList: productData,
 	checks: checkId,
-	setParams: setIdParam,
 });
 
 const testGetAllProduct = testProcessRoute({

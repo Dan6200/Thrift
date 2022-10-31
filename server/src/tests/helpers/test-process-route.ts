@@ -15,16 +15,16 @@ interface routeProcessorParams {
 	statusCode: StatusCodes;
 	dataList?: object[];
 	checks?: (response: any) => void;
-	setParams?: (params: string[], data: any) => void;
 	users?: Users;
 	productIds?: AsyncList<string>;
+	setParams?: (params: string[], data: any) => void;
 }
 
 const chaiRequest = async (
-	token?: string,
 	server: Express,
 	verb: string,
 	url: string,
+	token?: string,
 	data?: object
 ) => {
 	return await chai
@@ -41,36 +41,37 @@ export default function ({
 	dataList,
 	statusCode,
 	checks,
-	setParams,
 	users,
 	productIds,
+	setParams,
 }: routeProcessorParams) {
-	return async function (urlParams: null | string[]): Promise<void> {
+	return async function (): Promise<any[]> {
 		const tokens = users && (await users.getUserTokens());
-		console.log('tokens %o %s', tokens, filename);
 		let response: any,
-			newUrlParams: string[] = [];
+			responseData: any[] = [];
 		debugger;
-		console.log('url parameters: ', urlParams, 'at ' + filename);
 		let count = 0;
+		const Ids = productIds && (await productIds.getList());
 		do {
 			let token = tokens && tokens[count];
-			// set the url parameters
-			url += urlParams && urlParams[count] ? '/' + urlParams[count] : '';
-			console.log(verb, url, 'at ' + filename);
+			let urlWithParams = url + (Ids ? '/' + Ids[count] : '');
 			let count1 = 0;
 			do {
 				let data = dataList && dataList[count1];
-				response = await chaiRequest(token, server, verb, url, data);
+				response = await chaiRequest(
+					server,
+					verb,
+					urlWithParams,
+					token,
+					data
+				);
 				count1++;
 			} while (dataList && count1 < dataList.length);
 			response.should.have.status(statusCode);
+			checks && checks(response.body);
+			responseData.push(response.body);
 			count++;
 		} while (tokens && count < tokens.length);
-		console.log(response.body, 'at ' + filename);
-		setParams && setParams(newUrlParams, response.body);
-		checks && checks(response.body);
-		urlParams = newUrlParams;
-		console.log('url parameters: ', urlParams, 'at ' + filename);
+		return responseData;
 	};
 }

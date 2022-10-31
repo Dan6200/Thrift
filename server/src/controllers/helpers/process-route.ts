@@ -28,13 +28,14 @@ export default (
 		// set status code and response data
 		// Validate request data
 		// debugger;
+		reqData = request.body;
 		if (
-			typeof request.body === 'object' &&
-			Object.values(request.body).length &&
+			typeof reqData === 'object' &&
+			Object.values(reqData).length &&
 			validateBody
 		) {
 			// validateBody throws error if body is invalid
-			reqData = validateBody(request.body);
+			reqData = validateBody(reqData);
 		}
 		// Process the requestData
 		if (processData && reqData) reqData = processData(reqData as object);

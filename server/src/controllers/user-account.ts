@@ -49,7 +49,6 @@ let updateUserAccount = async (
 	response: Response
 ) => {
 	let { userId }: RequestUserPayload = request.user;
-	// console.log(request.body, __filename);
 	if (Object.keys(request.body).length === 0)
 		throw new BadRequestError('request data cannot be empty');
 	// TODO: validate and verify updated email and phone numbers

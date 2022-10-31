@@ -7,11 +7,11 @@ import testShop from './accounts/user/vendor-account/shop';
 import testProduct from './accounts/user/vendor-account/product';
 
 /*
+ */
 describe('Authentication Routes', Authentication);
 describe('User Account Routes', testUserAccount);
 describe('Vendor Account Routes', testVendorAccount);
 describe('Customer Account Routes', testCustomerAccount);
 describe('Customer Shipping Routes', testShippingInfo);
 describe('Vendor Shop Routes', testShop);
-*/
 describe('Product Routes', testProduct);

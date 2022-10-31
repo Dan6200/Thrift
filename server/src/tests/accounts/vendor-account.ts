@@ -16,10 +16,8 @@ const testCreateVendorAccount = () => {
 			try {
 				const userIds: Array<string> = await users.getUserIDs();
 				userIds.should.not.be.empty;
-				console.log(`\nusers: %O`, userIds, __filename);
 				for (const ID of userIds) {
 					const userToken: string = await users.getUserToken(ID);
-					console.log(`\nUser ID: ${ID}, Data %o`, userToken);
 					const response = await chai
 						.request(application)
 						.post('/api/v1/user-account/vendor')
@@ -43,14 +41,8 @@ const testGetVendorAccount = (deleted: boolean) => {
 			try {
 				const userIds: Array<string> = await users.getUserIDs();
 				userIds.should.not.be.empty;
-				console.log(`\nusers: %O`, userIds, __filename);
 				for (const ID of userIds) {
 					const userToken: string = await users.getUserToken(ID);
-					console.log(
-						`\nUser ID: ${ID}, Data %o`,
-						userToken,
-						__filename
-					);
 					const response = await chai
 						.request(application)
 						.get('/api/v1/user-account/vendor')
@@ -77,14 +69,8 @@ const testDeleteVendorAccount = () => {
 			try {
 				const userIds: string[] = await users.getUserIDs();
 				userIds.should.not.be.empty;
-				console.log(`\nusers: %O`, userIds, __filename);
 				for (const ID of userIds) {
 					const userToken: string = await users.getUserToken(ID);
-					console.log(
-						`\nUser ID: ${ID}, Data %o`,
-						userToken,
-						__filename
-					);
 					const response = await chai
 						.request(application)
 						.delete('/api/v1/user-account/vendor')

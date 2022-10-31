@@ -5,16 +5,3 @@ export default interface AsyncList<Type> {
 	clear(): Promise<void>;
 	getList(): Promise<Type[]>;
 }
-
-const productIds: AsyncList<string> = {
-	_user: [],
-	async add(data) {
-		await this._user.push(data);
-	},
-	async clear() {
-		this._user = [];
-	},
-	async getList() {
-		return await this._user;
-	},
-};

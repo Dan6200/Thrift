@@ -35,7 +35,6 @@ const readAllQuery = [async () => await db.query(`select * from product`)];
 const readQuery = [
 	async ({ params }) => {
 		let { productId } = params;
-		console.log('product id: %s', productId, filename);
 		return await db.query(`select * from product where product_id=$1`, [
 			productId,
 		]);
@@ -44,11 +43,16 @@ const readQuery = [
 
 const updateQuery = [
 	async ({ params, reqData }) => {
-		let { productId } = params;
-		return await db.query(
-			genSqlUpdateCommands('product', productId, Object.keys(reqData)),
-			[productId]
-		);
+		let { productId } = params,
+			updateCommand = genSqlUpdateCommands(
+				'product',
+				'product_id',
+				Object.keys(reqData)
+			);
+		return await db.query(updateCommand, [
+			productId,
+			...Object.values(reqData),
+		]);
 	},
 ];
 
@@ -106,7 +110,7 @@ let getProduct = processRoute(
 let updateProduct = processRoute(
 	updateQuery,
 	{ status: OK },
-	validateBody,
+	undefined,
 	validateResult
 );
 

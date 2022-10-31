@@ -6,7 +6,7 @@ import { ProductSchemaReq } from 'app-schema/product';
 import processRoute from './helpers/process-route';
 import { ResponseData, Status } from 'types-and-interfaces/routes-processor';
 import { genSqlUpdateCommands } from 'helper-functions';
-// const fileName = require('path').basename(__filename);
+const filename = require('path').basename(__filename);
 const { CREATED, OK } = StatusCodes;
 
 let insertProductTable = `insert into product (
@@ -27,21 +27,16 @@ const createQuery = [
 			userId,
 		]);
 	},
-	async () => {
-		return await db.query('select product_id from product');
-	},
+	async () => await db.query('select product_id from product'),
 ];
 
-const readAllQuery = [
-	async () => {
-		await db.query(`select * from product`);
-	},
-];
+const readAllQuery = [async () => await db.query(`select * from product`)];
 
 const readQuery = [
 	async ({ params }) => {
 		let { productId } = params;
-		await db.query(`select * from product where product_id=$1`, [
+		console.log('product id: %s', productId, filename);
+		return await db.query(`select * from product where product_id=$1`, [
 			productId,
 		]);
 	},
@@ -50,7 +45,7 @@ const readQuery = [
 const updateQuery = [
 	async ({ params, reqData }) => {
 		let { productId } = params;
-		await db.query(
+		return await db.query(
 			genSqlUpdateCommands('product', productId, Object.keys(reqData)),
 			[productId]
 		);
@@ -60,7 +55,9 @@ const updateQuery = [
 const deleteQuery = [
 	async ({ params }) => {
 		let { productId } = params;
-		await db.query(`delete from product where product_id=$1`, [productId]);
+		return await db.query(`delete from product where product_id=$1`, [
+			productId,
+		]);
 	},
 ];
 

@@ -8,6 +8,8 @@
 		quantity_available: joi.number().required(),
 	*/
 
+import AsyncList from 'types-and-interfaces/async-list';
+
 let productData = [
 	{
 		title: 'Heat sensitive microwaveable ceramic mug',
@@ -27,4 +29,18 @@ let updateProductData = [
 	},
 ];
 
-export { updateProductData, productData };
+/*************** For testing **************/
+const productIds: AsyncList<string> = {
+	_user: [],
+	async add(data) {
+		this._user.push(data);
+	},
+	async clear() {
+		this._user = [];
+	},
+	async getList() {
+		return this._user;
+	},
+};
+
+export { updateProductData, productData, productIds };

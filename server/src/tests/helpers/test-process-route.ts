@@ -43,10 +43,16 @@ export default function ({
 	return async function (urlParams: null | string[]): Promise<void> {
 		const tokens = await users.getUserTokens();
 		tokens.should.not.be.empty;
-		let response: any;
+		let response: any,
+			newUrlParams: string[] = [];
 		debugger;
-		console.log(verb, url, 'at ' + filename);
+		console.log('url parameters: ', urlParams, 'at ' + filename);
+		let count = 0;
 		for (let token of tokens) {
+			// set the url parameters
+			url +=
+				urlParams && urlParams[count] ? '/' + urlParams[count++] : '';
+			console.log(verb, url, 'at ' + filename);
 			if (dataList && dataList.length) {
 				for (let data of dataList) {
 					response = await chaiRequest(
@@ -62,10 +68,10 @@ export default function ({
 			}
 			response.should.have.status(statusCode);
 			console.log(response.body, 'at ' + filename);
-			console.log('url parameters: ' + urlParams, 'at ' + filename);
-			setParams && urlParams && setParams(urlParams, response.body);
-			console.log('url parameters: ', urlParams, 'at ' + filename);
+			setParams && setParams(newUrlParams, response.body);
 			checks && checks(response.body);
 		}
+		urlParams = newUrlParams;
+		console.log('url parameters: ', urlParams, 'at ' + filename);
 	};
 }

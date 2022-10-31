@@ -7,7 +7,6 @@ const ProductSchemaReq = joi
 		description: joi.string().max(1000),
 		list_price: joi.number().required(),
 		net_price: joi.number().required(),
-		shop_id: joi.string(),
 		quantity_available: joi.number().required(),
 	})
 	.required();
@@ -20,7 +19,6 @@ const ProductSchemaDB = joi
 		description: joi.string().max(1000),
 		list_price: joi.number().required(),
 		net_price: joi.number().required(),
-		shop_id: joi.string().required(),
 		quantity_available: joi.number().required(),
 	})
 	.required();

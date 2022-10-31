@@ -16,14 +16,14 @@ create table if not exists user_account (
 );
 
 create table if not exists customer (
-	customer_id			bigserial 		primary key	references	user_account	on	delete	cascade
+	customer_id			bigint 		primary key	references	user_account	on	delete	cascade
 );
 
 drop table if exists shipping_info cascade;
 
 create table if not exists shipping_info (
 	address_id				bigserial			primary key,
-	customer_id				bigserial				not null		references	customer	on	delete	cascade,
+	customer_id				bigint				not null		references	customer	on	delete	cascade,
 	recepient_first_name	varchar(30)		not null,
 	recepient_last_name		varchar(30)		not null,
 	street					varchar			not null,
@@ -42,7 +42,7 @@ drop table if exists shop cascade;
 create table if not exists shop (
 	shop_id					bigserial			primary key,	
 	shop_name				varchar				not null 	default 	'My Shop',
-	vendor_id 				bigserial			not null 	unique 		references	vendor	on	delete	cascade,
+	vendor_id 				bigint			not null 	unique 		references	vendor	on	delete	cascade,
 	date_created			date				not null	default		current_date,
 	banner_image_path			varchar
 );
@@ -56,15 +56,15 @@ create table if not exists product (
 	description			varchar,
 	list_price			numeric(19,4),
 	net_price			numeric(19,4),
-	vendor_id 			bigserial			not null 		unique 		references	vendor	on	delete	cascade,
-	shop_id				bigserial			unique,
+	vendor_id 			bigint			not null 		unique 		references	vendor	on	delete	cascade,
+	shop_id				bigint			unique,
 	quantity_available	int					not null
 );
 
 drop table if exists flagship_product cascade;
 
 create table if not exists flagship_product (
-	product_id			bigserial			unique			not null		references	product		on	delete	cascade,
+	product_id			bigint			unique			not null		references	product		on	delete	cascade,
 	title				varchar,
 	category			varchar,
 	description			varchar,
@@ -76,7 +76,7 @@ create table if not exists flagship_product (
 drop table if exists product_media cascade;
 
 create table if not exists product_media (
-	product_id					bigserial				primary key		references	product	on	delete	cascade,
+	product_id					bigint				primary key		references	product	on	delete	cascade,
 	main_product_image			varchar,
 	sec_product_image1			varchar,
 	sec_product_image2			varchar,
@@ -90,7 +90,7 @@ drop table if exists shopping_cart cascade;
 
 create table if not exists shopping_cart (
 	cart_id				bigserial			primary key,
-	customer_id			bigserial				not null	references	customer	on	delete	cascade,
+	customer_id			bigint				not null	references	customer	on	delete	cascade,
 	made				timestamptz		not null	default	now()
 );
 
@@ -98,8 +98,8 @@ drop table if exists shopping_cart_item cascade;
 
 create table if not exists shopping_cart_item (
 	item_id					bigserial			primary	key,
-	cart_id					bigserial				not null		references	shopping_cart	on 	delete	cascade,
-	product_id				bigserial				not null		references	product		on delete	cascade,
+	cart_id					bigint				not null		references	shopping_cart	on 	delete	cascade,
+	product_id				bigint				not null		references	product		on delete	cascade,
 	product_quantity		int				not null		check (product_quantity > 0)
 );
 
@@ -108,8 +108,8 @@ drop table if exists transaction cascade;
 create table if not exists transaction (
 	transaction_id				bigserial			primary	key,
 	transaction_timestamp		timestamptz		not null		default	now()	unique,
-	customer_id					bigserial				not null,
-	vendor_id					bigserial				not null,
+	customer_id					bigint				not null,
+	vendor_id					bigint				not null,
 	transaction_amount			numeric(19,4)	not null,
 	check (customer_id <> vendor_id)
 );
@@ -118,14 +118,14 @@ drop table if exists transaction_item cascade;
 
 create table if not exists transaction_item (
 	item_id					bigserial			primary	key,
-	product_id				bigserial				not null		references	product		on delete	cascade,
+	product_id				bigint				not null		references	product		on delete	cascade,
 	product_quantity		int				not null		default	1	check (product_quantity > 0)
 );
 
 drop table if exists reversed_transaction cascade;
 
 create table if not exists reversed_transaction (
-	rev_transaction_id		bigserial			primary	key	references	transaction		on	delete	cascade,
+	rev_transaction_id		bigint			primary	key	references	transaction		on	delete	cascade,
 	rev_trans_timestamp			timestamptz		not null	default	now()	unique
 );
 
@@ -133,10 +133,10 @@ drop table if exists product_review cascade;
 
 create table if not exists product_review (
 	review_id				bigserial			primary key,
-	product_id				bigserial				not null	references	product		on	delete	cascade,
-	transaction_id			bigserial				not null	references	transaction	on	delete	cascade,
+	product_id				bigint				not null	references	product		on	delete	cascade,
+	transaction_id			bigint				not null	references	transaction	on	delete	cascade,
 	rating					numeric(3,2)	not null,
-	customer_id				bigserial				not	null	references	customer	on	delete	cascade,
+	customer_id				bigint				not	null	references	customer	on	delete	cascade,
 	customer_remark			varchar
 );
 
@@ -144,9 +144,9 @@ drop table if exists vendor_review cascade;
 
 create table if not exists vendor_review (
 	review_id				bigserial			primary key,
-	vendor_id				bigserial				not	null		references	vendor on delete cascade,
-	customer_id				bigserial				not null		references	customer on delete cascade,
-	transaction_id			bigserial				not null		references	transaction on delete cascade,
+	vendor_id				bigint				not	null		references	vendor on delete cascade,
+	customer_id				bigint				not null		references	customer on delete cascade,
+	transaction_id			bigint				not null		references	transaction on delete cascade,
 	rating					numeric(3,2)	not null,
 	customer_remark			varchar
 );

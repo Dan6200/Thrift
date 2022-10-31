@@ -3,6 +3,8 @@ import { Express } from 'express';
 import chaiHttp from 'chai-http';
 import { users } from 'tests/authentication/user-data';
 import { StatusCodes } from 'http-status-codes';
+import path from 'path';
+const filename = path.basename(__filename);
 chai.use(chaiHttp).should();
 
 interface routeProcessorParams {
@@ -38,34 +40,32 @@ export default function ({
 	checks,
 	setParams,
 }: routeProcessorParams) {
-	return async function (urlParams: null | string[]): Promise<string[]> {
+	return async function (urlParams: null | string[]): Promise<void> {
 		const tokens = await users.getUserTokens();
 		tokens.should.not.be.empty;
-		let response: any,
-			newUrlParams: string[] = [''];
-		urlParams ??= [''];
-		for (let param of urlParams) {
-			// Add the parameter list to the url
-			url += param != '' ? '/' + param : param;
-			for (let token of tokens) {
-				if (dataList && dataList.length) {
-					for (let data of dataList) {
-						response = await chaiRequest(
-							token,
-							server,
-							verb,
-							url,
-							data
-						);
-					}
-				} else {
-					response = await chaiRequest(token, server, verb, url);
+		let response: any;
+		debugger;
+		console.log(verb, url, 'at ' + filename);
+		for (let token of tokens) {
+			if (dataList && dataList.length) {
+				for (let data of dataList) {
+					response = await chaiRequest(
+						token,
+						server,
+						verb,
+						url,
+						data
+					);
 				}
-				response.should.have.status(statusCode);
-				checks && checks(response.body);
+			} else {
+				response = await chaiRequest(token, server, verb, url);
 			}
+			response.should.have.status(statusCode);
+			console.log(response.body, 'at ' + filename);
+			console.log('url parameters: ' + urlParams, 'at ' + filename);
+			setParams && urlParams && setParams(urlParams, response.body);
+			console.log('url parameters: ', urlParams, 'at ' + filename);
+			checks && checks(response.body);
 		}
-		setParams && setParams(newUrlParams, response.body);
-		return newUrlParams;
 	};
 }

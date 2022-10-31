@@ -18,6 +18,8 @@ import {
 	testDeleteVendor,
 	testGetDeletedVendor,
 } from 'tests/helpers/user/vendor';
+import path from 'path';
+const filename = path.basename(__filename);
 chai.use(chaiHttp).should();
 
 export default function testProduct() {
@@ -43,10 +45,9 @@ export default function testProduct() {
 	// Testing the product route
 	let productIds: Array<string> = [];
 	describe('/POST product', () => {
-		debugger;
 		it(
 			'it should create a product for the vendor',
-			testCreateProduct.bind(null, null)
+			testCreateProduct.bind(null, productIds)
 		);
 	});
 	describe('/GET product', () => {
@@ -55,6 +56,7 @@ export default function testProduct() {
 			testGetProduct.bind(null, productIds)
 		);
 	});
+	/*
 	describe('/GET all product', () => {
 		it(
 			`it should retrieve all the vendor products`,
@@ -79,7 +81,6 @@ export default function testProduct() {
 			testGetDeletedProduct.bind(null, productIds)
 		);
 	});
-
 	// Delete vendor
 	describe('/DELETE vendor', () => {
 		it('it should delete the vendor', testDeleteVendor.bind(null, null));
@@ -97,4 +98,5 @@ export default function testProduct() {
 	describe('/GET user', () => {
 		it(`it should fail to retrieve the User`, getDeletedUser);
 	});
+*/
 }

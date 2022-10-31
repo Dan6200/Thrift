@@ -5,6 +5,8 @@ import {
 	productData,
 	updateProductData,
 } from 'tests/accounts/user/vendor-account/product/data';
+import path from 'path';
+const filename = path.basename(__filename);
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes;
 
@@ -13,6 +15,7 @@ let checkId = (data: any) => {
 		data.product_id.should.be.a('string');
 	},
 	setIdParam = (IdParam: string[], data: any) => {
+		console.log(data.product_id, 'at ' + filename);
 		data.product_id && IdParam.push(data.product_id);
 	};
 

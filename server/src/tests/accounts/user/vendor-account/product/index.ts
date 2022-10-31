@@ -19,10 +19,11 @@ import {
 	testGetDeletedVendor,
 } from 'tests/helpers/user/vendor';
 import path from 'path';
+import { productIds } from './data';
 const filename = path.basename(__filename);
 chai.use(chaiHttp).should();
 
-export default function testProduct() {
+export default async function testProduct() {
 	before(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
@@ -33,7 +34,7 @@ export default function testProduct() {
 	});
 
 	// Testing the register route
-	describe('/POST user: Registration', () => {
+	describe('/POST user: Registration', async () => {
 		it(`it should register ${newUsers.length} new users`, registration);
 	});
 
@@ -42,19 +43,11 @@ export default function testProduct() {
 		it(`it should create a new vendor`, testCreateVendor.bind(null, null));
 	});
 
-	// Testing the product route
-	let productIds: Array<string> = [];
 	describe('/POST product', () => {
-		it(
-			'it should create a product for the vendor',
-			testCreateProduct.bind(null, productIds)
-		);
+		it('it should create a product for the vendor', testCreateProduct);
 	});
 	describe('/GET product', () => {
-		it(
-			`it should retrieve the vendor product`,
-			testGetProduct.bind(null, productIds)
-		);
+		it(`it should retrieve the vendor product`, testGetProduct);
 	});
 	/*
 	describe('/GET all product', () => {
@@ -66,19 +59,19 @@ export default function testProduct() {
 	describe('/PUT product', () => {
 		it(
 			'it should update the product for the user',
-			testUpdateProduct.bind(null, productIds)
+			testUpdateProduct.bind(null, await productIds.getList())
 		);
 	});
 	describe('/DELETE product', () => {
 		it(
 			'it should delete the product',
-			testDeleteProduct.bind(null, productIds)
+			testDeleteProduct.bind(null, await productIds.getList())
 		);
 	});
 	describe('/GET product', () => {
 		it(
 			`it should fail to retrieve the vendor product`,
-			testGetDeletedProduct.bind(null, productIds)
+			testGetDeletedProduct.bind(null, await productIds.getList())
 		);
 	});
 	// Delete vendor

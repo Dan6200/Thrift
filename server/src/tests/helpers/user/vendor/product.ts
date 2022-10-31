@@ -3,6 +3,7 @@ import testProcessRoute from 'tests/helpers/test-process-route';
 import { StatusCodes } from 'http-status-codes';
 import {
 	productData,
+	productIds,
 	updateProductData,
 } from 'tests/accounts/user/vendor-account/product/data';
 import path from 'path';
@@ -14,9 +15,10 @@ let checkId = (data: any) => {
 		data.should.have.property('product_id');
 		data.product_id.should.be.a('string');
 	},
-	setIdParam = (IdParam: string[], data: any) => {
+	setIdParam = async (data: any) => {
 		console.log(data.product_id, 'at ' + filename);
-		data.product_id && IdParam.push(data.product_id);
+		const { product_id: productId } = data;
+		productId && (await productIds.add(productId));
 	};
 
 const routeParams = {

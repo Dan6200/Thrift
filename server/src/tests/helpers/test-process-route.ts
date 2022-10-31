@@ -1,9 +1,10 @@
 import chai from 'chai';
 import { Express } from 'express';
 import chaiHttp from 'chai-http';
-import { users } from 'tests/authentication/user-data';
 import { StatusCodes } from 'http-status-codes';
 import path from 'path';
+import { Users } from 'tests/authentication/user-data';
+import AsyncList from 'types-and-interfaces/async-list';
 const filename = path.basename(__filename);
 chai.use(chaiHttp).should();
 
@@ -15,10 +16,12 @@ interface routeProcessorParams {
 	dataList?: object[];
 	checks?: (response: any) => void;
 	setParams?: (params: string[], data: any) => void;
+	users?: Users;
+	productIds?: AsyncList<string>;
 }
 
 const chaiRequest = async (
-	token: string,
+	token?: string,
 	server: Express,
 	verb: string,
 	url: string,
@@ -39,38 +42,34 @@ export default function ({
 	statusCode,
 	checks,
 	setParams,
+	users,
+	productIds,
 }: routeProcessorParams) {
 	return async function (urlParams: null | string[]): Promise<void> {
-		const tokens = await users.getUserTokens();
-		tokens.should.not.be.empty;
+		const tokens = users && (await users.getUserTokens());
+		console.log('tokens %o %s', tokens, filename);
 		let response: any,
 			newUrlParams: string[] = [];
 		debugger;
 		console.log('url parameters: ', urlParams, 'at ' + filename);
 		let count = 0;
-		for (let token of tokens) {
+		do {
+			let token = tokens && tokens[count];
 			// set the url parameters
-			url +=
-				urlParams && urlParams[count] ? '/' + urlParams[count++] : '';
+			url += urlParams && urlParams[count] ? '/' + urlParams[count] : '';
 			console.log(verb, url, 'at ' + filename);
-			if (dataList && dataList.length) {
-				for (let data of dataList) {
-					response = await chaiRequest(
-						token,
-						server,
-						verb,
-						url,
-						data
-					);
-				}
-			} else {
-				response = await chaiRequest(token, server, verb, url);
-			}
+			let count1 = 0;
+			do {
+				let data = dataList && dataList[count1];
+				response = await chaiRequest(token, server, verb, url, data);
+				count1++;
+			} while (dataList && count1 < dataList.length);
 			response.should.have.status(statusCode);
-			console.log(response.body, 'at ' + filename);
-			setParams && setParams(newUrlParams, response.body);
-			checks && checks(response.body);
-		}
+			count++;
+		} while (tokens && count < tokens.length);
+		console.log(response.body, 'at ' + filename);
+		setParams && setParams(newUrlParams, response.body);
+		checks && checks(response.body);
 		urlParams = newUrlParams;
 		console.log('url parameters: ', urlParams, 'at ' + filename);
 	};

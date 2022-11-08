@@ -9,6 +9,8 @@ import { UserDataSchemaRequest } from 'app-schema/users';
 import { QueryResult } from 'pg';
 import { createToken } from 'security/create-token';
 import { hashPassword, validatePassword } from 'security/password';
+import path from 'path';
+const filename = path.basename(__filename);
 // TODO: IP address
 // https://github.com/neekware/fullerstack/tree/main/libs/nax-ipware
 
@@ -69,6 +71,7 @@ const register = async (request: Request, response: Response) => {
 	assert.ok(lastInsert >= 0 && lastInsert < rowCount);
 	const userId: string = dbQuery.rows[lastInsert].user_id,
 		token: string = createToken(userId);
+	console.log('user id: %o', [userId, token], filename);
 	response.status(StatusCodes.CREATED).json({
 		token,
 	});

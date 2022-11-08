@@ -7,12 +7,12 @@ import testShop from './accounts/user/vendor-account/shop';
 import testProduct from './accounts/user/vendor-account/product';
 
 /*
- * TODO: fixed these tests, something is wrong
- */
+ * TODO: fix these tests, something is wrong
 describe('Authentication Routes', Authentication);
 describe('User Account Routes', testUserAccount);
-describe('Vendor Account Routes', testVendorAccount);
 describe('Customer Account Routes', testCustomerAccount);
 describe('Customer Shipping Routes', testShippingInfo);
 describe('Vendor Shop Routes', testShop);
+*/
+describe('Vendor Account Routes', testVendorAccount);
 describe('Product Routes', testProduct);

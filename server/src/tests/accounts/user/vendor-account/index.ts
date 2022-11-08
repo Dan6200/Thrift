@@ -26,7 +26,7 @@ export default function testVendorAccount() {
 		it(`it should register ${newUsers.length} new users`, registration);
 	});
 	describe('\n\n/POST vendor account', () => {
-		it(`it should create new vendor account`, testCreateVendor.bind(null));
+		it(`it should create new vendor account`, testCreateVendor);
 	});
 	describe('\n\n/GET vendor account', () => {
 		it(`it should retrieve the vendor account`, testGetVendor);

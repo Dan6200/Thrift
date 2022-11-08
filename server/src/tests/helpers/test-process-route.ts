@@ -65,6 +65,7 @@ export default function ({
 					token,
 					data
 				);
+				console.log(tokens, response.body, filename, '\n');
 				count1++;
 			} while (dataList && count1 < dataList.length);
 			response.should.have.status(statusCode);

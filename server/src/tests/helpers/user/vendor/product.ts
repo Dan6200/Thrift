@@ -6,8 +6,8 @@ import {
 	productIds,
 	updateProductData,
 } from 'tests/accounts/user/vendor-account/product/data';
-import path from 'path';
 import { users } from 'tests/authentication/user-data';
+import path from 'path';
 const filename = path.basename(__filename);
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes;

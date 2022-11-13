@@ -1,3 +1,4 @@
+// cspell:disable
 import { Pool, QueryResult } from 'pg';
 
 const pool = new Pool({

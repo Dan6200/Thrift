@@ -1,3 +1,4 @@
+// cspell:disable
 const newUsers: Array<object> = [
 	{
 		first_name: 'Ebuka',
@@ -49,22 +50,22 @@ const loginUsers: Array<object> = [
 ];
 
 interface Users {
-	_user: string[];
-	push(token: string): Promise<void>;
-	clear(): Promise<void>;
-	getUserTokens(): Promise<Array<string>>;
+	userData: object[];
+	set(field: string, data: string | object): Promise<void>;
+	clear(field: string): Promise<void>;
+	get(field: string): Promise<Array<string>>;
 }
 
-const users: Users = {
-	_user: [],
-	async push(data) {
-		this._user.push(data);
+const userDataTesting: Users = {
+	userData: [{}],
+	async set(field, data) {
+		this.userData[field].push(data);
 	},
-	async clear() {
-		this._user = [];
+	async clear(field) {
+		this.userData[field] = [{}];
 	},
-	async getUserTokens() {
-		return this._user;
+	async get(field) {
+		return this.userData[field];
 	},
 };
 
@@ -90,4 +91,11 @@ const updateUserPassword: Array<object> = [
 	{ password: '236!A15HA04', new_password: 'sgsdlaWEWRsdf23@#%#@' },
 ];
 
-export { newUsers, loginUsers, updateUser, updateUserPassword, users, Users };
+export {
+	newUsers,
+	loginUsers,
+	updateUser,
+	updateUserPassword,
+	userDataTesting,
+	Users,
+};

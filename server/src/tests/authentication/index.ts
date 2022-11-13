@@ -1,5 +1,9 @@
 import db from 'db';
-import { newUsers, loginUsers, users } from 'authentication/user-data';
+import {
+	newUsers,
+	loginUsers,
+	userDataTesting,
+} from 'authentication/user-data';
 import registration from 'tests/helpers/auth/registration';
 import login from 'tests/helpers/auth/login';
 
@@ -10,7 +14,7 @@ export default async function (): Promise<void> {
 	});
 	beforeEach(async () => {
 		// clears the user token array
-		await users.clear();
+		await userDataTesting.clear('tokens');
 	});
 	// Testing the register route
 	describe('/POST user: Registration', () => {

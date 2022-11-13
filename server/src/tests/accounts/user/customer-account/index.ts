@@ -8,7 +8,7 @@ import {
 	testGetDeletedCustomer,
 } from 'tests/helpers/user/customer';
 import db from 'db';
-import { newUsers, users } from 'tests/authentication/user-data';
+import { newUsers, userDataTesting } from 'tests/authentication/user-data';
 import registration from 'tests/helpers/auth/registration';
 import { deleteUser, getDeletedUser } from 'tests/helpers/user';
 chai.use(chaiHttp).should();
@@ -18,7 +18,7 @@ export default function testCustomerAccount() {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
 		// clears the user token array
-		await users.clear();
+		await userDataTesting.clear('token');
 	});
 
 	// Testing the register route

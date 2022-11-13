@@ -1,7 +1,7 @@
 import 'express-async-errors';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { newUsers, users } from 'authentication/user-data';
+import { newUsers, userDataTesting } from 'authentication/user-data';
 import db from 'db';
 import { deleteUser, getDeletedUser } from 'tests/helpers/user';
 import registration from 'tests/helpers/auth/registration';
@@ -19,7 +19,6 @@ import {
 	testGetDeletedVendor,
 } from 'tests/helpers/user/vendor';
 import path from 'path';
-import { productIds } from './data';
 const filename = path.basename(__filename);
 chai.use(chaiHttp).should();
 
@@ -30,8 +29,8 @@ export default function testProduct() {
 		await db.query('delete from vendor');
 		await db.query('delete from product');
 		// clears the user token array
-		await users.clear();
-		await productIds.clear();
+		await userDataTesting.clear('token');
+		await userDataTesting.clear('product_id');
 	});
 
 	// Testing the register route
@@ -45,14 +44,7 @@ export default function testProduct() {
 	});
 
 	describe('/POST product', () => {
-		it('it should create a product for the vendor', async () => {
-			let responseData: any;
-			responseData = await testCreateProduct();
-			responseData.forEach((response: any) => {
-				const { product_id } = response;
-				product_id && productIds.add(product_id);
-			});
-		});
+		it('it should create a product for the vendor', testCreateProduct);
 	});
 	describe('/GET product', () => {
 		it(`it should retrieve the vendor product`, testGetProduct);

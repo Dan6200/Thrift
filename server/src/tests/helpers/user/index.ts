@@ -7,13 +7,13 @@ import Joi from 'joi';
 import {
 	updateUser,
 	updateUserPassword,
-	users,
+	userDataTesting,
 } from 'tests/authentication/user-data';
 
 chai.use(chaiHttp).should();
 
 async function getUser() {
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		const response = await chai
@@ -28,7 +28,7 @@ async function getUser() {
 
 async function patchUser() {
 	let n = 0;
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		const response = await chai
@@ -45,7 +45,7 @@ async function patchUser() {
 
 async function patchUserPassword() {
 	let n = 0;
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	// console.log(`\nusers: %O\n%s`, userTokens, __filename);
 	let lastPassword = {};
@@ -64,7 +64,7 @@ async function patchUserPassword() {
 }
 
 let getDeletedUser = async () => {
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		const response = await chai
@@ -76,7 +76,7 @@ let getDeletedUser = async () => {
 };
 
 async function deleteUser() {
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		const response = await chai

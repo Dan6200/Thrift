@@ -1,7 +1,7 @@
 import 'express-async-errors';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { newUsers, users } from 'authentication/user-data';
+import { newUsers, userDataTesting } from 'authentication/user-data';
 import db from 'db';
 import { deleteUser, getDeletedUser } from 'tests/helpers/user';
 import registration from 'tests/helpers/auth/registration';
@@ -28,7 +28,7 @@ export default async function testShop() {
 		await db.query('delete from vendor');
 		await db.query('delete from shop');
 		// clears the user token array
-		await users.clear();
+		await userDataTesting.clear('token');
 	});
 
 	// Testing the register route

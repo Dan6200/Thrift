@@ -46,7 +46,7 @@ export default function ({
 	setParams,
 }: routeProcessorParams) {
 	return async function (): Promise<any[]> {
-		const tokens = users && (await users.getUserTokens());
+		const tokens = users && (await users.get('tokens'));
 		let response: any,
 			responseData: any[] = [];
 		debugger;

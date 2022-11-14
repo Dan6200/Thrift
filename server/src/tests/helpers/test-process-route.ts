@@ -11,12 +11,12 @@ chai.use(chaiHttp).should();
 interface routeProcessorParams {
 	server: Express;
 	verb: string;
-	parameter: string;
 	baseUrl: string;
 	statusCode: StatusCodes;
 	dataList?: object[];
 	checks?: (response: any) => void;
-	setParams?: (parameter: string, data: any) => Promise<void>;
+	parameter?: string;
+	setParams?: (data: any) => Promise<void>;
 }
 
 const chaiRequest = async (
@@ -36,11 +36,11 @@ const chaiRequest = async (
 export default function ({
 	server,
 	verb,
-	parameter,
 	baseUrl,
 	dataList,
 	statusCode,
 	checks,
+	parameter,
 	setParams,
 }: routeProcessorParams) {
 	return async function (): Promise<void> {
@@ -48,14 +48,11 @@ export default function ({
 		let count = 0;
 		const tokens = await userDataTesting.get('tokens');
 		tokens.should.not.be.empty;
-		const params = await userDataTesting.get(parameter);
-		console.log('tokens %o', tokens);
-		console.log('params %o', params);
+		const params = await userDataTesting.get(parameter as string);
 		do {
 			let token = tokens[count];
 			let param = params && params[count];
 			let url = baseUrl + (param ? '/' + param : '');
-			console.log(url, filename);
 			let count1 = 0;
 			do {
 				let data = dataList && dataList[count1];
@@ -65,7 +62,7 @@ export default function ({
 			response.should.have.status(statusCode);
 			if (Object.keys(response.body).length) {
 				checks && checks(response.body);
-				setParams && (await setParams(parameter, response.body));
+				setParams && (await setParams(response.body));
 			}
 			count++;
 		} while (tokens && count < tokens.length);

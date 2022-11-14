@@ -30,7 +30,7 @@ export default function testProduct() {
 		await db.query('delete from product');
 		// initializes with empty array
 		await userDataTesting.reset('tokens');
-		await userDataTesting.reset('product_ids');
+		await userDataTesting.reset('productIds');
 	});
 
 	// Testing the register route

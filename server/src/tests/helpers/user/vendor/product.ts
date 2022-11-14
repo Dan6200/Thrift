@@ -3,10 +3,9 @@ import testProcessRoute from 'tests/helpers/test-process-route';
 import { StatusCodes } from 'http-status-codes';
 import {
 	productData,
-	productIds,
 	updateProductData,
 } from 'tests/accounts/user/vendor-account/product/data';
-import { users } from 'tests/authentication/user-data';
+import { userDataTesting } from 'tests/authentication/user-data';
 import path from 'path';
 const filename = path.basename(__filename);
 
@@ -17,12 +16,16 @@ let checkId = (data: any) => {
 	data.product_id.should.be.a('string');
 };
 
+let setProductIds = async (data: any) => {
+	const { product_id } = data;
+	userDataTesting.set('productIds', product_id);
+};
+
 const routeParams = {
 	server: application,
-	url: `/api/v1/user/vendor/shop/products`,
+	baseUrl: `/api/v1/user/vendor/shop/products`,
 	statusCode: OK,
-	users,
-	productIds,
+	setProductIds,
 };
 
 const testCreateProduct = testProcessRoute({

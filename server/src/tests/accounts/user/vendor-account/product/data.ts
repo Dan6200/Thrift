@@ -29,18 +29,4 @@ let updateProductData = [
 	},
 ];
 
-/*************** For testing **************/
-const productIds: AsyncList<string> = {
-	_user: [],
-	async add(data) {
-		this._user.push(data);
-	},
-	async clear() {
-		this._user = [];
-	},
-	async getList() {
-		return this._user;
-	},
-};
-
-export { updateProductData, productData, productIds };
+export { updateProductData, productData };

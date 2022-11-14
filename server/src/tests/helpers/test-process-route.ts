@@ -11,13 +11,14 @@ chai.use(chaiHttp).should();
 interface routeProcessorParams {
 	server: Express;
 	verb: string;
-	url: string;
+	parameter: string;
+	baseUrl: string;
 	statusCode: StatusCodes;
 	dataList?: object[];
 	checks?: (response: any) => void;
 	users?: Users;
 	productIds?: AsyncList<string>;
-	setParams?: (params: string[], data: any) => void;
+	setParams?: (parameter: string, data: any) => Promise<void>;
 }
 
 const chaiRequest = async (
@@ -37,42 +38,43 @@ const chaiRequest = async (
 export default function ({
 	server,
 	verb,
-	url,
+	parameter,
+	baseUrl,
 	dataList,
 	statusCode,
 	checks,
 	users,
-	productIds,
 	setParams,
 }: routeProcessorParams) {
-	return async function (): Promise<any[]> {
-		const tokens = users && (await users.get('tokens'));
-		let response: any,
-			responseData: any[] = [];
-		debugger;
+	return async function (): Promise<void> {
+		let response: any;
 		let count = 0;
-		const Ids = productIds && (await productIds.getList());
-		do {
-			let token = tokens && tokens[count];
-			let urlWithParams = url + (Ids ? '/' + Ids[count] : '');
-			let count1 = 0;
+		if (users) {
+			const tokens = await users.get('tokens');
+			tokens.should.not.be.empty;
+			const params = users.get(parameter);
 			do {
-				let data = dataList && dataList[count1];
-				response = await chaiRequest(
-					server,
-					verb,
-					urlWithParams,
-					token,
-					data
-				);
-				console.log(tokens, response.body, filename, '\n');
-				count1++;
-			} while (dataList && count1 < dataList.length);
-			response.should.have.status(statusCode);
-			checks && checks(response.body);
-			responseData.push(response.body);
-			count++;
-		} while (tokens && count < tokens.length);
-		return responseData;
+				let token = tokens[count];
+				let url = baseUrl + (params ? '/' + params[count] : '');
+				let count1 = 0;
+				do {
+					let data = dataList && dataList[count1];
+					response = await chaiRequest(
+						server,
+						verb,
+						url,
+						token,
+						data
+					);
+					count1++;
+				} while (dataList && count1 < dataList.length);
+				response.should.have.status(statusCode);
+				if (Object.keys(response.body).length) {
+					checks && checks(response.body);
+					setParams && setParams(parameter, response.body);
+				}
+				count++;
+			} while (tokens && count < tokens.length);
+		}
 	};
 }

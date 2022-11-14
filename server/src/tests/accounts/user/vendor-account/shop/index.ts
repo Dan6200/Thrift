@@ -27,8 +27,8 @@ export default async function testShop() {
 		await db.query('delete from user_account');
 		await db.query('delete from vendor');
 		await db.query('delete from shop');
-		// clears the user token array
-		await userDataTesting.clear('token');
+		// initializes with empty array
+		await userDataTesting.reset('tokens');
 	});
 
 	// Testing the register route

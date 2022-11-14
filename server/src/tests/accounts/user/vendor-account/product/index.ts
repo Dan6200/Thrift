@@ -28,9 +28,9 @@ export default function testProduct() {
 		await db.query('delete from user_account');
 		await db.query('delete from vendor');
 		await db.query('delete from product');
-		// clears the user token array
-		await userDataTesting.clear('tokens');
-		await userDataTesting.clear('product_ids');
+		// initializes with empty array
+		await userDataTesting.reset('tokens');
+		await userDataTesting.reset('product_ids');
 	});
 
 	// Testing the register route

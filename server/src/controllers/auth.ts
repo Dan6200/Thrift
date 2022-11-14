@@ -71,7 +71,6 @@ const register = async (request: Request, response: Response) => {
 	assert.ok(lastInsert >= 0 && lastInsert < rowCount);
 	const userId: string = dbQuery.rows[lastInsert].user_id,
 		token: string = createToken(userId);
-	console.log('user id: %o', [userId, token], filename);
 	response.status(StatusCodes.CREATED).json({
 		token,
 	});

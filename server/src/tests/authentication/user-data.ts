@@ -50,19 +50,19 @@ const loginUsers: Array<object> = [
 ];
 
 interface Users {
-	userData: object[];
+	userData: object;
 	set(field: string, data: string | object): Promise<void>;
-	clear(field: string): Promise<void>;
+	reset(field: string): Promise<void>;
 	get(field: string): Promise<Array<string>>;
 }
 
 const userDataTesting: Users = {
-	userData: [{}],
+	userData: {},
 	async set(field, data) {
 		this.userData[field].push(data);
 	},
-	async clear(field) {
-		this.userData[field] = [{}];
+	async reset(field) {
+		this.userData[field] = [];
 	},
 	async get(field) {
 		return this.userData[field];

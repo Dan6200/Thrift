@@ -19,7 +19,7 @@ export default function testUserAccount() {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
 		// clears the user token array
-		await userDataTesting.clear('token');
+		await userDataTesting.reset('token');
 	});
 	// Testing the register route
 	describe('/POST user: Registration', () => {

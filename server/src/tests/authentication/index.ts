@@ -13,8 +13,8 @@ export default async function (): Promise<void> {
 		await db.query('delete from user_account');
 	});
 	beforeEach(async () => {
-		// clears the user token array
-		await userDataTesting.clear('tokens');
+		// initializes with empty array
+		await userDataTesting.reset('tokens');
 	});
 	// Testing the register route
 	describe('/POST user: Registration', () => {

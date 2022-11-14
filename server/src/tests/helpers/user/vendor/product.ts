@@ -17,20 +17,21 @@ let checkId = (data: any) => {
 };
 
 let setProductIds = async (data: any) => {
+	console.log(data, filename);
 	const { product_id } = data;
 	userDataTesting.set('productIds', product_id);
 };
 
 const routeParams = {
 	server: application,
+	parameter: 'productIds',
 	baseUrl: `/api/v1/user/vendor/shop/products`,
 	statusCode: OK,
-	setProductIds,
+	setParams: setProductIds,
 };
 
 const testCreateProduct = testProcessRoute({
 	...routeParams,
-	productIds: undefined,
 	verb: 'post',
 	statusCode: CREATED,
 	dataList: productData,

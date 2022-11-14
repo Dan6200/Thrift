@@ -18,7 +18,7 @@ export default function testVendorAccount() {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
 		// clears the user token array
-		await userDataTesting.reset('token');
+		await userDataTesting.reset('tokens');
 	});
 
 	// Testing the register route

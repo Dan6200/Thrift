@@ -1,6 +1,6 @@
 import application from 'application';
 import { StatusCodes } from 'http-status-codes';
-import { users } from 'tests/authentication/user-data';
+import { userDataTesting } from 'tests/authentication/user-data';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { ShopSchemaDB } from 'app-schema/vendor/shop';
@@ -13,7 +13,7 @@ chai.use(chaiHttp).should();
 
 const createShop = async (shopIds: string[]) => {
 	let count = 0;
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		const response = await chai
@@ -30,7 +30,7 @@ const createShop = async (shopIds: string[]) => {
 };
 
 const getShop = async (shopIds: string[]) => {
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	let count = 0,
 		lastShopId = '';
 	userTokens.should.not.be.empty;
@@ -49,7 +49,7 @@ const getShop = async (shopIds: string[]) => {
 };
 
 const getAllShop = async () => {
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		const response = await chai
@@ -67,7 +67,7 @@ const getAllShop = async () => {
 const updateShop = async (shopIds: string[]) => {
 	let count = 0,
 		lastShopId = '';
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		let shopId = shopIds[count];
@@ -87,7 +87,7 @@ const updateShop = async (shopIds: string[]) => {
 const deleteShop = async (shopIds: string[]) => {
 	let count = 0,
 		lastShopId = '';
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		let shopId = shopIds[count];
@@ -103,7 +103,7 @@ const deleteShop = async (shopIds: string[]) => {
 };
 
 const getDeletedShop = async (shopIds: string[]) => {
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	let count = 0,
 		lastShopId = '';
 	userTokens.should.not.be.empty;
@@ -122,7 +122,7 @@ const getDeletedShop = async (shopIds: string[]) => {
 };
 
 const getAllDeletedShop = async () => {
-	const userTokens: string[] = await users.getUserTokens();
+	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		const response = await chai

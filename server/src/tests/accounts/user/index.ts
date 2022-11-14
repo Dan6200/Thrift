@@ -18,7 +18,7 @@ export default function testUserAccount() {
 	before(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
-		// clears the user token array
+		// initializes or resets the field array
 		await userDataTesting.reset('token');
 	});
 	// Testing the register route

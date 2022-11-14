@@ -25,7 +25,7 @@ export default async function testShippingInfo() {
 	before(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
-		// clears the user token array
+		// resets the user token array
 		await userDataTesting.reset('token');
 	});
 

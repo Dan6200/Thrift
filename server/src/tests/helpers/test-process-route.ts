@@ -48,9 +48,11 @@ export default function ({
 		let count = 0;
 		const tokens = await userDataTesting.get('tokens');
 		tokens.should.not.be.empty;
+		// tokens.length.should.eql(new Set(tokens).keys.length);
 		const params = await userDataTesting.get(parameter as string);
 		do {
 			let token = tokens[count];
+			console.log(`userToken is ${token.substring(40)}`);
 			let param = params && params[count];
 			let url = baseUrl + (param ? '/' + param : '');
 			let count1 = 0;

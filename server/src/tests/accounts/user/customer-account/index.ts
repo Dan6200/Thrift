@@ -18,33 +18,33 @@ export default function testCustomerAccount() {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
 		// clears the user token array
-		await userDataTesting.reset('token');
+		await userDataTesting.reset('tokens');
 	});
 
 	// Testing the register route
-	describe('\n\n/POST user: Registration', () => {
+	describe('/POST user: Registration', () => {
 		it(`it should register ${newUsers.length} new users`, registration);
 	});
-	describe('\n\n/POST customer account', () => {
+	describe('/POST customer account', () => {
 		it(`it should create new customer account`, testCreateCustomer);
 	});
-	describe('\n\n/GET customer account', () => {
+	describe('/GET customer account', () => {
 		it(`it should retrieve the customer account`, testGetCustomer);
 	});
-	describe('\n\n/DELETE customer account', () => {
+	describe('/DELETE customer account', () => {
 		it('it should delete the customer account', testDeleteCustomer);
 	});
-	describe('\n\n/GET customer', () => {
+	describe('/GET customer', () => {
 		it(
 			`it should fail to retrieve the customer account`,
 			testGetDeletedCustomer
 		);
 	});
 	// Delete user account
-	describe('\n\n/DELETE user account', () => {
+	describe('/DELETE user account', () => {
 		it("it should delete the user's account", deleteUser);
 	});
-	describe('\n\n/GET user', () => {
+	describe('/GET user', () => {
 		it(`it should retrieve the User account`, getDeletedUser);
 	});
 }

@@ -48,18 +48,15 @@ async function patchUserPassword() {
 	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	// console.log(`\nusers: %O\n%s`, userTokens, __filename);
-	let lastPassword = {};
 	for (const userToken of userTokens) {
 		// console.log(updatedUser[n], __filename);
 		let password = updateUserPassword[n++];
-		password.should.not.deep.equal(lastPassword);
 		const response = await chai
 			.request(application)
 			.patch('/api/v1/user/password')
 			.send(password)
 			.auth(userToken, { type: 'bearer' });
 		response.should.have.status(StatusCodes.NO_CONTENT);
-		lastPassword = password;
 	}
 }
 

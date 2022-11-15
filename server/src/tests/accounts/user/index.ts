@@ -14,12 +14,12 @@ import registration from 'tests/helpers/auth/registration';
 
 chai.use(chaiHttp).should();
 
-export default function testUserAccount() {
+export default async function testUserAccount() {
 	before(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
 		// initializes or resets the field array
-		await userDataTesting.reset('token');
+		await userDataTesting.reset('tokens');
 	});
 	// Testing the register route
 	describe('/POST user: Registration', () => {
@@ -31,7 +31,8 @@ export default function testUserAccount() {
 	describe('/PATCH user', () => {
 		it('it should update the user info', patchUser);
 	});
-	describe('/PATCH user password', () => {
+	describe('/PATCH user password', function () {
+		this.timeout(5000);
 		it("it should update the user's password", patchUserPassword);
 	});
 	describe('/DELETE user account', () => {

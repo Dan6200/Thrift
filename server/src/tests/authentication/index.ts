@@ -7,7 +7,7 @@ import {
 import registration from 'tests/helpers/auth/registration';
 import login from 'tests/helpers/auth/login';
 
-export default async function (): Promise<void> {
+export default function (): void {
 	before(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');

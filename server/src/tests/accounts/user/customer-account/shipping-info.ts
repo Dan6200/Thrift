@@ -26,7 +26,7 @@ export default async function testShippingInfo() {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
 		// resets the user token array
-		await userDataTesting.reset('token');
+		await userDataTesting.reset('tokens');
 	});
 
 	// Testing the register route

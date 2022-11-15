@@ -17,9 +17,9 @@ let checkId = (data: any) => {
 };
 
 let setProductIds = async (data: any) => {
-	console.log(data, 'from setProductIds');
 	const { product_id } = data;
 	await userDataTesting.set('productIds', product_id);
+	console.log(userDataTesting.get('productIds'));
 };
 
 const routeParams = {

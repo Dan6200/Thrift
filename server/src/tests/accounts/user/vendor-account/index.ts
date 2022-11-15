@@ -22,29 +22,29 @@ export default function testVendorAccount() {
 	});
 
 	// Testing the register route
-	describe('\n\n/POST user: Registration', () => {
+	describe('/POST user: Registration', () => {
 		it(`it should register ${newUsers.length} new users`, registration);
 	});
-	describe('\n\n/POST vendor account', () => {
+	describe('/POST vendor account', () => {
 		it(`it should create new vendor account`, testCreateVendor);
 	});
-	describe('\n\n/GET vendor account', () => {
+	describe('/GET vendor account', () => {
 		it(`it should retrieve the vendor account`, testGetVendor);
 	});
-	describe('\n\n/DELETE vendor account', () => {
+	describe('/DELETE vendor account', () => {
 		it('it should delete the vendor account', testDeleteVendor);
 	});
-	describe('\n\n/GET vendor', () => {
+	describe('/GET vendor', () => {
 		it(
 			`it should fail to retrieve the vendor account`,
 			testGetDeletedVendor
 		);
 	});
 	// Delete user account
-	describe('\n\n/DELETE user account', () => {
+	describe('/DELETE user account', () => {
 		it("it should delete the user's account", deleteUser);
 	});
-	describe('\n\n/GET user', () => {
+	describe('/GET user', () => {
 		it(`it should retrieve the User account`, getDeletedUser);
 	});
 }

@@ -5,46 +5,61 @@ import {
 	testCreateVendor,
 	testGetVendor,
 	testDeleteVendor,
-	testGetDeletedVendor,
+	testGetNonExistentVendor,
 } from 'tests/helpers/user/vendor';
 import db from 'db';
-import { newUsers, userDataTesting } from 'tests/authentication/user-data';
+import { userDataTesting } from 'tests/authentication/user-data';
 import registration from 'tests/helpers/auth/registration';
-import { deleteUser, getDeletedUser } from 'tests/helpers/user';
 chai.use(chaiHttp).should();
 
 export default function testVendorAccount() {
-	before(async () => {
+	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
 		// initializes or clears the user token array
 		await userDataTesting.reset('tokens');
 	});
 
-	// Testing the register route
-	describe('/POST user: Registration', () => {
-		it(`it should register ${newUsers.length} new users`, registration);
+	describe('/POST vendor account', async () => {
+		// create new vendor account
+		it(`it should create new user account then a new vendor account`, async () =>
+			registration()
+				.then((tokens) => testCreateVendor(tokens))
+				.catch((err) => {
+					throw err;
+				}));
 	});
-	describe('/POST vendor account', () => {
-		it(`it should create new vendor account`, testCreateVendor);
-	});
+
 	describe('/GET vendor account', () => {
-		it(`it should retrieve the vendor account`, testGetVendor);
+		it(`it should create and retrieve the vendor account`, async () =>
+			registration()
+				.then((tokens) => testCreateVendor(tokens))
+				.then((responseList) => {
+					let productIds: string[] = [];
+					(responseList as any[]).forEach((response) => {
+						const { product_id }: { product_id: string } = response;
+						productIds.push(product_id);
+					});
+					testGetVendor(productIds);
+				})
+				.catch((err) => {
+					throw err;
+				}));
 	});
+
+	/*
 	describe('/DELETE vendor account', () => {
-		it('it should delete the vendor account', testDeleteVendor);
+		it('it should create and delete the vendor account', async () => {
+			registration()
+				.then(() => testCreateVendor())
+				.then(() => testDeleteVendor());
+		});
 	});
-	describe('/GET vendor', () => {
+	describe('/GET nonexistent vendor account', () => {
 		it(
 			`it should fail to retrieve the vendor account`,
-			testGetDeletedVendor
+			testGetNonExistentVendor
 		);
 	});
-	// Delete user account
-	describe('/DELETE user account', () => {
-		it("it should delete the user's account", deleteUser);
-	});
-	describe('/GET user', () => {
-		it(`it should retrieve the User account`, getDeletedUser);
-	});
+	*/
 }

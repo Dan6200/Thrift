@@ -6,7 +6,8 @@ import { newUsers, userDataTesting } from 'tests/authentication/user-data';
 
 chai.use(chaiHttp).should();
 export default async function registration() {
-	let lastUser: Object = {};
+	let lastUser: Object = {},
+		tokens: string[] = [];
 	for (let i = 0; i < newUsers.length; i++) {
 		const newUser = newUsers[i];
 		newUser.should.not.be.equal(lastUser);
@@ -20,6 +21,8 @@ export default async function registration() {
 		responseObject.should.have.property('token');
 		const { token } = responseObject;
 		await userDataTesting.set('tokens', token);
+		tokens.push(token);
 		lastUser = newUser;
 	}
+	return tokens;
 }

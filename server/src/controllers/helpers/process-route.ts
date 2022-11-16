@@ -20,6 +20,7 @@ export default (
 	processData?: (data: object) => any
 ) => {
 	// return the route processor middleware
+	// TODO: use the returning clause after an insert
 	return async (request: RequestWithPayload, response: Response) => {
 		// variables
 		let result: any,

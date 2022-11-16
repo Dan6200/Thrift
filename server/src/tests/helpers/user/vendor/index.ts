@@ -29,7 +29,7 @@ const testDeleteVendor = testProcessRoute({
 	statusCode: StatusCodes.NO_CONTENT,
 });
 
-const testGetDeletedVendor = testProcessRoute({
+const testGetNonExistentVendor = testProcessRoute({
 	...routeParams,
 	verb: 'get',
 	statusCode: StatusCodes.NOT_FOUND,
@@ -39,5 +39,5 @@ export {
 	testCreateVendor,
 	testGetVendor,
 	testDeleteVendor,
-	testGetDeletedVendor,
+	testGetNonExistentVendor,
 };

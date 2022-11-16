@@ -5,7 +5,10 @@ import { StatusCodes } from 'http-status-codes';
 const { CREATED, OK, NO_CONTENT } = StatusCodes;
 
 const createQuery = [
-		({ userId }) => db.query(`insert into vendor values($1)`, [userId]),
+		({ userId }) =>
+			db.query(`insert into vendor values($1) returning vendor_id`, [
+				userId,
+			]),
 	],
 	readQuery = [
 		({ userId }) =>
@@ -13,18 +16,28 @@ const createQuery = [
 	],
 	deleteQuery = [() => db.query(`delete from vendor`)],
 	validateResult = (result: any, status: Status): ResponseData => {
-		if (result.rowCount === 0)
-			return {
-				status: 404,
-				data: 'Route does not exit',
-			};
+		if (result.rowCount === 0) {
+			if (result.command === 'SELECT') {
+				return {
+					status: 404,
+					data: 'Route does not exit',
+				};
+			}
+			if (result.command === 'INSERT')
+				throw new Error('INSERT operation failed');
+		}
 		return {
 			status,
 			data: result.rows[result.rowCount - 1],
 		};
 	};
 
-let createVendorAccount = processRoute(createQuery, { status: CREATED }),
+let createVendorAccount = processRoute(
+		createQuery,
+		{ status: CREATED },
+		undefined,
+		validateResult
+	),
 	getVendorAccount = processRoute(
 		readQuery,
 		{ status: OK },

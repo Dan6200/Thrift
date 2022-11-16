@@ -66,7 +66,6 @@ const register = async (request: Request, response: Response) => {
 	let dbQuery: QueryResult = await db.query(
 		'select user_id from user_account'
 	);
-	console.log(dbQuery.rows);
 	let { rowCount }: { rowCount: number } = dbQuery;
 	let lastInsert = rowCount ? rowCount - 1 : rowCount;
 	assert.ok(lastInsert >= 0 && lastInsert < rowCount);

@@ -40,16 +40,17 @@ export default function ({
 	dataList,
 	statusCode,
 	checks,
-	parameter,
-	setParams,
 }: routeProcessorParams) {
-	return async function (): Promise<void> {
-		let response: any;
-		let count = 0;
-		const tokens = await userDataTesting.get('tokens');
+	return async function (
+		tokens: string[],
+		params?: string[]
+	): Promise<void | any[]> {
+		let response: any,
+			count = 0,
+			responseList: any[] = [];
 		tokens.should.not.be.empty;
-		// tokens.length.should.eql(new Set(tokens).keys.length);
-		const params = await userDataTesting.get(parameter as string);
+		// tokens should be unique to avoid duplicate id's
+		tokens.length.should.equal(new Set(tokens).size);
 		do {
 			let token = tokens[count];
 			console.log(`userToken is ${token.substring(40)}`);
@@ -64,9 +65,10 @@ export default function ({
 			response.should.have.status(statusCode);
 			if (Object.keys(response.body).length) {
 				checks && checks(response.body);
-				setParams && (await setParams(response.body));
+				responseList.push(response.body);
 			}
 			count++;
 		} while (tokens && count < tokens.length);
+		if (responseList.length) return responseList;
 	};
 }

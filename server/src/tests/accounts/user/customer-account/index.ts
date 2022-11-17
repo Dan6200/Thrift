@@ -5,7 +5,7 @@ import {
 	testCreateCustomer,
 	testGetCustomer,
 	testDeleteCustomer,
-	testGetDeletedCustomer,
+	testGetNonExistentCustomer,
 } from 'tests/helpers/user/customer';
 import db from 'db';
 import { newUsers, userDataTesting } from 'tests/authentication/user-data';
@@ -17,8 +17,6 @@ export default function testCustomerAccount() {
 	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
-		// initializes or clears the user token array
-		await userDataTesting.reset('tokens');
 	});
 
 	describe('/POST customer account', async () => {
@@ -56,7 +54,7 @@ export default function testCustomerAccount() {
 		it('it should create and delete the customer account', async () =>
 			registration()
 				.then((tokens) => testCreateCustomer(tokens))
-				.then(({ authTokens }) => testGetCustomer(authTokens))
+				.then(({ authTokens }) => testDeleteCustomer(authTokens))
 				.catch((err) => {
 					throw err;
 				}));

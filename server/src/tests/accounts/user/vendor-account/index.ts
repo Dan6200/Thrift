@@ -16,8 +16,6 @@ export default function testVendorAccount() {
 	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
-		// initializes or clears the user token array
-		await userDataTesting.reset('tokens');
 	});
 
 	describe('/POST vendor account', async () => {
@@ -34,17 +32,6 @@ export default function testVendorAccount() {
 		it(`it should create a new user account, create a vendor account and retrieve the vendor account`, async () =>
 			registration()
 				.then((tokens) => testCreateVendor(tokens))
-				/*
-					.then(({ responseList, authTokens }) => {
-						let vendorIds: string[] = [];
-						(responseList as any[]).forEach((response) => {
-							const { vendor_id }: { vendor_id: string } = response;
-							vendorIds.push(vendor_id);
-						});
-						console.log(authTokens, vendorIds);
-						return testGetVendor(authTokens, vendorIds);
-					})
-					*/
 				.then(({ authTokens }) => testDeleteVendor(authTokens))
 				.catch((err) => {
 					throw err;

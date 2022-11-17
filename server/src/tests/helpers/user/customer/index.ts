@@ -29,7 +29,7 @@ const testDeleteCustomer = testProcessRoute({
 	statusCode: StatusCodes.NO_CONTENT,
 });
 
-const testGetDeletedCustomer = testProcessRoute({
+const testGetNonExistentCustomer = testProcessRoute({
 	...routeParams,
 	verb: 'get',
 	statusCode: StatusCodes.NOT_FOUND,
@@ -39,5 +39,5 @@ export {
 	testCreateCustomer,
 	testGetCustomer,
 	testDeleteCustomer,
-	testGetDeletedCustomer,
+	testGetNonExistentCustomer,
 };

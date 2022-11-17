@@ -15,6 +15,6 @@ describe('Customer Shipping Routes', testShippingInfo);
 describe('Vendor Shop Routes', testShop);
 describe('Product Routes', testProduct);
 describe('User Account Routes', testUserAccount);
-describe('Customer Account Routes', testCustomerAccount);
 */
 describe('Vendor Account Routes', testVendorAccount);
+describe('Customer Account Routes', testCustomerAccount);

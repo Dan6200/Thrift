@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import application from 'application';
 import { StatusCodes } from 'http-status-codes';
-import { newUsers, userDataTesting } from 'tests/authentication/user-data';
+import { newUsers } from 'tests/authentication/user-data';
 
 chai.use(chaiHttp).should();
 export default async function registration() {
@@ -20,7 +20,6 @@ export default async function registration() {
 		const responseObject = response.body;
 		responseObject.should.have.property('token');
 		const { token } = responseObject;
-		await userDataTesting.set('tokens', token);
 		tokens.push(token);
 		lastUser = newUser;
 	}

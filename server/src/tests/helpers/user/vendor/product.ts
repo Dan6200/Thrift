@@ -16,12 +16,6 @@ let checkId = (data: any) => {
 	data.product_id.should.be.a('string');
 };
 
-let setProductIds = async (data: any) => {
-	const { product_id } = data;
-	await userDataTesting.set('productIds', product_id);
-	console.log(userDataTesting.get('productIds'));
-};
-
 const routeParams = {
 	server: application,
 	parameter: 'productIds',
@@ -35,7 +29,6 @@ const testCreateProduct = testProcessRoute({
 	statusCode: CREATED,
 	dataList: productData,
 	checks: checkId,
-	setParams: setProductIds,
 });
 
 const testGetAllProduct = testProcessRoute({

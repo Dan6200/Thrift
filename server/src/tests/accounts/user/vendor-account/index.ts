@@ -31,35 +31,38 @@ export default function testVendorAccount() {
 	});
 
 	describe('/GET vendor account', () => {
-		it(`it should create and retrieve the vendor account`, async () =>
+		it(`it should create a new user account, create a vendor account and retrieve the vendor account`, async () =>
 			registration()
 				.then((tokens) => testCreateVendor(tokens))
-				.then((responseList) => {
-					let productIds: string[] = [];
-					(responseList as any[]).forEach((response) => {
-						const { product_id }: { product_id: string } = response;
-						productIds.push(product_id);
-					});
-					testGetVendor(productIds);
-				})
+				/*
+					.then(({ responseList, authTokens }) => {
+						let vendorIds: string[] = [];
+						(responseList as any[]).forEach((response) => {
+							const { vendor_id }: { vendor_id: string } = response;
+							vendorIds.push(vendor_id);
+						});
+						console.log(authTokens, vendorIds);
+						return testGetVendor(authTokens, vendorIds);
+					})
+					*/
+				.then(({ authTokens }) => testDeleteVendor(authTokens))
 				.catch((err) => {
 					throw err;
 				}));
 	});
 
-	/*
 	describe('/DELETE vendor account', () => {
-		it('it should create and delete the vendor account', async () => {
+		it('it should create and delete the vendor account', async () =>
 			registration()
-				.then(() => testCreateVendor())
-				.then(() => testDeleteVendor());
-		});
+				.then((tokens) => testCreateVendor(tokens))
+				.then(({ authTokens }) => testGetVendor(authTokens))
+				.catch((err) => {
+					throw err;
+				}));
 	});
+
 	describe('/GET nonexistent vendor account', () => {
-		it(
-			`it should fail to retrieve the vendor account`,
-			testGetNonExistentVendor
-		);
+		it(`it should fail to retrieve the vendor account`, async () =>
+			registration().then((tokens) => testGetNonExistentVendor(tokens)));
 	});
-	*/
 }

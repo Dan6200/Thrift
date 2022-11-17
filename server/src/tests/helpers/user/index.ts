@@ -47,9 +47,7 @@ async function patchUserPassword() {
 	let n = 0;
 	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
-	// console.log(`\nusers: %O\n%s`, userTokens, __filename);
 	for (const userToken of userTokens) {
-		// console.log(updatedUser[n], __filename);
 		let password = updateUserPassword[n++];
 		const response = await chai
 			.request(application)

@@ -14,37 +14,58 @@ import { deleteUser, getDeletedUser } from 'tests/helpers/user';
 chai.use(chaiHttp).should();
 
 export default function testCustomerAccount() {
-	before(async () => {
+	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
-		// clears the user token array
+		// initializes or clears the user token array
 		await userDataTesting.reset('tokens');
 	});
 
-	// Testing the register route
-	describe('/POST user: Registration', () => {
-		it(`it should register ${newUsers.length} new users`, registration);
+	describe('/POST customer account', async () => {
+		// create new customer account
+		it(`it should create new user account then a new customer account`, async () =>
+			registration()
+				.then((tokens) => testCreateCustomer(tokens))
+				.catch((err) => {
+					throw err;
+				}));
 	});
-	describe('/POST customer account', () => {
-		it(`it should create new customer account`, testCreateCustomer);
-	});
+
 	describe('/GET customer account', () => {
-		it(`it should retrieve the customer account`, testGetCustomer);
+		it(`it should create a new user account, create a customer account and retrieve the customer account`, async () =>
+			registration()
+				.then((tokens) => testCreateCustomer(tokens))
+				/*
+					.then(({ responseList, authTokens }) => {
+						let customerIds: string[] = [];
+						(responseList as any[]).forEach((response) => {
+							const { customer_id }: { customer_id: string } = response;
+							customerIds.push(customer_id);
+						});
+						console.log(authTokens, customerIds);
+						return testGetCustomer(authTokens, customerIds);
+					})
+					*/
+				.then(({ authTokens }) => testGetCustomer(authTokens))
+				.catch((err) => {
+					throw err;
+				}));
 	});
+
 	describe('/DELETE customer account', () => {
-		it('it should delete the customer account', testDeleteCustomer);
+		it('it should create and delete the customer account', async () =>
+			registration()
+				.then((tokens) => testCreateCustomer(tokens))
+				.then(({ authTokens }) => testGetCustomer(authTokens))
+				.catch((err) => {
+					throw err;
+				}));
 	});
-	describe('/GET customer', () => {
-		it(
-			`it should fail to retrieve the customer account`,
-			testGetDeletedCustomer
-		);
-	});
-	// Delete user account
-	describe('/DELETE user account', () => {
-		it("it should delete the user's account", deleteUser);
-	});
-	describe('/GET user', () => {
-		it(`it should retrieve the User account`, getDeletedUser);
+
+	describe('/GET nonexistent customer account', () => {
+		it(`it should fail to retrieve the customer account`, async () =>
+			registration().then((tokens) =>
+				testGetNonExistentCustomer(tokens)
+			));
 	});
 }

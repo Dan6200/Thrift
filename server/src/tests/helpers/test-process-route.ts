@@ -3,8 +3,6 @@ import { Express } from 'express';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
 import path from 'path';
-import { Users, userDataTesting } from 'tests/authentication/user-data';
-import AsyncList from 'types-and-interfaces/async-list';
 const filename = path.basename(__filename);
 chai.use(chaiHttp).should();
 
@@ -16,7 +14,6 @@ interface routeProcessorParams {
 	dataList?: object[];
 	checks?: (response: any) => void;
 	parameter?: string;
-	setParams?: (data: any) => Promise<void>;
 }
 
 const chaiRequest = async (
@@ -42,19 +39,20 @@ export default function ({
 	checks,
 }: routeProcessorParams) {
 	return async function (
-		tokens: string[],
+		tokens?: string[],
 		params?: string[]
-	): Promise<void | any[]> {
+	): Promise<typeof returnData> {
 		let response: any,
 			count = 0,
 			responseList: any[] = [];
-		tokens.should.not.be.empty;
+		tokens && tokens.should.not.be.empty;
+		tokens && tokens.length.should.equal(new Set(tokens).size);
 		// tokens should be unique to avoid duplicate id's
-		tokens.length.should.equal(new Set(tokens).size);
 		do {
-			let token = tokens[count];
-			console.log(`userToken is ${token.substring(40)}`);
+			let token = tokens && tokens[count];
 			let param = params && params[count];
+			token ??= '';
+			param ??= '';
 			let url = baseUrl + (param ? '/' + param : '');
 			let count1 = 0;
 			do {
@@ -69,6 +67,11 @@ export default function ({
 			}
 			count++;
 		} while (tokens && count < tokens.length);
-		if (responseList.length) return responseList;
+		let returnData: {
+			responseList?: any[];
+			authTokens?: string[];
+		};
+		returnData = { responseList, authTokens: tokens };
+		return returnData;
 	};
 }

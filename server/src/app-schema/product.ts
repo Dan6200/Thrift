@@ -20,6 +20,8 @@ const ProductSchemaDB = joi
 		list_price: joi.number().required(),
 		net_price: joi.number().required(),
 		quantity_available: joi.number().required(),
+		shop_id: joi.string().optional().allow(null),
+		vendor_id: joi.string().required(),
 	})
 	.required();
 

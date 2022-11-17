@@ -10,11 +10,11 @@ import testProduct from './accounts/user/vendor-account/product';
  * TODO: fix concurrency issues with these tests
  */
 /*
-describe('Authentication Routes', Authentication);
 describe('Customer Shipping Routes', testShippingInfo);
 describe('Vendor Shop Routes', testShop);
 describe('User Account Routes', testUserAccount);
-describe('Vendor Account Routes', testVendorAccount);
 describe('Customer Account Routes', testCustomerAccount);
 */
+describe('Authentication Routes', Authentication);
+describe('Vendor Account Routes', testVendorAccount);
 describe('Product Routes', testProduct);

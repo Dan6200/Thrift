@@ -7,6 +7,8 @@ import {
 } from 'tests/accounts/user/vendor-account/product/data';
 import { userDataTesting } from 'tests/authentication/user-data';
 import path from 'path';
+import { ProductSchemaDB } from 'app-schema/product';
+import Joi from 'joi';
 const filename = path.basename(__filename);
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes;
@@ -14,6 +16,12 @@ const { CREATED, OK, NOT_FOUND } = StatusCodes;
 let checkId = (data: any) => {
 	data.should.have.property('product_id');
 	data.product_id.should.be.a('string');
+};
+
+let validateResult = (data: any) => {
+	let productInfo = data;
+	productInfo.should.not.be.empty;
+	Joi.assert(productInfo, ProductSchemaDB);
 };
 
 const routeParams = {
@@ -35,6 +43,7 @@ const testGetAllProduct = testProcessRoute({
 	...routeParams,
 	baseUrl: `/api/v1/user/vendor/shop/products/all`,
 	verb: 'get',
+	checks: validateResult,
 });
 
 const testGetProduct = testProcessRoute({

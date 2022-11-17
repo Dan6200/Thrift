@@ -22,10 +22,12 @@ export default {
 		setTimeout(function () {
 			this.lastQuery = arguments;
 		});
+		/*
 		console.log('query', {
 			text,
 			params,
 		});
+		*/
 		const res = await pool.query(text, params);
 		const duration = Date.now() - start;
 		/*

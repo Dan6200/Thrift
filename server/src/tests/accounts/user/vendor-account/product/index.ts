@@ -27,7 +27,6 @@ export default function testProduct() {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
 	});
-	/*
 	describe('/POST product', () => {
 		it('it should create a product for the vendor', async () =>
 			registration()
@@ -54,7 +53,6 @@ export default function testProduct() {
 					throw err;
 				}));
 	});
-	*/
 	describe('/GET all product', () => {
 		it(`it should retrieve the vendor product`, async () =>
 			registration()

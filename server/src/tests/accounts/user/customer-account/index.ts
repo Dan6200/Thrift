@@ -33,17 +33,6 @@ export default function testCustomerAccount() {
 		it(`it should create a new user account, create a customer account and retrieve the customer account`, async () =>
 			registration()
 				.then((tokens) => testCreateCustomer(tokens))
-				/*
-					.then(({ responseList, authTokens }) => {
-						let customerIds: string[] = [];
-						(responseList as any[]).forEach((response) => {
-							const { customer_id }: { customer_id: string } = response;
-							customerIds.push(customer_id);
-						});
-						console.log(authTokens, customerIds);
-						return testGetCustomer(authTokens, customerIds);
-					})
-					*/
 				.then(({ authTokens }) => testGetCustomer(authTokens))
 				.catch((err) => {
 					throw err;

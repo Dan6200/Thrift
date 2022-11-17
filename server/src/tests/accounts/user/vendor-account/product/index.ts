@@ -16,37 +16,55 @@ import {
 import {
 	testCreateVendor,
 	testDeleteVendor,
-	testGetDeletedVendor,
+	testGetNonExistentVendor,
 } from 'tests/helpers/user/vendor';
 import path from 'path';
 const filename = path.basename(__filename);
 chai.use(chaiHttp).should();
 
 export default function testProduct() {
-	before(async () => {
+	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
 	});
 
-	// Testing the register route
-	describe('/POST user: Registration', () => {
-		it(`it should register ${newUsers.length} new users`, registration);
-	});
-
-	// create the vendor acc
-	describe('/POST vendor', () => {
-		it(`it should create a new vendor`, testCreateVendor);
-	});
-
 	describe('/POST product', () => {
-		it('it should create a product for the vendor', testCreateProduct);
+		it('it should create a product for the vendor', async () =>
+			registration()
+				.then((tokens) => testCreateVendor(tokens))
+				.then(({ authTokens }) => testCreateProduct(authTokens))
+				.catch((err) => {
+					throw err;
+				}));
 	});
 	describe('/GET product', () => {
-		it(`it should retrieve the vendor product`, testGetProduct);
+		it(`it should retrieve the vendor product`, async () =>
+			registration()
+				.then((tokens) => testCreateVendor(tokens))
+				.then(({ authTokens }) => testCreateProduct(authTokens))
+				.then(({ responseList, authTokens }) => {
+					let productIds: string[] = [];
+					(responseList as any[]).forEach((response) => {
+						const { product_id }: { product_id: string } = response;
+						productIds.push(product_id);
+					});
+					return testGetProduct(authTokens, productIds);
+				})
+				.catch((err) => {
+					throw err;
+				}));
 	});
 	describe('/GET all product', () => {
-		it(`it should retrieve all the vendor products`, testGetAllProduct);
+		it(`it should retrieve the vendor product`, async () =>
+			registration()
+				.then((tokens) => testCreateVendor(tokens))
+				.then(({ authTokens }) => testCreateProduct(authTokens))
+				.then(({ authTokens }) => testGetAllProduct(authTokens))
+				.catch((err) => {
+					throw err;
+				}));
 	});
+	/*
 	describe('/PUT product', () => {
 		it('it should update the product for the user', testUpdateProduct);
 	});
@@ -73,4 +91,5 @@ export default function testProduct() {
 	describe('/GET user', () => {
 		it(`it should fail to retrieve the User`, getDeletedUser);
 	});
+	*/
 }

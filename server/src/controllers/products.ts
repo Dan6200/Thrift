@@ -6,7 +6,7 @@ import { ProductSchemaReq } from 'app-schema/product';
 import processRoute from './helpers/process-route';
 import { ResponseData, Status } from 'types-and-interfaces/routes-processor';
 import { genSqlUpdateCommands } from 'helper-functions';
-const filename = require('path').basename(__filename);
+// const filename = require('path').basename(__filename);
 const { CREATED, OK } = StatusCodes;
 
 let insertProductTable = `insert into product (
@@ -17,17 +17,15 @@ let insertProductTable = `insert into product (
 	net_price,
 	quantity_available,
 	vendor_id
-) values ($1, $2, $3, $4, $5, $6, $7)`;
+) values ($1, $2, $3, $4, $5, $6, $7) returning product_id`;
 
 const createQuery = [
 	async ({ reqData, userId }) => {
-		// TODO: check if an insert statement returns a value
 		return await db.query(insertProductTable, [
 			...Object.values(reqData),
 			userId,
 		]);
 	},
-	async () => await db.query('select product_id from product'),
 ];
 
 const readAllQuery = [async () => await db.query(`select * from product`)];

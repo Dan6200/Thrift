@@ -30,7 +30,7 @@ const genSqlUpdateCommands = (
 	setFieldsToNewValues += `${fields[last]} = $${last + OFFSET}`;
 	let output = `update ${table}
 		${setFieldsToNewValues}
-		where ${idName} = $1`;
+		where ${idName} = $1 returning *`;
 	return output;
 };
 

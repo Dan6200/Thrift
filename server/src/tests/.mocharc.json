@@ -1,8 +1,5 @@
 {
-	"mocha": {
-		"timeout": 1000,
-		"require": ["ts-node/register"],
-		"recursive": true,
-		"extension": ["ts", "js", "tsx"]
-	}
+	"timeout": 1000000,
+	"recursive": true,
+	"extension": ["ts", "js", "tsx"]
 }

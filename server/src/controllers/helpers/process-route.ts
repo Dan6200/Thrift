@@ -20,7 +20,7 @@ export default (
 	processData?: (data: object) => any
 ) => {
 	// return the route processor middleware
-	// TODO: use the returning clause after an insert
+	debugger;
 	return async (request: RequestWithPayload, response: Response) => {
 		// variables
 		let result: any,
@@ -48,7 +48,6 @@ export default (
 				params: request.params,
 				reqData,
 			});
-			// console.log(result);
 			if (result && validateResult) {
 				// validateBody returns error status code and message if data is invalid
 				({ status, data } = validateResult(

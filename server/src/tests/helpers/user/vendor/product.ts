@@ -33,13 +33,13 @@ const testCreateProduct = testProcessRoute({
 
 const testGetAllProduct = testProcessRoute({
 	...routeParams,
+	baseUrl: `/api/v1/user/vendor/shop/products/all`,
 	verb: 'get',
 });
 
 const testGetProduct = testProcessRoute({
 	...routeParams,
 	verb: 'get',
-	statusCode: OK,
 });
 
 const testUpdateProduct = testProcessRoute({

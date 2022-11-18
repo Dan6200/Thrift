@@ -53,8 +53,8 @@ export default function testProduct() {
 					throw err;
 				}));
 	});
-	describe('/GET all product', () => {
-		it(`it should retrieve the vendor product`, async () =>
+	describe('/GET all products', () => {
+		it(`it should retrieve all the vendor's products`, async () =>
 			registration()
 				.then((tokens) => testCreateVendor(tokens))
 				.then(({ authTokens }) => testCreateProduct(authTokens))

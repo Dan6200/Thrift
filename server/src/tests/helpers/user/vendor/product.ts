@@ -20,7 +20,7 @@ let checkId = (data: any) => {
 
 let validateResult = (data: any) => {
 	let productInfo = data;
-	productInfo.should.not.be.empty;
+	productInfo.should.be.an('object');
 	Joi.assert(productInfo, ProductSchemaDB);
 };
 
@@ -41,7 +41,7 @@ const testCreateProduct = testProcessRoute({
 
 const testGetAllProduct = testProcessRoute({
 	...routeParams,
-	baseUrl: `/api/v1/user/vendor/shop/products/all`,
+	baseUrl: routeParams.baseUrl + '/all',
 	verb: 'get',
 	checks: validateResult,
 });
@@ -49,6 +49,7 @@ const testGetAllProduct = testProcessRoute({
 const testGetProduct = testProcessRoute({
 	...routeParams,
 	verb: 'get',
+	checks: validateResult,
 });
 
 const testUpdateProduct = testProcessRoute({

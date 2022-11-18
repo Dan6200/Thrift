@@ -13,7 +13,7 @@ import {
 import registration from 'tests/helpers/auth/registration';
 
 chai.use(chaiHttp).should();
-
+/*
 export default async function testUserAccount() {
 	before(async () => {
 		// deletes all entries from user_account
@@ -41,7 +41,7 @@ export default async function testUserAccount() {
 		it(`it should fail to retrieve the User account`, getDeletedUser);
 	});
 }
-
+*/
 export default function testUserAccount() {
 	beforeEach(async () => {
 		// deletes all entries from user_account
@@ -56,7 +56,7 @@ export default function testUserAccount() {
 					throw err;
 				}));
 	});
-
+	/*
 	describe('/GET user account', () => {
 		it(`it should create a new user account, create a user account and retrieve the user account`, async () =>
 			registration()
@@ -79,4 +79,5 @@ export default function testUserAccount() {
 		it(`it should fail to retrieve the user account`, async () =>
 			registration().then((tokens) => testGetNonExistentUser(tokens)));
 	});
+	*/
 }

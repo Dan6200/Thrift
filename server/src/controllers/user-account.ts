@@ -16,6 +16,16 @@ import { UserData } from 'types-and-interfaces/user';
 import { UserDataSchemaDB } from 'app-schema/users';
 import { hashPassword } from 'security/password';
 
+const userDataFields = [
+	'first_name',
+	'last_name',
+	'email',
+	'phone',
+	'ip_address',
+	'country',
+	'dob',
+];
+
 let getUserAccount = async (
 	request: RequestWithPayload,
 	response: Response
@@ -23,13 +33,7 @@ let getUserAccount = async (
 	let { userId }: RequestUserPayload = request.user;
 	let dbResult = await db.query(
 		`select 
-				first_name,
-				last_name,
-				email,
-				phone,
-				ip_address,
-				country,
-				dob
+			${userDataFields.join(', ')}
 			from user_account 
 			where user_id = $1`,
 		[userId]
@@ -54,24 +58,15 @@ let updateUserAccount = async (
 	// TODO: validate and verify updated email and phone numbers
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body);
-	await db.query(
+	let dbResult = await db.query(
 		// Generates A sql update command.
 		// Takes the database name, the column name of the first item of the array
-		`${genSqlUpdateCommands('user_account', 'user_id', fields)}`,
+		`${genSqlUpdateCommands(
+			'user_account',
+			'user_id',
+			fields
+		)} returning ${userDataFields.join(', ')}`,
 		[userId, ...data]
-	);
-	let dbResult = await db.query(
-		`select 
-				first_name,
-				last_name,
-				email,
-				phone,
-				ip_address,
-				country,
-				dob
-			from user_account 
-			where user_id = $1`,
-		[userId]
 	);
 	assert.equal(dbResult.rows.length, 1);
 	const userAccount = dbResult.rows[0];
@@ -101,13 +96,13 @@ let updateUserPassword = async (
 	request.body.password = password;
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body);
-	await db.query(
+	const result = await db.query(
 		// Generates A sql update command.
 		// Takes the database name, the column name of the first item of the array
 		`${genSqlUpdateCommands('user_account', 'user_id', fields)}`,
 		[userId, ...data]
 	);
-	response.status(StatusCodes.NO_CONTENT).json();
+	response.status(StatusCodes.NO_CONTENT).json(result);
 };
 
 let deleteUserAccount = async (

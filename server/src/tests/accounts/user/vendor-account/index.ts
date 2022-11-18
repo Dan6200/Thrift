@@ -32,7 +32,7 @@ export default function testVendorAccount() {
 		it(`it should create a new user account, create a vendor account and retrieve the vendor account`, async () =>
 			registration()
 				.then((tokens) => testCreateVendor(tokens))
-				.then(({ authTokens }) => testDeleteVendor(authTokens))
+				.then(({ authTokens }) => testGetVendor(authTokens))
 				.catch((err) => {
 					throw err;
 				}));
@@ -42,7 +42,7 @@ export default function testVendorAccount() {
 		it('it should create and delete the vendor account', async () =>
 			registration()
 				.then((tokens) => testCreateVendor(tokens))
-				.then(({ authTokens }) => testGetVendor(authTokens))
+				.then(({ authTokens }) => testDeleteVendor(authTokens))
 				.catch((err) => {
 					throw err;
 				}));

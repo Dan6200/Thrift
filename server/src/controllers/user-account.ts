@@ -61,6 +61,7 @@ let updateUserAccount = async (
 	let dbResult = await db.query(
 		// Generates A sql update command.
 		// Takes the database name, the column name of the first item of the array
+		// returns a list of columns from the database table
 		`${genSqlUpdateCommands(
 			'user_account',
 			'user_id',

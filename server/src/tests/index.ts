@@ -7,14 +7,13 @@ import testShop from './accounts/user/vendor-account/shop';
 import testProduct from './accounts/user/vendor-account/product';
 
 /*
- * TODO: fix concurrency issues with these tests
+ * TODO: fix bug with updateUserPassword controller
+ * and this two ...
+	describe('Customer Shipping Routes', testShippingInfo);
+	describe('Vendor Shop Routes', testShop);
  */
-/*
 describe('Authentication Routes', Authentication);
+describe('User Account Routes', testUserAccount);
 describe('Customer Account Routes', testCustomerAccount);
 describe('Vendor Account Routes', testVendorAccount);
-describe('Customer Shipping Routes', testShippingInfo);
-describe('Vendor Shop Routes', testShop);
 describe('Product Routes', testProduct);
-*/
-describe('User Account Routes', testUserAccount);

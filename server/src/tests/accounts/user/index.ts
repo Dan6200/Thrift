@@ -57,6 +57,8 @@ export default function testUserAccount() {
 
 	describe('/GET nonexistent user account', () => {
 		it(`it should fail to retrieve the user account`, async () =>
-			registration().then((tokens) => testGetNonExistentUser(tokens)));
+			registration()
+				.then((tokens) => testDeleteUser(tokens))
+				.then(({ authTokens }) => testGetNonExistentUser(authTokens)));
 	});
 }

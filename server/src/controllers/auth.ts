@@ -49,7 +49,7 @@ const register = async (request: Request, response: Response) => {
 		// TODO: SMS verification
 	}
 	userData.password = await hashPassword(password);
-	await db.query(
+	let dbQuery: QueryResult = await db.query(
 		`
 		insert into user_account (
 			first_name,
@@ -62,9 +62,6 @@ const register = async (request: Request, response: Response) => {
 			ip_address
 		) values ($1, $2, $3, $4, $5, $6, $7, $8) returning user_id`,
 		Object.values(userData)
-	);
-	let dbQuery: QueryResult = await db.query(
-		'select user_id from user_account'
 	);
 	let { rowCount }: { rowCount: number } = dbQuery;
 	let lastInsert = rowCount ? rowCount - 1 : rowCount;

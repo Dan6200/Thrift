@@ -72,20 +72,12 @@ const userDataTesting: Users = {
 const updateUser: Array<object> = [
 	{
 		dob: '1995-12-31',
-		last_name: 'Joyce',
-	},
-
-	{
-		email: 'mustymomo1019@yahoo.com',
-		phone: '2348063248197',
-	},
-
-	{
-		dob: '1995-12-31',
+		country: 'Ghana',
 	},
 ];
 
 const updateUserPassword: Array<object> = [
+	/* TODO: since it runs for each function, this should not work */
 	{ password: '236!A15HA04', new_password: 'jayafd3245XF*!&$' },
 	{ password: '123AishaBaggy9384', new_password: '2t295AishaBaby$<5%>!' },
 	{ password: '236!A15HA04', new_password: 'sgsdlaWEWRsdf23@#%#@' },

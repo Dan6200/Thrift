@@ -60,7 +60,7 @@ const register = async (request: Request, response: Response) => {
 			dob,
 			country,
 			ip_address
-		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
+		) values ($1, $2, $3, $4, $5, $6, $7, $8) returning user_id`,
 		Object.values(userData)
 	);
 	let dbQuery: QueryResult = await db.query(

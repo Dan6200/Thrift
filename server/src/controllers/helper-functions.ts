@@ -12,7 +12,11 @@ const validateUserPassword = async (
 			[Id]
 		)
 	).rows[0];
-	return await validatePassword(candidatePassword, password.toString());
+	const isMatch: boolean = await validatePassword(
+		candidatePassword,
+		password.toString()
+	);
+	return isMatch;
 };
 
 const genSqlUpdateCommands = (

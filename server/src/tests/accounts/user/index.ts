@@ -40,7 +40,13 @@ export default function testUserAccount() {
 	describe('/PATCH user account password', () => {
 		it(`It should update the user password`, async () =>
 			registration()
-				.then((tokens) => testUpdateUserPassword(tokens))
+				.then((tokens) => {
+					testUpdateUserPassword().then((testPasswordFuncArray) => {
+						for (let testFunc of testPasswordFuncArray) {
+							testFunc(tokens);
+						}
+					});
+				})
 				.catch((err) => {
 					throw err;
 				}));

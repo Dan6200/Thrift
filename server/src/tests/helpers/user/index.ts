@@ -36,13 +36,21 @@ const testUpdateUser = testProcessRoute({
 	...routeParams,
 });
 
-const testUpdateUserPassword = testProcessRoute({
-	verb: 'patch',
-	statusCode: NO_CONTENT,
-	dataList: updateUserPassword,
-	...routeParams,
-	baseUrl: routeParams.baseUrl + '/password',
-});
+const testUpdateUserPassword = async (): Promise<any[]> => {
+	let testEachPassword: any[] = [];
+	for (let password of updateUserPassword) {
+		testEachPassword.push(
+			testProcessRoute({
+				verb: 'patch',
+				statusCode: NO_CONTENT,
+				dataList: [password],
+				...routeParams,
+				baseUrl: routeParams.baseUrl + '/password',
+			})
+		);
+	}
+	return testEachPassword;
+};
 
 const testDeleteUser = testProcessRoute({
 	verb: 'delete',

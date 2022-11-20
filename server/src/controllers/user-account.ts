@@ -88,7 +88,7 @@ let updateUserPassword = async (
 		password: string;
 		new_password: string;
 	} = request.body;
-	let pwdIsValid = validateUserPassword(userId, oldPassword);
+	let pwdIsValid = await validateUserPassword(userId, oldPassword);
 	if (!pwdIsValid)
 		throw new UnauthenticatedError(`Invalid Credentials,
 				cannot update password`);

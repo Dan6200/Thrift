@@ -78,7 +78,7 @@ const updateUser: Array<object> = [
 
 const updateUserPassword: Array<object> = [
 	/* TODO: since it runs for each function, this should not work */
-	{ password: '236!A15HA04', new_password: 'jayafd3245XF*!&$' },
+	{ password: 'EbukaDa1!', new_password: 'jayafd3245XF*!&$' },
 	{ password: '123AishaBaggy9384', new_password: '2t295AishaBaby$<5%>!' },
 	{ password: '236!A15HA04', new_password: 'sgsdlaWEWRsdf23@#%#@' },
 ];

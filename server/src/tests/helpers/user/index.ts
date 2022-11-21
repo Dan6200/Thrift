@@ -36,7 +36,7 @@ const testUpdateUser = testProcessRoute({
 	...routeParams,
 });
 
-const testUpdateUserPassword = async (): Promise<any[]> => {
+const testChangeUserPassword = async (): Promise<any[]> => {
 	let testEachPassword: any[] = [];
 	for (let password of updateUserPassword) {
 		testEachPassword.push(
@@ -67,7 +67,7 @@ const testGetNonExistentUser = testProcessRoute({
 export {
 	testGetUser,
 	testUpdateUser,
-	testUpdateUserPassword,
+	testChangeUserPassword,
 	testDeleteUser,
 	testGetNonExistentUser,
 };

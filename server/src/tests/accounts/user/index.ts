@@ -4,7 +4,7 @@ import chaiHttp from 'chai-http';
 import db from 'db';
 import {
 	testUpdateUser,
-	testUpdateUserPassword,
+	testChangeUserPassword,
 	testDeleteUser,
 	testGetUser,
 	testGetNonExistentUser,
@@ -40,13 +40,17 @@ export default function testUserAccount() {
 	describe('/PATCH user account password', () => {
 		it(`It should update the user password`, async () =>
 			registration()
-				.then((tokens) => {
-					testUpdateUserPassword().then((testPasswordFuncArray) => {
-						for (let testFunc of testPasswordFuncArray) {
-							testFunc(tokens);
+				.then((tokens) =>
+					testChangeUserPassword().then(
+						(changeUserPasswordFuncList) => {
+							let promiseList: Promise<any>[] = [];
+							for (let changeEachPassword of changeUserPasswordFuncList) {
+								promiseList.push(changeEachPassword(tokens));
+							}
+							return Promise.all(promiseList);
 						}
-					});
-				})
+					)
+				)
 				.catch((err) => {
 					throw err;
 				}));

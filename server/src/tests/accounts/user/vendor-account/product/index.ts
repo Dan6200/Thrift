@@ -1,25 +1,14 @@
 import 'express-async-errors';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { newUsers, userDataTesting } from 'authentication/user-data';
 import db from 'db';
-import { deleteUser, getDeletedUser } from 'tests/helpers/user';
 import registration from 'tests/helpers/auth/registration';
 import {
 	testCreateProduct,
-	testDeleteProduct,
 	testGetAllProduct,
-	testGetDeletedProduct,
 	testGetProduct,
-	testUpdateProduct,
 } from 'tests/helpers/user/vendor/product';
-import {
-	testCreateVendor,
-	testDeleteVendor,
-	testGetNonExistentVendor,
-} from 'tests/helpers/user/vendor';
-import path from 'path';
-const filename = path.basename(__filename);
+import { testCreateVendor } from 'tests/helpers/user/vendor';
 chai.use(chaiHttp).should();
 
 export default function testProduct() {
@@ -31,10 +20,7 @@ export default function testProduct() {
 		it('it should create a product for the vendor', async () =>
 			registration()
 				.then((tokens) => testCreateVendor(tokens))
-				.then(({ authTokens }) => testCreateProduct(authTokens))
-				.catch((err) => {
-					throw err;
-				}));
+				.then(({ authTokens }) => testCreateProduct(authTokens)));
 	});
 	describe('/GET product', () => {
 		it(`it should retrieve the vendor product`, async () =>
@@ -48,9 +34,6 @@ export default function testProduct() {
 						productIds.push(product_id);
 					});
 					return testGetProduct(authTokens, productIds);
-				})
-				.catch((err) => {
-					throw err;
 				}));
 	});
 	describe('/GET all products', () => {
@@ -58,12 +41,10 @@ export default function testProduct() {
 			registration()
 				.then((tokens) => testCreateVendor(tokens))
 				.then(({ authTokens }) => testCreateProduct(authTokens))
-				.then(({ authTokens }) => testGetAllProduct(authTokens))
-				.catch((err) => {
-					throw err;
-				}));
+				.then(({ authTokens }) => testGetAllProduct(authTokens)));
 	});
 	/*
+	 * TODO: complete this!
 	describe('/PUT product', () => {
 		it('it should update the product for the user', testUpdateProduct);
 	});

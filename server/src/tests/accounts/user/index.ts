@@ -21,48 +21,30 @@ export default function testUserAccount() {
 
 	describe('/GET user account', () => {
 		it(`it should retrieve the user info`, async () =>
-			registration()
-				.then((tokens) => testGetUser(tokens))
-				.catch((err) => {
-					throw err;
-				}));
+			registration().then((tokens) => testGetUser(tokens)));
 	});
 
 	describe('/PATCH user account', () => {
 		it(`It should update the user info`, async () =>
-			registration()
-				.then((tokens) => testUpdateUser(tokens))
-				.catch((err) => {
-					throw err;
-				}));
+			registration().then((tokens) => testUpdateUser(tokens)));
 	});
 
 	describe('/PATCH user account password', () => {
 		it(`It should update the user password`, async () =>
-			registration()
-				.then((tokens) =>
-					testChangeUserPassword().then(
-						(changeUserPasswordFuncList) => {
-							let promiseList: Promise<any>[] = [];
-							for (let changeEachPassword of changeUserPasswordFuncList) {
-								promiseList.push(changeEachPassword(tokens));
-							}
-							return Promise.all(promiseList);
-						}
-					)
-				)
-				.catch((err) => {
-					throw err;
-				}));
+			registration().then((tokens) =>
+				testChangeUserPassword().then((changeUserPasswordFuncList) => {
+					let promiseList: Promise<any>[] = [];
+					for (let changeEachPassword of changeUserPasswordFuncList) {
+						promiseList.push(changeEachPassword(tokens));
+					}
+					return Promise.all(promiseList);
+				})
+			));
 	});
 
 	describe('/DELETE user account', () => {
 		it('it should create and delete the user account', async () =>
-			registration()
-				.then((tokens) => testDeleteUser(tokens))
-				.catch((err) => {
-					throw err;
-				}));
+			registration().then((tokens) => testDeleteUser(tokens)));
 	});
 
 	describe('/GET nonexistent user account', () => {

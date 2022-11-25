@@ -11,6 +11,7 @@ export default async function registration() {
 	for (let i = 0; i < newUsers.length; i++) {
 		const newUser = newUsers[i];
 		newUser.should.not.be.equal(lastUser);
+		// save passwords for testing login and changing passwords
 		const response = await chai
 			.request(application)
 			.post('/api/v1/auth/register')

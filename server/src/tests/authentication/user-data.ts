@@ -51,21 +51,21 @@ const loginUsers: Array<object> = [
 
 interface Users {
 	userData: object;
-	set(field: string, data: string | object): Promise<void>;
-	reset(field: string): Promise<void>;
-	get(field: string): Promise<Array<string>>;
+	set(token: string, data: string | object): Promise<void>;
+	reset(token: string): Promise<void>;
+	get(token: string): Promise<Array<string>>;
 }
 
 const userDataTesting: Users = {
 	userData: {},
-	async set(field, data) {
-		this.userData[field].push(data);
+	async set(token, data) {
+		this.userData[token].push(data);
 	},
-	async reset(field) {
-		this.userData[field] = [];
+	async reset(token) {
+		this.userData[token] = [];
 	},
-	async get(field) {
-		return this.userData[field];
+	async get(token) {
+		return this.userData[token];
 	},
 };
 

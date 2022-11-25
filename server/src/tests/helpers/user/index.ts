@@ -36,21 +36,15 @@ const testUpdateUser = testProcessRoute({
 	...routeParams,
 });
 
-const testChangeUserPassword = async (): Promise<any[]> => {
-	let testEachPassword: any[] = [];
-	for (let password of updateUserPassword) {
-		testEachPassword.push(
-			testProcessRoute({
-				verb: 'patch',
-				statusCode: NO_CONTENT,
-				dataList: [password],
-				...routeParams,
-				baseUrl: routeParams.baseUrl + '/password',
-			})
-		);
-	}
-	return testEachPassword;
-};
+const testChangeUserPassword = testProcessRoute({
+	verb: 'patch',
+	statusCode: NO_CONTENT,
+	// TODO: each user data object should be a dictionary storing the token or userId
+	// updateUserPassword[token] ==> correct password
+	dataList: [updateUserPassword[0]],
+	...routeParams,
+	baseUrl: routeParams.baseUrl + '/password',
+});
 
 const testDeleteUser = testProcessRoute({
 	verb: 'delete',

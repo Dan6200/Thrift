@@ -31,15 +31,7 @@ export default function testUserAccount() {
 
 	describe('/PATCH user account password', () => {
 		it(`It should update the user password`, async () =>
-			registration().then((tokens) =>
-				testChangeUserPassword().then((changeUserPasswordFuncList) => {
-					let promiseList: Promise<any>[] = [];
-					for (let changeEachPassword of changeUserPasswordFuncList) {
-						promiseList.push(changeEachPassword(tokens));
-					}
-					return Promise.all(promiseList);
-				})
-			));
+			registration().then((tokens) => testChangeUserPassword(tokens)));
 	});
 
 	describe('/DELETE user account', () => {

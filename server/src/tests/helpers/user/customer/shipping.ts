@@ -1,6 +1,5 @@
 import application from 'application';
 import { StatusCodes } from 'http-status-codes';
-import { userDataTesting } from 'tests/authentication/user-data';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { ShippingInfoSchemaDB } from 'app-schema/customer/shipping';
@@ -13,7 +12,6 @@ chai.use(chaiHttp).should();
 
 const createShipping = async (addressIds: string[]) => {
 	let count = 0;
-	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		const response = await chai
@@ -29,7 +27,6 @@ const createShipping = async (addressIds: string[]) => {
 };
 
 const getShipping = async (addressIds: string[]) => {
-	const userTokens: string[] = await userDataTesting.get('tokens');
 	let count = 0;
 	userTokens.should.not.be.empty;
 	let lastAddressId = '';
@@ -48,7 +45,6 @@ const getShipping = async (addressIds: string[]) => {
 };
 
 const getAllShipping = async () => {
-	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		const response = await chai
@@ -65,7 +61,6 @@ const getAllShipping = async () => {
 
 const updateShipping = async (addressIds: string[]) => {
 	let count = 0;
-	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	let lastAddressId = '';
 	for (const userToken of userTokens) {
@@ -85,7 +80,6 @@ const updateShipping = async (addressIds: string[]) => {
 
 const deleteShipping = async (addressIds: string[]) => {
 	let count = 0;
-	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	let lastAddressId = '';
 	for (const userToken of userTokens) {
@@ -102,7 +96,6 @@ const deleteShipping = async (addressIds: string[]) => {
 };
 
 const getDeletedShipping = async (addressIds: string[]) => {
-	const userTokens: string[] = await userDataTesting.get('tokens');
 	let count = 0;
 	userTokens.should.not.be.empty;
 	let lastAddressId = '';
@@ -121,7 +114,6 @@ const getDeletedShipping = async (addressIds: string[]) => {
 };
 
 const getAllDeletedShipping = async () => {
-	const userTokens: string[] = await userDataTesting.get('tokens');
 	userTokens.should.not.be.empty;
 	for (const userToken of userTokens) {
 		const response = await chai

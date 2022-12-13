@@ -5,7 +5,6 @@ import {
 	productData,
 	updateProductData,
 } from 'tests/accounts/user/vendor-account/product/data';
-import { userDataTesting } from 'tests/authentication/user-data';
 import path from 'path';
 import { ProductSchemaDB } from 'app-schema/product';
 import Joi from 'joi';

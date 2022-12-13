@@ -1,5 +1,16 @@
 // cspell:disable
-const newUsers: Array<object> = [
+interface user {
+	first_name?: string;
+	last_name?: string;
+	email?: string;
+	phone?: string;
+	password?: string;
+	dob?: string;
+	country?: string;
+	ip_address?: string;
+}
+
+const newUsers: Array<user> = [
 	{
 		first_name: 'Ebuka',
 		last_name: 'Eze',
@@ -34,7 +45,7 @@ const newUsers: Array<object> = [
 	},
 ];
 
-const loginUsers: Array<object> = [
+const loginUsers: Array<user> = [
 	{
 		email: 'ebukachibueze5489@gmail.com',
 		password: 'EbukaDa1!',
@@ -49,45 +60,22 @@ const loginUsers: Array<object> = [
 	},
 ];
 
-interface Users {
-	userData: object;
-	set(token: string, data: string | object): Promise<void>;
-	reset(token: string): Promise<void>;
-	get(token: string): Promise<Array<string>>;
-}
-
-const userDataTesting: Users = {
-	userData: {},
-	async set(token, data) {
-		this.userData[token].push(data);
-	},
-	async reset(token) {
-		this.userData[token] = [];
-	},
-	async get(token) {
-		return this.userData[token];
-	},
-};
-
 const updateUser: Array<object> = [
 	{
-		dob: '1995-12-31',
+		ip_address: '198.79.78.45',
 		country: 'Ghana',
 	},
+	{
+		dob: '1995-12-31',
+		phone: '+2348073249250',
+	},
+	{ last_name: 'Buhari' },
 ];
 
 const updateUserPassword: Array<object> = [
-	/* TODO: since it runs for each function, this should not work */
 	{ password: 'EbukaDa1!', new_password: 'jayafd3245XF*!&$' },
 	{ password: '123AishaBaggy9384', new_password: '2t295AishaBaby$<5%>!' },
 	{ password: '236!A15HA04', new_password: 'sgsdlaWEWRsdf23@#%#@' },
 ];
 
-export {
-	newUsers,
-	loginUsers,
-	updateUser,
-	updateUserPassword,
-	userDataTesting,
-	Users,
-};
+export { newUsers, loginUsers, updateUser, updateUserPassword };

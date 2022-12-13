@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import application from 'application';
 import { StatusCodes } from 'http-status-codes';
-import { loginUsers, userDataTesting } from 'tests/authentication/user-data';
+import { loginUsers } from 'tests/authentication/user-data';
 
 chai.use(chaiHttp).should();
 export default async function login() {
@@ -19,8 +19,6 @@ export default async function login() {
 		response.body.should.be.an('object');
 		const responseObject = response.body;
 		responseObject.should.have.property('token');
-		const { token } = responseObject;
-		await userDataTesting.set('tokens', token);
 		lastUser = user;
 	}
 }

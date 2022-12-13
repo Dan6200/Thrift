@@ -1,9 +1,5 @@
 import db from 'db';
-import {
-	newUsers,
-	loginUsers,
-	userDataTesting,
-} from 'authentication/user-data';
+import { newUsers, loginUsers } from 'authentication/user-data';
 import registration from 'tests/helpers/auth/registration';
 import login from 'tests/helpers/auth/login';
 
@@ -14,7 +10,6 @@ export default function (): void {
 	});
 	beforeEach(async () => {
 		// initializes with empty array
-		await userDataTesting.reset('tokens');
 	});
 	// Testing the register route
 	describe('/POST user: Registration', () => {

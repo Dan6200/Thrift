@@ -25,6 +25,7 @@ const errorHandlerMiddleware = async (
 		</h1>
 	`
 		);
+	console.log(customError.msg);
 	return res.status(customError.statusCode).json({
 		msg: customError.msg,
 	});

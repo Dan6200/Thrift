@@ -11,7 +11,7 @@ interface routeProcessorParams {
 	verb: string;
 	baseUrl: string;
 	statusCode: StatusCodes;
-	dataList?: object[];
+	userData?: object[];
 	checks?: (response: any) => void;
 	parameter?: string;
 }
@@ -34,7 +34,7 @@ export default function ({
 	server,
 	verb,
 	baseUrl,
-	dataList,
+	userData,
 	statusCode,
 	checks,
 }: routeProcessorParams) {
@@ -54,12 +54,8 @@ export default function ({
 			token ??= '';
 			param ??= '';
 			let url = baseUrl + (param ? '/' + param : '');
-			let count1 = 0;
-			do {
-				let data = dataList && dataList[count1];
-				response = await chaiRequest(server, verb, url, token, data);
-				count1++;
-			} while (dataList && count1 < dataList.length);
+			let data = userData && userData[count];
+			response = await chaiRequest(server, verb, url, token, data);
 			response.should.have.status(statusCode);
 			if (Object.keys(response.body).length) {
 				checks && checks(response.body);

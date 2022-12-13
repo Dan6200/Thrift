@@ -32,7 +32,7 @@ const testGetUser = testProcessRoute({
 const testUpdateUser = testProcessRoute({
 	verb: 'patch',
 	statusCode: OK,
-	dataList: updateUser,
+	userData: updateUser,
 	...routeParams,
 });
 
@@ -41,7 +41,7 @@ const testChangeUserPassword = testProcessRoute({
 	statusCode: NO_CONTENT,
 	// TODO: each user data object should be a dictionary storing the token or userId
 	// updateUserPassword[token] ==> correct password
-	dataList: [updateUserPassword[0]],
+	userData: updateUserPassword,
 	...routeParams,
 	baseUrl: routeParams.baseUrl + '/password',
 });

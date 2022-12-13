@@ -1,5 +1,5 @@
 import application from 'application';
-import testProcessRoute from 'tests/helpers/test-process-route';
+import testProcessRoute.multiData from 'tests/helpers/test-process-route';
 import { StatusCodes } from 'http-status-codes';
 import {
 	productData,
@@ -30,7 +30,7 @@ const routeParams = {
 	statusCode: OK,
 };
 
-const testCreateProduct = testProcessRoute({
+const testCreateProduct = testProcessRoute.multiData({
 	...routeParams,
 	verb: 'post',
 	statusCode: CREATED,
@@ -38,31 +38,31 @@ const testCreateProduct = testProcessRoute({
 	checks: checkId,
 });
 
-const testGetAllProduct = testProcessRoute({
+const testGetAllProduct = testProcessRoute.multiData({
 	...routeParams,
 	baseUrl: routeParams.baseUrl + '/all',
 	verb: 'get',
 	checks: validateResult,
 });
 
-const testGetProduct = testProcessRoute({
+const testGetProduct = testProcessRoute.multiData({
 	...routeParams,
 	verb: 'get',
 	checks: validateResult,
 });
 
-const testUpdateProduct = testProcessRoute({
+const testUpdateProduct = testProcessRoute.multiData({
 	...routeParams,
 	verb: 'put',
 	dataList: updateProductData,
 });
 
-const testDeleteProduct = testProcessRoute({
+const testDeleteProduct = testProcessRoute.multiData({
 	...routeParams,
 	verb: 'delete',
 });
 
-const testGetDeletedProduct = testProcessRoute({
+const testGetDeletedProduct = testProcessRoute.multiData({
 	...routeParams,
 	verb: 'get',
 	statusCode: NOT_FOUND,

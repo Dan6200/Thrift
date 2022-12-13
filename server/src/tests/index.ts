@@ -14,6 +14,6 @@ import testProduct from './accounts/user/vendor-account/product';
  */
 //describe('Authentication Routes', Authentication);
 describe('User Account Routes', testUserAccount);
-//describe('Customer Account Routes', testCustomerAccount);
-//describe('Vendor Account Routes', testVendorAccount);
-//describe('Product Routes', testProduct);
+describe('Customer Account Routes', testCustomerAccount);
+describe('Vendor Account Routes', testVendorAccount);
+describe('Product Routes', testProduct);

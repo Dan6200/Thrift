@@ -1,5 +1,5 @@
 import application from 'application';
-import testProcessRoute.multiData from 'tests/helpers/test-process-route';
+import * as testProcessRoute from 'tests/helpers/test-process-route';
 import { StatusCodes } from 'http-status-codes';
 import {
 	productData,

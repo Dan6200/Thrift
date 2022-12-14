@@ -18,19 +18,19 @@ export default {
 
 	// Copied from official docs, slightly modified
 	async query(text: string, params?: Array<any>): Promise<QueryResult<any>> {
-		const start = Date.now();
+		// const start = Date.now();
 		setTimeout(function () {
 			this.lastQuery = arguments;
 		});
 		/*
 		 * uncomment to debug query
-		 */
 		console.log('query', {
 			text,
 			params,
 		});
-		/*
+		 */
 		const res = await pool.query(text, params);
+		/*
 		const duration = Date.now() - start;
 		console.log('\nexecuted query', {
 			text,
@@ -38,8 +38,8 @@ export default {
 			rows: res.rowCount,
 			params,
 		});
-		return res;
 				*/
+		return res;
 	},
 
 	async getClient(): Promise<any> {

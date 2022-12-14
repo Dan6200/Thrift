@@ -64,6 +64,7 @@ const testDeleteProduct = testProcessRoute({
 
 const testGetNonExistentProduct = testProcessRoute({
 	...routeParams,
+	baseUrl: routeParams.baseUrl + '/all',
 	verb: 'get',
 	statusCode: NOT_FOUND,
 });

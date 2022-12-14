@@ -10,7 +10,7 @@ interface user {
 	ip_address?: string;
 }
 
-const newUsers: user[] = [
+const newUsers: Array<user> = [
 	{
 		first_name: 'Ebuka',
 		last_name: 'Eze',

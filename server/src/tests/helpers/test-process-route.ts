@@ -34,34 +34,24 @@ export default function ({
 		// tokens should be unique to avoid duplicate id's
 		do {
 			let token = tokens && tokens[count];
+			// test both route(path) parameters and query parameters
+			let param = params && params[count];
+			token ??= '';
+			param ??= '';
+			let url = baseUrl + (param ? '/' + param : '');
+			// Test each data object in the list parameter
+			let dataList = dataMatrix && dataMatrix[count];
 			let count2 = 0;
 			do {
-				// test both route(path) parameters and query parameters
-				let param = params && params[count2];
-				token ??= '';
-				param ??= '';
-				let url = baseUrl + (param ? '/' + param : '');
-				// Test each data object in the list parameter
-				let dataList = dataMatrix && dataMatrix[count];
-				let count3 = 0;
-				do {
-					let data = dataList && dataList[count3];
-					response = await chaiRequest(
-						server,
-						verb,
-						url,
-						token,
-						data
-					);
-					response.should.have.status(statusCode);
-					if (Object.keys(response.body).length) {
-						checks && checks(response.body);
-						responseList.push(response.body);
-					}
-					count3++;
-				} while (dataList && count3 < dataList.length);
+				let data = dataList && dataList[count2];
+				response = await chaiRequest(server, verb, url, token, data);
+				response.should.have.status(statusCode);
+				if (Object.keys(response.body).length) {
+					checks && checks(response.body);
+					responseList.push(response.body);
+				}
 				count2++;
-			} while (params && count2 < params.length);
+			} while (dataList && count2 < dataList.length);
 			count++;
 		} while (tokens && count < tokens.length);
 		let returnData: {

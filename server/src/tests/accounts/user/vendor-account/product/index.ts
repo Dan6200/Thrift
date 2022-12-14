@@ -85,7 +85,10 @@ export default function testProduct() {
 						const { product_id }: { product_id: string } = response;
 						productIds.push(product_id);
 					});
-					return testGetNonExistentProduct(authTokens, productIds);
-				}));
+					return testDeleteProduct(authTokens, productIds);
+				})
+				.then(({ authTokens }) =>
+					testGetNonExistentProduct(authTokens)
+				));
 	});
 }

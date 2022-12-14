@@ -10,11 +10,17 @@ import { ShopSchemaDB } from 'app-schema/vendor/shop';
 import Joi from 'joi';
 const filename = path.basename(__filename);
 
-const { CREATED, OK, NOT_FOUND } = StatusCodes;
+const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes;
 
 let checkId = (data: any) => {
 	data.should.have.property('shop_id');
 	data.shop_id.should.be.a('string');
+};
+
+let validateResultList = (data: any) => {
+	let shopInfoList = data;
+	shopInfoList.should.be.an('array');
+	for (let shopInfo of shopInfoList) Joi.assert(shopInfo, ShopSchemaDB);
 };
 
 let validateResult = (data: any) => {
@@ -40,9 +46,8 @@ const testCreateShop = testProcessRoute({
 
 const testGetAllShop = testProcessRoute({
 	...routeParams,
-	baseUrl: routeParams.baseUrl + '/all',
 	verb: 'get',
-	checks: validateResult,
+	checks: validateResultList,
 });
 
 const testGetShop = testProcessRoute({
@@ -60,6 +65,7 @@ const testUpdateShop = testProcessRoute({
 const testDeleteShop = testProcessRoute({
 	...routeParams,
 	verb: 'delete',
+	statusCode: NO_CONTENT,
 });
 
 const testGetNonExistentShop = testProcessRoute({

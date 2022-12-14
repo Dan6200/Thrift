@@ -13,6 +13,7 @@ const errorHandlerMiddleware = async (
 	},
 	_next: any
 ) => {
+	console.error(err);
 	let customError = {
 		// set default
 		statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
@@ -25,7 +26,6 @@ const errorHandlerMiddleware = async (
 		</h1>
 	`
 		);
-	console.log(customError.msg);
 	return res.status(customError.statusCode).json({
 		msg: customError.msg,
 	});

@@ -5,7 +5,7 @@ import application from 'application';
 import { StatusCodes } from 'http-status-codes';
 import Joi from 'joi';
 import { updateUser, updateUserPassword } from 'tests/authentication/user-data';
-import * as testProcessRoute from '../test-process-route';
+import testProcessRoute from '../test-process-route';
 
 chai.use(chaiHttp).should();
 
@@ -23,36 +23,36 @@ const routeParams = {
 	checks: validateResult,
 };
 
-const testGetUser = testProcessRoute.singleData({
+const testGetUser = testProcessRoute({
 	verb: 'get',
 	statusCode: OK,
 	...routeParams,
 });
 
-const testUpdateUser = testProcessRoute.singleData({
+const testUpdateUser = testProcessRoute({
 	verb: 'patch',
 	statusCode: OK,
-	dataList: updateUser,
+	dataMatrix: updateUser,
 	...routeParams,
 });
 
-const testChangeUserPassword = testProcessRoute.singleData({
+const testChangeUserPassword = testProcessRoute({
 	verb: 'patch',
 	statusCode: NO_CONTENT,
 	// TODO: each user data object should be a dictionary storing the token or userId
 	// updateUserPassword[token] ==> correct password
-	dataList: updateUserPassword,
+	dataMatrix: updateUserPassword,
 	...routeParams,
 	baseUrl: routeParams.baseUrl + '/password',
 });
 
-const testDeleteUser = testProcessRoute.singleData({
+const testDeleteUser = testProcessRoute({
 	verb: 'delete',
 	statusCode: OK,
 	...routeParams,
 });
 
-const testGetNonExistentUser = testProcessRoute.singleData({
+const testGetNonExistentUser = testProcessRoute({
 	verb: 'get',
 	statusCode: NOT_FOUND,
 	...routeParams,

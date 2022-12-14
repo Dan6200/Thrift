@@ -10,7 +10,7 @@ interface user {
 	ip_address?: string;
 }
 
-const newUsers: Array<user> = [
+const newUsers: user[] = [
 	{
 		first_name: 'Ebuka',
 		last_name: 'Eze',
@@ -46,36 +46,21 @@ const newUsers: Array<user> = [
 ];
 
 const loginUsers: Array<user> = [
-	{
-		email: 'ebukachibueze5489@gmail.com',
-		password: 'EbukaDa1!',
-	},
-	{
-		phone: '2348063245973',
-		password: '123AishaBaggy9384',
-	},
-	{
-		phone: '234902539488',
-		password: '236!A15HA04',
-	},
+	{ email: 'ebukachibueze5489@gmail.com', password: 'EbukaDa1!' },
+	{ phone: '2348063245973', password: '123AishaBaggy9384' },
+	{ phone: '234902539488', password: '236!A15HA04' },
 ];
 
-const updateUser: Array<object> = [
-	{
-		ip_address: '198.79.78.45',
-		country: 'Ghana',
-	},
-	{
-		dob: '1995-12-31',
-		phone: '+2348073249250',
-	},
-	{ last_name: 'Buhari' },
+const updateUser: object[][] = [
+	[{ ip_address: '198.79.78.45', country: 'Ghana' }],
+	[{ dob: '1995-12-31', phone: '+2348073249250' }],
+	[{ last_name: 'Buhari' }],
 ];
 
-const updateUserPassword: Array<object> = [
-	{ password: 'EbukaDa1!', new_password: 'jayafd3245XF*!&$' },
-	{ password: '123AishaBaggy9384', new_password: '2t295AishaBaby$<5%>!' },
-	{ password: '236!A15HA04', new_password: 'sgsdlaWEWRsdf23@#%#@' },
+const updateUserPassword: object[][] = [
+	[{ password: 'EbukaDa1!', new_password: 'jayafd3245XF*!&$' }],
+	[{ password: '123AishaBaggy9384', new_password: '2t295AishaBaby$<5%>!' }],
+	[{ password: '236!A15HA04', new_password: 'sgsdlaWEWRsdf23@#%#@' }],
 ];
 
 export { newUsers, loginUsers, updateUser, updateUserPassword };

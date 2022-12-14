@@ -2,22 +2,16 @@ import 'express-async-errors';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import db from 'db';
-import { deleteUser, getDeletedUser } from 'tests/helpers/user';
 import registration from 'tests/helpers/auth/registration';
 import {
-	createShop,
-	deleteShop,
-	getAllDeletedShop,
-	getAllShop,
-	getDeletedShop,
-	getShop,
-	updateShop,
+	testCreateShop,
+	testGetShop,
+	testDeleteShop,
+	testGetAllShop,
+	testUpdateShop,
+	testGetDeletedShop,
 } from 'tests/helpers/user/vendor/shop';
-import {
-	testCreateVendor,
-	testDeleteVendor,
-	testGetNonExistentVendor,
-} from 'tests/helpers/user/vendor';
+import { testCreateVendor } from 'tests/helpers/user/vendor';
 chai.use(chaiHttp).should();
 
 export default async function testShop() {
@@ -29,27 +23,12 @@ export default async function testShop() {
 		// initializes with empty array
 	});
 
-	// Testing the register route
-	describe('/POST user: Registration', () => {
-		it(`it should register ${newUsers.length} new users`, registration);
-	});
-
-	// create the vendor acc
-	describe('/POST vendor account', () => {
-		// NOTE: it passes in the argument done to the callback, if a preceding argument is not provided with bind, the callback will hang, as it has its own argument and does not call done directly.
-		it(
-			`it should create a new vendor account`,
-			testCreateVendor.bind(null, null)
-		);
-	});
-
 	// Testing the shop route
-	let shopIds: Array<string> = [];
 	describe('/POST shop', () => {
-		it(
-			'it should create a shop for the vendor',
-			createShop.bind(null, shopIds)
-		);
+		it('it should create a shop for the vendor', () =>
+			registration()
+				.then((tokens) => testCreateVendor(tokens))
+				.then(({ authTokens }) => testCreateShop(authTokens)));
 	});
 	describe('/GET shop', () => {
 		it(
@@ -78,28 +57,7 @@ export default async function testShop() {
 	describe('/GET all shop', () => {
 		it(
 			`it should fail to retrieve all the vendor shop accounts`,
-			getAllDeletedShop
+			testGetNonExistentShop
 		);
-	});
-
-	// Delete vendor account
-	describe('/DELETE vendor account', () => {
-		it(
-			'it should delete the vendor account',
-			testDeleteVendor.bind(null, null)
-		);
-	});
-	describe('/GET vendor account', () => {
-		it(
-			`it should fail to retrieve the Vendor account`,
-			testGetDeletedVendor.bind(null, null)
-		);
-	});
-	// Delete user account
-	describe('/DELETE user account', () => {
-		it("it should delete the user's account", deleteUser);
-	});
-	describe('/GET user', () => {
-		it(`it should fail to retrieve the User account`, getDeletedUser);
 	});
 }

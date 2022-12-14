@@ -7,6 +7,9 @@ import {
 	testCreateProduct,
 	testGetAllProduct,
 	testGetProduct,
+	testUpdateProduct,
+	testDeleteProduct,
+	testGetNonExistentProduct,
 } from 'tests/helpers/user/vendor/product';
 import { testCreateVendor } from 'tests/helpers/user/vendor';
 chai.use(chaiHttp).should();
@@ -43,33 +46,46 @@ export default function testProduct() {
 				.then(({ authTokens }) => testCreateProduct(authTokens))
 				.then(({ authTokens }) => testGetAllProduct(authTokens)));
 	});
-	/*
-	 * TODO: complete this!
 	describe('/PUT product', () => {
-		it('it should update the product for the user', testUpdateProduct);
+		it('it should update the product for the user', async () =>
+			registration()
+				.then((tokens) => testCreateVendor(tokens))
+				.then(({ authTokens }) => testCreateProduct(authTokens))
+				.then(({ responseList, authTokens }) => {
+					let productIds: string[] = [];
+					(responseList as any[]).forEach((response) => {
+						const { product_id }: { product_id: string } = response;
+						productIds.push(product_id);
+					});
+					return testUpdateProduct(authTokens, productIds);
+				}));
 	});
 	describe('/DELETE product', () => {
-		it('it should delete the product', testDeleteProduct);
+		it('it should delete the product', () =>
+			registration()
+				.then((tokens) => testCreateVendor(tokens))
+				.then(({ authTokens }) => testCreateProduct(authTokens))
+				.then(({ responseList, authTokens }) => {
+					let productIds: string[] = [];
+					(responseList as any[]).forEach((response) => {
+						const { product_id }: { product_id: string } = response;
+						productIds.push(product_id);
+					});
+					return testDeleteProduct(authTokens, productIds);
+				}));
 	});
 	describe('/GET product', () => {
-		it(
-			`it should fail to retrieve the vendor product`,
-			testGetDeletedProduct
-		);
+		it(`it should fail to retrieve the vendor product`, () =>
+			registration()
+				.then((tokens) => testCreateVendor(tokens))
+				.then(({ authTokens }) => testCreateProduct(authTokens))
+				.then(({ responseList, authTokens }) => {
+					let productIds: string[] = [];
+					(responseList as any[]).forEach((response) => {
+						const { product_id }: { product_id: string } = response;
+						productIds.push(product_id);
+					});
+					return testGetNonExistentProduct(authTokens, productIds);
+				}));
 	});
-	// Delete vendor
-	describe('/DELETE vendor', () => {
-		it('it should delete the vendor', testDeleteVendor);
-	});
-	describe('/GET vendor', () => {
-		it(`it should fail to retrieve the Vendor`, testGetDeletedVendor);
-	});
-	// Delete user
-	describe('/DELETE user', () => {
-		it("it should delete the user's", deleteUser);
-	});
-	describe('/GET user', () => {
-		it(`it should fail to retrieve the User`, getDeletedUser);
-	});
-	*/
 }

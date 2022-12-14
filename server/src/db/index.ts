@@ -23,23 +23,23 @@ export default {
 			this.lastQuery = arguments;
 		});
 		/*
-		* uncomment to debug query
+		 * uncomment to debug query
+		 */
 		console.log('query', {
 			text,
 			params,
 		});
-				*/
+		/*
 		const res = await pool.query(text, params);
 		const duration = Date.now() - start;
-		/*
 		console.log('\nexecuted query', {
 			text,
 			duration,
 			rows: res.rowCount,
 			params,
 		});
-		//		*/
 		return res;
+				*/
 	},
 
 	async getClient(): Promise<any> {

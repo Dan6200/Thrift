@@ -11,7 +11,7 @@ let server: () => Promise<void> = async () => {
 				console.log(`Server is listening on port ${port}...`);
 			});
 	} catch (error) {
-		console.log(error, __filename);
+		console.error(error);
 	}
 };
 

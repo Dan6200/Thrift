@@ -26,7 +26,7 @@ let validateResult = (data: any) => {
 const routeParams = {
 	server: application,
 	parameter: 'productIds',
-	baseUrl: `/api/v1/user/vendor/shop/products`,
+	baseUrl: `/api/v1/user/vendor/products`,
 	statusCode: OK,
 };
 
@@ -40,7 +40,6 @@ const testCreateProduct = testProcessRoute({
 
 const testGetAllProduct = testProcessRoute({
 	...routeParams,
-	baseUrl: routeParams.baseUrl + '/all',
 	verb: 'get',
 	checks: validateResult,
 });
@@ -64,7 +63,6 @@ const testDeleteProduct = testProcessRoute({
 
 const testGetNonExistentProduct = testProcessRoute({
 	...routeParams,
-	baseUrl: routeParams.baseUrl + '/all',
 	verb: 'get',
 	statusCode: NOT_FOUND,
 });

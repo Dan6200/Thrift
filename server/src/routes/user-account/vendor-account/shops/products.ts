@@ -15,11 +15,11 @@ router.route('/').post(createProduct).get(getAllProducts);
  * ... need a separate all route
  */
 router.route('/').post(createProduct);
-router.route('/all').get(getAllProducts);
 router
 	.route('/:productId')
 	.get(getProduct)
 	.put(updateProduct)
 	.delete(deleteProduct);
+//router.route('/media').post(uploadMedia);
 
 export default router;

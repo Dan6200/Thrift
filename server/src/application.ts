@@ -1,20 +1,19 @@
 // vim mark
 // cspell:ignore middlewares
-// TODO: Implement customer and vendor account routes
-import 'dotenv/config';
-import 'express-async-errors';
-import express, { Express } from 'express';
-import helmet from 'helmet';
 import cors from 'cors';
-import xss from 'xss-clean';
-import rateLimiter from 'express-rate-limit';
+import dotenv from 'dotenv';
+import express, { Express } from 'express';
+import 'express-async-errors';
+import helmet from 'helmet';
 import morgan from 'morgan';
+import xss from 'xss-clean';
+dotenv.config();
 // routers
 import authRouter from 'auth';
 import userAccountRouter from 'user-account';
 import customerAccountRouter from 'user-account/customer-account';
-import vendorAccountRouter from 'user-account/vendor-account';
 import shippingInfoRouter from 'user-account/customer-account/shipping-info';
+import vendorAccountRouter from 'user-account/vendor-account';
 import shopRouter from 'user-account/vendor-account/shops';
 import productsRouter from 'user-account/vendor-account/shops/products';
 // import productsRouter from 'routes/vendor-account/shops/products';
@@ -23,8 +22,9 @@ import errorHandlerMiddleware from 'error-handler';
 import authenticateUser from 'middleware/authentication';
 import notFound from 'middleware/not-found';
 // import cookieParser from 'cookie-parser';
-// import fileUpload from 'express-fileupload';
+import multer from 'multer';
 import path from 'path';
+const upload = multer({ dest: 'uploads' });
 
 ////////////// Middlewares //////////////
 let application: Express = express();
@@ -56,7 +56,7 @@ application.use('/api/v1/user', authenticateUser, userAccountRouter);
 application.use('/api/v1/user/vendor', authenticateUser, vendorAccountRouter);
 application.use('/api/v1/user/vendor/shop', authenticateUser, shopRouter);
 application.use(
-	'/api/v1/user/vendor/shop/products',
+	'/api/v1/user/vendor/products',
 	authenticateUser,
 	productsRouter
 );

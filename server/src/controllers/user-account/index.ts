@@ -8,13 +8,11 @@ import db from 'db';
 import joi from 'joi';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, UnauthenticatedError } from 'errors/';
-import {
-	genSqlUpdateCommands,
-	validateUserPassword,
-} from 'controllers/helper-functions';
 import { UserData } from 'types-and-interfaces/user';
 import { UserDataSchemaDB } from 'app-schema/users';
 import { hashPassword } from 'security/password';
+import genSqlUpdateCommands from 'controllers/helpers/gen-sql-update-commands';
+import validateUserPassword from 'controllers/helpers/validate-user-password';
 
 const userDataFields = [
 	'first_name',

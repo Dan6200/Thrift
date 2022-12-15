@@ -7,19 +7,15 @@ import {
 	getAllProducts,
 	getProduct,
 	updateProduct,
-} from 'controllers/products';
+} from 'controllers/vendor-account/products';
 
 router.route('/').post(createProduct).get(getAllProducts);
-/* get route /.../vendor/shop/products clashes with
- * get route /.../vendor/shop/:shopId, express takes "products" as a route parameter,
- * ... need a separate all route
- */
-router.route('/').post(createProduct);
 router
 	.route('/:productId')
 	.get(getProduct)
 	.put(updateProduct)
 	.delete(deleteProduct);
-//router.route('/media').post(uploadMedia);
+//TODO: Set up upload image functionality (image first, till MVP)
+router.route('/media').post(uploadProductMedia);
 
 export default router;

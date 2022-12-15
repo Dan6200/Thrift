@@ -15,16 +15,14 @@ import customerAccountRouter from 'user-account/customer-account';
 import shippingInfoRouter from 'user-account/customer-account/shipping-info';
 import vendorAccountRouter from 'user-account/vendor-account';
 import shopRouter from 'user-account/vendor-account/shops';
-import productsRouter from 'user-account/vendor-account/shops/products';
+import productsRouter from 'user-account/vendor-account/products';
 // import productsRouter from 'routes/vendor-account/shops/products';
 // middlewares
 import errorHandlerMiddleware from 'error-handler';
 import authenticateUser from 'middleware/authentication';
 import notFound from 'middleware/not-found';
 // import cookieParser from 'cookie-parser';
-import multer from 'multer';
 import path from 'path';
-const upload = multer({ dest: 'uploads' });
 
 ////////////// Middlewares //////////////
 let application: Express = express();

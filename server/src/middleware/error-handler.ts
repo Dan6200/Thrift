@@ -1,17 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
+import { Request, Response, NextFunction } from 'express';
 
 const errorHandlerMiddleware = async (
 	err: { statusCode: any; message: any },
-	_req: any,
-	res: {
-		status: (arg0: any) => {
-			(): any;
-			new (): any;
-			send: { (arg0: string): void; new (): any };
-			json: { (arg0: { msg: any }): any; new (): any };
-		};
-	},
-	_next: any
+	_req: Request,
+	res: Response,
+	_next: NextFunction
 ) => {
 	console.error(err);
 	let customError = {

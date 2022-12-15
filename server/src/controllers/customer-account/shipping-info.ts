@@ -38,7 +38,7 @@ const createShippingInfo = async (
 			'Invalid Data Schema: ' + validData.error.message
 		);
 	const shippingData = validData.value;
-	await db.query(
+	let dbQuery: QueryResult = await db.query(
 		`insert into shipping_info(
 			customer_id,
 			recepient_first_name,
@@ -48,16 +48,14 @@ const createShippingInfo = async (
 			delivery_contact,
 			delivery_instructions,
 			is_primary
-		) values ($1, $2, $3, $4, $5, $6, $7, $8)`,
+		) values ($1, $2, $3, $4, $5, $6, $7, $8) returning address_id`,
 		[customerId, ...Object.values(shippingData)]
 	);
-	let dbQuery: QueryResult = await db.query(selectShippingInfo);
 	let { rowCount }: { rowCount: number } = dbQuery;
 	let lastInsert = rowCount ? rowCount - 1 : rowCount;
 	assert.ok(lastInsert >= 0 && lastInsert < rowCount);
-	let shippingInfo = dbQuery.rows[lastInsert];
-	joi.assert(shippingInfo, ShippingInfoSchemaDB);
-	response.status(StatusCodes.CREATED).send(shippingInfo);
+	let shippingAddress = dbQuery.rows[lastInsert];
+	response.status(StatusCodes.CREATED).send(shippingAddress);
 };
 
 const getAllShippingInfo = async (

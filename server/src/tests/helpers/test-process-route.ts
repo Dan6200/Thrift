@@ -31,6 +31,7 @@ export default function ({
 			responseList: any[] = [];
 		tokens && tokens.should.not.be.empty;
 		tokens && tokens.length.should.equal(new Set(tokens).size);
+		params && params.length.should.equal(new Set(params).size);
 		// tokens should be unique to avoid duplicate id's
 		do {
 			let token = tokens && tokens[count];

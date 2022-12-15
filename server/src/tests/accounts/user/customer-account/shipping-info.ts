@@ -20,13 +20,13 @@ export default function testShipping() {
 		await db.query('delete from user_account');
 	});
 	describe('/POST address', () => {
-		it('it should create a address for the customer', async () =>
+		it('it should create a address for the customer', () =>
 			registration()
 				.then((tokens) => testCreateCustomer(tokens))
 				.then(({ authTokens }) => testCreateShipping(authTokens)));
 	});
 	describe('/GET address', () => {
-		it(`it should retrieve the customer address`, async () =>
+		it(`it should retrieve the customer address`, () =>
 			registration()
 				.then((tokens) => testCreateCustomer(tokens))
 				.then(({ authTokens }) => testCreateShipping(authTokens))
@@ -40,14 +40,14 @@ export default function testShipping() {
 				}));
 	});
 	describe('/GET all address', () => {
-		it(`it should retrieve all the customer's address`, async () =>
+		it(`it should retrieve all the customer's address`, () =>
 			registration()
 				.then((tokens) => testCreateCustomer(tokens))
 				.then(({ authTokens }) => testCreateShipping(authTokens))
 				.then(({ authTokens }) => testGetAllShipping(authTokens)));
 	});
 	describe('/PUT address', () => {
-		it('it should update the address for the user', async () =>
+		it('it should update the address for the user', () =>
 			registration()
 				.then((tokens) => testCreateCustomer(tokens))
 				.then(({ authTokens }) => testCreateShipping(authTokens))

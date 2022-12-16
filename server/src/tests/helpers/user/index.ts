@@ -39,8 +39,6 @@ const testUpdateUser = testProcessRoute({
 const testChangeUserPassword = testProcessRoute({
 	verb: 'patch',
 	statusCode: NO_CONTENT,
-	// TODO: each user data object should be a dictionary storing the token or userId
-	// updateUserPassword[token] ==> correct password
 	dataMatrix: updateUserPassword,
 	...routeParams,
 	baseUrl: routeParams.baseUrl + '/password',

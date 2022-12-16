@@ -18,6 +18,8 @@ export default function testShipping() {
 	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
+		await db.query('delete from customer');
+		await db.query('delete from shipping_info');
 	});
 	describe('/POST address', () => {
 		it('it should create a address for the customer', () =>

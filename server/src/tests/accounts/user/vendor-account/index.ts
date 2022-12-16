@@ -15,6 +15,7 @@ export default function testVendorAccount() {
 	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
+		await db.query('delete from vendor');
 	});
 
 	describe('/POST vendor account', async () => {

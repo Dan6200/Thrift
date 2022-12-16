@@ -77,11 +77,12 @@ drop table if exists product_media cascade;
 
 create table if not exists product_media (
 	product_id					bigint				primary key		references	product	on	delete	cascade,
-	main_product_image			varchar,
-	sec_product_image1			varchar,
-	sec_product_image2			varchar,
-	sec_product_image3			varchar,
-	product_video				varchar
+	filename 					varchar 			not null,
+	filepath 					varchar 			not null,
+	filesize 					int,
+	mimetype 					varchar 			not null,
+	encoding 					varchar,
+	description					varchar
 );
 
 /* TODO: review this shopping cart functionality to see if it is rigorous enough

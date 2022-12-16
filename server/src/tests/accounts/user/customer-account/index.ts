@@ -15,6 +15,7 @@ export default function testCustomerAccount() {
 	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
+		await db.query('delete from customer');
 	});
 
 	describe('/POST customer account', async () => {

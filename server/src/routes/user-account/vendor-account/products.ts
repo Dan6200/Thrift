@@ -19,6 +19,8 @@ router
 	.put(updateProduct)
 	.delete(deleteProduct);
 
-router.route('/media').post(upload.single('productMedia'), uploadProductMedia);
+router
+	.route('/:productId/media')
+	.post(upload.single('productMedia'), uploadProductMedia);
 
 export default router;

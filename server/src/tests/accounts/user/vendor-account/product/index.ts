@@ -18,6 +18,8 @@ export default function testProduct() {
 	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
+		await db.query('delete from vendor');
+		await db.query('delete from product');
 	});
 	describe('/POST product', () => {
 		it('it should create a product for the vendor', async () =>

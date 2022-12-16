@@ -1,5 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import fs from 'fs';
 import { StatusCodes } from 'http-status-codes';
 import app from '../../../app';
 import { newUsers } from '../../authentication/user-data';
@@ -21,6 +22,7 @@ export default async function registration() {
 		const responseObject = response.body;
 		responseObject.should.have.property('token');
 		const { token } = responseObject;
+		fs.writeFileSync('./token.txt', token);
 		tokens.push(token);
 		lastUser = newUser;
 	}

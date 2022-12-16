@@ -12,3 +12,4 @@ todo*
 *.vim
 **/tmp/**
 **upload**
+**token**

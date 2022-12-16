@@ -1,4 +1,6 @@
 import express from 'express';
+import multer from 'multer';
+import mediaStorage from '../../../controllers/helpers/media-storage';
 import {
 	createProduct,
 	getAllProducts,
@@ -6,6 +8,7 @@ import {
 	updateProduct,
 	deleteProduct,
 } from '../../../controllers/user-account/vendor-account/products';
+const upload = multer({ storage: mediaStorage });
 import { uploadProductMedia } from '../../../controllers/user-account/vendor-account/products/media';
 const router = express.Router();
 
@@ -16,6 +19,6 @@ router
 	.put(updateProduct)
 	.delete(deleteProduct);
 
-router.route('/media').post(uploadProductMedia);
+router.route('/media').post(upload.single('productMedia'), uploadProductMedia);
 
 export default router;

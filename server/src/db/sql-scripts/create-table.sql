@@ -24,8 +24,8 @@ drop table if exists shipping_info cascade;
 create table if not exists shipping_info (
 	address_id				bigserial			primary key,
 	customer_id				bigint				not null		references	customer	on	delete	cascade,
-	recepient_first_name	varchar(30)		not null,
-	recepient_last_name		varchar(30)		not null,
+	recipient_first_name	varchar(30)		not null,
+	recipient_last_name		varchar(30)		not null,
 	street					varchar			not null,
 	postal_code				varchar			not null,
 	delivery_contact		varchar			not	null,

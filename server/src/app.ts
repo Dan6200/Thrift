@@ -21,10 +21,6 @@ import errorHandlerMiddleware from './middleware/error-handler';
 import authenticateUser from './middleware/authentication';
 import notFound from './middleware/not-found';
 // import cookieParser from 'cookie-parser';
-import mediaStorage from './controllers/helpers/media-storage';
-import multer from 'multer';
-
-const upload = multer({ storage: mediaStorage });
 
 ////////////// Middlewares //////////////
 let app: Express = express();
@@ -52,18 +48,9 @@ app.use('/api/v1/user', authenticateUser, userAccountRouter);
 // vendor Account
 app.use('/api/v1/user/vendor', authenticateUser, vendorAccountRouter);
 app.use('/api/v1/user/vendor/shop', authenticateUser, shopRouter);
-app.use(
-	'/api/v1/user/vendor/products',
-	authenticateUser,
-	upload.single('product-media'),
-	productsRouter
-);
+app.use('/api/v1/user/vendor/products', authenticateUser, productsRouter);
 // customer account
-app.use(
-	'/api/v1/user/customer',
-	authenticateUser,
-	customerAccountRouter
-);
+app.use('/api/v1/user/customer', authenticateUser, customerAccountRouter);
 app.use(
 	'/api/v1/user/customer/shipping-info',
 	authenticateUser,

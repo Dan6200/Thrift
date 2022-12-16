@@ -3,7 +3,7 @@ import {
 	createVendorAccount,
 	getVendorAccount,
 	deleteVendorAccount,
-} from '../../../controllers/vendor-account-old';
+} from '../../../controllers/user-account/vendor-account';
 const router = express.Router();
 
 router

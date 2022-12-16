@@ -12,6 +12,11 @@ import {
 chai.use(chaiHttp).should();
 
 export default function testVendorAccount() {
+	after(async () => {
+		// deletes all entries from user_account
+		await db.query('delete from user_account');
+		await db.query('delete from vendor');
+	});
 	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');

@@ -12,6 +12,11 @@ import {
 chai.use(chaiHttp).should();
 
 export default function testCustomerAccount() {
+	after(async () => {
+		// deletes all entries from user_account
+		await db.query('delete from user_account');
+		await db.query('delete from customer');
+	});
 	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');

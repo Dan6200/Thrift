@@ -8,8 +8,8 @@ export default function (): void {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
 	});
-	beforeEach(async () => {
-		// initializes with empty array
+	after(async () => {
+		await db.query('delete from user_account');
 	});
 	// Testing the register route
 	describe('/POST user: Registration', () => {

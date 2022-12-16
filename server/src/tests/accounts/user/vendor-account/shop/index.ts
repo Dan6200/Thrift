@@ -21,6 +21,12 @@ export default function testShop() {
 		await db.query('delete from vendor');
 		await db.query('delete from shop');
 	});
+	after(async () => {
+		// deletes all entries from user_account
+		await db.query('delete from user_account');
+		await db.query('delete from vendor');
+		await db.query('delete from shop');
+	});
 	describe('/POST shop', () => {
 		it('it should create a shop for the vendor', async () =>
 			registration()

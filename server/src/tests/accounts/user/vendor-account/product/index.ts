@@ -15,6 +15,12 @@ import {
 chai.use(chaiHttp).should();
 
 export default function testProduct() {
+	after(async () => {
+		// deletes all entries from user_account
+		await db.query('delete from user_account');
+		await db.query('delete from vendor');
+		await db.query('delete from product');
+	});
 	beforeEach(async () => {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');

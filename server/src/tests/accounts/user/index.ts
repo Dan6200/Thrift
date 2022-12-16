@@ -18,6 +18,10 @@ export default function testUserAccount() {
 		// deletes all entries from user_account
 		await db.query('delete from user_account');
 	});
+	after(async () => {
+		// deletes all entries from user_account
+		await db.query('delete from user_account');
+	});
 
 	describe('/GET user account', () => {
 		it(`it should retrieve the user info`, async () =>

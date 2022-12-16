@@ -1,15 +1,15 @@
 import 'express-async-errors';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import db from 'db';
+import db from '../../../db';
+import registration from '../../helpers/auth/registration';
 import {
+	testGetUser,
 	testUpdateUser,
 	testChangeUserPassword,
 	testDeleteUser,
-	testGetUser,
 	testGetNonExistentUser,
-} from 'tests/helpers/user';
-import registration from 'tests/helpers/auth/registration';
+} from '../../helpers/user';
 
 chai.use(chaiHttp).should();
 

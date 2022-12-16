@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import application from 'application';
 import { StatusCodes } from 'http-status-codes';
-import { newUsers } from 'tests/authentication/user-data';
+import app from '../../../app';
+import { newUsers } from '../../authentication/user-data';
 
 chai.use(chaiHttp).should();
 export default async function registration() {
@@ -13,7 +13,7 @@ export default async function registration() {
 		newUser.should.not.be.equal(lastUser);
 		// save passwords for testing login and changing passwords
 		const response = await chai
-			.request(application)
+			.request(app)
 			.post('/api/v1/auth/register')
 			.send(newUser);
 		response.should.have.status(StatusCodes.CREATED);

@@ -1,7 +1,7 @@
-import db from 'db';
-import { newUsers, loginUsers } from 'authentication/user-data';
-import registration from 'tests/helpers/auth/registration';
-import login from 'tests/helpers/auth/login';
+import db from '../../db';
+import login from '../helpers/auth/login';
+import registration from '../helpers/auth/registration';
+import { newUsers, loginUsers } from './user-data';
 
 export default function (): void {
 	before(async () => {

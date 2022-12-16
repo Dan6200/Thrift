@@ -6,7 +6,7 @@ const pool = new Pool({
 	host: process.env.PGHOST,
 	database: process.env.PGDATABASE,
 	password: process.env.PGPASSWORD,
-	port: process.env.PGPORT,
+	port: parseInt(process.env.PGPORT as string),
 });
 
 export default {
@@ -43,7 +43,7 @@ export default {
 	},
 
 	async getClient(): Promise<any> {
-		const client = await pool.connect();
+		const client: any = await pool.connect();
 		const query = client.query;
 		const release = client.release;
 		// set a timeout of 5 seconds, after which we will log this client's last query

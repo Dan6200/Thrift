@@ -1,13 +1,13 @@
-import application from 'application';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { StatusCodes } from 'http-status-codes';
-import testProcessRoute from 'tests/helpers/test-process-route';
+import app from '../../../../app';
+import testProcessRoute from '../../test-process-route';
 // import path from 'path';
 chai.use(chaiHttp).should();
 
 const routeParams = {
-	server: application,
+	server: app,
 	baseUrl: '/api/v1/user/customer',
 };
 

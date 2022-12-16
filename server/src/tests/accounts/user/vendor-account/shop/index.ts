@@ -1,17 +1,17 @@
 import 'express-async-errors';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import db from 'db';
-import registration from 'tests/helpers/auth/registration';
 import {
 	testCreateShop,
+	testDeleteShop,
 	testGetAllShop,
+	testGetNonExistentShop,
 	testGetShop,
 	testUpdateShop,
-	testDeleteShop,
-	testGetNonExistentShop,
-} from 'tests/helpers/user/vendor/shop';
-import { testCreateVendor } from 'tests/helpers/user/vendor';
+} from '../../../../helpers/user/vendor/shop';
+import registration from '../../../../helpers/auth/registration';
+import db from '../../../../../db';
+import { testCreateVendor } from '../../../../helpers/user/vendor';
 chai.use(chaiHttp).should();
 
 export default function testShop() {

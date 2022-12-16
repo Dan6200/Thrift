@@ -1,13 +1,12 @@
 import express from 'express';
-const router = express.Router();
-
 import {
 	createShippingInfo,
 	getAllShippingInfo,
 	getShippingInfo,
 	updateShippingInfo,
 	deleteShippingInfo,
-} from 'controllers/customer-account/shipping-info';
+} from '../../../controllers/user-account/customer-account/shipping-info';
+const router = express.Router();
 
 router.route('/').post(createShippingInfo).get(getAllShippingInfo);
 

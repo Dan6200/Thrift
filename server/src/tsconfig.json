@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"outDir": "../built",
+		"allowJs": true,
+		"target": "es5",
+		"esModuleInterop": true,
+		"moduleResolution": "Node",
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		"sourceMap": true
+	},
+	"include": ["."]
+}

@@ -1,6 +1,6 @@
 {
 	"foo": "cspell:disable",
-	"name": "marketplace",
+	"name": "thrift",
 	"version": "1.0.0",
 	"description": "",
 	"main": "server/src/server.ts",
@@ -10,9 +10,10 @@
 		"client"
 	],
 	"scripts": {
-		"start": "cd server && ts-node -p tsconfig.json",
-		"test": "cd server && ts-mocha --config src/tests/.mocharc.json --exit --paths src/tests -p tsconfig.json src/tests/*.ts",
-		"dev": "concurrently --kill-others \"cd client && yarn tailwindcss -i view/input.css -o dist/output.css --watch\" \"cd client && yarn webpack\" \"cd server && nodemon src/server.ts\""
+		"start": "cd server/src && ts-node -p tsconfig.json",
+		"test": "cd server/src && ts-mocha --config tests/.mocharc.json --exit --paths tests -p tsconfig.json tests/*.ts",
+		"foodev": "concurrently --kill-others \"cd client && yarn tailwindcss -i view/input.css -o dist/output.css --watch\" \"cd client && yarn webpack\" \"cd server && nodemon src/server.ts\"",
+		"dev": "cd server/src && nodemon server.ts"
 	},
 	"license": "ISC",
 	"author": "daniel <danielnyong66@gmail.com>",

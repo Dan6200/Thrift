@@ -1,10 +1,10 @@
-import Authentication from 'authentication';
-import testUserAccount from 'accounts/user';
+import Authentication from './authentication';
 import testCustomerAccount from './accounts/user/customer-account';
+import testShippingInfo from './accounts/user/customer-account/shipping-info';
 import testVendorAccount from './accounts/user/vendor-account';
-import testShippingInfo from 'accounts/user/customer-account/shipping-info';
 import testShop from './accounts/user/vendor-account/shop';
 import testProduct from './accounts/user/vendor-account/product';
+import testUserAccount from './accounts/user';
 
 /*
  * All Passed ...

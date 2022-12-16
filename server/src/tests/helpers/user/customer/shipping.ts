@@ -1,13 +1,13 @@
-import application from 'application';
-import testProcessRoute from 'tests/helpers/test-process-route';
 import { StatusCodes } from 'http-status-codes';
+import path from 'path';
+import Joi from 'joi';
+import app from '../../../../app';
+import { ShippingInfoSchemaDB } from '../../../../app-schema/customer/shipping';
 import {
 	newShippingData,
 	updateShippingData,
-} from 'tests/accounts/user/customer-account/shipping-data';
-import path from 'path';
-import { ShippingInfoSchemaDB } from 'app-schema/customer/shipping';
-import Joi from 'joi';
+} from '../../../accounts/user/customer-account/shipping-data';
+import testProcessRoute from '../../test-process-route';
 const filename = path.basename(__filename);
 
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes;
@@ -31,7 +31,7 @@ let validateResult = (data: any) => {
 };
 
 const routeParams = {
-	server: application,
+	server: app,
 	parameter: 'addressIds',
 	baseUrl: `/api/v1/user/customer/shipping-info`,
 	statusCode: OK,

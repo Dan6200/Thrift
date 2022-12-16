@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import { RequestWithPayload } from 'types-and-interfaces/request';
 import { StatusCodes } from 'http-status-codes';
 import path from 'path';
+import { RequestWithPayload } from '../../types-and-interfaces/request';
 const filename = path.join(path.basename(__dirname), path.basename(__filename));
 
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;

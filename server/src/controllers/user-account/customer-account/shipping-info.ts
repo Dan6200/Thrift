@@ -1,25 +1,25 @@
 import { Response } from 'express';
-import {
-	RequestUserPayload,
-	RequestWithPayload,
-} from 'types-and-interfaces/request';
-import db from 'db';
 import joi from 'joi';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError } from 'errors/';
-import { genSqlUpdateCommands } from 'controllers/helper-functions';
+import assert from 'node:assert/strict';
+import { QueryResult } from 'pg';
 import {
 	ShippingInfoSchemaReq,
 	ShippingInfoSchemaDB,
-} from 'app-schema/customer/shipping';
-import assert from 'node:assert/strict';
-import { QueryResult } from 'pg';
+} from '../../../app-schema/customer/shipping';
+import db from '../../../db';
+import { BadRequestError } from '../../../errors';
+import {
+	RequestWithPayload,
+	RequestUserPayload,
+} from '../../../types-and-interfaces/request';
+import genSqlUpdateCommands from '../../helpers/gen-sql-update-commands';
 
 const selectShippingInfo = `
 select 
 	address_id,
-	recepient_first_name,
-	recepient_last_name,
+	recipient_first_name,
+	recipient_last_name,
 	street,
 	postal_code,
 	delivery_contact,
@@ -41,8 +41,8 @@ const createShippingInfo = async (
 	let dbQuery: QueryResult = await db.query(
 		`insert into shipping_info(
 			customer_id,
-			recepient_first_name,
-			recepient_last_name,
+			recipient_first_name,
+			recipient_last_name,
 			street,
 			postal_code,
 			delivery_contact,

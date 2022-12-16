@@ -1,12 +1,11 @@
-import application from 'application';
-import 'pages';
+import app from './app';
 
 const port = process.env.PORT;
 
-let server: () => Promise<void> = async () => {
+let server: () => void = () => {
 	try {
 		if (require.main === module)
-			application.listen(port, () => {
+			app.listen(port, () => {
 				console.clear();
 				console.log(`Server is listening on port ${port}...`);
 			});

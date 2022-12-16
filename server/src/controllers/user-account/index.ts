@@ -1,18 +1,18 @@
 import { Response } from 'express';
 import assert from 'node:assert/strict';
-import {
-	RequestWithPayload,
-	RequestUserPayload,
-} from 'types-and-interfaces/request';
-import db from 'db';
 import joi from 'joi';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, UnauthenticatedError } from 'errors/';
-import { UserData } from 'types-and-interfaces/user';
-import { UserDataSchemaDB } from 'app-schema/users';
-import { hashPassword } from 'security/password';
-import genSqlUpdateCommands from 'controllers/helpers/gen-sql-update-commands';
-import validateUserPassword from 'controllers/helpers/validate-user-password';
+import {
+	RequestUserPayload,
+	RequestWithPayload,
+} from '../../types-and-interfaces/request';
+import { UserDataSchemaDB } from '../../app-schema/users';
+import db from '../../db';
+import { BadRequestError, UnauthenticatedError } from '../../errors';
+import { hashPassword } from '../../security/password';
+import { UserData } from '../../types-and-interfaces/user';
+import genSqlUpdateCommands from '../helpers/gen-sql-update-commands';
+import validateUserPassword from '../helpers/validate-user-password';
 
 const userDataFields = [
 	'first_name',

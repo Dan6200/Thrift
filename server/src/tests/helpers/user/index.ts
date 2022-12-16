@@ -1,11 +1,11 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { UserDataSchemaDB } from 'app-schema/users';
-import application from 'application';
 import { StatusCodes } from 'http-status-codes';
 import Joi from 'joi';
-import { updateUser, updateUserPassword } from 'tests/authentication/user-data';
 import testProcessRoute from '../test-process-route';
+import { UserDataSchemaDB } from '../../../app-schema/users';
+import { updateUser, updateUserPassword } from '../../authentication/user-data';
+import app from '../../../app';
 
 chai.use(chaiHttp).should();
 
@@ -18,7 +18,7 @@ let validateResult = (data: any) => {
 };
 
 const routeParams = {
-	server: application,
+	server: app,
 	baseUrl: '/api/v1/user',
 	checks: validateResult,
 };

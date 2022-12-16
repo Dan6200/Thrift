@@ -1,11 +1,10 @@
 import express from 'express';
-const router = express.Router();
-
 import {
 	createCustomerAccount,
-	getCustomerAccount,
 	deleteCustomerAccount,
-} from 'controllers/customer-account';
+	getCustomerAccount,
+} from '../../../controllers/user-account/customer-account';
+const router = express.Router();
 
 router
 	.route('/')

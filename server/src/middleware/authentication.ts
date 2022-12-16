@@ -1,7 +1,10 @@
 import jwt from 'jsonwebtoken';
-import { RequestWithPayload, UserPayload } from 'types-and-interfaces';
 import { Response, NextFunction } from 'express';
-import { UnauthenticatedError } from 'errors';
+import { UnauthenticatedError } from '../errors';
+import {
+	RequestUserPayload,
+	RequestWithPayload,
+} from '../types-and-interfaces/request';
 
 export default async (
 	request: RequestWithPayload,
@@ -19,7 +22,7 @@ export default async (
 		const payload = jwt.verify(
 			token,
 			process.env.JWT_SECRET
-		) as UserPayload;
+		) as RequestUserPayload;
 		// console.log('payload %o: ', payload, fileName);
 		request.user = payload;
 		next();

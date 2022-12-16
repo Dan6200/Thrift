@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import application from 'application';
 import { StatusCodes } from 'http-status-codes';
-import { loginUsers } from 'tests/authentication/user-data';
+import app from '../../../app';
+import { loginUsers } from '../../authentication/user-data';
 
 chai.use(chaiHttp).should();
 export default async function login() {
@@ -12,7 +12,7 @@ export default async function login() {
 		let user = loginUsers[i];
 		user.should.not.be.equal(lastUser);
 		const response = await chai
-			.request(application)
+			.request(app)
 			.post('/api/v1/auth/login')
 			.send(user);
 		response.should.have.status(StatusCodes.CREATED);

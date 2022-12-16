@@ -1,15 +1,15 @@
 import assert from 'node:assert/strict';
-import db from 'db';
-import { BadRequestError, UnauthenticatedError } from 'errors';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 // import validatePhoneNumber from 'security/validate-phone';
 // import validateEmail from 'security/validate-email';
-import { UserDataSchemaRequest } from 'app-schema/users';
 import { QueryResult } from 'pg';
-import { createToken } from 'security/create-token';
-import { hashPassword, validatePassword } from 'security/password';
 import path from 'path';
+import { UserDataSchemaRequest } from '../app-schema/users';
+import db from '../db';
+import { BadRequestError, UnauthenticatedError } from '../errors';
+import { hashPassword, validatePassword } from '../security/password';
+import { createToken } from '../security/create-token';
 const filename = path.basename(__filename);
 // TODO: IP address
 // https://github.com/neekware/fullerstack/tree/main/libs/nax-ipware

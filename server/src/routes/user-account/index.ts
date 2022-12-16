@@ -1,12 +1,11 @@
 import express from 'express';
-const router = express.Router();
-
 import {
 	getUserAccount,
 	deleteUserAccount,
 	updateUserAccount,
 	updateUserPassword,
-} from 'controllers/user-account';
+} from '../../controllers/user-account';
+const router = express.Router();
 
 router
 	.route('/')

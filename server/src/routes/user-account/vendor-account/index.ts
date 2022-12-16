@@ -1,11 +1,10 @@
 import express from 'express';
-const router = express.Router();
-
 import {
 	createVendorAccount,
 	getVendorAccount,
 	deleteVendorAccount,
-} from 'controllers/vendor-account';
+} from '../../../controllers/vendor-account-old';
+const router = express.Router();
 
 router
 	.route('/')

@@ -1,7 +1,10 @@
-import processRoute from 'controllers/helpers/process-route';
-import db from 'db';
-import { ResponseData, Status } from 'types-and-interfaces/routes-processor';
 import { StatusCodes } from 'http-status-codes';
+import db from '../../../db';
+import {
+	Status,
+	ResponseData,
+} from '../../../types-and-interfaces/routes-processor';
+import processRoute from '../../helpers/process-route';
 const { CREATED, OK, NO_CONTENT } = StatusCodes;
 
 const createQuery = [

@@ -1,15 +1,15 @@
 import { Response } from 'express';
-import {
-	RequestUserPayload,
-	RequestWithPayload,
-} from 'types-and-interfaces/request';
-import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError } from 'errors/';
-import { genSqlUpdateCommands } from 'controllers/helper-functions';
-import { ShopSchemaDB, ShopSchemaReq } from 'app-schema/vendor/shop';
 import assert from 'node:assert/strict';
 import Joi from 'joi';
+import { ShopSchemaReq, ShopSchemaDB } from '../../../app-schema/vendor/shop';
+import db from '../../../db';
+import { BadRequestError } from '../../../errors';
+import {
+	RequestWithPayload,
+	RequestUserPayload,
+} from '../../../types-and-interfaces/request';
+import genSqlUpdateCommands from '../../helpers/gen-sql-update-commands';
 
 const createShop = async (request: RequestWithPayload, response: Response) => {
 	const { userId: vendorId }: RequestUserPayload = request.user;

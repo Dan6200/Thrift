@@ -1,12 +1,14 @@
-import db from 'db';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError } from 'errors/';
-import 'helper-functions';
-import { ProductSchemaReq } from 'app-schema/product';
-import processRoute from './helpers/process-route';
-import { ResponseData, Status } from 'types-and-interfaces/routes-processor';
-import { genSqlUpdateCommands } from 'helper-functions';
-// const filename = require('path').basename(__filename);
+import { ProductSchemaReq } from '../../../../app-schema/product';
+import db from '../../../../db';
+import { BadRequestError } from '../../../../errors';
+import {
+	Status,
+	ResponseData,
+} from '../../../../types-and-interfaces/routes-processor';
+import genSqlUpdateCommands from '../../../helpers/gen-sql-update-commands';
+import processRoute from '../../../helpers/process-route';
+
 const { CREATED, OK } = StatusCodes;
 
 let insertProductTable = `insert into product (

@@ -1,13 +1,13 @@
 import express from 'express';
-const router = express.Router();
-
 import {
 	createProduct,
-	deleteProduct,
 	getAllProducts,
 	getProduct,
 	updateProduct,
-} from 'controllers/vendor-account/products';
+	deleteProduct,
+} from '../../../controllers/user-account/vendor-account/products';
+import { uploadProductMedia } from '../../../controllers/user-account/vendor-account/products/media';
+const router = express.Router();
 
 router.route('/').post(createProduct).get(getAllProducts);
 router
@@ -15,7 +15,7 @@ router
 	.get(getProduct)
 	.put(updateProduct)
 	.delete(deleteProduct);
-//TODO: Set up upload image functionality (image first, till MVP)
+
 router.route('/media').post(uploadProductMedia);
 
 export default router;

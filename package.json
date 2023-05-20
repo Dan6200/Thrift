@@ -3,7 +3,7 @@
   "name": "thrift",
   "version": "1.0.0",
   "description": "",
-  "main": "server/src/server.ts",
+  "main": "server/built/server.js",
   "private": true,
   "workspaces": [
     "server",

@@ -10,7 +10,7 @@
     "client"
   ],
   "scripts": {
-    "start": "cd server/src && ts-node server.ts",
+    "start": "cd server/built && node server.js",
     "test": "cd server/src && ts-mocha --config tests/.mocharc.json --exit --paths tests -p tsconfig.json tests/*.ts",
     "dev": "cd server/src && nodemon server.ts",
     "build": "cd server/src && tsc -p tsconfig.json"
@@ -20,6 +20,12 @@
   "repository": "https://github.com/Dan6200/Thrift.git",
   "devDependencies": {
     "@types/chai": "^4.3.4",
+    "@types/chai-http": "^4.2.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
     "@types/cors": "^2.8.13",
     "@types/helmet": "^4.0.0",
     "@types/mocha": "^10.0.1",
@@ -33,23 +39,16 @@
     "jsonwebtoken": "^8.5.1",
     "mocha": "^10.X.X",
     "morgan": "^1.10.0",
-    "ts-mocha": "^10.0.0",
-    "ts-node": "^10.9.1",
-    "xss-clean": "^0.1.1"
-  },
-  "dependencies": {
-    "@types/chai-http": "^4.2.0",
+    "xss-clean": "^0.1.1",
     "@types/express": "^4.17.15",
     "@types/morgan": "^1.9.3",
     "@types/multer": "^1.4.5-lts.1",
     "@types/node": "^18.11.15",
     "@types/pg": "^8.6.5",
     "bcryptjs": "^2.4.3",
-    "dot-env": "^0.0.1",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "multer": "^1.4.5-lts.1",
-    "nodemon": "^2.0.19",
     "pg": "^8.8.0",
     "typescript": "^5.0.4"
   }

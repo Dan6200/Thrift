@@ -15,6 +15,8 @@ create table if not exists user_account (
 	check (current_date - dob > 12)
 );
 
+drop table if exists customer cascade;
+
 create table if not exists customer (
 	customer_id			bigint 		primary key	references	user_account	on	delete	cascade
 );
@@ -32,6 +34,8 @@ create table if not exists shipping_info (
 	delivery_instructions	varchar,
 	is_primary				boolean			not null
 );
+
+drop table if exists vendor cascade;
 
 create table if not exists vendor (
 	vendor_id		bigserial 		primary key	references	user_account	on	delete	cascade

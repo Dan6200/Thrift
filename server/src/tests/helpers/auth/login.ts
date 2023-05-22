@@ -1,23 +1,22 @@
 import chai from "chai";
-import chaiHttp from "chai-http";
 import { StatusCodes } from "http-status-codes";
-import { loginUsers } from "../../authentication/user-data";
+import { user } from "../../authentication/user-data";
 
-chai.use(chaiHttp).should();
-export default async function login() {
-  let lastUser: Object = {},
-    noOfUsers = loginUsers.length;
-  for (let i = 0; i < noOfUsers; i++) {
-    let user = loginUsers[i];
-    user.should.not.be.equal(lastUser);
-    const response = await chai
-      .request("https://thrift-app-z915.onrender.com")
-      .post("/api/v1/auth/login")
-      .send(user);
-    response.should.have.status(StatusCodes.CREATED);
-    response.body.should.be.an("object");
-    const responseObject = response.body;
-    responseObject.should.have.property("token");
-    lastUser = user;
-  }
+chai.should();
+
+async function login(agent: ChaiHttp.Agent, { email, password }: user) {
+  const response = await agent
+    .post("/api/v1/auth/login")
+    .send({ email, password });
+  response.should.have.status(StatusCodes.CREATED);
+  response.body.should.be.an("object");
+  const responseObject = response.body;
+  responseObject.should.have.property("token");
 }
+
+async function logout(agent: ChaiHttp.Agent) {
+  const response = await agent.get("/api/v1/auth/logout");
+  response.should.have.status(StatusCodes.OK);
+}
+
+export { login, logout };

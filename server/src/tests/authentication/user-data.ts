@@ -63,4 +63,4 @@ const updateUserPassword: object[][] = [
   [{ password: "236!A15HA04", new_password: "sgsdlaWEWRsdf23@#%#@" }],
 ];
 
-export { newUsers, loginUsers, updateUser, updateUserPassword, Ebuka };
+export { user, newUsers, loginUsers, updateUser, updateUserPassword, Ebuka };

@@ -1,8 +1,12 @@
 //cspell:disable
+import chai from "chai";
+import chaiHttp from "chai-http";
 import db from "../../db";
-import login from "../helpers/auth/login";
+import { login, logout } from "../helpers/auth/login";
 import registration from "../helpers/auth/registration";
-import { newUsers, loginUsers } from "./user-data";
+import { Ebuka } from "./user-data";
+
+chai.use(chaiHttp).should();
 
 export default function (): void {
   before(() => {
@@ -17,9 +21,8 @@ export default function (): void {
     const agent = chai.request.agent("https://thrift-app-z915.onrender.com");
     it(`it should register Ebuka`, registration.bind(null, agent, Ebuka));
     it(`it should login Ebuka`, login.bind(null, agent, Ebuka));
-  });
-  // Testing the login route
-  describe("/POST user: Login", () => {
-    const noOfUsers = loginUsers.length;
+    it(`it should logout Ebuka`, logout.bind(null, agent));
+    console.log(agent);
+    agent.close();
   });
 }

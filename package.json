@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "start": "cd server/built && node server.js",
-    "test": "cd server/src && ts-mocha --config tests/.mocharc.json --exit --paths tests -p tsconfig.json tests/*.ts",
+    "test": "cd server/src && ts-mocha -r dotenv/config --config tests/.mocharc.json --exit --paths tests -p tsconfig.json tests/*.ts",
     "dev": "cd server/src && nodemon server.ts",
     "build": "cd server/src && tsc -p tsconfig.json"
   },
@@ -21,35 +21,36 @@
   "devDependencies": {
     "@types/chai": "^4.3.4",
     "@types/chai-http": "^4.2.0",
+    "nodemon": "^2.0.19",
     "ts-mocha": "^10.0.0",
-    "ts-node": "^10.9.1",
-    "nodemon": "^2.0.19"
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
     "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.15",
     "@types/helmet": "^4.0.0",
     "@types/mocha": "^10.0.1",
+    "@types/morgan": "^1.9.3",
+    "@types/multer": "^1.4.5-lts.1",
+    "@types/node": "^18.11.15",
+    "@types/pg": "^8.6.5",
     "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
     "chai": "^4.3.7",
     "concurrently": "^7.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "express-rate-limit": "^6.7.0",
     "http-status-codes": "^2.2.0",
     "joi": "^17.7.0",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^10.X.X",
     "morgan": "^1.10.0",
-    "xss-clean": "^0.1.1",
-    "@types/express": "^4.17.15",
-    "@types/morgan": "^1.9.3",
-    "@types/multer": "^1.4.5-lts.1",
-    "@types/node": "^18.11.15",
-    "@types/pg": "^8.6.5",
-    "bcryptjs": "^2.4.3",
-    "express": "^4.18.2",
-    "express-async-errors": "^3.1.1",
     "multer": "^1.4.5-lts.1",
     "pg": "^8.8.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "xss-clean": "^0.1.1"
   }
 }

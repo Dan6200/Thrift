@@ -22,7 +22,6 @@ export default function (): void {
     it(`it should register Ebuka`, registration.bind(null, agent, Ebuka));
     it(`it should login Ebuka`, login.bind(null, agent, Ebuka));
     it(`it should logout Ebuka`, logout.bind(null, agent));
-    console.log(agent);
     agent.close();
   });
 }

@@ -9,7 +9,6 @@ import morgan from "morgan";
 import xss from "xss-clean";
 import rateLimiter from "express-rate-limit";
 import cookieParser from "cookie-parser";
-dotenv.config();
 // routers
 import authRouter from "./routes/auth";
 import userAccountRouter from "./routes/user-account";
@@ -22,12 +21,12 @@ import productsRouter from "./routes/user-account/vendor-account/products";
 import errorHandlerMiddleware from "./middleware/error-handler";
 import authenticateUser from "./middleware/authentication";
 import notFound from "./middleware/not-found";
-// import cookieParser from 'cookie-parser';
+dotenv.config();
 
 ////////////// Middlewares //////////////
 let app: Express = express();
 app.set("trust proxy", 1);
-app.use(cookieParser);
+// app.use(cookieParser);
 app.use(
   rateLimiter({
     windowMs: 15 * 60 * 1000,

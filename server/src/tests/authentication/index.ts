@@ -10,21 +10,20 @@ import { Ebuka } from "./user-data";
 chai.use(chaiHttp).should();
 
 export default function (): void {
+  let agent: ChaiHttp.Agent;
   before(() => {
-    // deletes all entries from user_account
-    //    db.query("delete from user_account").catch((err) => console.error(err));
+    agent = chai.request.agent(app);
+    db.query("delete from user_account");
   });
   after(() => {
-    // db.query("delete from user_account");
+    db.query("delete from user_account");
+    agent.close();
   });
   // Testing the register route
   describe("User Ebuka", () => {
-    // const agent = chai.request.agent("https://thrift-app-z915.onrender.com");
-    const agent = chai.request(app);
-    console.log("gets here");
+    const agent = chai.request.agent("https://thrift-app-z915.onrender.com");
     it(`it should register Ebuka`, registration.bind(null, agent, Ebuka));
     it(`it should login Ebuka`, login.bind(null, agent, Ebuka));
     it(`it should logout Ebuka`, logout.bind(null, agent));
-    agent.close();
   });
 }

@@ -30,7 +30,6 @@ export default {
 			params,
 		});
 		 */
-    console.log(process.env.PGHOST);
     const res = await pool.query(text, params);
     /*
 		const duration = Date.now() - start;

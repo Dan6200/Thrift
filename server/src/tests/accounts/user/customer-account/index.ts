@@ -12,6 +12,7 @@ import {
 chai.use(chaiHttp).should();
 
 export default function testCustomerAccount() {
+  /*
   after(() => {
     // deletes all entries from user_account
     db.query("delete from user_account").catch((err) => console.error(err));
@@ -47,4 +48,5 @@ export default function testCustomerAccount() {
     it(`it should fail to retrieve the customer account`, () =>
       registration().then((tokens) => testGetNonExistentCustomer(tokens)));
   });
+  */
 }

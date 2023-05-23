@@ -10,10 +10,10 @@
     "client"
   ],
   "scripts": {
-    "start": "cd server/built && node server.js",
-    "test": "cd server/src && ts-mocha -r dotenv/config --config tests/.mocharc.json --exit --paths tests -p tsconfig.json tests/*.ts",
-    "dev": "cd server/src && nodemon server.ts",
-    "build": "cd server/src && tsc -p tsconfig.json"
+    "start": "node server/built/server.js",
+    "test": "ts-mocha -r dotenv/config --config server/src/tests/.mocharc.json --exit --paths tests -p tsconfig.json server/src/tests/*.ts",
+    "dev": "nodemon server/src/server.ts",
+    "build": "tsc -p server/src/tsconfig.json"
   },
   "license": "ISC",
   "author": "daniel <danielnyong66@gmail.com>",

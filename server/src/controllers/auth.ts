@@ -119,8 +119,7 @@ const login = async (request: Request, response: Response) => {
     });
 };
 
-const logout = (request: Request, response: Response) =>
-  response.status(StatusCodes.OK).end();
-// response.clearCookie("token").status(StatusCodes.OK);
+const logout = (_request: Request, response: Response) =>
+  response.clearCookie("token").status(StatusCodes.OK).end();
 
 export { register, login, logout };

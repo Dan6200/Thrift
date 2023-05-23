@@ -120,6 +120,7 @@ const login = async (request: Request, response: Response) => {
 };
 
 const logout = (request: Request, response: Response) =>
-  response.clearCookie("token").status(StatusCodes.OK);
+  response.status(StatusCodes.OK);
+// response.clearCookie("token").status(StatusCodes.OK);
 
 export { register, login, logout };

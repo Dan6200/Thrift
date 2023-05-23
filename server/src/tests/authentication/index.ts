@@ -21,7 +21,7 @@ export default function (): void {
   });
   // Testing the register route
   describe("User Ebuka", () => {
-    const agent = chai.request.agent("https://thrift-app-z915.onrender.com");
+    const agent = chai.request.agent("https://thrift-app-v2.onrender.com");
     it(`it should register Ebuka`, registration.bind(null, agent, Ebuka));
     it(`it should login Ebuka`, login.bind(null, agent, Ebuka));
     it(`it should logout Ebuka`, logout.bind(null, agent));

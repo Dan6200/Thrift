@@ -26,6 +26,6 @@ export default function (): void {
     it(`it should register Ebuka`, registration.bind(null, agent, Ebuka));
     it(`it should login Ebuka`, login.bind(null, agent, Ebuka));
     it(`it should logout Ebuka`, logout.bind(null, agent));
-    // it("it should get Ebuka's account", testGetUser());
+    it("it should get Ebuka's account", testGetUser);
   });
 }

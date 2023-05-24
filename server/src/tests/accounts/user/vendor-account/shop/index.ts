@@ -1,17 +1,18 @@
 import "express-async-errors";
 import chai from "chai";
 import chaiHttp from "chai-http";
-import {
-  testCreateShop,
-  testDeleteShop,
-  testGetAllShop,
-  testGetNonExistentShop,
-  testGetShop,
-  testUpdateShop,
-} from "../../../../helpers/user/vendor/shop";
-import db from "../../../../../db";
-import { testCreateVendor } from "../../../../helpers/user/vendor";
-chai.use(chaiHttp).should();
+
+// import {
+//   testCreateShop,
+//   testDeleteShop,
+//   testGetAllShop,
+//   testGetNonExistentShop,
+//   testGetShop,
+//   testUpdateShop,
+// } from "../../../../helpers/user/vendor/shop";
+// import db from "../../../../../db";
+// import { testCreateVendor } from "../../../../helpers/user/vendor";
+// chai.use(chaiHttp).should();
 
 export default function testShop() {
   // beforeEach(async () => {

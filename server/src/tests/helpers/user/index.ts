@@ -18,7 +18,7 @@ let validateResult = (data: any) => {
 
 const routeParams = {
   server: "https://thrift-app-z915.onrender.com",
-  baseUrl: "/api/v1/user",
+  path: "/api/v1/user",
   checks: validateResult,
 };
 
@@ -31,14 +31,15 @@ const testGetUser = testProcessRoute({
 const testUpdateUser = testProcessRoute({
   verb: "patch",
   statusCode: OK,
+  dataList: updateUser,
   ...routeParams,
 });
 
 const testChangeUserPassword = testProcessRoute({
   verb: "patch",
   statusCode: NO_CONTENT,
+  dataList: updateUserPassword,
   ...routeParams,
-  baseUrl: routeParams.baseUrl + "/password",
 });
 
 const testDeleteUser = testProcessRoute({

@@ -2,13 +2,14 @@ import "express-async-errors";
 import chai from "chai";
 import chaiHttp from "chai-http";
 import db from "../../../../db";
-import {
-  testCreateCustomer,
-  testGetCustomer,
-  testDeleteCustomer,
-  testGetNonExistentCustomer,
-} from "../../../helpers/user/customer";
-chai.use(chaiHttp).should();
+
+// import {
+//   testCreateCustomer,
+//   testGetCustomer,
+//   testDeleteCustomer,
+//   testGetNonExistentCustomer,
+// } from "../../../helpers/user/customer";
+// chai.use(chaiHttp).should();
 
 export default function testCustomerAccount() {
   /*

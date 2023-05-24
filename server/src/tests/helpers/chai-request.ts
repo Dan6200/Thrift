@@ -1,21 +1,18 @@
 import chai from "chai";
 import { Express } from "express";
 import chaiHttp from "chai-http";
-import { StatusCodes } from "http-status-codes";
-import path from "path";
-const filename = path.basename(__filename);
 chai.use(chaiHttp).should();
 
 export default async (
   server: string | Express,
   verb: string,
-  url: string,
+  path: string,
   token?: string,
   data?: object
 ) => {
   return await chai
     .request(server)
-    [verb](url)
+    [verb](path)
     .send(data)
     .auth(token, { type: "bearer" });
 };

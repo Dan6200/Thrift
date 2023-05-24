@@ -2,16 +2,17 @@ import "express-async-errors";
 import chai from "chai";
 import chaiHttp from "chai-http";
 import db from "../../../../db";
-import { testCreateCustomer } from "../../../helpers/user/customer";
-import {
-  testCreateShipping,
-  testGetShipping,
-  testGetAllShipping,
-  testUpdateShipping,
-  testDeleteShipping,
-  testGetNonExistentShipping,
-} from "../../../helpers/user/customer/shipping";
-chai.use(chaiHttp).should();
+
+// import { testCreateCustomer } from "../../../helpers/user/customer";
+// import {
+//   testCreateShipping,
+//   testGetShipping,
+//   testGetAllShipping,
+//   testUpdateShipping,
+//   testDeleteShipping,
+//   testGetNonExistentShipping,
+// } from "../../../helpers/user/customer/shipping";
+// chai.use(chaiHttp).should();
 
 export default function testShipping() {
   // after(async () => {

@@ -3,8 +3,7 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 import app from "../../app";
 import db from "../../db";
-import { login, logout } from "../helpers/auth/login";
-import registration from "../helpers/auth/registration";
+import { login, logout, registration } from "../helpers/auth";
 import { Ebuka } from "./user-data";
 
 chai.use(chaiHttp).should();
@@ -17,11 +16,11 @@ export default function (): void {
   });
   after(() => {
     db.query("delete from user_account");
-    agent.close();
+    // agent.close();
   });
   // Testing the register route
   describe("User Ebuka", () => {
-    const agent = chai.request.agent("https://thrift-app-v2.onrender.com");
+    agent = chai.request.agent("https://thrift-app-v2.onrender.com");
     it(`it should register Ebuka`, registration.bind(null, agent, Ebuka));
     it(`it should login Ebuka`, login.bind(null, agent, Ebuka));
     it(`it should logout Ebuka`, logout.bind(null, agent));

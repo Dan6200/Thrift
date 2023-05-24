@@ -1,7 +1,6 @@
 import "express-async-errors";
 import chai from "chai";
 import chaiHttp from "chai-http";
-import registration from "../../../../helpers/auth/registration";
 import db from "../../../../../db";
 import { testCreateVendor } from "../../../../helpers/user/vendor";
 import {

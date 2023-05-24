@@ -9,7 +9,6 @@ import {
   testGetShop,
   testUpdateShop,
 } from "../../../../helpers/user/vendor/shop";
-import registration from "../../../../helpers/auth/registration";
 import db from "../../../../../db";
 import { testCreateVendor } from "../../../../helpers/user/vendor";
 chai.use(chaiHttp).should();

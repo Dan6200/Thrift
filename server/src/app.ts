@@ -26,7 +26,7 @@ dotenv.config();
 ////////////// Middlewares //////////////
 let app: Express = express();
 app.set("trust proxy", 1);
-app.use(cookieParser);
+app.use(cookieParser());
 app.use(
   rateLimiter({
     windowMs: 15 * 60 * 1000,

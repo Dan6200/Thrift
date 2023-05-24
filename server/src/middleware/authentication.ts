@@ -13,6 +13,7 @@ export default async (
 ) => {
   // check header
   const authHeader = request.headers.authorization;
+  console.log(request.cookies);
   if (
     !authHeader ||
     !authHeader.startsWith("Bearer ") ||

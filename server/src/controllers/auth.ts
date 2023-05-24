@@ -77,40 +77,47 @@ const register = async (request: Request, response: Response) => {
 };
 
 const login = async (request: Request, response: Response) => {
-  const { email, phone, password } = request.body;
-  if (!email && !phone) {
-    throw new BadRequestError("Please provide email or phone number!");
-  }
-  if (!password) throw new BadRequestError("Please provide password");
-  let user: any;
-  if (email) {
-    user = (
-      await db.query(
-        `
+  let email: string, phone: string, password: string;
+  email = phone = password = "";
+  if (!request.cookies.token) {
+    ({ email, phone, password } = request.body);
+    if (!email && !phone) {
+      throw new BadRequestError("Please provide email or phone number!");
+    }
+    if (!password) throw new BadRequestError("Please provide password");
+    let user: any;
+    if (email) {
+      user = (
+        await db.query(
+          `
 			select user_id, password
 			from user_account 
 			where email=$1`,
-        [email]
-      )
-    ).rows[0];
-  } else {
-    user = (
-      await db.query(
-        `
+          [email]
+        )
+      ).rows[0];
+    } else {
+      user = (
+        await db.query(
+          `
 			select user_id, password
 			from user_account 
 			where phone=$1`,
-        [phone]
-      )
-    ).rows[0];
+          [phone]
+        )
+      ).rows[0];
+    }
+    if (!user) throw new UnauthenticatedError("Invalid Credentials");
+    const pwdIsValid = await validatePassword(
+      password,
+      user.password.toString()
+    );
+    if (!pwdIsValid) throw new UnauthenticatedError("Invalid Credentials");
+    // TODO: confirm user if there is a different IP Address
+    // TODO: create separate IP Address tables as users may login
+    // ...different IP Addresses
+    const token = createToken(user.user_id);
   }
-  if (!user) throw new UnauthenticatedError("Invalid Credentials");
-  const pwdIsValid = await validatePassword(password, user.password.toString());
-  if (!pwdIsValid) throw new UnauthenticatedError("Invalid Credentials");
-  // TODO: confirm user if there is a different IP Address
-  // TODO: create separate IP Address tables as users may login
-  // ...different IP Addresses
-  const token = createToken(user.user_id);
   response
     .cookie("token", token, { httpOnly: true, maxAge: 30 * 60 * 60 })
     .status(StatusCodes.CREATED)

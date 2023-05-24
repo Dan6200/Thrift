@@ -4,6 +4,7 @@ import chaiHttp from "chai-http";
 import app from "../../app";
 import db from "../../db";
 import { login, logout, registration } from "../helpers/auth";
+import { testGetUser } from "../helpers/user";
 import { Ebuka } from "./user-data";
 
 chai.use(chaiHttp).should();
@@ -25,5 +26,6 @@ export default function (): void {
     it(`it should register Ebuka`, registration.bind(null, agent, Ebuka));
     it(`it should login Ebuka`, login.bind(null, agent, Ebuka));
     it(`it should logout Ebuka`, logout.bind(null, agent));
+    // it("it should get Ebuka's account", testGetUser());
   });
 }

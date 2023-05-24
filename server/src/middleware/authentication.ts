@@ -13,7 +13,6 @@ export default async (
 ) => {
   // check header
   const authHeader = request.headers.authorization;
-  console.log(request.cookies.token);
   if (
     !authHeader ||
     !authHeader.startsWith("Bearer ") ||
@@ -23,6 +22,7 @@ export default async (
   const token = authHeader.split(" ")[1] ?? request.cookies.token;
   if (token === "null")
     throw new UnauthenticatedError("Authentication invalid");
+  console.log(request.cookies.token);
   try {
     const payload = jwt.verify(
       token,

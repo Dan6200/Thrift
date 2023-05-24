@@ -13,6 +13,7 @@ export default function (): void {
   let agent: ChaiHttp.Agent;
   before(() => {
     agent = chai.request.agent(app);
+    //agent = chai.request.agent("https://thrift-production.up.railway.app");
     db.query("delete from user_account");
   });
   after(() => {
@@ -21,7 +22,6 @@ export default function (): void {
   });
   // Testing the register route
   describe("User Ebuka", () => {
-    agent = chai.request.agent("https://thrift-production.up.railway.app");
     // agent = chai.request.agent("https://thrift-app-v2.onrender.com");
     it("it should register Ebuka", registration.bind(null, agent, Ebuka));
     it("it should login Ebuka", login.bind(null, agent, Ebuka));

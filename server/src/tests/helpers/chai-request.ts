@@ -4,7 +4,7 @@ import chaiHttp from "chai-http";
 chai.use(chaiHttp).should();
 
 export default async (
-  server: string | Express,
+  server: string | Express | ChaiHttp.Agent,
   verb: string,
   path: string,
   token?: string,

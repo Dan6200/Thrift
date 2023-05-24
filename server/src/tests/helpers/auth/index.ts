@@ -1,6 +1,6 @@
 import chai from "chai";
 import { StatusCodes } from "http-status-codes";
-import { user } from "../../authentication/user-data";
+import { user } from "../../integrated-tests/user-data";
 
 chai.should();
 

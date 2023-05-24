@@ -4,7 +4,10 @@ import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import testProcessRoute from "../test-process-route";
 import { UserDataSchemaDB } from "../../../app-schema/users";
-import { updateUser, updateUserPassword } from "../../authentication/user-data";
+import {
+  updateUser,
+  updateUserPassword,
+} from "../../integrated-tests/user-data";
 
 chai.use(chaiHttp).should();
 
@@ -17,7 +20,6 @@ let validateResult = (data: any) => {
 };
 
 const routeParams = {
-  server: "https://thrift-app-z915.onrender.com",
   path: "/api/v1/user",
   checks: validateResult,
 };

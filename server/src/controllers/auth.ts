@@ -79,7 +79,6 @@ const register = async (request: Request, response: Response) => {
 const login = async (request: Request, response: Response) => {
   let email: string, phone: string, password: string;
   email = phone = password = "";
-  console.log(request.cookies);
   let token = request.cookies.token;
   if (!token) {
     ({ email, phone, password } = request.body);

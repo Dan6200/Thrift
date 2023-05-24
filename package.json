@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "start": "node server/built/server.js",
-    "test": "ts-mocha -r dotenv/config --config server/src/tests/.mocharc.json --exit --paths tests -p server/src/tsconfig.json server/src/tests/*.ts",
+    "test": "ts-mocha -r dotenv/config --config server/src/tests/.mocharc.json -p server/src/tsconfig.json server/src/tests/*.ts",
     "dev": "nodemon server/src/server.ts",
     "build": "tsc -p server/src/tsconfig.json"
   },

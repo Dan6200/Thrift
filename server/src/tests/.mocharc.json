@@ -1,5 +1,6 @@
 {
-	"timeout": 1000000,
-	"recursive": true,
-	"extension": ["ts", "js", "tsx"]
+  "timeout": 1000000,
+  "recursive": true,
+  "extension": ["ts", "js", "tsx"],
+  "exit": true
 }

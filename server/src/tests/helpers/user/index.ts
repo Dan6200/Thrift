@@ -11,7 +11,7 @@ import {
 
 chai.use(chaiHttp).should();
 
-const { OK, NOT_FOUND, NO_CONTENT } = StatusCodes;
+const { OK, NOT_FOUND, NO_CONTENT, UNAUTHORIZED } = StatusCodes;
 
 let validateResult = (data: any) => {
   let userInfo = data;
@@ -21,12 +21,18 @@ let validateResult = (data: any) => {
 
 const routeParams = {
   path: "/api/v1/user",
-  checks: validateResult,
 };
+
+const testDontGetUser = testProcessRoute({
+  verb: "get",
+  statusCode: UNAUTHORIZED,
+  ...routeParams,
+});
 
 const testGetUser = testProcessRoute({
   verb: "get",
   statusCode: OK,
+  checks: validateResult,
   ...routeParams,
 });
 
@@ -58,6 +64,7 @@ const testGetNonExistentUser = testProcessRoute({
 
 export {
   testGetUser,
+  testDontGetUser,
   testUpdateUser,
   testChangeUserPassword,
   testDeleteUser,

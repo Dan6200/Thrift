@@ -13,8 +13,9 @@ async function registration(agent: ChaiHttp.Agent, user: user) {
 }
 
 async function login(agent: ChaiHttp.Agent, { email, password }: user) {
-  const response = await agent.post("/api/v1/auth/login");
-  // .send({ email, password });
+  const response = await agent
+    .post("/api/v1/auth/login")
+    .send({ email, password });
   response.should.have.status(StatusCodes.CREATED);
   response.body.should.be.an("object");
   const responseObject = response.body;

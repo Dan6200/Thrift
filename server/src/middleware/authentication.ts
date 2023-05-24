@@ -13,14 +13,14 @@ export default async (
 ) => {
   // check header
   const authHeader = request.headers.authorization;
-  console.log(request.cookies);
+  console.log(request.cookies.token);
   if (
     !authHeader ||
     !authHeader.startsWith("Bearer ") ||
     !request.cookies.token
   )
     throw new UnauthenticatedError("Authentication invalid");
-  const token = authHeader.split(" ")[1] || request.cookies.token;
+  const token = authHeader.split(" ")[1] ?? request.cookies.token;
   if (token === "null")
     throw new UnauthenticatedError("Authentication invalid");
   try {

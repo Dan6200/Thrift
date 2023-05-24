@@ -1,7 +1,6 @@
 import { Express } from "express";
 import { StatusCodes } from "http-status-codes";
 import path from "path";
-import chaiRequest from "./chai-request";
 const filename = path.basename(__filename);
 
 interface routeProcessorParams {
@@ -21,7 +20,7 @@ export default function ({
   checks,
 }: routeProcessorParams) {
   return async function (serverAgent: ChaiHttp.Agent): Promise<any> {
-    const response = await chaiRequest(serverAgent, verb, path);
+    const response = await serverAgent[verb](path);
     response.should.have.status(statusCode);
     checks && checks(response);
   };

@@ -79,6 +79,7 @@ const register = async (request: Request, response: Response) => {
 const login = async (request: Request, response: Response) => {
   let email: string, phone: string, password: string;
   email = phone = password = "";
+  console.log(request.cookies);
   if (!request.cookies.token) {
     ({ email, phone, password } = request.body);
     if (!email && !phone) {

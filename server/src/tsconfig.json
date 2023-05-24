@@ -3,7 +3,7 @@
     "outDir": "../built",
     "target": "es5",
     "esModuleInterop": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "noEmitOnError": false,

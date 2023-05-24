@@ -41,7 +41,6 @@ const testCreateShipping = testProcessRoute({
   ...routeParams,
   verb: "post",
   statusCode: CREATED,
-  dataMatrix: newShippingData,
   checks: checkId,
 });
 
@@ -60,7 +59,6 @@ const testGetShipping = testProcessRoute({
 const testUpdateShipping = testProcessRoute({
   ...routeParams,
   verb: "put",
-  dataMatrix: updateShippingData,
 });
 
 const testDeleteShipping = testProcessRoute({

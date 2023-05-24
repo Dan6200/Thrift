@@ -80,7 +80,8 @@ const login = async (request: Request, response: Response) => {
   let email: string, phone: string, password: string;
   email = phone = password = "";
   console.log(request.cookies);
-  if (!request.cookies.token) {
+  let token = request.cookies.token;
+  if (!token) {
     ({ email, phone, password } = request.body);
     if (!email && !phone) {
       throw new BadRequestError("Please provide email or phone number!");
@@ -117,7 +118,7 @@ const login = async (request: Request, response: Response) => {
     // TODO: confirm user if there is a different IP Address
     // TODO: create separate IP Address tables as users may login
     // ...different IP Addresses
-    const token = createToken(user.user_id);
+    token = createToken(user.user_id);
   }
   response
     .cookie("token", token, { httpOnly: true, maxAge: 30 * 60 * 60 })

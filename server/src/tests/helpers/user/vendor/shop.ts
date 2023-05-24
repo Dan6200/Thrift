@@ -40,7 +40,6 @@ const testCreateShop = testProcessRoute({
   ...routeParams,
   verb: "post",
   statusCode: CREATED,
-  dataMatrix: newShopData,
   checks: checkId,
 });
 
@@ -59,7 +58,6 @@ const testGetShop = testProcessRoute({
 const testUpdateShop = testProcessRoute({
   ...routeParams,
   verb: "put",
-  dataMatrix: updateShopData,
 });
 
 const testDeleteShop = testProcessRoute({

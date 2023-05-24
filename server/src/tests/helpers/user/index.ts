@@ -31,14 +31,12 @@ const testGetUser = testProcessRoute({
 const testUpdateUser = testProcessRoute({
   verb: "patch",
   statusCode: OK,
-  dataMatrix: updateUser,
   ...routeParams,
 });
 
 const testChangeUserPassword = testProcessRoute({
   verb: "patch",
   statusCode: NO_CONTENT,
-  dataMatrix: updateUserPassword,
   ...routeParams,
   baseUrl: routeParams.baseUrl + "/password",
 });

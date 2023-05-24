@@ -34,7 +34,6 @@ const testCreateProduct = testProcessRoute({
   ...routeParams,
   verb: "post",
   statusCode: CREATED,
-  dataMatrix: productData,
   checks: checkId,
 });
 
@@ -53,7 +52,6 @@ const testGetProduct = testProcessRoute({
 const testUpdateProduct = testProcessRoute({
   ...routeParams,
   verb: "put",
-  dataMatrix: updateProductData,
 });
 
 const testDeleteProduct = testProcessRoute({

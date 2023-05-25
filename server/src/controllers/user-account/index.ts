@@ -93,14 +93,14 @@ let updateUserPassword = async (
   delete request.body.new_password;
   request.body.password = password;
   let fields: string[] = Object.keys(request.body),
-    data: any[] = Object.values(request.body);
-  const result = await db.query(
+    data: string[] = Object.values(request.body);
+  await db.query(
     // Generates A sql update command.
     // Takes the database name, the column name of the first item of the array
     `${genSqlUpdateCommands("user_account", "user_id", fields)}`,
     [userId, ...data]
   );
-  response.status(StatusCodes.OK).json(result);
+  response.status(StatusCodes.NO_CONTENT).end();
 };
 
 let deleteUserAccount = async (

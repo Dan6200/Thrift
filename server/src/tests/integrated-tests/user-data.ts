@@ -56,10 +56,10 @@ const updateUser: object[] = [
   { last_name: "Kuti" },
 ];
 
-const updateUserPassword: object[][] = [
-  [{ password: "EbukaDa1!", new_password: "jayafd3245XF*!&$" }],
-  [{ password: "123AishaBaggy9384", new_password: "2t295AishaBaby$<5%>!" }],
-  [{ password: "236!A15HA04", new_password: "sgsdlaWEWRsdf23@#%#@" }],
+const updateUserPassword: object[] = [
+  { password: "EbukaDa1!", new_password: "jayafd3245XF*!&$" },
+  { password: "123AishaBaggy9384", new_password: "2t295AishaBaby$<5%>!" },
+  { password: "236!A15HA04", new_password: "sgsdlaWEWRsdf23@#%#@" },
 ];
 
 export { user, newUsers, loginUsers, updateUser, updateUserPassword };

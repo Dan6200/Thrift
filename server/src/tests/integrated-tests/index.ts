@@ -4,7 +4,12 @@ import chaiHttp from "chai-http";
 import app from "../../app";
 import db from "../../db";
 import { emailLogin, logout, phoneLogin, registration } from "../helpers/auth";
-import { testDontGetUser, testGetUser, testUpdateUser } from "../helpers/user";
+import {
+  testChangeUserPassword,
+  testDontGetUser,
+  testGetUser,
+  testUpdateUser,
+} from "../helpers/user";
 import { newUsers } from "./user-data";
 
 chai.use(chaiHttp).should();
@@ -22,8 +27,8 @@ export default function (count: number): void {
   describe(`Testing typical user actions`, () => {
     // agent = chai.request.agent();
     // const url = "https://thrift-app-v2.onrender.com";
-    const url = "https://thrift-production.up.railway.app";
-    // const url = "localhost:1024";
+    // const url = "https://thrift-production.up.railway.app";
+    const url = "localhost:1024";
     const agent = chai.request.agent(url);
     const user = newUsers[count];
     it("it should register the user", registration.bind(null, agent, user));
@@ -42,6 +47,10 @@ export default function (count: number): void {
     it(
       "it should update the user's account",
       testUpdateUser.bind(null, agent, count)
+    );
+    it(
+      "it should change the user's password",
+      testChangeUserPassword.bind(null, agent, count)
     );
     it("it should logout user", logout.bind(null, agent));
     it(

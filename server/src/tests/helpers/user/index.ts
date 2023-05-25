@@ -49,6 +49,7 @@ const testChangeUserPassword = testProcessRoute({
   statusCode: NO_CONTENT,
   dataList: updateUserPassword,
   ...routeParams,
+  path: routeParams.path + "/password",
 });
 
 const testDeleteUser = testProcessRoute({

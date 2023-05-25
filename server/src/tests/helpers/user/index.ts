@@ -40,6 +40,7 @@ const testUpdateUser = testProcessRoute({
   verb: "patch",
   statusCode: OK,
   dataList: updateUser,
+  checks: validateResult,
   ...routeParams,
 });
 

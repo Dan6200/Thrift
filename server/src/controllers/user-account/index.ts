@@ -58,6 +58,7 @@ let updateUserAccount = async (
     // Generates A sql update command.
     // Takes the database name, the column name of the first item of the array
     // returns a list of columns from the database table
+    // unit test this function
     `${genSqlUpdateCommands(
       "user_account",
       "user_id",

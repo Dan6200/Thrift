@@ -10,18 +10,17 @@ interface user {
   ip_address?: string;
 }
 
-const Ebuka: user = {
-  first_name: "Ebuka",
-  last_name: "Eze",
-  email: "ebukachibueze5489@gmail.com",
-  phone: "+2348063249250",
-  password: "EbukaDa1!",
-  dob: "1999-07-01",
-  country: "Nigeria",
-  ip_address: "168.89.91.45",
-};
-
 const newUsers: Array<user> = [
+  {
+    first_name: "Ebuka",
+    last_name: "Eze",
+    email: "ebukachibueze5489@gmail.com",
+    phone: "+2348063249250",
+    password: "EbukaDa1!",
+    dob: "1999-07-01",
+    country: "Nigeria",
+    ip_address: "168.89.91.45",
+  },
   {
     first_name: "Mustapha",
     last_name: "Mohammed",
@@ -51,10 +50,10 @@ const loginUsers: Array<user> = [
   { phone: "234902539488", password: "236!A15HA04" },
 ];
 
-const updateUser: object[][] = [
-  [{ ip_address: "198.79.78.45", country: "Ghana" }],
-  [{ dob: "1995-12-31", phone: "+2348073249250" }],
-  [{ last_name: "Buhari" }],
+const updateUser: object[] = [
+  { ip_address: "198.79.78.45", country: "Ghana" },
+  { dob: "1995-12-31", phone: "+2348073249250" },
+  { last_name: "Kuti" },
 ];
 
 const updateUserPassword: object[][] = [
@@ -63,4 +62,4 @@ const updateUserPassword: object[][] = [
   [{ password: "236!A15HA04", new_password: "sgsdlaWEWRsdf23@#%#@" }],
 ];
 
-export { user, newUsers, loginUsers, updateUser, updateUserPassword, Ebuka };
+export { user, newUsers, loginUsers, updateUser, updateUserPassword };

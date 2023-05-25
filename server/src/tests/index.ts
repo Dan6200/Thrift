@@ -9,7 +9,10 @@ import integratedTests from "./integrated-tests";
 /*
  * All Passed ...
  */
-describe("Authentication Routes", integratedTests);
+const NumberOfTests = 2;
+let count = 0;
+while (count < NumberOfTests)
+  describe(`Testing User ${count + 1}`, integratedTests.bind(null, count++));
 // describe('User Account Routes', testUserAccount);
 // describe('Customer Account Routes', testCustomerAccount);
 // describe('Vendor Account Routes', testVendorAccount);

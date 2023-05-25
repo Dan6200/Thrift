@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import { Response, NextFunction } from "express";
 import { UnauthenticatedError } from "../errors";
 import {
@@ -22,15 +22,10 @@ export default async (
   if (token === "null")
     throw new UnauthenticatedError("Authentication invalid");
   try {
-    const payload = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    ) as RequestUserPayload;
-    // console.log('payload %o: ', payload, fileName);
-    request.user = payload;
+    const payload = jwt.verify(token, process.env.JWT_SECRET as Secret);
+    request.user = payload as JwtPayload as RequestUserPayload;
     next();
   } catch (err) {
-    console.error(err);
-    // throw new UnauthenticatedError("Authentication invalid");
+    throw new UnauthenticatedError("Authentication invalid");
   }
 };

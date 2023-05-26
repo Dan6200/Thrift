@@ -12,24 +12,36 @@ async function registration(agent: ChaiHttp.Agent, user: user) {
   responseObject.should.have.property("token");
 }
 
-async function emailLogin(agent: ChaiHttp.Agent, { email, password }: user) {
+async function emailLogin(
+  agent: ChaiHttp.Agent,
+  { email, password }: user,
+  statusCode: StatusCodes
+) {
   const response = await agent
     .post("/api/v1/auth/login")
     .send({ email, password });
-  response.should.have.status(StatusCodes.CREATED);
-  response.body.should.be.an("object");
-  const responseObject = response.body;
-  responseObject.should.have.property("token");
+  response.should.have.status(statusCode);
+  if (statusCode === StatusCodes.OK) {
+    response.body.should.be.an("object");
+    const responseObject = response.body;
+    responseObject.should.have.property("token");
+  }
 }
 
-async function phoneLogin(agent: ChaiHttp.Agent, { phone, password }: user) {
+async function phoneLogin(
+  agent: ChaiHttp.Agent,
+  { phone, password }: user,
+  statusCode: StatusCodes
+) {
   const response = await agent
     .post("/api/v1/auth/login")
     .send({ phone, password });
-  response.should.have.status(StatusCodes.CREATED);
-  response.body.should.be.an("object");
-  const responseObject = response.body;
-  responseObject.should.have.property("token");
+  response.should.have.status(statusCode);
+  if (statusCode === StatusCodes.OK) {
+    response.body.should.be.an("object");
+    const responseObject = response.body;
+    responseObject.should.have.property("token");
+  }
 }
 
 async function logout(agent: ChaiHttp.Agent) {

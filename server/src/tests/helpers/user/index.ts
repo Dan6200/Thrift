@@ -54,7 +54,7 @@ const testChangeUserPassword = testProcessRoute({
 
 const testDeleteUser = testProcessRoute({
   verb: "delete",
-  statusCode: OK,
+  statusCode: NO_CONTENT,
   ...routeParams,
 });
 

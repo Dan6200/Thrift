@@ -121,7 +121,7 @@ const login = async (request: Request, response: Response) => {
   }
   response
     .cookie("token", token, { httpOnly: true, maxAge: 30 * 60 * 60 })
-    .status(StatusCodes.CREATED)
+    .status(StatusCodes.OK)
     .json({
       token,
     });

@@ -1,4 +1,5 @@
 //cspell:disable
+import "express-async-errors";
 import chai from "chai";
 import chaiHttp from "chai-http";
 import app from "../../app";
@@ -6,11 +7,13 @@ import db from "../../db";
 import { emailLogin, logout, phoneLogin, registration } from "../helpers/auth";
 import {
   testChangeUserPassword,
+  testDeleteUser,
   testDontGetUser,
   testGetUser,
   testUpdateUser,
 } from "../helpers/user";
 import { newUsers } from "./user-data";
+import { StatusCodes } from "http-status-codes";
 
 chai.use(chaiHttp).should();
 
@@ -24,7 +27,7 @@ export default function (count: number): void {
     db.query("delete from user_account");
   });
   // Testing the register route
-  describe(`Testing typical user actions`, () => {
+  describe(`Testing typical user actions`, async () => {
     // agent = chai.request.agent();
     // const url = "https://thrift-app-v2.onrender.com";
     // const url = "https://thrift-production.up.railway.app";
@@ -34,11 +37,11 @@ export default function (count: number): void {
     it("it should register the user", registration.bind(null, agent, user));
     it(
       "it should login the user with email",
-      emailLogin.bind(null, agent, user)
+      emailLogin.bind(null, agent, user, StatusCodes.OK)
     );
     it(
       "it should login the user with phone",
-      phoneLogin.bind(null, agent, user)
+      phoneLogin.bind(null, agent, user, StatusCodes.OK)
     );
     it(
       "it should get the user's account",
@@ -52,10 +55,18 @@ export default function (count: number): void {
       "it should change the user's password",
       testChangeUserPassword.bind(null, agent, count)
     );
+    it(
+      "it should delete the user's account",
+      testDeleteUser.bind(null, agent, null)
+    );
     it("it should logout user", logout.bind(null, agent));
     it(
       "it should fail to get user's account",
       testDontGetUser.bind(null, agent, count)
+    );
+    it(
+      "it should fail to login user",
+      emailLogin.bind(null, agent, user, StatusCodes.UNAUTHORIZED)
     );
   });
 }

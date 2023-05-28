@@ -20,6 +20,12 @@ import {
   testGetCustomer,
   testGetNonExistentCustomer,
 } from "../helpers/user/customer";
+import {
+  testCreateVendor,
+  testGetVendor,
+  testDeleteVendor,
+  testGetNonExistentVendor,
+} from "../helpers/user/vendor";
 
 chai.use(chaiHttp).should();
 
@@ -86,6 +92,22 @@ export default function (count: number): void {
     it(
       "it should fail to get the user's customer account",
       testGetNonExistentCustomer.bind(null, agent, user)
+    );
+    it(
+      "it should create a vendor account for the user",
+      testCreateVendor.bind(null, agent, user)
+    );
+    it(
+      "it should get the user's vendor account",
+      testGetVendor.bind(null, agent, user)
+    );
+    it(
+      "it should delete the user's vendor account",
+      testDeleteVendor.bind(null, agent, user)
+    );
+    it(
+      "it should fail to get the user's vendor account",
+      testGetNonExistentVendor.bind(null, agent, user)
     );
   });
 }

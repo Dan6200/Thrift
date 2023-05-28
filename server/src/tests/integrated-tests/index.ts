@@ -2,7 +2,6 @@
 import "express-async-errors";
 import chai from "chai";
 import chaiHttp from "chai-http";
-import app from "../../app";
 import db from "../../db";
 import { emailLogin, logout, phoneLogin, registration } from "../helpers/auth";
 import {
@@ -14,25 +13,28 @@ import {
 } from "../helpers/user";
 import { newUsers } from "./user-data";
 import { StatusCodes } from "http-status-codes";
+import app from "../../app";
+import {
+  testCreateCustomer,
+  testDeleteCustomer,
+  testGetCustomer,
+  testGetNonExistentCustomer,
+} from "../helpers/user/customer";
 
 chai.use(chaiHttp).should();
 
 export default function (count: number): void {
-  before(() => {
-    // TODO: debug these
-    db.query("delete from user_account");
+  before(async () => {
+    await db.query("delete from user_account");
   });
-  after(() => {
-    // TODO: debug these
-    db.query("delete from user_account");
+  after(async () => {
+    await db.query("delete from user_account");
   });
   // Testing the register route
   describe(`Testing typical user actions`, async () => {
-    // agent = chai.request.agent();
-    // const url = "https://thrift-app-v2.onrender.com";
     // const url = "https://thrift-production.up.railway.app";
-    const url = "localhost:1024";
-    const agent = chai.request.agent(url);
+    // const agent = chai.request.agent(url);
+    const agent = chai.request.agent(app);
     const user = newUsers[count];
     it("it should register the user", registration.bind(null, agent, user));
     it(
@@ -67,6 +69,23 @@ export default function (count: number): void {
     it(
       "it should fail to login user",
       emailLogin.bind(null, agent, user, StatusCodes.UNAUTHORIZED)
+    );
+    it("it should register the user", registration.bind(null, agent, user));
+    it(
+      "it should create a customer account for the user",
+      testCreateCustomer.bind(null, agent, user)
+    );
+    it(
+      "it should get the user's customer account",
+      testGetCustomer.bind(null, agent, user)
+    );
+    it(
+      "it should delete the user's customer account",
+      testDeleteCustomer.bind(null, agent, user)
+    );
+    it(
+      "it should fail to get the user's customer account",
+      testGetNonExistentCustomer.bind(null, agent, user)
     );
   });
 }

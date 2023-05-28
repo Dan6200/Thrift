@@ -19,21 +19,19 @@ let validateResult = (data: any) => {
   Joi.assert(userInfo, UserDataSchemaDB);
 };
 
-const routeParams = {
-  path: "/api/v1/user",
-};
+const routeParams = {};
 
 const testDontGetUser = testProcessRoute({
   verb: "get",
   statusCode: UNAUTHORIZED,
-  ...routeParams,
+  path: "/api/v1/user",
 });
 
 const testGetUser = testProcessRoute({
   verb: "get",
   statusCode: OK,
   checks: validateResult,
-  ...routeParams,
+  path: "/api/v1/user",
 });
 
 const testUpdateUser = testProcessRoute({
@@ -41,27 +39,26 @@ const testUpdateUser = testProcessRoute({
   statusCode: OK,
   dataList: updateUser,
   checks: validateResult,
-  ...routeParams,
+  path: "/api/v1/user",
 });
 
 const testChangeUserPassword = testProcessRoute({
   verb: "patch",
   statusCode: NO_CONTENT,
   dataList: updateUserPassword,
-  ...routeParams,
-  path: routeParams.path + "/password",
+  path: "/api/v1/user/password",
 });
 
 const testDeleteUser = testProcessRoute({
   verb: "delete",
   statusCode: NO_CONTENT,
-  ...routeParams,
+  path: "/api/v1/user",
 });
 
 const testGetNonExistentUser = testProcessRoute({
   verb: "get",
   statusCode: NOT_FOUND,
-  ...routeParams,
+  path: "/api/v1/user",
 });
 
 export {

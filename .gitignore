@@ -1,4 +1,5 @@
 *~
+.env
 *.sw*
 *node_modules
 */.env

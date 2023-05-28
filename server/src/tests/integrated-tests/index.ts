@@ -26,6 +26,7 @@ import {
   testDeleteVendor,
   testGetNonExistentVendor,
 } from "../helpers/user/vendor";
+import { testCreateShipping } from "../helpers/user/customer/shipping";
 
 chai.use(chaiHttp).should();
 
@@ -42,6 +43,7 @@ export default function (count: number): void {
     // const agent = chai.request.agent(url);
     const agent = chai.request.agent(app);
     const user = newUsers[count];
+    let addressId: string;
     it("it should register the user", registration.bind(null, agent, user));
     it(
       "it should login the user with email",
@@ -79,35 +81,40 @@ export default function (count: number): void {
     it("it should register the user", registration.bind(null, agent, user));
     it(
       "it should create a customer account for the user",
-      testCreateCustomer.bind(null, agent, user)
+      testCreateCustomer.bind(null, agent, count)
     );
     it(
       "it should get the user's customer account",
-      testGetCustomer.bind(null, agent, user)
+      testGetCustomer.bind(null, agent, count)
     );
+    it("it should add the shipping information for the customer", () =>
+      testCreateShipping(agent, count).then((result) => {
+        addressId = result.address_id;
+        console.log(addressId);
+      }));
     it(
       "it should delete the user's customer account",
-      testDeleteCustomer.bind(null, agent, user)
+      testDeleteCustomer.bind(null, agent, count)
     );
     it(
       "it should fail to get the user's customer account",
-      testGetNonExistentCustomer.bind(null, agent, user)
+      testGetNonExistentCustomer.bind(null, agent, count)
     );
     it(
       "it should create a vendor account for the user",
-      testCreateVendor.bind(null, agent, user)
+      testCreateVendor.bind(null, agent, count)
     );
     it(
       "it should get the user's vendor account",
-      testGetVendor.bind(null, agent, user)
+      testGetVendor.bind(null, agent, count)
     );
     it(
       "it should delete the user's vendor account",
-      testDeleteVendor.bind(null, agent, user)
+      testDeleteVendor.bind(null, agent, count)
     );
     it(
       "it should fail to get the user's vendor account",
-      testGetNonExistentVendor.bind(null, agent, user)
+      testGetNonExistentVendor.bind(null, agent, count)
     );
   });
 }

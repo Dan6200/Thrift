@@ -6,7 +6,6 @@ interface routeProcessorParams {
   statusCode: StatusCodes;
   dataList?: object[];
   checks?: (response: any) => void;
-  parameter?: string;
 }
 
 export default function ({
@@ -24,5 +23,6 @@ export default function ({
     response.should.have.status(statusCode);
     // Check the data in the body if accurate
     checks && checks(response.body);
+    return response.body;
   };
 }

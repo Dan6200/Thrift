@@ -11,7 +11,7 @@ import {
   testGetUser,
   testUpdateUser,
 } from "../helpers/user";
-import { newUsers } from "./user-data";
+import { newUsers, usersInfoUpdated, usersPasswordUpdated } from "./user-data";
 import { StatusCodes } from "http-status-codes";
 import app from "../../app";
 import {
@@ -26,11 +26,22 @@ import {
   testDeleteVendor,
   testGetNonExistentVendor,
 } from "../helpers/user/vendor";
-import { testCreateShipping } from "../helpers/user/customer/shipping";
+import {
+  testCreateShipping,
+  testDeleteShipping,
+  testGetAllShipping,
+  testGetNonExistentShipping,
+  testGetShipping,
+  testUpdateShipping,
+} from "../helpers/user/customer/shipping";
+import {
+  updatedShippingInformationList,
+  shippingInformationList,
+} from "../accounts/user/customer-account/shipping-data";
 
 chai.use(chaiHttp).should();
 
-export default function (count: number): void {
+export default function (index: number): void {
   before(async () => {
     await db.query("delete from user_account");
   });
@@ -42,79 +53,82 @@ export default function (count: number): void {
     // const url = "https://thrift-production.up.railway.app";
     // const agent = chai.request.agent(url);
     const agent = chai.request.agent(app);
-    const user = newUsers[count];
-    let addressId: string;
-    it("it should register the user", registration.bind(null, agent, user));
-    it(
-      "it should login the user with email",
-      emailLogin.bind(null, agent, user, StatusCodes.OK)
-    );
-    it(
-      "it should login the user with phone",
-      phoneLogin.bind(null, agent, user, StatusCodes.OK)
-    );
-    it(
-      "it should get the user's account",
-      testGetUser.bind(null, agent, count)
-    );
-    it(
-      "it should update the user's account",
-      testUpdateUser.bind(null, agent, count)
-    );
-    it(
-      "it should change the user's password",
-      testChangeUserPassword.bind(null, agent, count)
-    );
-    it(
-      "it should delete the user's account",
-      testDeleteUser.bind(null, agent, null)
-    );
-    it("it should logout user", logout.bind(null, agent));
-    it(
-      "it should fail to get user's account",
-      testDontGetUser.bind(null, agent, count)
-    );
-    it(
-      "it should fail to login user",
-      emailLogin.bind(null, agent, user, StatusCodes.UNAUTHORIZED)
-    );
-    it("it should register the user", registration.bind(null, agent, user));
-    it(
-      "it should create a customer account for the user",
-      testCreateCustomer.bind(null, agent, count)
-    );
-    it(
-      "it should get the user's customer account",
-      testGetCustomer.bind(null, agent, count)
-    );
-    it("it should add the shipping information for the customer", () =>
-      testCreateShipping(agent, count).then((result) => {
-        addressId = result.address_id;
-        console.log(addressId);
+    const user = newUsers[index];
+
+    it("it should register the user", () => registration(agent, user));
+
+    it("it should login the user with email", () =>
+      emailLogin(agent, user, StatusCodes.OK));
+
+    it("it should login the user with phone", () =>
+      phoneLogin(agent, user, StatusCodes.OK));
+
+    it("it should get the user's account", () => testGetUser(agent));
+
+    const updatedUserInfo = usersInfoUpdated[index];
+
+    it("it should update the user's account", () =>
+      testUpdateUser(agent, updatedUserInfo));
+
+    const updatedUserPassword = usersPasswordUpdated[index];
+
+    it("it should change the user's password", () =>
+      testChangeUserPassword(agent, updatedUserPassword));
+
+    it("it should delete the user's account", () => testDeleteUser(agent));
+
+    it("it should logout user", () => logout(agent));
+
+    it("it should fail to get user's account", () => testDontGetUser(agent));
+
+    it("it should fail to login user", () =>
+      emailLogin(agent, user, StatusCodes.UNAUTHORIZED));
+
+    it("it should register the user", () => registration(agent, user));
+
+    it("it should create a customer account for the user", () =>
+      testCreateCustomer(agent));
+
+    it("it should get the user's customer account", () =>
+      testGetCustomer(agent));
+
+    const shippingInfo = shippingInformationList[index];
+
+    it(`it should add shipping addresses for the customer then retrieve it`, () =>
+      testCreateShipping(agent, shippingInfo).then((result) =>
+        testGetShipping(agent, null, result.address_id)
+      ));
+
+    const updatedShippingInfo = updatedShippingInformationList[index];
+
+    it(`it should add a shipping addresses for the customer then update it`, () =>
+      testCreateShipping(agent, shippingInfo).then((result) =>
+        testUpdateShipping(agent, updatedShippingInfo, result.address_id)
+      ));
+
+    it(`it should add a shipping addresses for the customer then delete it,
+	   it should fail to retrieve the deleted shipping information`, () =>
+      testCreateShipping(agent, shippingInfo).then(async (result) => {
+        const { address_id: addressId } = result;
+        await testDeleteShipping(agent, null, addressId);
+        await testGetNonExistentShipping(agent, null, addressId);
       }));
-    it(
-      "it should delete the user's customer account",
-      testDeleteCustomer.bind(null, agent, count)
-    );
-    it(
-      "it should fail to get the user's customer account",
-      testGetNonExistentCustomer.bind(null, agent, count)
-    );
-    it(
-      "it should create a vendor account for the user",
-      testCreateVendor.bind(null, agent, count)
-    );
-    it(
-      "it should get the user's vendor account",
-      testGetVendor.bind(null, agent, count)
-    );
-    it(
-      "it should delete the user's vendor account",
-      testDeleteVendor.bind(null, agent, count)
-    );
-    it(
-      "it should fail to get the user's vendor account",
-      testGetNonExistentVendor.bind(null, agent, count)
-    );
+
+    it("it should delete the user's customer account", () =>
+      testDeleteCustomer(agent));
+
+    it("it should fail to get the user's customer account", () =>
+      testGetNonExistentCustomer(agent));
+
+    it("it should create a vendor account for the user", () =>
+      testCreateVendor(agent));
+
+    it("it should get the user's vendor account", () => testGetVendor(agent));
+
+    it("it should delete the user's vendor account", () =>
+      testDeleteVendor(agent));
+
+    it("it should fail to get the user's vendor account", () =>
+      testGetNonExistentVendor(agent));
   });
 }

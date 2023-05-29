@@ -4,10 +4,6 @@ import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import testProcessRoute from "../test-process-route";
 import { UserDataSchemaDB } from "../../../app-schema/users";
-import {
-  updateUser,
-  updateUserPassword,
-} from "../../integrated-tests/user-data";
 
 chai.use(chaiHttp).should();
 
@@ -37,7 +33,6 @@ const testGetUser = testProcessRoute({
 const testUpdateUser = testProcessRoute({
   verb: "patch",
   statusCode: OK,
-  dataList: updateUser,
   checks: validateResult,
   path: "/api/v1/user",
 });
@@ -45,7 +40,6 @@ const testUpdateUser = testProcessRoute({
 const testChangeUserPassword = testProcessRoute({
   verb: "patch",
   statusCode: NO_CONTENT,
-  dataList: updateUserPassword,
   path: "/api/v1/user/password",
 });
 

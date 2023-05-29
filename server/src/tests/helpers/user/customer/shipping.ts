@@ -1,10 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import { ShippingInfoSchemaDB } from "../../../../app-schema/customer/shipping";
-import {
-  newShippingData,
-  updateShippingData,
-} from "../../../accounts/user/customer-account/shipping-data";
 import testProcessRoute from "../../test-process-route";
 
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes;
@@ -36,7 +32,6 @@ const testCreateShipping = testProcessRoute({
   verb: "post",
   statusCode: CREATED,
   checks: checkId,
-  dataList: newShippingData,
 });
 
 const testGetAllShipping = testProcessRoute({
@@ -54,7 +49,6 @@ const testGetShipping = testProcessRoute({
 const testUpdateShipping = testProcessRoute({
   ...routeParams,
   verb: "put",
-  dataList: updateShippingData,
 });
 
 const testDeleteShipping = testProcessRoute({

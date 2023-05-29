@@ -50,16 +50,16 @@ const loginUsers: Array<user> = [
   { phone: "234902539488", password: "236!A15HA04" },
 ];
 
-const updateUser: object[] = [
+const usersInfoUpdated: object[] = [
   { ip_address: "198.79.78.45", country: "Ghana" },
   { dob: "1995-12-31", phone: "+2348073249250" },
   { last_name: "Kuti" },
 ];
 
-const updateUserPassword: object[] = [
+const usersPasswordUpdated: object[] = [
   { password: "EbukaDa1!", new_password: "jayafd3245XF*!&$" },
   { password: "123AishaBaggy9384", new_password: "2t295AishaBaby$<5%>!" },
   { password: "236!A15HA04", new_password: "sgsdlaWEWRsdf23@#%#@" },
 ];
 
-export { user, newUsers, loginUsers, updateUser, updateUserPassword };
+export { user, newUsers, loginUsers, usersInfoUpdated, usersPasswordUpdated };

@@ -4,22 +4,21 @@ interface routeProcessorParams {
   verb: string;
   path: string;
   statusCode: StatusCodes;
-  dataList?: object[];
   checks?: (response: any) => void;
 }
 
 export default function ({
   verb,
   path,
-  dataList,
   statusCode,
   checks,
 }: routeProcessorParams) {
   return async function (
     serverAgent: ChaiHttp.Agent,
-    count?: number
+    data?: object | null,
+    params: string = ""
   ): Promise<any> {
-    const response = await serverAgent[verb](path).send(dataList?.[count ?? 0]);
+    const response = await serverAgent[verb](`${path}/${params}`).send(data);
     response.should.have.status(statusCode);
     // Check the data in the body if accurate
     checks && checks(response.body);

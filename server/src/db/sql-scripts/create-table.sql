@@ -46,7 +46,7 @@ drop table if exists shop cascade;
 create table if not exists shop (
 	shop_id					bigserial			primary key,	
 	shop_name				varchar				not null 	default 	'My Shop',
-	vendor_id 				bigint			not null 	unique 		references	vendor	on	delete	cascade,
+	vendor_id 				bigint			not null 	references	vendor	on	delete	cascade,
 	date_created			date				not null	default		current_date,
 	banner_image_path			varchar
 );

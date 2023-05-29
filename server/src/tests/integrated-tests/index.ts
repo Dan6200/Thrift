@@ -61,9 +61,9 @@ export default function (index: number): void {
   });
   // Testing the register route
   describe(`Testing typical user actions`, async () => {
-    // const url = "https://thrift-production.up.railway.app";
-    // const agent = chai.request.agent(url);
-    const agent = chai.request.agent(app);
+    const url = "https://thrift-production.up.railway.app";
+    const agent = chai.request.agent(url);
+    // const agent = chai.request.agent(app);
     const user = newUsers[index];
 
     it("it should register the user", () => registration(agent, user));
@@ -136,6 +136,7 @@ export default function (index: number): void {
 
     it("it should get the user's vendor account", () => testGetVendor(agent));
 
+    // TODO: forget shops go to straight to products first
     const shopInfo = shopInfoList[index];
 
     it(`it should add shop for the vendor then retrieve it`, () =>

@@ -7,7 +7,7 @@ const errorHandlerMiddleware = async (
   res: Response,
   _next: NextFunction
 ) => {
-  console.error(err);
+  // console.error(err);
   let customError = {
     // set default
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,

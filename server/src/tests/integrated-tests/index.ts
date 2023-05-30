@@ -136,29 +136,6 @@ export default function (index: number): void {
 
     it("it should get the user's vendor account", () => testGetVendor(agent));
 
-    // TODO: forget shops go to straight to products first
-    const shopInfo = shopInfoList[index];
-
-    it(`it should add shop for the vendor then retrieve it`, () =>
-      testCreateShop(agent, shopInfo).then((result) =>
-        testGetShop(agent, null, result.shop_id)
-      ));
-
-    const updatedShopInfo = updatedShopInfoList[index];
-
-    it(`it should add a shop for the vendor then update it`, () =>
-      testCreateShop(agent, shopInfo).then((result) =>
-        testUpdateShop(agent, updatedShopInfo, result.shop_id)
-      ));
-
-    it(`it should add a shop for the vendor then delete it,
-	   it should fail to retrieve the deleted shop information`, () =>
-      testCreateShop(agent, shopInfo).then(async (result) => {
-        const { shop_id: shopId } = result;
-        await testDeleteShop(agent, null, shopId);
-        await testGetNonExistentShop(agent, null, shopId);
-      }));
-
     it("it should delete the user's vendor account", () =>
       testDeleteVendor(agent));
 

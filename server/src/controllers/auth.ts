@@ -10,6 +10,7 @@ import db from "../db";
 import { BadRequestError, UnauthenticatedError } from "../errors";
 import { hashPassword, validatePassword } from "../security/password";
 import { createToken } from "../security/create-token";
+import genSqlInsertCommand from "./helpers/generate-sql-commands/insert";
 const filename = path.basename(__filename);
 // TODO: IP address
 // https://github.com/neekware/fullerstack/tree/main/libs/nax-ipware
@@ -50,17 +51,7 @@ const register = async (request: Request, response: Response) => {
   }
   userData.password = await hashPassword(password);
   let dbQuery: QueryResult = await db.query(
-    `
-		insert into user_account (
-			first_name,
-			last_name,
-			email,
-			phone,
-			password,
-			dob,
-			country,
-			ip_address
-		) values ($1, $2, $3, $4, $5, $6, $7, $8) returning user_id`,
+    genSqlInsertCommand("user_account", Object.keys(userData)),
     Object.values(userData)
   );
   let { rowCount }: { rowCount: number } = dbQuery;

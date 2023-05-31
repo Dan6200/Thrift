@@ -9,7 +9,7 @@ import {
   RequestWithPayload,
   RequestUserPayload,
 } from "../../../types-and-interfaces/request";
-import genSqlUpdateCommands from "../../helpers/gen-sql-update-commands";
+import genSqlUpdateCommands from "../../helpers/generate-sql-commands/update";
 
 const createShop = async (request: RequestWithPayload, response: Response) => {
   const { userId: vendorId }: RequestUserPayload = request.user;

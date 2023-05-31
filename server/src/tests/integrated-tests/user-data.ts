@@ -7,7 +7,6 @@ interface user {
   password?: string;
   dob?: string;
   country?: string;
-  ip_address?: string;
 }
 
 const newUsers: Array<user> = [
@@ -19,7 +18,6 @@ const newUsers: Array<user> = [
     password: "EbukaDa1!",
     dob: "1999-07-01",
     country: "Nigeria",
-    ip_address: "168.89.91.45",
   },
   {
     first_name: "Mustapha",
@@ -29,7 +27,6 @@ const newUsers: Array<user> = [
     password: "123AishaBaggy9384",
     dob: "2000-10-19",
     country: "Nigeria",
-    ip_address: "198.79.78.23",
   },
 
   {
@@ -40,7 +37,6 @@ const newUsers: Array<user> = [
     password: "236!A15HA04",
     dob: "2004-6-23",
     country: "Nigeria",
-    ip_address: "198.79.78.45",
   },
 ];
 
@@ -51,7 +47,7 @@ const loginUsers: Array<user> = [
 ];
 
 const usersInfoUpdated: object[] = [
-  { ip_address: "198.79.78.45", country: "Ghana" },
+  { country: "Ghana" },
   { dob: "1995-12-31", phone: "+2348073249250" },
   { last_name: "Kuti" },
 ];

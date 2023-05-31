@@ -38,21 +38,22 @@ import {
   updatedShippingInformationList,
   shippingInformationList,
 } from "../accounts/user/customer-account/shipping-data";
-import {
-  testCreateShop,
-  testGetShop,
-  testUpdateShop,
-  testDeleteShop,
-  testGetNonExistentShop,
-} from "../helpers/user/vendor/shop";
-import {
-  shopInfoList,
-  updatedShopInfoList,
-} from "../accounts/user/vendor-account/shop/data";
+// import {
+//   testCreateShop,
+//   testGetShop,
+//   testUpdateShop,
+//   testDeleteShop,
+//   testGetNonExistentShop,
+// } from "../helpers/user/vendor/shop";
+// import {
+//   shopInfoList,
+//   updatedShopInfoList,
+// } from "../accounts/user/vendor-account/shop/data";
 
 chai.use(chaiHttp).should();
 
 export default function (index: number): void {
+  // TODO: Break this up!
   before(async () => {
     await db.query("delete from user_account");
   });
@@ -62,8 +63,8 @@ export default function (index: number): void {
   // Testing the register route
   describe(`Testing typical user actions`, async () => {
     const url = "https://thrift-production.up.railway.app";
-    const agent = chai.request.agent(url);
-    // const agent = chai.request.agent(app);
+    // const agent = chai.request.agent(url);
+    const agent = chai.request.agent(app);
     const user = newUsers[index];
 
     it("it should register the user", () => registration(agent, user));

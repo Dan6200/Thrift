@@ -128,7 +128,7 @@ drop table if exists transaction_item cascade;
 create table if not exists transaction_item (
 	item_id					bigserial		primary	key,
 	product_id				bigint			not null		references	product		on delete	cascade,
-	transaction_id			bigint			not null		references	transaction,
+	transaction_id			bigint			not null		references	transaction on delete cascade,
 	product_quantity		int				not null		default	1	check (product_quantity > 0)
 );
 

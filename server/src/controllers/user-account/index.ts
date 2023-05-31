@@ -11,7 +11,7 @@ import db from "../../db";
 import { BadRequestError, UnauthenticatedError } from "../../errors";
 import { hashPassword } from "../../security/password";
 import { UserData } from "../../types-and-interfaces/user";
-import genSqlUpdateCommands from "../helpers/gen-sql-update-commands";
+import genSqlUpdateCommands from "../helpers/generate-sql-commands/update";
 import validateUserPassword from "../helpers/validate-user-password";
 
 const userDataFields = [

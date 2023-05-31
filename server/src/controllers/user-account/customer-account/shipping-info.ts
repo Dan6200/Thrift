@@ -13,7 +13,7 @@ import {
   RequestWithPayload,
   RequestUserPayload,
 } from "../../../types-and-interfaces/request";
-import genSqlUpdateCommands from "../../helpers/gen-sql-update-commands";
+import genSqlInsertCommands from "../../helpers/generate-sql-commands/insert";
 
 const selectShippingInfo = `
 select 
@@ -39,16 +39,7 @@ const createShippingInfo = async (
     );
   const shippingData = validData.value;
   let dbQuery: QueryResult = await db.query(
-    `insert into shipping_info(
-			customer_id,
-			recipient_first_name,
-			recipient_last_name,
-			street,
-			postal_code,
-			delivery_contact,
-			delivery_instructions,
-			is_primary
-		) values ($1, $2, $3, $4, $5, $6, $7, $8) returning address_id`,
+    `${genSqlInsertCommands} returning address_id`,
     [customerId, ...Object.values(shippingData)]
   );
   let { rowCount }: { rowCount: number } = dbQuery;

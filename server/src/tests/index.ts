@@ -1,9 +1,12 @@
 import integratedTests from "./integrated-tests";
+import unitTests from "./unit-tests";
 
 /*
  * All Passed ...
  */
-const NumberOfTests = 3;
+const NumberOfUsers = 3;
 let count = 0;
-while (count < NumberOfTests)
+
+describe("Testing sql command generators", unitTests);
+while (count < NumberOfUsers)
   describe(`Testing User ${count + 1}`, integratedTests.bind(null, count++));

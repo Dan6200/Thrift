@@ -59,9 +59,9 @@ create table if not exists shop (
 );
 */
 
-drop table if exists product cascade;
+drop table if exists products cascade;
 
-create table if not exists product (
+create table if not exists products (
 	product_id			bigserial			primary key,
 	title				varchar,
 	category			varchar,

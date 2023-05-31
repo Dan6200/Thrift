@@ -1,9 +1,13 @@
 import { StatusCodes } from "http-status-codes";
-import path from "path";
 import Joi from "joi";
 import { ProductSchemaDB } from "../../../../app-schema/product";
-import testProcessRoute from "../../test-process-route";
-const filename = path.basename(__filename);
+import testRoute from "../../test-route";
+import {
+  testRouteWithAgent,
+  testRouteWithAgentAndData,
+  testRouteWithAgentAndParams,
+  testRouteWithAgentDataAndParams,
+} from "../../../../types-and-interfaces/routes-processor";
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes;
 
@@ -23,40 +27,40 @@ const routeParams = {
   statusCode: OK,
 };
 
-const testCreateProduct = testProcessRoute({
+const testCreateProduct = testRoute({
   ...routeParams,
   verb: "post",
   statusCode: CREATED,
   checks: checkId,
-});
+}) as testRouteWithAgentAndData;
 
-const testGetAllProduct = testProcessRoute({
+const testGetAllProduct = testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResult,
-});
+}) as testRouteWithAgent;
 
-const testGetProduct = testProcessRoute({
+const testGetProduct = testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResult,
-});
+}) as testRouteWithAgentAndParams;
 
-const testUpdateProduct = testProcessRoute({
+const testUpdateProduct = testRoute({
   ...routeParams,
   verb: "put",
-});
+}) as testRouteWithAgentDataAndParams;
 
-const testDeleteProduct = testProcessRoute({
+const testDeleteProduct = testRoute({
   ...routeParams,
   verb: "delete",
-});
+}) as testRouteWithAgentAndParams;
 
-const testGetNonExistentProduct = testProcessRoute({
+const testGetNonExistentProduct = testRoute({
   ...routeParams,
   verb: "get",
   statusCode: NOT_FOUND,
-});
+}) as testRouteWithAgentAndParams;
 
 export {
   testCreateProduct,

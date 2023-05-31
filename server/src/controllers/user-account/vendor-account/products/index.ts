@@ -15,7 +15,10 @@ const { CREATED, OK } = StatusCodes;
 const createQuery = [
   async ({ reqData, userId }) => {
     return await db.query(
-      genSqlInsertCommand("products", [...Object.keys(reqData), "user_id"]),
+      `${genSqlInsertCommand("products", [
+        ...Object.keys(reqData),
+        "vendor_id",
+      ])} returning product_id`,
       [...Object.values(reqData), userId]
     );
   },

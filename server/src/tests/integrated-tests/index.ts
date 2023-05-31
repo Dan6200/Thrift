@@ -38,6 +38,12 @@ import {
   updatedShippingInformationList,
   shippingInformationList,
 } from "../accounts/user/customer-account/shipping-data";
+import {
+  testCreateProduct,
+  testGetAllProduct,
+  testGetProduct,
+} from "../helpers/user/vendor/product";
+import { productData } from "../accounts/user/vendor-account/product/data";
 // import {
 //   testCreateShop,
 //   testGetShop,
@@ -136,6 +142,15 @@ export default function (index: number): void {
       testCreateVendor(agent));
 
     it("it should get the user's vendor account", () => testGetVendor(agent));
+
+    it("it should create a product for sale", () =>
+      testCreateProduct(agent, productData[index]));
+
+    it("it should retrieve all products a vendor has for sale", () =>
+      testGetAllProduct(agent));
+
+    it("it should retrieve a specific product a vendor has for sale", () =>
+      testGetProduct(agent));
 
     it("it should delete the user's vendor account", () =>
       testDeleteVendor(agent));

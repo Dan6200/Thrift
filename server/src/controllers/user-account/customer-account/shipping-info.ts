@@ -14,6 +14,7 @@ import {
   RequestUserPayload,
 } from "../../../types-and-interfaces/request";
 import genSqlInsertCommands from "../../helpers/generate-sql-commands/insert";
+import genSqlUpdateCommands from "../../helpers/generate-sql-commands/update";
 
 const selectShippingInfo = `
 select 
@@ -21,10 +22,11 @@ select
 	recipient_first_name,
 	recipient_last_name,
 	street,
+	city,
+	state,
 	postal_code,
 	delivery_contact,
-	delivery_instructions,
-	is_primary
+	delivery_instructions
 from shipping_info`;
 
 const createShippingInfo = async (
@@ -39,7 +41,10 @@ const createShippingInfo = async (
     );
   const shippingData = validData.value;
   let dbQuery: QueryResult = await db.query(
-    `${genSqlInsertCommands} returning address_id`,
+    `${genSqlInsertCommands("shipping_info", [
+      "customer_id",
+      ...Object.keys(shippingData),
+    ])} returning address_id`,
     [customerId, ...Object.values(shippingData)]
   );
   let { rowCount }: { rowCount: number } = dbQuery;

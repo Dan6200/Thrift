@@ -48,7 +48,7 @@ const testGetShipping = testProcessRoute({
 
 const testUpdateShipping = testProcessRoute({
   ...routeParams,
-  verb: "put",
+  verb: "patch",
 });
 
 const testDeleteShipping = testProcessRoute({

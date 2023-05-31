@@ -19,7 +19,6 @@ const userDataFields = [
   "last_name",
   "email",
   "phone",
-  "ip_address",
   "country",
   "dob",
 ];

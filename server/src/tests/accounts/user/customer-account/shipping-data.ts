@@ -34,7 +34,6 @@ const shippingInformationList = [
 const updatedShippingInformationList = [
   {
     recipient_first_name: "Mary",
-    recipient_last_name: "Anderson",
     street: "24 Ogbafemi Awolowo",
     postal_code: "602935",
     delivery_contact: "23463957295",
@@ -44,13 +43,10 @@ const updatedShippingInformationList = [
     recipient_first_name: "John",
     recipient_last_name: "Doe",
     street: "Plot 24 Ogun silas",
-    postal_code: "123435",
     delivery_contact: "23460581795",
     delivery_instructions: "Call me before you arrive!",
-    is_primary: true,
   },
   {
-    recipient_first_name: "John",
     recipient_last_name: "Mayer",
     street: "25 Avenue",
     postal_code: "135234",

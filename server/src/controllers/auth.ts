@@ -51,7 +51,11 @@ const register = async (request: Request, response: Response) => {
   }
   userData.password = await hashPassword(password);
   let dbQuery: QueryResult = await db.query(
-    genSqlInsertCommand("user_account", Object.keys(userData)),
+    `
+    ${genSqlInsertCommand(
+      "user_account",
+      Object.keys(userData)
+    )} returning user_id;`,
     Object.values(userData)
   );
   let { rowCount }: { rowCount: number } = dbQuery;

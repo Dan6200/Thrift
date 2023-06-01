@@ -1,11 +1,4 @@
 import { StatusCodes } from "http-status-codes";
-// const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
-// type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND;
-
-// type ResponseData = {
-//   status: Status;
-//   data?: string | object;
-// };
 
 interface testRouteParams {
   verb: string;
@@ -33,9 +26,7 @@ type testRouteWithAgentDataAndParams = (
 ) => Promise<any>;
 
 export {
-  Status,
-  ResponseData,
-  routeProcessorParams,
+  testRouteParams,
   testRouteWithAgent,
   testRouteWithAgentAndData,
   testRouteWithAgentAndParams,

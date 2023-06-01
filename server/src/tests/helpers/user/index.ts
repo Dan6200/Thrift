@@ -2,8 +2,12 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
-import testProcessRoute from "../test-process-route";
+import testRoute from "../test-route";
 import { UserDataSchemaDB } from "../../../app-schema/users";
+import {
+  testRouteWithAgent,
+  testRouteWithAgentAndData,
+} from "../../../types-and-interfaces/test-routes";
 
 chai.use(chaiHttp).should();
 
@@ -17,43 +21,43 @@ let validateResult = (data: any) => {
 
 const routeParams = {};
 
-const testDontGetUser = testProcessRoute({
+const testDontGetUser = testRoute({
   verb: "get",
   statusCode: UNAUTHORIZED,
   path: "/api/v1/user",
-});
+}) as testRouteWithAgent;
 
-const testGetUser = testProcessRoute({
+const testGetUser = testRoute({
   verb: "get",
   statusCode: OK,
   checks: validateResult,
   path: "/api/v1/user",
-});
+}) as testRouteWithAgent;
 
-const testUpdateUser = testProcessRoute({
+const testUpdateUser = testRoute({
   verb: "patch",
   statusCode: OK,
   checks: validateResult,
   path: "/api/v1/user",
-});
+}) as testRouteWithAgentAndData;
 
-const testChangeUserPassword = testProcessRoute({
+const testChangeUserPassword = testRoute({
   verb: "patch",
   statusCode: NO_CONTENT,
   path: "/api/v1/user/password",
-});
+}) as testRouteWithAgentAndData;
 
-const testDeleteUser = testProcessRoute({
+const testDeleteUser = testRoute({
   verb: "delete",
   statusCode: NO_CONTENT,
   path: "/api/v1/user",
-});
+}) as testRouteWithAgent;
 
-const testGetNonExistentUser = testProcessRoute({
+const testGetNonExistentUser = testRoute({
   verb: "get",
   statusCode: NOT_FOUND,
   path: "/api/v1/user",
-});
+}) as testRouteWithAgent;
 
 export {
   testGetUser,

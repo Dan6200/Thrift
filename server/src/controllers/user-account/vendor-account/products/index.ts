@@ -1,16 +1,18 @@
 import { StatusCodes } from "http-status-codes";
-import { ProductSchemaReq } from "../../../../app-schema/product";
+import { ProductSchemaReq } from "../../../../app-schema/products";
 import db from "../../../../db";
 import { BadRequestError } from "../../../../errors";
-import {
-  Status,
-  ResponseData,
-} from "../../../../types-and-interfaces/routes-processor";
 import genSqlUpdateCommands from "../../../helpers/generate-sql-commands/update";
 import processRoute from "../../../helpers/process-route";
 import genSqlInsertCommand from "../../../helpers/generate-sql-commands/insert";
 
-const { CREATED, OK } = StatusCodes;
+const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
+type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND;
+
+type ResponseData = {
+  status: Status;
+  data?: string | object;
+};
 
 const createQuery = [
   async ({ reqData, userId }) => {
@@ -24,12 +26,12 @@ const createQuery = [
   },
 ];
 
-const readAllQuery = [async () => await db.query(`select * from product`)];
+const readAllQuery = [async () => await db.query(`select * from products`)];
 
 const readQuery = [
   async ({ params }) => {
     let { productId } = params;
-    return await db.query(`select * from product where product_id=$1`, [
+    return await db.query(`select * from products where product_id=$1`, [
       productId,
     ]);
   },
@@ -39,7 +41,7 @@ const updateQuery = [
   async ({ params, reqData }) => {
     let { productId } = params,
       updateCommand = genSqlUpdateCommands(
-        "product",
+        "products",
         "product_id",
         Object.keys(reqData)
       );
@@ -53,7 +55,7 @@ const updateQuery = [
 const deleteQuery = [
   async ({ params }) => {
     let { productId } = params;
-    return await db.query(`delete from product where product_id=$1`, [
+    return await db.query(`delete from products where product_id=$1`, [
       productId,
     ]);
   },

@@ -1,32 +1,32 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
 import { StatusCodes } from "http-status-codes";
-import testProcessRoute from "../../test-process-route";
+import testRoute from "../../test-route";
 chai.use(chaiHttp).should();
 
 const routeParams = {
   path: "/api/v1/user/vendor",
 };
 
-const testCreateVendor = testProcessRoute({
+const testCreateVendor = testRoute({
   verb: "post",
   statusCode: StatusCodes.CREATED,
   ...routeParams,
 });
 
-const testGetVendor = testProcessRoute({
+const testGetVendor = testRoute({
   ...routeParams,
   verb: "get",
   statusCode: StatusCodes.OK,
 });
 
-const testDeleteVendor = testProcessRoute({
+const testDeleteVendor = testRoute({
   ...routeParams,
   verb: "delete",
   statusCode: StatusCodes.NO_CONTENT,
 });
 
-const testGetNonExistentVendor = testProcessRoute({
+const testGetNonExistentVendor = testRoute({
   ...routeParams,
   verb: "get",
   statusCode: StatusCodes.NOT_FOUND,

@@ -68,7 +68,7 @@ create table if not exists products (
 	description			varchar,
 	list_price			numeric(19,4),
 	net_price			numeric(19,4),
-	vendor_id 			bigint				not null 		unique 		references	vendor	on	delete	cascade,
+	vendor_id 			bigint				not null 		references	vendor	on	delete	cascade,
 	quantity_available	int					not null
 );
 

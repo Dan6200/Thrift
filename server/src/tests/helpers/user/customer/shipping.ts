@@ -1,7 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import { ShippingInfoSchemaDB } from "../../../../app-schema/customer/shipping";
-import testProcessRoute from "../../test-process-route";
+import {
+  testRouteWithAgent,
+  testRouteWithAgentAndData,
+  testRouteWithAgentAndParams,
+  testRouteWithAgentDataAndParams,
+} from "../../../../types-and-interfaces/test-routes";
+import testRoute from "../../test-route";
 
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes;
 
@@ -27,41 +33,41 @@ const routeParams = {
   statusCode: OK,
 };
 
-const testCreateShipping = testProcessRoute({
+const testCreateShipping = testRoute({
   ...routeParams,
   verb: "post",
   statusCode: CREATED,
   checks: checkId,
-});
+}) as testRouteWithAgentAndData;
 
-const testGetAllShipping = testProcessRoute({
+const testGetAllShipping = testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResultList,
-});
+}) as testRouteWithAgent;
 
-const testGetShipping = testProcessRoute({
+const testGetShipping = testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResult,
-});
+}) as testRouteWithAgentAndParams;
 
-const testUpdateShipping = testProcessRoute({
+const testUpdateShipping = testRoute({
   ...routeParams,
   verb: "patch",
-});
+}) as testRouteWithAgentDataAndParams;
 
-const testDeleteShipping = testProcessRoute({
+const testDeleteShipping = testRoute({
   ...routeParams,
   verb: "delete",
   statusCode: NO_CONTENT,
-});
+}) as testRouteWithAgentAndParams;
 
-const testGetNonExistentShipping = testProcessRoute({
+const testGetNonExistentShipping = testRoute({
   ...routeParams,
   verb: "get",
   statusCode: NOT_FOUND,
-});
+}) as testRouteWithAgentAndParams;
 
 export {
   testCreateShipping,

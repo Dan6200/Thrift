@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import { ShopSchemaDB } from "../../../../app-schema/vendor/shop";
-import testProcessRoute from "../../test-process-route";
+import testRoute from "../../test-route";
 
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes;
 
@@ -27,37 +27,37 @@ const routeParams = {
   statusCode: OK,
 };
 
-const testCreateShop = testProcessRoute({
+const testCreateShop = testRoute({
   ...routeParams,
   verb: "post",
   statusCode: CREATED,
   checks: checkId,
 });
 
-const testGetAllShop = testProcessRoute({
+const testGetAllShop = testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResultList,
 });
 
-const testGetShop = testProcessRoute({
+const testGetShop = testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResult,
 });
 
-const testUpdateShop = testProcessRoute({
+const testUpdateShop = testRoute({
   ...routeParams,
   verb: "put",
 });
 
-const testDeleteShop = testProcessRoute({
+const testDeleteShop = testRoute({
   ...routeParams,
   verb: "delete",
   statusCode: NO_CONTENT,
 });
 
-const testGetNonExistentShop = testProcessRoute({
+const testGetNonExistentShop = testRoute({
   ...routeParams,
   verb: "get",
   statusCode: NOT_FOUND,

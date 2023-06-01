@@ -27,19 +27,19 @@ dotenv.config();
 let app: Express = express();
 app.set("trust proxy", 1);
 app.use(cookieParser());
-app.use(
-  rateLimiter({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    standardHeaders: true,
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  })
-);
+// app.use(
+// rateLimiter({
+// windowMs: 15 * 60 * 1000,
+// max: 100,
+// standardHeaders: true,
+// legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+// })
+// );
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(xss());
-//app.use(morgan("dev"));
+app.use(morgan("dev"));
 // routes
 // public
 app.use("/api/v1/auth", authRouter);

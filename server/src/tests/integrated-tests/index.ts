@@ -40,9 +40,11 @@ import {
 } from "../accounts/user/customer-account/shipping-data";
 import {
   testCreateProduct,
+  testDeleteProduct,
   testGetAllProduct,
+  testGetNonExistentProduct,
   testGetProduct,
-} from "../helpers/user/vendor/product";
+} from "../helpers/user/vendor/products";
 import { productData } from "../accounts/user/vendor-account/product/data";
 // import {
 //   testCreateShop,
@@ -59,7 +61,6 @@ import { productData } from "../accounts/user/vendor-account/product/data";
 chai.use(chaiHttp).should();
 
 export default function (index: number): void {
-  // TODO: Break this up!
   before(async () => {
     await db.query("delete from user_account");
   });
@@ -114,23 +115,26 @@ export default function (index: number): void {
 
     it(`it should add shipping addresses for the customer then retrieve it`, () =>
       testCreateShipping(agent, shippingInfo).then((result) =>
-        testGetShipping(agent, null, result.address_id)
+        testGetShipping(agent, null, `/${result.address_id}`)
       ));
 
     const updatedShippingInfo = updatedShippingInformationList[index];
 
     it(`it should add a shipping addresses for the customer then update it`, () =>
       testCreateShipping(agent, shippingInfo).then((result) =>
-        testUpdateShipping(agent, updatedShippingInfo, result.address_id)
+        testUpdateShipping(agent, updatedShippingInfo, `/${result.address_id}`)
       ));
 
-    it(`it should add a shipping addresses for the customer then delete it,
-	   it should fail to retrieve the deleted shipping information`, () =>
-      testCreateShipping(agent, shippingInfo).then(async (result) => {
-        const { address_id: addressId } = result;
-        await testDeleteShipping(agent, null, addressId);
-        await testGetNonExistentShipping(agent, null, addressId);
-      }));
+    it(`it should add a shipping addresses for the customer then delete it`, async () => {
+      const { address_id } = await testCreateShipping(agent, shippingInfo);
+      testDeleteShipping(agent, null, `/${address_id}`);
+    });
+
+    it(`it should fail to retrieve the deleted shipping information`, async () => {
+      const { address_id } = await testCreateShipping(agent, shippingInfo);
+      testDeleteShipping(agent, null, `/${address_id}`);
+      testGetNonExistentShipping(agent, null, `/${address_id}`);
+    });
 
     it("it should delete the user's customer account", () =>
       testDeleteCustomer(agent));
@@ -150,7 +154,20 @@ export default function (index: number): void {
       testGetAllProduct(agent));
 
     it("it should retrieve a specific product a vendor has for sale", () =>
-      testGetProduct(agent));
+      testCreateProduct(agent, productData[index]).then(({ product_id }) =>
+        testGetProduct(agent, null, `/${product_id}`)
+      ));
+
+    it("it should delete a product a vendor has for sale", () =>
+      testCreateProduct(agent, productData[index]).then(({ product_id }) =>
+        testDeleteProduct(agent, null, `/${product_id}`)
+      ));
+
+    it("it should fail to retrieve a deleted product", async () => {
+      const { product_id } = await testCreateProduct(agent, productData[index]);
+      testDeleteProduct(agent, null, `/${product_id}`);
+      testGetNonExistentProduct(agent, null, `/${product_id}`);
+    });
 
     it("it should delete the user's vendor account", () =>
       testDeleteVendor(agent));

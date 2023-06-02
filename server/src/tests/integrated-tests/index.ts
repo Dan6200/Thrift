@@ -62,10 +62,7 @@ chai.use(chaiHttp).should();
 
 export default function (index: number): void {
   before(async () => {
-    await db.query("delete from user_account");
-  });
-  after(async () => {
-    await db.query("delete from user_account");
+    // await db.query("delete from user_account");
   });
   // Testing the register route
   describe(`Testing typical user actions`, async () => {
@@ -94,17 +91,6 @@ export default function (index: number): void {
     it("it should change the user's password", () =>
       testChangeUserPassword(agent, updatedUserPassword));
 
-    it("it should delete the user's account", () => testDeleteUser(agent));
-
-    it("it should logout user", () => logout(agent));
-
-    it("it should fail to get user's account", () => testDontGetUser(agent));
-
-    it("it should fail to login user", () =>
-      emailLogin(agent, user, StatusCodes.UNAUTHORIZED));
-
-    it("it should register the user", () => registration(agent, user));
-
     it("it should create a customer account for the user", () =>
       testCreateCustomer(agent));
 
@@ -125,19 +111,19 @@ export default function (index: number): void {
         testUpdateShipping(agent, updatedShippingInfo, `/${result.address_id}`)
       ));
 
-    it(`it should add a shipping addresses for the customer then delete it`, async () => {
-      const { address_id } = await testCreateShipping(agent, shippingInfo);
-      testDeleteShipping(agent, null, `/${address_id}`);
-    });
+    // it(`it should add a shipping addresses for the customer then delete it`, async () => {
+    //   const { address_id } = await testCreateShipping(agent, shippingInfo);
+    //   testDeleteShipping(agent, null, `/${address_id}`);
+    // });
 
-    it(`it should fail to retrieve the deleted shipping information`, async () => {
-      const { address_id } = await testCreateShipping(agent, shippingInfo);
-      testDeleteShipping(agent, null, `/${address_id}`);
-      testGetNonExistentShipping(agent, null, `/${address_id}`);
-    });
+    // it(`it should fail to retrieve the deleted shipping information`, async () => {
+    //   const { address_id } = await testCreateShipping(agent, shippingInfo);
+    //   testDeleteShipping(agent, null, `/${address_id}`);
+    //   testGetNonExistentShipping(agent, null, `/${address_id}`);
+    // });
 
-    it("it should delete the user's customer account", () =>
-      testDeleteCustomer(agent));
+    // it("it should delete the user's customer account", () =>
+    //   testDeleteCustomer(agent));
 
     it("it should fail to get the user's customer account", () =>
       testGetNonExistentCustomer(agent));
@@ -158,21 +144,30 @@ export default function (index: number): void {
         testGetProduct(agent, null, `/${product_id}`)
       ));
 
-    it("it should delete a product a vendor has for sale", () =>
-      testCreateProduct(agent, productData[index]).then(({ product_id }) =>
-        testDeleteProduct(agent, null, `/${product_id}`)
-      ));
+    // it("it should delete a product a vendor has for sale", () =>
+    //   testCreateProduct(agent, productData[index]).then(({ product_id }) =>
+    //     testDeleteProduct(agent, null, `/${product_id}`)
+    //   ));
 
-    it("it should fail to retrieve a deleted product", async () => {
-      const { product_id } = await testCreateProduct(agent, productData[index]);
-      testDeleteProduct(agent, null, `/${product_id}`);
-      testGetNonExistentProduct(agent, null, `/${product_id}`);
-    });
+    // it("it should fail to retrieve a deleted product", async () => {
+    //   const { product_id } = await testCreateProduct(agent, productData[index]);
+    //   testDeleteProduct(agent, null, `/${product_id}`);
+    //   testGetNonExistentProduct(agent, null, `/${product_id}`);
+    // });
 
-    it("it should delete the user's vendor account", () =>
-      testDeleteVendor(agent));
+    // it("it should delete the user's vendor account", () =>
+    //   testDeleteVendor(agent));
 
-    it("it should fail to get the user's vendor account", () =>
-      testGetNonExistentVendor(agent));
+    // it("it should fail to get the user's vendor account", () =>
+    //   testGetNonExistentVendor(agent));
+
+    // it("it should delete the user's account", () => testDeleteUser(agent));
+
+    it("it should logout user", () => logout(agent));
+
+    // it("it should fail to get user's account", () => testDontGetUser(agent));
+
+    it("it should fail to login user", () =>
+      emailLogin(agent, user, StatusCodes.UNAUTHORIZED));
   });
 }

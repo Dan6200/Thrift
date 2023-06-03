@@ -2,12 +2,14 @@
 import { Pool, QueryResult } from "pg";
 
 const pool = new Pool({
-  user: process.env.LPGUSER,
-  host: process.env.LPGHOST,
+  // user: process.env.LPGUSER,
+  user: process.env.PGUSER,
+  // host: process.env.LPGHOST,
+  host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: parseInt(process.env.PGPORT as string),
-  // ssl: true,
+  ssl: true,
 });
 
 export default {
@@ -23,23 +25,19 @@ export default {
     setTimeout(function () {
       this.lastQuery = arguments;
     });
-    /*
-		 * uncomment to debug query
-		console.log('query', {
-			text,
-			params,
-		});
-		 */
-    const res = await pool.query(text, params);
-    /*
-		const duration = Date.now() - start;
-		console.log('\nexecuted query', {
-			text,
-			duration,
-			rows: res.rowCount,
-			params,
-		});
-				*/
+    let res: any;
+    try {
+      res = await pool.query(text, params);
+    } catch (err) {
+      console.error(err);
+    }
+    // const duration = Date.now() - start;
+    // console.log("\nexecuted query", {
+    //   text,
+    //   params,
+    //   duration,
+    //   rows: res.rowCount,
+    // });
     return res;
   },
 

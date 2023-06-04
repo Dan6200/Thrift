@@ -1,5 +1,6 @@
 // cspell:disable
 import { Pool, QueryResult } from "pg";
+import retryQuery from "../controllers/helpers/retryQuery";
 
 const pool = new Pool({
   // user: process.env.LPGUSER,
@@ -11,34 +12,6 @@ const pool = new Pool({
   port: parseInt(process.env.PGPORT as string),
   ssl: true,
 });
-
-async function retryQuery(
-  retries: number,
-  ms: number,
-  text: string,
-  params?: Array<any>
-): Promise<any> {
-  let res: any;
-  try {
-    if (!retries) {
-      console.log(`db connection failed...quitting`);
-      return;
-    }
-    debugger;
-    res = await pool.query(text, params);
-    return res;
-  } catch (err) {
-    console.error(err);
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    }).then(() => {
-      if (retries > 1)
-        console.log(`db connection failed...retrying after ${ms}ms`);
-      res = retryQuery(retries - 1, ms, text, params);
-      return res;
-    });
-  }
-}
 
 export default {
   async end(): Promise<void> {
@@ -53,10 +26,16 @@ export default {
     setTimeout(function () {
       this.lastQuery = arguments;
     });
+    // allow a retry if DB fails to connect
     let res: any;
     const retryCount = 3;
     const delay = 500;
-    res = retryQuery(retryCount, delay, text, params);
+    res = await retryQuery(
+      pool.query.bind(pool),
+      [text, params],
+      retryCount,
+      delay
+    );
     const duration = Date.now() - start;
     console.log("\nexecuted query", {
       text,

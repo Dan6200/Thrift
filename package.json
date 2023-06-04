@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server/built/server.js",
+  "type": "module",
   "private": true,
   "workspaces": [
     "server",

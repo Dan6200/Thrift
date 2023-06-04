@@ -12,6 +12,34 @@ const pool = new Pool({
   ssl: true,
 });
 
+async function retryQuery(
+  retries: number,
+  ms: number,
+  text: string,
+  params?: Array<any>
+): Promise<any> {
+  let res: any;
+  try {
+    if (!retries) {
+      console.log(`db connection failed...quitting`);
+      return;
+    }
+    debugger;
+    res = await pool.query(text, params);
+    return res;
+  } catch (err) {
+    console.error(err);
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    }).then(() => {
+      if (retries > 1)
+        console.log(`db connection failed...retrying after ${ms}ms`);
+      res = retryQuery(retries - 1, ms, text, params);
+      return res;
+    });
+  }
+}
+
 export default {
   async end(): Promise<void> {
     await pool.end();
@@ -21,23 +49,21 @@ export default {
 
   // Copied from official docs, slightly modified
   async query(text: string, params?: Array<any>): Promise<QueryResult<any>> {
-    // const start = Date.now();
+    const start = Date.now();
     setTimeout(function () {
       this.lastQuery = arguments;
     });
     let res: any;
-    try {
-      res = await pool.query(text, params);
-    } catch (err) {
-      console.error(err);
-    }
-    // const duration = Date.now() - start;
-    // console.log("\nexecuted query", {
-    //   text,
-    //   params,
-    //   duration,
-    //   rows: res.rowCount,
-    // });
+    const retryCount = 3;
+    const delay = 500;
+    res = retryQuery(retryCount, delay, text, params);
+    const duration = Date.now() - start;
+    console.log("\nexecuted query", {
+      text,
+      params,
+      duration,
+      rows: res.rowCount,
+    });
     return res;
   },
 

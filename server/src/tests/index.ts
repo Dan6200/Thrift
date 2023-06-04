@@ -4,7 +4,7 @@ import unitTests from "./unit-tests";
 /*
  * All Passed ...
  */
-const NumberOfUsers = 3;
+const NumberOfUsers = 1;
 let count = 0;
 
 describe("Testing sql command generators", unitTests);

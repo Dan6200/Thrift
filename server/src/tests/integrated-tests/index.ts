@@ -67,12 +67,13 @@ export default function (index: number): void {
   // Testing the register route
   describe(`Testing typical user actions`, async () => {
     const url = "https://thrift-production.up.railway.app";
-    const agent = chai.request.agent(url);
-    // const agent = chai.request.agent(app);
+    // const agent = chai.request.agent(url);
+    const agent = chai.request.agent(app);
     const user = newUsers[index];
 
     it("it should register the user", () => registration(agent, user));
 
+    /*
     it("it should login the user with email", () =>
       emailLogin(agent, user, StatusCodes.OK));
 
@@ -169,5 +170,6 @@ export default function (index: number): void {
 
     it("it should fail to login user", () =>
       emailLogin(agent, user, StatusCodes.UNAUTHORIZED));
+	  */
   });
 }

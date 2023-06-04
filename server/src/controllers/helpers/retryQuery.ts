@@ -13,7 +13,6 @@ export default async function retryQuery(
     res = query(...args);
     return res;
   } catch (err) {
-    debugger;
     console.error(err);
     return new Promise((resolve) => {
       setTimeout(resolve, ms);

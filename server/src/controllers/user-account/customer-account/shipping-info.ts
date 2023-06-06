@@ -6,15 +6,14 @@ import { QueryResult } from "pg";
 import {
   ShippingInfoSchemaReq,
   ShippingInfoSchemaDB,
-} from "../../../app-schema/customer/shipping";
-import db from "../../../db";
-import { BadRequestError } from "../../../errors";
+} from "../../../app-schema/customer/shipping.js";
+import db from "../../../db/index.js";
+import { BadRequestError } from "../../../errors/index.js";
 import {
   RequestWithPayload,
   RequestUserPayload,
-} from "../../../types-and-interfaces/request";
-import genSqlInsertCommands from "../../helpers/generate-sql-commands/insert";
-import genSqlUpdateCommands from "../../helpers/generate-sql-commands/update";
+} from "../../../types-and-interfaces/request.js";
+import { Insert, Update } from "../../helpers/generate-sql-commands/index.js";
 
 const selectShippingInfo = `
 select 
@@ -41,7 +40,7 @@ const createShippingInfo = async (
     );
   const shippingData = validData.value;
   let dbQuery: QueryResult = await db.query(
-    `${genSqlInsertCommands("shipping_info", [
+    `${Insert("shipping_info", [
       "customer_id",
       ...Object.keys(shippingData),
     ])} returning address_id`,
@@ -96,10 +95,10 @@ const updateShippingInfo = async (
     shippingData = request.body;
   let fields = Object.keys(shippingData),
     data = Object.values(shippingData);
-  await db.query(
-    `${genSqlUpdateCommands("shipping_info", "address_id", fields)}`,
-    [addressId, ...data]
-  );
+  await db.query(`${Update("shipping_info", "address_id", fields)}`, [
+    addressId,
+    ...data,
+  ]);
   const shippingInfo = (
     await db.query(selectShippingInfo + " where address_id=$1", [addressId])
   ).rows[0];

@@ -1,13 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
-import { ProductSchemaDB } from "../../../../app-schema/products";
-import testRoute from "../../test-route";
+import { ProductSchemaDB } from "../../../../app-schema/products.js";
 import {
-  testRouteWithAgent,
   testRouteWithAgentAndData,
+  testRouteWithAgent,
   testRouteWithAgentAndParams,
   testRouteWithAgentDataAndParams,
-} from "../../../../types-and-interfaces/test-routes";
+} from "../../../../types-and-interfaces/test-routes.js";
+import testRoute from "../../test-route.js";
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes;
 

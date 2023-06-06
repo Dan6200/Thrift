@@ -4,14 +4,12 @@ import { StatusCodes } from "http-status-codes";
 // import validatePhoneNumber from 'security/validate-phone';
 // import validateEmail from 'security/validate-email';
 import { QueryResult } from "pg";
-import path from "path";
-import { UserDataSchemaRequest } from "../app-schema/users";
-import db from "../db";
-import { BadRequestError, UnauthenticatedError } from "../errors";
-import { hashPassword, validatePassword } from "../security/password";
-import { createToken } from "../security/create-token";
-import genSqlInsertCommand from "./helpers/generate-sql-commands/insert";
-const filename = path.basename(__filename);
+import { UserDataSchemaRequest } from "../app-schema/users.js";
+import db from "../db/index.js";
+import { BadRequestError, UnauthenticatedError } from "../errors/index.js";
+import { hashPassword, validatePassword } from "../security/password.js";
+import { createToken } from "../security/create-token.js";
+import { Insert } from "./helpers/generate-sql-commands/index.js";
 // TODO: IP address
 // https://github.com/neekware/fullerstack/tree/main/libs/nax-ipware
 
@@ -52,10 +50,7 @@ const register = async (request: Request, response: Response) => {
   userData.password = await hashPassword(password);
   let dbQuery: QueryResult = await db.query(
     `
-    ${genSqlInsertCommand(
-      "user_account",
-      Object.keys(userData)
-    )} returning user_id;`,
+    ${Insert("user_account", Object.keys(userData))} returning user_id;`,
     Object.values(userData)
   );
   let { rowCount }: { rowCount: number } = dbQuery;

@@ -1,5 +1,5 @@
-import integratedTests from "./integrated-tests";
-import unitTests from "./unit-tests";
+import integratedTests from "./integrated-tests/index.js";
+import unitTests from "./unit-tests/index.js";
 
 /*
  * All Passed ...

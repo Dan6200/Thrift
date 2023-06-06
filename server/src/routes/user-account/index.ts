@@ -1,16 +1,16 @@
-import express from 'express';
+import express from "express";
 import {
-	getUserAccount,
-	deleteUserAccount,
-	updateUserAccount,
-	updateUserPassword,
-} from '../../controllers/user-account';
+  deleteUserAccount,
+  getUserAccount,
+  updateUserAccount,
+  updateUserPassword,
+} from "../../controllers/user-account/index.js";
 const router = express.Router();
 
 router
-	.route('/')
-	.get(getUserAccount)
-	.delete(deleteUserAccount)
-	.patch(updateUserAccount);
-router.route('/password').patch(updateUserPassword);
+  .route("/")
+  .get(getUserAccount)
+  .delete(deleteUserAccount)
+  .patch(updateUserAccount);
+router.route("/password").patch(updateUserPassword);
 export default router;

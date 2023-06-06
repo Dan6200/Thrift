@@ -2,17 +2,17 @@ import { Response } from "express";
 import assert from "node:assert/strict";
 import joi from "joi";
 import { StatusCodes } from "http-status-codes";
+import { UserDataSchemaDB } from "../../app-schema/users.js";
+import db from "../../db/index.js";
+import { BadRequestError, UnauthenticatedError } from "../../errors/index.js";
+import { hashPassword } from "../../security/password.js";
 import {
-  RequestUserPayload,
   RequestWithPayload,
-} from "../../types-and-interfaces/request";
-import { UserDataSchemaDB } from "../../app-schema/users";
-import db from "../../db";
-import { BadRequestError, UnauthenticatedError } from "../../errors";
-import { hashPassword } from "../../security/password";
-import { UserData } from "../../types-and-interfaces/user";
-import genSqlUpdateCommands from "../helpers/generate-sql-commands/update";
-import validateUserPassword from "../helpers/validate-user-password";
+  RequestUserPayload,
+} from "../../types-and-interfaces/request.js";
+import { UserData } from "../../types-and-interfaces/user.js";
+import validateUserPassword from "../helpers/validate-user-password.js";
+import { Update } from "../helpers/generate-sql-commands/index.js";
 
 const userDataFields = [
   "first_name",
@@ -58,7 +58,7 @@ let updateUserAccount = async (
     // Takes the database name, the column name of the first item of the array
     // returns a list of columns from the database table
     // unit test this function
-    `${genSqlUpdateCommands(
+    `${Update(
       "user_account",
       "user_id",
       fields
@@ -96,7 +96,7 @@ let updateUserPassword = async (
   await db.query(
     // Generates A sql update command.
     // Takes the database name, the column name of the first item of the array
-    `${genSqlUpdateCommands("user_account", "user_id", fields)}`,
+    `${Update("user_account", "user_id", fields)}`,
     [userId, ...data]
   );
   response.status(StatusCodes.NO_CONTENT).end();

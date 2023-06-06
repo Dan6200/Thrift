@@ -13,7 +13,7 @@
   "scripts": {
     "start": "node server/built/server.js",
     "test": "ts-mocha -r dotenv/config --config server/src/tests/.mocharc.json -p server/src/tsconfig.json server/src/tests/*.ts",
-    "dev": "nodemon server/src/server.ts",
+    "dev": "nodemon --esm server/src/server.ts",
     "build": "tsc -p server/src/tsconfig.json"
   },
   "license": "ISC",
@@ -55,6 +55,7 @@
     "mocha": "^10.X.X",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0",
     "pg": "^8.8.0",
     "typescript": "^5.0.4",
     "xss-clean": "^0.1.1"

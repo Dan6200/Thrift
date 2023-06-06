@@ -2,12 +2,12 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
-import testRoute from "../test-route";
-import { UserDataSchemaDB } from "../../../app-schema/users";
+import { UserDataSchemaDB } from "../../../app-schema/users.js";
 import {
   testRouteWithAgent,
   testRouteWithAgentAndData,
-} from "../../../types-and-interfaces/test-routes";
+} from "../../../types-and-interfaces/test-routes.js";
+import testRoute from "../test-route.js";
 
 chai.use(chaiHttp).should();
 

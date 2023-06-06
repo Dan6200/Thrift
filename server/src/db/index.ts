@@ -1,6 +1,9 @@
 // cspell:disable
-import { Pool, QueryResult } from "pg";
-import retryQuery from "../controllers/helpers/retryQuery";
+import nodePostgres, { QueryResult } from "pg";
+const { Pool } = nodePostgres;
+import retryQuery from "../controllers/helpers/retryQuery.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const pool = new Pool({
   // user: process.env.LPGUSER,

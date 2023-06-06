@@ -1,7 +1,13 @@
-import path from "path";
 //cspell:disable
-import { v2 as cloudinary } from "cloudinary";
-import retryQuery from "../../controllers/helpers/retryQuery";
+import dotenv from "dotenv";
+import {
+  AdminAndResourceOptions,
+  UploadApiOptions,
+  UploadApiResponse,
+  v2 as cloudinary,
+} from "cloudinary";
+import retryQuery from "../../controllers/helpers/retryQuery.js";
+dotenv.config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -14,10 +20,10 @@ export default {
   /////////////////////////////////////
   // Uploads an image file
   /////////////////////////////////////
-  async uploadImage(imagePath: string) {
+  async uploadImage(imagePath: string): Promise<UploadApiResponse> | never {
     // Use the uploaded file's name as the asset's public ID and
     // allow overwriting the asset with new versions
-    const options = {
+    const options: UploadApiOptions = {
       use_filename: true,
       unique_filename: false,
       overwrite: true,
@@ -35,14 +41,15 @@ export default {
       return result.public_id;
     } catch (error) {
       console.error(error);
+      throw error;
     }
   },
   /////////////////////////////////////
   // Gets details of an uploaded image
   /////////////////////////////////////
-  async getAssetInfo(publicId: string) {
+  async getAssetInfo(publicId: string): Promise<any> {
     // Return colors in the response
-    const options = {
+    const options: AdminAndResourceOptions = {
       colors: true,
     };
 

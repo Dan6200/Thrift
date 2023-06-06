@@ -1,10 +1,12 @@
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import { Response, NextFunction } from "express";
-import { UnauthenticatedError } from "../errors";
+import UnauthenticatedError from "../errors/unauthenticated.js";
 import {
-  RequestUserPayload,
   RequestWithPayload,
-} from "../types-and-interfaces/request";
+  RequestUserPayload,
+} from "../types-and-interfaces/request.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 export default async (
   request: RequestWithPayload,

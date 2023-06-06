@@ -1,14 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
-import { ShippingInfoSchemaDB } from "../../../../app-schema/customer/shipping";
+import { ShippingInfoSchemaDB } from "../../../../app-schema/customer/shipping.js";
 import {
-  testRouteWithAgent,
   testRouteWithAgentAndData,
+  testRouteWithAgent,
   testRouteWithAgentAndParams,
   testRouteWithAgentDataAndParams,
-} from "../../../../types-and-interfaces/test-routes";
-import testRoute from "../../test-route";
-
+} from "../../../../types-and-interfaces/test-routes.js";
+import testRoute from "../../test-route.js";
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes;
 
 let checkId = (data: any) => {

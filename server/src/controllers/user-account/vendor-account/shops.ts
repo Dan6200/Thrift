@@ -2,14 +2,17 @@ import { Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import assert from "node:assert/strict";
 import Joi from "joi";
-import { ShopSchemaReq, ShopSchemaDB } from "../../../app-schema/vendor/shop";
-import db from "../../../db";
-import { BadRequestError } from "../../../errors";
+import {
+  ShopSchemaReq,
+  ShopSchemaDB,
+} from "../../../app-schema/vendor/shop.js";
+import db from "../../../db/index.js";
+import { BadRequestError } from "../../../errors/index.js";
 import {
   RequestWithPayload,
   RequestUserPayload,
-} from "../../../types-and-interfaces/request";
-import genSqlUpdateCommands from "../../helpers/generate-sql-commands/update";
+} from "../../../types-and-interfaces/request.js";
+import { Update } from "../../helpers/generate-sql-commands/index.js";
 
 const createShop = async (request: RequestWithPayload, response: Response) => {
   const { userId: vendorId }: RequestUserPayload = request.user;
@@ -80,10 +83,7 @@ const updateShop = async (request: RequestWithPayload, response: Response) => {
   const shopData = validData.value;
   let fields = Object.keys(shopData),
     data = Object.values(shopData);
-  await db.query(`${genSqlUpdateCommands("shop", "shop_id", fields)}`, [
-    shopId,
-    ...data,
-  ]);
+  await db.query(`${Update("shop", "shop_id", fields)}`, [shopId, ...data]);
   const shop = (await db.query(`select * from shop where shop_id=$1`, [shopId]))
     .rows[0];
   Joi.assert(shop, ShopSchemaDB);

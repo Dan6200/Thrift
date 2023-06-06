@@ -1,8 +1,8 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
 import { StatusCodes } from "http-status-codes";
-import { testRouteWithAgent } from "../../../../types-and-interfaces/test-routes";
-import testRoute from "../../test-route";
+import { testRouteWithAgent } from "../../../../types-and-interfaces/test-routes.js";
+import testRoute from "../../test-route.js";
 
 chai.use(chaiHttp).should();
 

@@ -5,7 +5,7 @@ import {
   getShippingInfo,
   updateShippingInfo,
   deleteShippingInfo,
-} from "../../../controllers/user-account/customer-account/shipping-info";
+} from "../../../controllers/user-account/customer-account/shipping-info.js";
 const router = express.Router();
 
 router.route("/").post(createShippingInfo).get(getAllShippingInfo);

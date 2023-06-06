@@ -1,15 +1,15 @@
-import express from 'express';
+import express from "express";
 import {
-	createShop,
-	getAllShops,
-	getShop,
-	updateShop,
-	deleteShop,
-} from '../../../../controllers/user-account/vendor-account/shops';
+  createShop,
+  getAllShops,
+  getShop,
+  updateShop,
+  deleteShop,
+} from "../../../../controllers/user-account/vendor-account/shops.js";
 const router = express.Router();
 
-router.route('/').post(createShop).get(getAllShops);
+router.route("/").post(createShop).get(getAllShops);
 
-router.route('/:shopId').get(getShop).put(updateShop).delete(deleteShop);
+router.route("/:shopId").get(getShop).put(updateShop).delete(deleteShop);
 
 export default router;

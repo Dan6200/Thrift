@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
-import db from "../../../db";
-import processRoute from "../../helpers/process-route";
+import db from "../../../db/index.js";
+import processRoute from "../../helpers/process-route.js";
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
 
 type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND;

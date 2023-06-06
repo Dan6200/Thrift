@@ -2,61 +2,10 @@
 import "express-async-errors";
 import chai from "chai";
 import chaiHttp from "chai-http";
-import db from "../../db";
-import { emailLogin, logout, phoneLogin, registration } from "../helpers/auth";
-import {
-  testChangeUserPassword,
-  testDeleteUser,
-  testDontGetUser,
-  testGetUser,
-  testUpdateUser,
-} from "../helpers/user";
-import { newUsers, usersInfoUpdated, usersPasswordUpdated } from "./user-data";
-import { StatusCodes } from "http-status-codes";
-import app from "../../app";
-import {
-  testCreateCustomer,
-  testDeleteCustomer,
-  testGetCustomer,
-  testGetNonExistentCustomer,
-} from "../helpers/user/customer";
-import {
-  testCreateVendor,
-  testGetVendor,
-  testDeleteVendor,
-  testGetNonExistentVendor,
-} from "../helpers/user/vendor";
-import {
-  testCreateShipping,
-  testDeleteShipping,
-  testGetAllShipping,
-  testGetNonExistentShipping,
-  testGetShipping,
-  testUpdateShipping,
-} from "../helpers/user/customer/shipping";
-import {
-  updatedShippingInformationList,
-  shippingInformationList,
-} from "../accounts/user/customer-account/shipping-data";
-import {
-  testCreateProduct,
-  testDeleteProduct,
-  testGetAllProduct,
-  testGetNonExistentProduct,
-  testGetProduct,
-} from "../helpers/user/vendor/products";
-import { productData } from "../accounts/user/vendor-account/product/data";
-// import {
-//   testCreateShop,
-//   testGetShop,
-//   testUpdateShop,
-//   testDeleteShop,
-//   testGetNonExistentShop,
-// } from "../helpers/user/vendor/shop";
-// import {
-//   shopInfoList,
-//   updatedShopInfoList,
-// } from "../accounts/user/vendor-account/shop/data";
+import app from "../../app.js";
+import db from "../../db/index.js";
+import { registration } from "../helpers/auth/index.js";
+import { newUsers } from "./user-data.js";
 
 chai.use(chaiHttp).should();
 

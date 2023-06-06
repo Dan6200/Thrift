@@ -3,11 +3,12 @@
     "outDir": "../built",
     "target": "ESNext",
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "noEmitOnError": false,
-    "sourceMap": true
+    "sourceMap": true,
+    "module": "ESNext"
   },
   "include": ["."]
 }

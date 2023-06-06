@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
-import { ShopSchemaDB } from "../../../../app-schema/vendor/shop";
-import testRoute from "../../test-route";
+import { ShopSchemaDB } from "../../../../app-schema/vendor/shop.js";
+import testRoute from "../../test-route.js";
 
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes;
 

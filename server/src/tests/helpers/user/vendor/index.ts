@@ -1,7 +1,7 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
 import { StatusCodes } from "http-status-codes";
-import testRoute from "../../test-route";
+import testRoute from "../../test-route.js";
 chai.use(chaiHttp).should();
 
 const routeParams = {

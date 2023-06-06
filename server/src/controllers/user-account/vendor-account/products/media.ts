@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import db from "../../../../db";
+import db from "../../../../db/index.js";
 
 // TODO: move to cloudinary
 const uploadProductMedia = async (req: any, res: any) => {

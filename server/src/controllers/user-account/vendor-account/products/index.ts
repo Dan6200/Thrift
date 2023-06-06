@@ -1,10 +1,12 @@
 import { StatusCodes } from "http-status-codes";
-import { ProductSchemaReq } from "../../../../app-schema/products";
-import db from "../../../../db";
-import { BadRequestError } from "../../../../errors";
-import genSqlUpdateCommands from "../../../helpers/generate-sql-commands/update";
-import processRoute from "../../../helpers/process-route";
-import genSqlInsertCommand from "../../../helpers/generate-sql-commands/insert";
+import { ProductSchemaReq } from "../../../../app-schema/products.js";
+import db from "../../../../db/index.js";
+import { BadRequestError } from "../../../../errors/index.js";
+import {
+  Insert,
+  Update,
+} from "../../../helpers/generate-sql-commands/index.js";
+import processRoute from "../../../helpers/process-route.js";
 
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
 type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND;
@@ -17,7 +19,7 @@ type ResponseData = {
 const createQuery = [
   async ({ reqData, userId }) => {
     return await db.query(
-      `${genSqlInsertCommand("products", [
+      `${Insert("products", [
         ...Object.keys(reqData),
         "vendor_id",
       ])} returning product_id`,
@@ -40,11 +42,7 @@ const readQuery = [
 const updateQuery = [
   async ({ params, reqData }) => {
     let { productId } = params,
-      updateCommand = genSqlUpdateCommands(
-        "products",
-        "product_id",
-        Object.keys(reqData)
-      );
+      updateCommand = Update("products", "product_id", Object.keys(reqData));
     return await db.query(updateCommand, [
       productId,
       ...Object.values(reqData),

@@ -10,17 +10,18 @@ import xss from "xss-clean";
 import rateLimiter from "express-rate-limit";
 import cookieParser from "cookie-parser";
 // routers
-import authRouter from "./routes/auth";
-import userAccountRouter from "./routes/user-account";
-import customerAccountRouter from "./routes/user-account/customer-account";
-import shippingInfoRouter from "./routes/user-account/customer-account/shipping-info";
-import vendorAccountRouter from "./routes/user-account/vendor-account";
-import shopRouter from "./routes/user-account/vendor-account/shops";
-import productsRouter from "./routes/user-account/vendor-account/products";
+import authRouter from "./routes/auth.js";
+import userAccountRouter from "./routes/user-account/index.js";
+import customerAccountRouter from "./routes/user-account/customer-account/index.js";
+import shippingInfoRouter from "./routes/user-account/customer-account/shipping-info.js";
+import vendorAccountRouter from "./routes/user-account/vendor-account/index.js";
+import shopRouter from "./routes/user-account/vendor-account/shops/index.js";
+import productsRouter from "./routes/user-account/vendor-account/products.js";
 // middlewares
-import errorHandlerMiddleware from "./middleware/error-handler";
-import authenticateUser from "./middleware/authentication";
-import notFound from "./middleware/not-found";
+import errorHandlerMiddleware from "./middleware/error-handler.js";
+import authenticateUser from "./middleware/authentication.js";
+import notFound from "./middleware/not-found.js";
+import path from "path";
 dotenv.config();
 
 ////////////// Middlewares //////////////

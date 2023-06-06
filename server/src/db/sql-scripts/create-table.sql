@@ -76,7 +76,7 @@ create table if not exists products (
 drop table if exists flagship_product cascade;
 
 create table if not exists flagship_product (
-	product_id			bigint			unique			not null		references	product		on	delete	cascade,
+	product_id			bigint			unique			not null		references	products		on	delete	cascade,
 );
 */
 
@@ -84,7 +84,7 @@ drop table if exists product_media cascade;
 
 -- TODO: will move to cloudinary
 create table if not exists product_media (
-	product_id					bigint				primary key		references	product	on	delete	cascade,
+	product_id					bigint				primary key		references	products	on	delete	cascade,
 	filename 					varchar 			not null,
 	filepath 					varchar 			not null,
 	filesize 					int,
@@ -108,7 +108,7 @@ drop table if exists shopping_cart_item cascade;
 create table if not exists shopping_cart_item (
 	item_id					bigserial			primary	key,
 	cart_id					bigint				not null		references	shopping_cart	on 	delete	cascade,
-	product_id				bigint				not null		references	product		on delete	cascade,
+	product_id				bigint				not null		references	products		on delete	cascade,
 	product_quantity		int				not null		check (product_quantity > 0)
 );
 
@@ -127,7 +127,7 @@ drop table if exists transaction_item cascade;
 
 create table if not exists transaction_item (
 	item_id					bigserial		primary	key,
-	product_id				bigint			not null		references	product		on delete	cascade,
+	product_id				bigint			not null		references	products		on delete	cascade,
 	transaction_id			bigint			not null		references	transaction on delete cascade,
 	product_quantity		int				not null		default	1	check (product_quantity > 0)
 );
@@ -142,7 +142,7 @@ create table if not exists reversed_transaction (
 drop table if exists product_review cascade;
 
 create table if not exists product_review (
-	product_id				bigint				primary key references	product		on	delete	cascade,
+	product_id				bigint				primary key references	products		on	delete	cascade,
 	transaction_id			bigint				not null	references	transaction	on	delete	cascade,
 	rating					numeric(3,2)		not null,
 	customer_id				bigint				not	null	references	customer	on	delete	cascade,

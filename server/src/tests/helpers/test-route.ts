@@ -1,4 +1,4 @@
-import { testRouteParams } from "../../types-and-interfaces/test-routes";
+import { testRouteParams } from "../../types-and-interfaces/test-routes.js";
 
 export default function ({ verb, path, statusCode, checks }: testRouteParams) {
   return async function (

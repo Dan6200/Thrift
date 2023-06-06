@@ -1,7 +1,9 @@
 // cspell:disable
-import genSqlInsertCommand from "../../controllers/helpers/generate-sql-commands/insert";
-import genSqlUpdateCommand from "../../controllers/helpers/generate-sql-commands/update";
 import chai from "chai";
+import {
+  Insert,
+  Update,
+} from "../../controllers/helpers/generate-sql-commands/index.js";
 
 chai.should();
 
@@ -23,7 +25,7 @@ where my_id = $1`;
 
 export default () => {
   it("it should generate sql statements given the inputs", () =>
-    genSqlInsertCommand("my_table", [
+    Insert("my_table", [
       "first_name",
       "last_name",
       "address",
@@ -33,7 +35,7 @@ export default () => {
     ]).should.equal(SQLINSERT));
 
   it("it should generate sql statements given the inputs", () =>
-    genSqlUpdateCommand("my_table", "my_id", [
+    Update("my_table", "my_id", [
       "first_name",
       "address",
       "age",

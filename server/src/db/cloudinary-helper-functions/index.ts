@@ -18,33 +18,6 @@ cloudinary.config({
 
 export default {
   /////////////////////////////////////
-  // Uploads an image file
-  /////////////////////////////////////
-  async uploadImage(imagePath: string): Promise<UploadApiResponse> | never {
-    // Use the uploaded file's name as the asset's public ID and
-    // allow overwriting the asset with new versions
-    const options: UploadApiOptions = {
-      use_filename: true,
-      unique_filename: false,
-      overwrite: true,
-    };
-
-    try {
-      // Upload the image, retry if fails
-      const result = await retryQuery(
-        cloudinary.uploader.upload.bind(cloudinary.uploader),
-        [imagePath, options],
-        3,
-        500
-      );
-      console.log(result);
-      return result.public_id;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  },
-  /////////////////////////////////////
   // Gets details of an uploaded image
   /////////////////////////////////////
   async getAssetInfo(publicId: string): Promise<any> {

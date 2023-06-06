@@ -1,4 +1,7 @@
 // cspell:disable
+///////////////////////////////////////////////////
+// Uploads an image file to cloudinary using multer
+///////////////////////////////////////////////////
 import { CloudinaryStorage, Options } from "multer-storage-cloudinary";
 import dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
@@ -19,6 +22,6 @@ export default new CloudinaryStorage({
     unique_filename: true,
     overwrite: true,
     public_id: (_req, file: Express.Multer.File) =>
-      `${file.fieldname}-${Math.floor(Math.random() * 1e9)}`,
+      `${file.fieldname}-${Math.trunc(Math.random() * 1e9)}`,
   },
 } as Options);

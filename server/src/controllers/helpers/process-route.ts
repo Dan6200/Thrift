@@ -44,6 +44,7 @@ export default (
         params: request.params,
         reqData,
       });
+      console.log(result.rows);
       if (result && validateResult) {
         // validateBody returns error status code and message if data is invalid
         ({ status, data } = validateResult(result, responseData.status));

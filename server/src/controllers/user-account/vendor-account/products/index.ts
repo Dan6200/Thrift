@@ -30,7 +30,7 @@ const createQuery = [
 
 const readAllQuery = [
   async ({ params }) => {
-    await db.query(`select * from products`);
+    return await db.query(`select * from products`);
   },
 ];
 
@@ -72,11 +72,23 @@ let validateBody = (data: object): object => {
   return validData.value;
 };
 
+let validateListResult = (result: any, status: Status): ResponseData => {
+  if (result.rowCount === 0)
+    return {
+      status: 404,
+      data: { msg: "No products found. Please add a product for sale" },
+    };
+  return {
+    status,
+    data: result.rows,
+  };
+};
+
 let validateResult = (result: any, status: Status): ResponseData => {
   if (result.rowCount === 0)
     return {
       status: 404,
-      data: { msg: "Route does not exit" },
+      data: { msg: "Product not found" },
     };
   return {
     status,
@@ -95,7 +107,7 @@ let getAllProducts = processRoute(
   readAllQuery,
   { status: OK },
   undefined,
-  validateResult
+  validateListResult
 );
 
 let getProduct = processRoute(

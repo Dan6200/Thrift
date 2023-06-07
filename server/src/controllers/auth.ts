@@ -70,6 +70,7 @@ const login = async (request: Request, response: Response) => {
   let email: string, phone: string, password: string;
   email = phone = password = "";
   let token = request.cookies.token;
+  console.log(request.body);
   if (!token) {
     ({ email, phone, password } = request.body);
     if (!email && !phone) {

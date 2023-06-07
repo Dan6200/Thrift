@@ -1,0 +1,65 @@
+#cspell:disable
+openapi: 3.1.0
+info:
+  title: Thrift eCommerce API
+  description: |
+    This API allows users to buy a variety of products from different vendors as well as
+    selling their own products as a vendor.
+  version: 0.0.1
+paths:
+  /api/v1/auth/register:
+    post:
+      summary: Register an account
+      description: Creates an account for the user and authenticates the new user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              property:
+      responses:
+        "201":
+          description: "CREATED"
+          content:
+            application/json:
+              schema:
+                type: object
+                property:
+                  token:
+                    type: string
+                    description:
+                      unique token string used to authenticate the user
+                      expires within 30 minutes
+  /api/v1/auth/login:
+    post: {}
+  /api/v1/user:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /api/v1/user/customer:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /api/v1/user/customer/shipping-info:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /api/v1/user/vendor:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /api/v1/user/vendor/products:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /api/v1/user/vendor/shops:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}

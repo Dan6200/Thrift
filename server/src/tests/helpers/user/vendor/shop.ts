@@ -23,7 +23,7 @@ let validateResult = (data: any) => {
 };
 
 const routeParams = {
-  path: `/api/v1/user/vendor/shop`,
+  path: `/api/v1/user/vendor/shops`,
   statusCode: OK,
 };
 

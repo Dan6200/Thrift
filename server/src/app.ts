@@ -48,7 +48,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", authenticateUser, userAccountRouter);
 // vendor Account
 app.use("/api/v1/user/vendor", authenticateUser, vendorAccountRouter);
-app.use("/api/v1/user/vendor/shop", authenticateUser, shopRouter);
+app.use("/api/v1/user/vendor/shops", authenticateUser, shopRouter);
 app.use("/api/v1/user/vendor/products", authenticateUser, productsRouter);
 // customer account
 app.use("/api/v1/user/customer", authenticateUser, customerAccountRouter);

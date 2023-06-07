@@ -28,7 +28,11 @@ const createQuery = [
   },
 ];
 
-const readAllQuery = [async () => await db.query(`select * from products`)];
+const readAllQuery = [
+  async ({ params }) => {
+    await db.query(`select * from products`);
+  },
+];
 
 const readQuery = [
   async ({ params }) => {

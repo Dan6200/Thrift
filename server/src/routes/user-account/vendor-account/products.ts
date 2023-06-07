@@ -21,7 +21,8 @@ router
 
 router
   .route("/:productId/media")
-  .post(upload.single("product-media"), uploadProductMedia);
-// TODO: write a get route
+  .post(upload.single("product-media"), uploadProductMedia)
+  .get(() => {});
+// TODO: add get put delete
 
 export default router;

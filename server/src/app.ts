@@ -12,54 +12,36 @@ import cookieParser from "cookie-parser";
 // routers
 import authRouter from "./routes/auth.js";
 import userAccountRouter from "./routes/user-account/index.js";
-import customerAccountRouter from "./routes/user-account/customer-account/index.js";
-import shippingInfoRouter from "./routes/user-account/customer-account/shipping-info.js";
-import vendorAccountRouter from "./routes/user-account/vendor-account/index.js";
-import shopRouter from "./routes/user-account/vendor-account/shops/index.js";
-import productsRouter from "./routes/user-account/vendor-account/products.js";
 // middlewares
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 import authenticateUser from "./middleware/authentication.js";
 import notFound from "./middleware/not-found.js";
-import path from "path";
-import { options } from "joi";
 dotenv.config();
 
 ////////////// Middlewares //////////////
 let app: Express = express();
 app.set("trust proxy", 1);
 app.use(cookieParser());
-// app.use(
-// rateLimiter({
-// windowMs: 15 * 60 * 1000,
-// max: 100,
-// standardHeaders: true,
-// legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-// })
-// );
+app.use(
+  rateLimiter({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  })
+);
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(cors());
 app.use(xss());
 app.use(morgan("dev"));
 // application routes
-const appRouter = Router();
-appRouter.use("/auth", authRouter);
-// user account
-appRouter.use("/user", authenticateUser, userAccountRouter);
-// vendor Account
-appRouter.use("/user/vendor", authenticateUser, vendorAccountRouter);
-appRouter.use("/user/vendor/shops", authenticateUser, shopRouter);
-appRouter.use("/user/vendor/products", authenticateUser, productsRouter);
-// customer account
-appRouter.use("/user/customer", authenticateUser, customerAccountRouter);
-appRouter.use(
-  "/user/customer/shipping-info",
-  authenticateUser,
-  shippingInfoRouter
-);
+const v1Router = Router();
+v1Router.use("/auth", authRouter);
+v1Router.use("/user", authenticateUser, userAccountRouter);
 
-app.use("/v1", appRouter);
+app.use("/v1", v1Router);
 // helper middlewares
 app.use(errorHandlerMiddleware);
 app.use(notFound);

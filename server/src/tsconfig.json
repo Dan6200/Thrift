@@ -10,5 +10,5 @@
     "sourceMap": true,
     "module": "ESNext"
   },
-  "include": ["."]
+  "include": ["./**/*.ts"]
 }

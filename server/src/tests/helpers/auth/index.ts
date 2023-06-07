@@ -5,7 +5,7 @@ import { user } from "../../integrated-tests/user-data.js";
 chai.should();
 
 async function registration(agent: ChaiHttp.Agent, user: user) {
-  const response = await agent.post("/api/v1/auth/register").send(user);
+  const response = await agent.post("/v1/auth/register").send(user);
   response.should.have.status(StatusCodes.CREATED);
   response.body.should.be.an("object");
   const responseObject = response.body;
@@ -17,9 +17,7 @@ async function emailLogin(
   { email, password }: user,
   statusCode: StatusCodes
 ) {
-  const response = await agent
-    .post("/api/v1/auth/login")
-    .send({ email, password });
+  const response = await agent.post("/v1/auth/login").send({ email, password });
   response.should.have.status(statusCode);
   if (statusCode === StatusCodes.OK) {
     response.body.should.be.an("object");
@@ -33,9 +31,7 @@ async function phoneLogin(
   { phone, password }: user,
   statusCode: StatusCodes
 ) {
-  const response = await agent
-    .post("/api/v1/auth/login")
-    .send({ phone, password });
+  const response = await agent.post("/v1/auth/login").send({ phone, password });
   response.should.have.status(statusCode);
   if (statusCode === StatusCodes.OK) {
     response.body.should.be.an("object");
@@ -45,7 +41,7 @@ async function phoneLogin(
 }
 
 async function logout(agent: ChaiHttp.Agent) {
-  const response = await agent.get("/api/v1/auth/logout");
+  const response = await agent.get("/v1/auth/logout");
   response.should.have.status(StatusCodes.OK);
 }
 

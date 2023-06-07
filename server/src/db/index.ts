@@ -6,14 +6,14 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const pool = new Pool({
-  // user: process.env.LPGUSER,
-  user: process.env.PGUSER,
-  // host: process.env.LPGHOST,
-  host: process.env.PGHOST,
+  user: process.env.LPGUSER,
+  host: process.env.LPGHOST,
+  // user: process.env.PGUSER,
+  // host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: parseInt(process.env.PGPORT as string),
-  ssl: true,
+  // ssl: true,
 });
 
 export default {

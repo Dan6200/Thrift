@@ -4,6 +4,7 @@ import {
   deleteCustomerAccount,
   getCustomerAccount,
 } from "../../../controllers/user-account/customer-account/index.js";
+import shippingInfoRouter from "./shipping-info.js";
 const router = express.Router();
 
 router
@@ -11,5 +12,5 @@ router
   .post(createCustomerAccount)
   .get(getCustomerAccount)
   .delete(deleteCustomerAccount);
-
+router.use("/shipping-info", shippingInfoRouter);
 export default router;

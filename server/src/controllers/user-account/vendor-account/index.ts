@@ -24,7 +24,7 @@ const createQuery = [
       if (result.command === "SELECT") {
         return {
           status: NOT_FOUND,
-          data: "Route does not exit",
+          data: "Vendor account does not exist. Please create a vendor account",
         };
       }
       if (result.command === "INSERT")

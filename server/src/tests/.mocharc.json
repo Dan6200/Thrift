@@ -2,5 +2,7 @@
   "timeout": 1000000,
   "recursive": true,
   "extension": ["ts", "js", "tsx"],
-  "exit": true
+  "exit": true,
+  "enable-source-maps": true,
+  "node-option": ["loader=ts-node/esm"]
 }

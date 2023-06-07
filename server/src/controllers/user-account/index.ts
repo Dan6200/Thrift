@@ -36,7 +36,9 @@ let getUserAccount = async (
     [userId]
   );
   if (dbResult.rows.length === 0)
-    return response.status(StatusCodes.NOT_FOUND).send("User cannot be found");
+    return response
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: "User cannot be found" });
   let userData = dbResult.rows[0];
   joi.assert(userData, UserDataSchemaDB);
   let userAccount: UserData = userData;

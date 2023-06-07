@@ -18,7 +18,7 @@ const UserDataSchemaRequest = joi
       .required(),
     password: joi.string().required(),
     dob: joi.date().required(),
-    country: joi.string(),
+    country: joi.string().required(),
   })
   .required();
 
@@ -39,7 +39,7 @@ const UserDataSchemaDB = joi
       )
       .required(),
     dob: joi.alternatives().try(joi.date().required(), joi.string().required()),
-    country: joi.string(),
+    country: joi.string().required(),
   })
   .required();
 

@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "start": "node server/built/server.js",
-    "test": "ts-mocha -r dotenv/config --config server/src/tests/.mocharc.json -p server/src/tsconfig.json server/src/tests/*.ts",
+    "test": "ts-mocha --esm -r dotenv/config --config server/src/tests/.mocharc.json -p server/src/tsconfig.json server/src/tests/*.ts",
     "dev": "nodemon --esm server/src/server.ts",
     "build": "tsc -p server/src/tsconfig.json"
   },

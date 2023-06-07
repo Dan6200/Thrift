@@ -6,8 +6,13 @@ info:
     This API allows users to buy a variety of products from different vendors as well as
     selling their own products as a vendor.
   version: 0.0.1
+servers:
+  - url: https://thrift-production.up.railway.app/{basePath}
+    variables:
+      basePath:
+        default: v1
 paths:
-  /api/v1/auth/register:
+  /auth/register:
     post:
       summary: Register an account
       description: Creates an account for the user and authenticates the new user.
@@ -31,34 +36,34 @@ paths:
                     description:
                       unique token string used to authenticate the user
                       expires within 30 minutes
-  /api/v1/auth/login:
+  /auth/login:
     post: {}
-  /api/v1/user:
-    post: {}
-    get: {}
-    patch: {}
-    delete: {}
-  /api/v1/user/customer:
+  /user:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /api/v1/user/customer/shipping-info:
+  /user/customer:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /api/v1/user/vendor:
+  /user/customer/shipping-info:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /api/v1/user/vendor/products:
+  /user/vendor:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /api/v1/user/vendor/shops:
+  /user/vendor/products:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /user/vendor/shops:
     post: {}
     get: {}
     patch: {}

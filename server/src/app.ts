@@ -2,7 +2,7 @@
 // cspell:ignore middlewares
 import cors from "cors";
 import dotenv from "dotenv";
-import express, { Express } from "express";
+import express, { Express, Router } from "express";
 import "express-async-errors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -22,6 +22,7 @@ import errorHandlerMiddleware from "./middleware/error-handler.js";
 import authenticateUser from "./middleware/authentication.js";
 import notFound from "./middleware/not-found.js";
 import path from "path";
+import { options } from "joi";
 dotenv.config();
 
 ////////////// Middlewares //////////////
@@ -41,22 +42,24 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 app.use(morgan("dev"));
-// routes
-// public
-app.use("/api/v1/auth", authRouter);
+// application routes
+const appRouter = Router();
+appRouter.use("/auth", authRouter);
 // user account
-app.use("/api/v1/user", authenticateUser, userAccountRouter);
+appRouter.use("/user", authenticateUser, userAccountRouter);
 // vendor Account
-app.use("/api/v1/user/vendor", authenticateUser, vendorAccountRouter);
-app.use("/api/v1/user/vendor/shops", authenticateUser, shopRouter);
-app.use("/api/v1/user/vendor/products", authenticateUser, productsRouter);
+appRouter.use("/user/vendor", authenticateUser, vendorAccountRouter);
+appRouter.use("/user/vendor/shops", authenticateUser, shopRouter);
+appRouter.use("/user/vendor/products", authenticateUser, productsRouter);
 // customer account
-app.use("/api/v1/user/customer", authenticateUser, customerAccountRouter);
-app.use(
-  "/api/v1/user/customer/shipping-info",
+appRouter.use("/user/customer", authenticateUser, customerAccountRouter);
+appRouter.use(
+  "/user/customer/shipping-info",
   authenticateUser,
   shippingInfoRouter
 );
+
+app.use("/v1", appRouter);
 // helper middlewares
 app.use(errorHandlerMiddleware);
 app.use(notFound);

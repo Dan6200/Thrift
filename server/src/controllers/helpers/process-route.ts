@@ -1,5 +1,6 @@
 import { Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import BadRequestError from "../../errors/bad-request.js";
 import { RequestWithPayload } from "../../types-and-interfaces/request.js";
 
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
@@ -23,6 +24,11 @@ export default (
     let result: any,
       reqData: any,
       { userId } = request.user;
+
+    if (!userId)
+      throw new BadRequestError(
+        "Please create the appropriate account before performing this action"
+      );
     // set status code and response data
     // Validate request data
     reqData = request.body;
@@ -42,9 +48,9 @@ export default (
       result = await query({
         userId,
         params: request.params,
+        query: request.query,
         reqData,
       });
-      console.log(result.rows);
       if (result && validateResult) {
         // validateBody returns error status code and message if data is invalid
         ({ status, data } = validateResult(result, responseData.status));

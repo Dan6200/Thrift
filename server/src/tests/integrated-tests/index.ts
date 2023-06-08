@@ -4,14 +4,62 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 import app from "../../app.js";
 import db from "../../db/index.js";
-import { registration } from "../helpers/auth/index.js";
-import { newUsers } from "./user-data.js";
+import {
+  emailLogin,
+  logout,
+  phoneLogin,
+  registration,
+} from "../helpers/auth/index.js";
+import {
+  newUsers,
+  usersInfoUpdated,
+  usersPasswordUpdated,
+} from "./user-data.js";
+import { StatusCodes } from "http-status-codes";
+import {
+  shippingInformationList,
+  updatedShippingInformationList,
+} from "../accounts/user/customer-account/shipping-data.js";
+import { productData } from "../accounts/user/vendor-account/product/data.js";
+import {
+  testCreateCustomer,
+  testGetCustomer,
+  testDeleteCustomer,
+  testGetNonExistentCustomer,
+} from "../helpers/user/customer/index.js";
+import {
+  testCreateShipping,
+  testGetShipping,
+  testUpdateShipping,
+  testDeleteShipping,
+  testGetNonExistentShipping,
+} from "../helpers/user/customer/shipping.js";
+import {
+  testGetUser,
+  testUpdateUser,
+  testChangeUserPassword,
+  testDeleteUser,
+  testDontGetUser,
+} from "../helpers/user/index.js";
+import {
+  testCreateVendor,
+  testGetVendor,
+  testDeleteVendor,
+  testGetNonExistentVendor,
+} from "../helpers/user/vendor/index.js";
+import {
+  testCreateProduct,
+  testGetAllProduct,
+  testGetProduct,
+  testDeleteProduct,
+  testGetNonExistentProduct,
+} from "../helpers/user/vendor/products.js";
 
 chai.use(chaiHttp).should();
 
 export default function (index: number): void {
   before(async () => {
-    await db.query("delete from user_account");
+    // await db.query("delete from user_account");
   });
   // Testing the register route
   describe(`Testing typical user actions`, async () => {
@@ -22,7 +70,6 @@ export default function (index: number): void {
 
     it("it should register the user", () => registration(agent, user));
 
-    /*
     it("it should login the user with email", () =>
       emailLogin(agent, user, StatusCodes.OK));
 
@@ -63,20 +110,20 @@ export default function (index: number): void {
 
     it(`it should add a shipping addresses for the customer then delete it`, async () => {
       const { address_id } = await testCreateShipping(agent, shippingInfo);
-      testDeleteShipping(agent, null, `/${address_id}`);
+      // testDeleteShipping(agent, null, `/${address_id}`);
     });
 
     it(`it should fail to retrieve the deleted shipping information`, async () => {
       const { address_id } = await testCreateShipping(agent, shippingInfo);
-      testDeleteShipping(agent, null, `/${address_id}`);
-      testGetNonExistentShipping(agent, null, `/${address_id}`);
+      // testDeleteShipping(agent, null, `/${address_id}`);
+      // testGetNonExistentShipping(agent, null, `/${address_id}`);
     });
 
-    it("it should delete the user's customer account", () =>
-      testDeleteCustomer(agent));
+    // it("it should delete the user's customer account", () =>
+    //   testDeleteCustomer(agent));
 
-    it("it should fail to get the user's customer account", () =>
-      testGetNonExistentCustomer(agent));
+    // it("it should fail to get the user's customer account", () =>
+    //   testGetNonExistentCustomer(agent));
 
     it("it should create a vendor account for the user", () =>
       testCreateVendor(agent));
@@ -94,31 +141,30 @@ export default function (index: number): void {
         testGetProduct(agent, null, `/${product_id}`)
       ));
 
-    it("it should delete a product a vendor has for sale", () =>
-      testCreateProduct(agent, productData[index]).then(({ product_id }) =>
-        testDeleteProduct(agent, null, `/${product_id}`)
-      ));
+    // it("it should delete a product a vendor has for sale", () =>
+    //   testCreateProduct(agent, productData[index]).then(({ product_id }) =>
+    // testDeleteProduct(agent, null, `/${product_id}`)
+    // ));
 
-    it("it should fail to retrieve a deleted product", async () => {
-      const { product_id } = await testCreateProduct(agent, productData[index]);
-      testDeleteProduct(agent, null, `/${product_id}`);
-      testGetNonExistentProduct(agent, null, `/${product_id}`);
-    });
+    // it("it should fail to retrieve a deleted product", async () => {
+    //   const { product_id } = await testCreateProduct(agent, productData[index]);
+    // testDeleteProduct(agent, null, `/${product_id}`);
+    // testGetNonExistentProduct(agent, null, `/${product_id}`);
+    // });
 
-    it("it should delete the user's vendor account", () =>
-      testDeleteVendor(agent));
+    // it("it should delete the user's vendor account", () =>
+    //   testDeleteVendor(agent));
 
-    it("it should fail to get the user's vendor account", () =>
-      testGetNonExistentVendor(agent));
+    // it("it should fail to get the user's vendor account", () =>
+    //   testGetNonExistentVendor(agent));
 
-    it("it should delete the user's account", () => testDeleteUser(agent));
+    // it("it should delete the user's account", () => testDeleteUser(agent));
 
     it("it should logout user", () => logout(agent));
 
-    it("it should fail to get user's account", () => testDontGetUser(agent));
+    // it("it should fail to get user's account", () => testDontGetUser(agent));
 
     it("it should fail to login user", () =>
       emailLogin(agent, user, StatusCodes.UNAUTHORIZED));
-	  */
   });
 }

@@ -24,39 +24,39 @@ const routeParams = {};
 const testDontGetUser = testRoute({
   verb: "get",
   statusCode: UNAUTHORIZED,
-  path: "/api/v1/user",
+  path: "/v1/user",
 }) as testRouteWithAgent;
 
 const testGetUser = testRoute({
   verb: "get",
   statusCode: OK,
   checks: validateResult,
-  path: "/api/v1/user",
+  path: "/v1/user",
 }) as testRouteWithAgent;
 
 const testUpdateUser = testRoute({
   verb: "patch",
   statusCode: OK,
   checks: validateResult,
-  path: "/api/v1/user",
+  path: "/v1/user",
 }) as testRouteWithAgentAndData;
 
 const testChangeUserPassword = testRoute({
   verb: "patch",
   statusCode: NO_CONTENT,
-  path: "/api/v1/user/password",
+  path: "/v1/user/password",
 }) as testRouteWithAgentAndData;
 
 const testDeleteUser = testRoute({
   verb: "delete",
   statusCode: NO_CONTENT,
-  path: "/api/v1/user",
+  path: "/v1/user",
 }) as testRouteWithAgent;
 
 const testGetNonExistentUser = testRoute({
   verb: "get",
   statusCode: NOT_FOUND,
-  path: "/api/v1/user",
+  path: "/v1/user",
 }) as testRouteWithAgent;
 
 export {

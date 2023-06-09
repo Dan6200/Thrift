@@ -7,6 +7,7 @@ enum networkErrors {
   "ENOTFOUND",
   "ECONNREFUSED",
   "ECONNABORTED",
+  "EAI_AGAIN",
 }
 let runOnce: boolean = true;
 export default async function retryQuery(

@@ -5,7 +5,7 @@ import testRoute from "../../test-route.js";
 chai.use(chaiHttp).should();
 
 const routeParams = {
-  path: "/api/v1/user/vendor",
+  path: "/v1/user/vendor",
 };
 
 const testCreateVendor = testRoute({

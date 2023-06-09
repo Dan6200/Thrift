@@ -4,7 +4,7 @@
 		category: 
 		description: 
 		list_price: 
-		shop_id: 
+		store_id: 
 		quantity_available: 
 	*/
 

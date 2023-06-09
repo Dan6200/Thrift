@@ -1,6 +1,6 @@
-drop table if exists user_account cascade;
+drop table if exists user_accounts cascade;
 
-create table if not exists user_account (
+create table if not exists user_accounts (
 	user_id					bigserial 			primary key,
 	first_name				varchar(30)		not null,
 	last_name				varchar(30)		not null,
@@ -14,17 +14,17 @@ create table if not exists user_account (
 	check (current_date - dob > 12)
 );
 
-drop table if exists customer cascade;
+drop table if exists customers cascade;
 
-create table if not exists customer (
-	customer_id			bigint 		primary key	references	user_account	on	delete	cascade
+create table if not exists customers (
+	customer_id			bigint 		primary key	references	user_accounts	on	delete	cascade
 );
 
 drop table if exists shipping_info cascade;
 
 create table if not exists shipping_info (
 	address_id				bigserial		primary key,
-	customer_id				bigint			not null		references	customer	on	delete	cascade,
+	customer_id				bigint			not null		references	customers	on	delete	cascade,
 	recipient_first_name	varchar(30)		not null,
 	recipient_last_name		varchar(30)		not null,
 	street					varchar			not null,
@@ -41,10 +41,10 @@ create table if not exists primary_shipping_info (
 	address_id 			bigint 			primary key 	references 	shipping_info 	on 	delete cascade
 );
 
-drop table if exists vendor cascade;
+drop table if exists vendors cascade;
 
-create table if not exists vendor (
-	vendor_id		bigserial 		primary key	references	user_account	on	delete	cascade
+create table if not exists vendors (
+	vendor_id		bigserial 		primary key	references	user_accounts	on	delete	cascade
 );
 
 /*
@@ -54,7 +54,7 @@ drop table if exists shop cascade;
 create table if not exists shop (
 	shop_id					bigserial			primary key,	
 	shop_name				varchar				not null 	default 	'My Shop',
-	vendor_id 				bigint			not null 	references	vendor	on	delete	cascade,
+	vendor_id 				bigint			not null 	references	vendors	on	delete	cascade,
 	date_created			date				not null	default		current_date
 );
 */
@@ -68,7 +68,7 @@ create table if not exists products (
 	description			varchar,
 	list_price			numeric(19,4),
 	net_price			numeric(19,4),
-	vendor_id 			bigint				not null 		references	vendor	on	delete	cascade,
+	vendor_id 			bigint				not null 		references	vendors	on	delete	cascade,
 	quantity_available	int					not null
 );
 
@@ -99,7 +99,7 @@ drop table if exists shopping_cart cascade;
 
 create table if not exists shopping_cart (
 	cart_id				bigserial			primary key,
-	customer_id			bigint				not null	references	customer	on	delete	cascade,
+	customer_id			bigint				not null	references	customers	on	delete	cascade,
 	made				timestamptz		not null	default	now()
 );
 
@@ -145,15 +145,15 @@ create table if not exists product_review (
 	product_id				bigint				primary key references	products		on	delete	cascade,
 	transaction_id			bigint				not null	references	transaction	on	delete	cascade,
 	rating					numeric(3,2)		not null,
-	customer_id				bigint				not	null	references	customer	on	delete	cascade,
+	customer_id				bigint				not	null	references	customers	on	delete	cascade,
 	customer_remark			varchar
 );
 
 drop table if exists vendor_review cascade;
 
 create table if not exists vendor_review (
-	vendor_id				bigint				primary key 	references	vendor on delete cascade,
-	customer_id				bigint				not null		references	customer on delete cascade,
+	vendor_id				bigint				primary key 	references	vendors on delete cascade,
+	customer_id				bigint				not null		references	customers on delete cascade,
 	transaction_id			bigint				not null		references	transaction on delete cascade,
 	rating					numeric(3,2)	not null,
 	customer_remark			varchar
@@ -162,8 +162,8 @@ create table if not exists vendor_review (
 drop table if exists customer_review cascade;
 
 create table if not exists customer_review (
-	customer_id				bigint				primary key 	references	customer on delete cascade,
-	vendor_id				bigint				not null		references	vendor on delete cascade,
+	customer_id				bigint				primary key 	references	customers on delete cascade,
+	vendor_id				bigint				not null		references	vendors on delete cascade,
 	transaction_id			bigint				not null		references	transaction on delete cascade,
 	rating					numeric(3,2)	not null,
 	vendor_remark			varchar

@@ -50,7 +50,7 @@ const register = async (request: Request, response: Response) => {
   userData.password = await hashPassword(password);
   let dbQuery: QueryResult = await db.query(
     `
-    ${Insert("user_account", Object.keys(userData))} returning user_id;`,
+    ${Insert("user_accounts", Object.keys(userData))} returning user_id;`,
     Object.values(userData)
   );
   let { rowCount }: { rowCount: number } = dbQuery;
@@ -83,7 +83,7 @@ const login = async (request: Request, response: Response) => {
         await db.query(
           `
 			select user_id, password
-			from user_account 
+			from user_accounts 
 			where email=$1`,
           [email]
         )
@@ -93,7 +93,7 @@ const login = async (request: Request, response: Response) => {
         await db.query(
           `
 			select user_id, password
-			from user_account 
+			from user_accounts 
 			where phone=$1`,
           [phone]
         )

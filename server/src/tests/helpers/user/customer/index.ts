@@ -7,7 +7,7 @@ import testRoute from "../../test-route.js";
 chai.use(chaiHttp).should();
 
 const routeParams = {
-  path: "/api/v1/user/customer",
+  path: "/v1/user/customer",
 };
 
 const testCreateCustomer = testRoute({

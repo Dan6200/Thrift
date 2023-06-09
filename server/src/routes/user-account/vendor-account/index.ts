@@ -4,7 +4,7 @@ import {
   getVendorAccount,
   deleteVendorAccount,
 } from "../../../controllers/user-account/vendor-account/index.js";
-import shopRouter from "./shops/index.js";
+import storeRouter from "./stores/index.js";
 import productsRouter from "./products.js";
 const router = express.Router();
 
@@ -14,6 +14,6 @@ router
   .get(getVendorAccount)
   .delete(deleteVendorAccount);
 
-router.use("/shops", shopRouter);
+router.use("/stores", storeRouter);
 router.use("/products", productsRouter);
 export default router;

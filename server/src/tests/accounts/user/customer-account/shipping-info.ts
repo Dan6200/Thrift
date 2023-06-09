@@ -15,14 +15,14 @@ import chaiHttp from "chai-http";
 
 export default function testShipping() {
   // after(async () => {
-  // 	// deletes all entries from user_account
-  // 	await db.query('delete from user_account');
+  // 	// deletes all entries from user_accounts
+  // 	await db.query('delete from user_accounts');
   // 	await db.query('delete from customer');
   // 	await db.query('delete from shipping_info');
   // });
   // beforeEach(async () => {
-  // 	// // deletes all entries from user_account
-  // 	// await db.query('delete from user_account');
+  // 	// // deletes all entries from user_accounts
+  // 	// await db.query('delete from user_accounts');
   // 	// await db.query('delete from customer');
   // 	// await db.query('delete from shipping_info');
   // });

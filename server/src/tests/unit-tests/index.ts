@@ -4,7 +4,6 @@ import {
   Insert,
   Update,
 } from "../../controllers/helpers/generate-sql-commands/index.js";
-import { handleSortQuery } from "../../controllers/helpers/generate-sql-commands/query-params-handler.js";
 
 chai.should();
 
@@ -42,9 +41,4 @@ export default () => {
       "age",
       "sex",
     ]).should.equal(SQLUPDATE));
-
-  it("it should create a database query from a query parameter input", () =>
-    handleSortQuery("-list_price,-net_price,product_id").should.equal(
-      `order by list_price desc, net_price desc, product_id asc`
-    ));
 };

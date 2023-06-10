@@ -59,7 +59,7 @@ chai.use(chaiHttp).should();
 
 export default function (index: number): void {
   before(async () => {
-    // await db.query("delete from user_account");
+    // await db.query("delete from user_accounts");
   });
   // Testing the register route
   describe(`Testing typical user actions`, async () => {

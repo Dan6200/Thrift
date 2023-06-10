@@ -7,8 +7,8 @@ import {
   getProduct,
   updateProduct,
   deleteProduct,
-} from "../../../../../controllers/user-account/vendor-account/shops/products/index.js";
-import { uploadProductMedia } from "../../../../../controllers/user-account/vendor-account/shops/products/media.js";
+} from "../../../../../controllers/user-account/vendor-account/stores/products/index.js";
+import { uploadProductMedia } from "../../../../../controllers/user-account/vendor-account/stores/products/media.js";
 const upload = multer({ storage: mediaStorage });
 const router = express.Router();
 

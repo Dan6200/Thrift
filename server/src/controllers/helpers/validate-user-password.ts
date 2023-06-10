@@ -7,7 +7,7 @@ export default async (
 ): Promise<boolean> => {
   let { password }: { password: Buffer } = (
     await db.query(
-      `select password from user_account
+      `select password from user_accounts
 		where user_id = $1`,
       [Id]
     )

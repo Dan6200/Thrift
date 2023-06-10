@@ -31,7 +31,7 @@ let getUserAccount = async (
   let dbResult = await db.query(
     `select 
 			${userDataFields.join(", ")}
-			from user_account 
+			from user_accounts 
 			where user_id = $1`,
     [userId]
   );
@@ -61,7 +61,7 @@ let updateUserAccount = async (
     // returns a list of columns from the database table
     // unit test this function
     `${Update(
-      "user_account",
+      "user_accounts",
       "user_id",
       fields
     )} returning ${userDataFields.join(", ")}`,
@@ -98,7 +98,7 @@ let updateUserPassword = async (
   await db.query(
     // Generates A sql update command.
     // Takes the database name, the column name of the first item of the array
-    `${Update("user_account", "user_id", fields)}`,
+    `${Update("user_accounts", "user_id", fields)}`,
     [userId, ...data]
   );
   response.status(StatusCodes.NO_CONTENT).end();
@@ -110,7 +110,7 @@ let deleteUserAccount = async (
 ) => {
   let { userId }: RequestUserPayload = request.user;
   await db.query(
-    `delete from user_account
+    `delete from user_accounts
 		where user_id = $1`,
     [userId]
   );

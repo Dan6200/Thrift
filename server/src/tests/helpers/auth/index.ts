@@ -1,10 +1,10 @@
 import chai from "chai";
 import { StatusCodes } from "http-status-codes";
-import { user } from "../../integrated-tests/user-data.js";
+import { UserData } from "../../../types-and-interfaces/user.js";
 
 chai.should();
 
-async function registration(agent: ChaiHttp.Agent, user: user) {
+async function registration(agent: ChaiHttp.Agent, user: UserData) {
   const response = await agent.post("/v1/auth/register").send(user);
   response.should.have.status(StatusCodes.CREATED);
   response.body.should.be.an("object");
@@ -14,7 +14,7 @@ async function registration(agent: ChaiHttp.Agent, user: user) {
 
 async function emailLogin(
   agent: ChaiHttp.Agent,
-  { email, password }: user,
+  { email, password }: UserData,
   statusCode: StatusCodes
 ) {
   const response = await agent.post("/v1/auth/login").send({ email, password });
@@ -28,7 +28,7 @@ async function emailLogin(
 
 async function phoneLogin(
   agent: ChaiHttp.Agent,
-  { phone, password }: user,
+  { phone, password }: UserData,
   statusCode: StatusCodes
 ) {
   const response = await agent.post("/v1/auth/login").send({ phone, password });

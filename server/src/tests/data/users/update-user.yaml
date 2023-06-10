@@ -1,0 +1,10 @@
+- country: Ghana
+  first_name: John
+  dob: 2003-06-08
+
+- dob: 1995-12-31
+  phone: "+2348073249250"
+
+- last_name: Kuti
+  country: Ivory Coast
+  email: kuti993@gmail.com

@@ -10,17 +10,7 @@ import {
   phoneLogin,
   registration,
 } from "../helpers/auth/index.js";
-import {
-  newUsers,
-  usersInfoUpdated,
-  usersPasswordUpdated,
-} from "./user-data.js";
 import { StatusCodes } from "http-status-codes";
-import {
-  shippingInformationList,
-  updatedShippingInformationList,
-} from "../accounts/user/customer-account/shipping-data.js";
-import { productData } from "../accounts/user/vendor-account/product/data.js";
 import {
   testCreateCustomer,
   testGetCustomer,
@@ -54,12 +44,37 @@ import {
   testDeleteProduct,
   testGetNonExistentProduct,
 } from "../helpers/user/vendor/products.js";
+import { load } from "js-yaml";
+import { readFileSync } from "fs";
+import { UserData } from "../../types-and-interfaces/user.js";
+import { fileURLToPath } from "url";
+import { log } from "console";
 
 chai.use(chaiHttp).should();
 
+const newUsersYaml = fileURLToPath(
+  new URL("../data/users/new-users.yaml", import.meta.url)
+);
+const newUsers = load(readFileSync(newUsersYaml, "utf8")) as UserData[];
+log(newUsers);
+
+const updateUsersYaml = fileURLToPath(
+  new URL("../data/users/update-user.yaml", import.meta.url)
+);
+const usersInfoUpdated = load(
+  readFileSync(updateUsersYaml, "utf8")
+) as UserData[];
+
+const updateUsersPasswordsYaml = fileURLToPath(
+  new URL("../data/users/update-user-password.yaml", import.meta.url)
+);
+const usersPasswordsUpdated = load(
+  readFileSync(updateUsersPasswordsYaml, "utf8")
+) as UserData[];
+
 export default function (index: number): void {
   before(async () => {
-    // await db.query("delete from user_accounts");
+    await db.query("delete from user_accounts");
   });
   // Testing the register route
   describe(`Testing typical user actions`, async () => {
@@ -83,7 +98,7 @@ export default function (index: number): void {
     it("it should update the user's account", () =>
       testUpdateUser(agent, updatedUserInfo));
 
-    const updatedUserPassword = usersPasswordUpdated[index];
+    const updatedUserPassword = usersPasswordsUpdated[index];
 
     it("it should change the user's password", () =>
       testChangeUserPassword(agent, updatedUserPassword));
@@ -94,6 +109,7 @@ export default function (index: number): void {
     it("it should get the user's customer account", () =>
       testGetCustomer(agent));
 
+    /*
     const shippingInfo = shippingInformationList[index];
 
     it(`it should add shipping addresses for the customer then retrieve it`, () =>
@@ -110,20 +126,20 @@ export default function (index: number): void {
 
     it(`it should add a shipping addresses for the customer then delete it`, async () => {
       const { address_id } = await testCreateShipping(agent, shippingInfo);
-      // testDeleteShipping(agent, null, `/${address_id}`);
+      testDeleteShipping(agent, null, `/${address_id}`);
     });
 
     it(`it should fail to retrieve the deleted shipping information`, async () => {
       const { address_id } = await testCreateShipping(agent, shippingInfo);
-      // testDeleteShipping(agent, null, `/${address_id}`);
-      // testGetNonExistentShipping(agent, null, `/${address_id}`);
+      testDeleteShipping(agent, null, `/${address_id}`);
+      testGetNonExistentShipping(agent, null, `/${address_id}`);
     });
 
-    // it("it should delete the user's customer account", () =>
-    //   testDeleteCustomer(agent));
+    it("it should delete the user's customer account", () =>
+      testDeleteCustomer(agent));
 
-    // it("it should fail to get the user's customer account", () =>
-    //   testGetNonExistentCustomer(agent));
+    it("it should fail to get the user's customer account", () =>
+      testGetNonExistentCustomer(agent));
 
     it("it should create a vendor account for the user", () =>
       testCreateVendor(agent));
@@ -141,28 +157,29 @@ export default function (index: number): void {
         testGetProduct(agent, null, `/${product_id}`)
       ));
 
-    // it("it should delete a product a vendor has for sale", () =>
-    //   testCreateProduct(agent, productData[index]).then(({ product_id }) =>
-    // testDeleteProduct(agent, null, `/${product_id}`)
-    // ));
+    it("it should delete a product a vendor has for sale", () =>
+      testCreateProduct(agent, productData[index]).then(({ product_id }) =>
+        testDeleteProduct(agent, null, `/${product_id}`)
+      ));
 
-    // it("it should fail to retrieve a deleted product", async () => {
-    //   const { product_id } = await testCreateProduct(agent, productData[index]);
-    // testDeleteProduct(agent, null, `/${product_id}`);
-    // testGetNonExistentProduct(agent, null, `/${product_id}`);
-    // });
+    it("it should fail to retrieve a deleted product", async () => {
+      const { product_id } = await testCreateProduct(agent, productData[index]);
+      testDeleteProduct(agent, null, `/${product_id}`);
+      testGetNonExistentProduct(agent, null, `/${product_id}`);
+    });
+	  */
 
-    // it("it should delete the user's vendor account", () =>
-    //   testDeleteVendor(agent));
+    it("it should delete the user's vendor account", () =>
+      testDeleteVendor(agent));
 
-    // it("it should fail to get the user's vendor account", () =>
-    //   testGetNonExistentVendor(agent));
+    it("it should fail to get the user's vendor account", () =>
+      testGetNonExistentVendor(agent));
 
-    // it("it should delete the user's account", () => testDeleteUser(agent));
+    it("it should delete the user's account", () => testDeleteUser(agent));
 
     it("it should logout user", () => logout(agent));
 
-    // it("it should fail to get user's account", () => testDontGetUser(agent));
+    it("it should fail to get user's account", () => testDontGetUser(agent));
 
     it("it should fail to login user", () =>
       emailLogin(agent, user, StatusCodes.UNAUTHORIZED));

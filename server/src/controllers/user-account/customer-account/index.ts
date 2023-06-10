@@ -11,13 +11,13 @@ type ResponseData = {
 };
 
 const createQuery = [
-    ({ userId }) => db.query(`insert into customer values($1)`, [userId]),
+    ({ userId }) => db.query(`insert into customers values($1)`, [userId]),
   ],
   readQuery = [
     ({ userId }) =>
-      db.query(`select * from customer where customer_id=$1`, [userId]),
+      db.query(`select * from customers where customer_id=$1`, [userId]),
   ],
-  deleteQuery = [() => db.query(`delete from customer`)],
+  deleteQuery = [() => db.query(`delete from customers`)],
   validateResult = (result: any, status: Status): ResponseData => {
     if (result.rowCount === 0)
       return {

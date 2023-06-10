@@ -12,13 +12,13 @@ type ResponseData = {
 
 const createQuery = [
     ({ userId }) =>
-      db.query(`insert into vendor values($1) returning vendor_id`, [userId]),
+      db.query(`insert into vendors values($1) returning vendor_id`, [userId]),
   ],
   readQuery = [
     ({ userId }) =>
-      db.query(`select * from vendor where vendor_id=$1`, [userId]),
+      db.query(`select * from vendors where vendor_id=$1`, [userId]),
   ],
-  deleteQuery = [() => db.query(`delete from vendor`)],
+  deleteQuery = [() => db.query(`delete from vendors`)],
   validateResult = (result: any, status: Status): ResponseData => {
     if (result.rowCount === 0) {
       if (result.command === "SELECT") {

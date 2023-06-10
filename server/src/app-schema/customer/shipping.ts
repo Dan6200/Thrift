@@ -4,7 +4,7 @@ const ShippingInfoSchemaReq = joi
   .object({
     recipient_first_name: joi.string().alphanum().min(3).max(30).required(),
     recipient_last_name: joi.string().alphanum().min(3).max(30).required(),
-    street: joi.string().required(),
+    address: joi.string().required(),
     city: joi.string().required(),
     state: joi.string().required(),
     postal_code: joi.string().required(),
@@ -23,7 +23,7 @@ const ShippingInfoSchemaDB = joi
     address_id: joi.string().required(),
     recipient_first_name: joi.string().alphanum().min(3).max(30).required(),
     recipient_last_name: joi.string().alphanum().min(3).max(30).required(),
-    street: joi.string().required(),
+    address: joi.string().required(),
     city: joi.string().required(),
     state: joi.string().required(),
     postal_code: joi.string().required(),

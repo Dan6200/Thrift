@@ -20,7 +20,7 @@ select
 	address_id,
 	recipient_first_name,
 	recipient_last_name,
-	street,
+	address,
 	city,
 	state,
 	postal_code,

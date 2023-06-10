@@ -53,7 +53,7 @@ const testGetShipping = testRoute({
 
 const testUpdateShipping = testRoute({
   ...routeParams,
-  verb: "patch",
+  verb: "put",
 }) as testRouteWithAgentDataAndParams;
 
 const testDeleteShipping = testRoute({

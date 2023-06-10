@@ -56,7 +56,6 @@ const newUsersYaml = fileURLToPath(
   new URL("../data/users/new-users.yaml", import.meta.url)
 );
 const newUsers = load(readFileSync(newUsersYaml, "utf8")) as UserData[];
-log(newUsers);
 
 const updateUsersYaml = fileURLToPath(
   new URL("../data/users/update-user.yaml", import.meta.url)
@@ -71,6 +70,18 @@ const updateUsersPasswordsYaml = fileURLToPath(
 const usersPasswordsUpdated = load(
   readFileSync(updateUsersPasswordsYaml, "utf8")
 ) as UserData[];
+
+const shippingInfoYaml = fileURLToPath(
+  new URL("../data/users/customers/shipping-info.yaml", import.meta.url)
+);
+const shippingInfoList = <any[]>load(readFileSync(shippingInfoYaml, "utf8"));
+
+const updatedShippingInfoYaml = fileURLToPath(
+  new URL("../data/users/customers/update-shipping-info.yaml", import.meta.url)
+);
+const updatedShippingInfoList = <any[]>(
+  load(readFileSync(updatedShippingInfoYaml, "utf8"))
+);
 
 export default function (index: number): void {
   before(async () => {
@@ -109,15 +120,14 @@ export default function (index: number): void {
     it("it should get the user's customer account", () =>
       testGetCustomer(agent));
 
-    /*
-    const shippingInfo = shippingInformationList[index];
+    const shippingInfo = shippingInfoList[index];
 
     it(`it should add shipping addresses for the customer then retrieve it`, () =>
       testCreateShipping(agent, shippingInfo).then((result) =>
         testGetShipping(agent, null, `/${result.address_id}`)
       ));
 
-    const updatedShippingInfo = updatedShippingInformationList[index];
+    const updatedShippingInfo = updatedShippingInfoList[index];
 
     it(`it should add a shipping addresses for the customer then update it`, () =>
       testCreateShipping(agent, shippingInfo).then((result) =>
@@ -146,6 +156,7 @@ export default function (index: number): void {
 
     it("it should get the user's vendor account", () => testGetVendor(agent));
 
+    /*
     it("it should create a product for sale", () =>
       testCreateProduct(agent, productData[index]));
 

@@ -13,7 +13,8 @@ router.route("/").post(createShippingInfo).get(getAllShippingInfo);
 router
   .route("/:addressId")
   .get(getShippingInfo)
-  .patch(updateShippingInfo)
+  // put not patch. client fetches data and then replaces with new version
+  .put(updateShippingInfo)
   .delete(deleteShippingInfo);
 
 export default router;

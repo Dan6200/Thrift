@@ -31,7 +31,7 @@ export default {
     });
     // allow a retry if DB fails to connect
     let res: any;
-    const retryCount = 3;
+    const retryCount = 7;
     const delay = 500;
     res = await retryQuery(
       pool.query.bind(pool),

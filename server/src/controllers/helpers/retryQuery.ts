@@ -31,9 +31,9 @@ export default async function retryQuery(
         setTimeout(resolve, ms);
       }).then(() => {
         if (retries > 1) {
-          console.log(`db connection failed...retrying after ${ms}ms`);
           if (runOnce) runOnce = false;
           else ms <<= 1;
+          console.log(`db connection failed...retrying after ${ms}ms`);
           res = retryQuery(query, args, retries - 1, ms);
         }
         return res;

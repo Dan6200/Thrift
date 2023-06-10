@@ -27,7 +27,7 @@ create table if not exists shipping_info (
 	customer_id				bigint			not null		references	customers	on	delete	cascade,
 	recipient_first_name	varchar(30)		not null,
 	recipient_last_name		varchar(30)		not null,
-	street					varchar			not null,
+	address					varchar			not null,
 	city					varchar			not null,
 	state					varchar			not null,
 	postal_code				varchar			not null,

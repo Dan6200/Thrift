@@ -31,14 +31,11 @@ const createStore = async (request: RequestWithPayload, response: Response) => {
   const vendorId = res.rows[0].vendor_id;
   // limit amount of stores to 5...
   const LIMIT = 5;
-  let recordCount: number = parseInt(
-    (
-      await db.query("select count(vendor_id) from store where vendor_id=$1", [
-        vendorId,
-      ])
-    ).rows[0].count
+  let recordCount: number = <number>(
+    (await db.query("select 1 from stores where vendor_id=$1", [vendorId]))
+      .rowCount
   );
-  let overLimit: boolean = LIMIT <= +recordCount;
+  let overLimit: boolean = LIMIT <= recordCount;
   if (overLimit)
     throw new BadRequestError(`Each vendor is limited to only ${LIMIT} stores`);
   let validData = StoreSchemaReq.validate(request.body);
@@ -46,10 +43,13 @@ const createStore = async (request: RequestWithPayload, response: Response) => {
     throw new BadRequestError("Invalid data schema: " + validData.error);
   const storeData = validData.value;
   let store = (
-    await db.query(`${Insert("stores", Object.keys(storeData))} return *`, [
-      vendorId,
-      ...Object.values(storeData),
-    ])
+    await db.query(
+      `${Insert("stores", [
+        "vendor_id",
+        ...Object.keys(storeData),
+      ])} returning *`,
+      [vendorId, ...Object.values(storeData)]
+    )
   ).rows[0];
   Joi.assert(store, StoreSchemaDB);
   response.status(StatusCodes.CREATED).json(store);
@@ -70,7 +70,7 @@ const getAllStores = async (
     );
   const vendorId = res.rows[0].vendor_id;
   const stores = (
-    await db.query(`select * from store where vendor_id=$1`, [vendorId])
+    await db.query(`select * from stores where vendor_id=$1`, [vendorId])
   ).rows;
   if (stores.length === 0)
     return response
@@ -81,9 +81,18 @@ const getAllStores = async (
 };
 
 const getStore = async (request: RequestWithPayload, response: Response) => {
+  const { userId }: RequestUserPayload = request.user;
+  const res = await db.query(
+    "select vendor_id from vendors where vendor_id=$1",
+    [userId]
+  );
+  if (res.rowCount === 0)
+    throw new BadRequestError(
+      "No Vendor account found. Please create a Vendor account"
+    );
   const { storeId } = request.params;
   const store = (
-    await db.query(`select * from store where store_id=$1`, [storeId])
+    await db.query(`select * from stores where store_id=$1`, [storeId])
   ).rows[0];
   if (!store)
     return response
@@ -110,7 +119,7 @@ const updateStore = async (request: RequestWithPayload, response: Response) => {
   let fields = Object.keys(storeData),
     data = Object.values(storeData);
   const store = (
-    await db.query(`${Update("store", "store_id", fields)} returning *`, [
+    await db.query(`${Update("stores", "store_id", fields)} returning *`, [
       storeId,
       ...data,
     ])
@@ -132,7 +141,7 @@ const deleteStore = async (request: RequestWithPayload, response: Response) => {
     );
   const { storeId } = request.params;
   await db.query(
-    `delete from store
+    `delete from stores
 			where store_id=$1`,
     [storeId]
   );

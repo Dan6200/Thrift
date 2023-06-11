@@ -1,0 +1,26 @@
+#cspell:disable
+
+- store_name: Oriamo Electronics
+  store_page:
+    heading: "Oriamo Electronics"
+    navigation: [Home, New Arrivals, Promos, Contact]
+    hero: null
+    body: null
+    products: [id1, id2, id3]
+    media:
+      hero:
+        video: null
+        imges: ["product_shot1.jpg", "product_shot2.jpg", "product_shot3.jpg"]
+      images:
+        - "oriamo_headphones.jpg"
+        - "oriamo_speaker.jpg"
+        - "oriamo_fitband.jpg"
+
+- store_name: Gucci Fashion
+  store_page:
+    navigation: [Home, New Arrivals, Promos, Contact]
+    heading: Well to Gucci Luxury Fashion Store
+    media: null
+
+- store_name: Inspired Denims
+  store_page: null

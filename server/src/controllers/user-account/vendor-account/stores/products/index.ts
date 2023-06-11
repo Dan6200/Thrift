@@ -30,6 +30,7 @@ const createQuery = [
     if (!dbQuery.rowCount)
       throw new BadRequestError("Store does not exist. Create a store");
     assert(storeId === dbQuery.rows[0].store_id);
+    log(reqData);
     return await db.query(
       `${Insert("products", [
         ...Object.keys(reqData),

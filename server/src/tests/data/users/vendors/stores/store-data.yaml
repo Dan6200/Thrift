@@ -1,0 +1,16 @@
+#cspell:disable
+
+- store_name: Oriamo Electronics
+  store_page:
+    heading: "Welcome to Oriamo Electronics"
+    media: null
+
+- store_name: Inspire Denims
+  store_page:
+    html: "Welcome to Inspire Demims"
+    media: null
+
+- store_name: Unpopular Fashion
+  store_page:
+    html: "Welcome to Unpopular Fashion"
+    media: null

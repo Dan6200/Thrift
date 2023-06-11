@@ -48,7 +48,7 @@ const testGetStore = testRoute({
 
 const testUpdateStore = testRoute({
   ...routeParams,
-  verb: "put",
+  verb: "patch",
 });
 
 const testDeleteStore = testRoute({

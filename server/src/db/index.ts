@@ -1,3 +1,4 @@
+import util from "util";
 // cspell:disable
 import nodePostgres, { QueryResult } from "pg";
 const { Pool } = nodePostgres;
@@ -6,14 +7,14 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const pool = new Pool({
-  // user: process.env.LPGUSER,
-  // host: process.env.LPGHOST,
-  user: process.env.PGUSER,
-  host: process.env.PGHOST,
+  user: process.env.LPGUSER,
+  host: process.env.LPGHOST,
+  // user: process.env.PGUSER,
+  // host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: parseInt(process.env.PGPORT as string),
-  ssl: true,
+  // ssl: true,
 });
 
 export default {
@@ -29,6 +30,7 @@ export default {
     setTimeout(function () {
       this.lastQuery = arguments;
     });
+    console.log("\nexecuted query:\n", text, params);
     // allow a retry if DB fails to connect
     let res: any;
     const retryCount = 7;
@@ -40,13 +42,21 @@ export default {
       delay
     );
     const duration = Date.now() - start;
-    console.log("\nexecuted query", {
-      text,
-      params,
-      duration,
-      rows: res.rowCount,
-      result: res.rows,
-    });
+    console.log(
+      "\nquery result",
+      util.inspect(
+        {
+          text,
+          params,
+          duration,
+          rows: res.rowCount,
+          result: res.rows,
+        },
+        false,
+        null,
+        true
+      )
+    );
     return res;
   },
 

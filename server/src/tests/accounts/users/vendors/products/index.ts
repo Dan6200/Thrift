@@ -7,7 +7,7 @@ import {
   testGetProduct,
   testDeleteProduct,
   testGetNonExistentProduct,
-} from "../../../../helpers/user/vendor/products.js";
+} from "../../../../helpers/user/vendor/store/products/index.js";
 
 const productData = <any[]>(
   load(

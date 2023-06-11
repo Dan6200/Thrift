@@ -17,6 +17,8 @@ import {
   testDeleteShipping,
   testGetNonExistentShipping,
 } from "../../../helpers/user/customer/shipping.js";
+import { registration } from "../../../helpers/auth/index.js";
+import { UserData } from "../../../../types-and-interfaces/user.js";
 
 const shippingInfoYaml = fileURLToPath(
   new URL("../../../data/users/customers/shipping-info.yaml", import.meta.url)

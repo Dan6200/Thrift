@@ -23,11 +23,11 @@ export default function (index: number): void {
 
     describe("Testing User Account", () => testUserAccount(agent, index));
 
-    // describe("Testing Customer Account", () =>
-    //   testCustomerAccount(agent, index));
+    describe("Testing Customer Account", () =>
+      testCustomerAccount(agent, index));
 
-    // describe("Testing Vendor Account", () => testVendorAccount(agent, index));
+    describe("Testing Vendor Account", () => testVendorAccount(agent, index));
 
-    // describe("Testing Products", () => testProducts(agent, index));
+    describe("Testing Products", () => testProducts(agent, index));
   });
 }

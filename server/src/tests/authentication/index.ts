@@ -5,7 +5,12 @@ import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
 import { load } from "js-yaml";
 import { StatusCodes } from "http-status-codes";
-import { registration, phoneLogin, emailLogin } from "../helpers/auth/index.js";
+import {
+  registration,
+  phoneLogin,
+  emailLogin,
+  logout,
+} from "../helpers/auth/index.js";
 import { UserData } from "../../types-and-interfaces/user.js";
 
 chai.use(chaiHttp).should();
@@ -25,4 +30,6 @@ export default function (agent: ChaiHttp.Agent, index: number) {
 
   it("it should login the user with phone", () =>
     phoneLogin(agent, user, StatusCodes.OK));
+
+  it("it should logout the user", () => logout(agent));
 }

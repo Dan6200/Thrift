@@ -1,13 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
-import { ProductSchemaDB } from "../../../../app-schema/products.js";
+import { ProductSchemaDB } from "../../../../../../app-schema/products.js";
 import {
   testRouteWithAgentAndData,
   testRouteWithAgent,
   testRouteWithAgentAndParams,
   testRouteWithAgentDataAndParams,
-} from "../../../../types-and-interfaces/test-routes.js";
-import testRoute from "../../test-route.js";
+} from "../../../../../../types-and-interfaces/test-routes.js";
+import testRoute from "../../../../test-route.js";
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes;
 
@@ -23,7 +23,7 @@ let validateResult = (data: any) => {
 };
 
 const routeParams = {
-  path: `/v1/user/vendor/products`,
+  path: `/v1/user/vendor/store/:storeId/products`,
   statusCode: OK,
 };
 

@@ -14,7 +14,7 @@ import {
   testGetNonExistentUser,
 } from "../../helpers/user/index.js";
 import { StatusCodes } from "http-status-codes";
-import { emailLogin, logout } from "../../helpers/auth/index.js";
+import { emailLogin, logout, registration } from "../../helpers/auth/index.js";
 
 chai.use(chaiHttp).should();
 
@@ -38,6 +38,13 @@ const usersPasswordsUpdated = load(
 ) as UserData[];
 
 export default function (agent: ChaiHttp.Agent, index: number) {
+  const user = newUsers[index];
+
+  it("it should get an unauthorized error when trying to fetch the user", () =>
+    testDontGetUser(agent));
+
+  it("it should login user", () => emailLogin(agent, user, StatusCodes.OK));
+
   it("it should get the user's account", () => testGetUser(agent));
 
   const updatedUserInfo = usersInfoUpdated[index];
@@ -57,8 +64,9 @@ export default function (agent: ChaiHttp.Agent, index: number) {
 
   it("it should logout user", () => logout(agent));
 
-  const user = newUsers[index];
-
-  it("it should fail to login user", () =>
+  it("it should fail to login the deleted user", () =>
     emailLogin(agent, user, StatusCodes.UNAUTHORIZED));
+
+  it("it should register the user, for subsequent tests", () =>
+    registration(agent, user));
 }

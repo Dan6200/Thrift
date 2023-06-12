@@ -2,10 +2,8 @@ import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import { ProductSchemaDB } from "../../../../../../app-schema/products.js";
 import {
-  testRouteWithAgentAndData,
-  testRouteWithAgent,
-  testRouteWithAgentAndParams,
-  testRouteWithAgentDataAndParams,
+  testRouteNoData,
+  testRouteWithData,
 } from "../../../../../../types-and-interfaces/test-routes.js";
 import testRoute from "../../../../test-route.js";
 
@@ -23,44 +21,43 @@ let validateResult = (data: any) => {
 };
 
 const routeParams = {
-  path: `/v1/user/vendor/store/:storeId/products`,
   statusCode: OK,
 };
 
-const testCreateProduct = testRoute({
+const testCreateProduct = <testRouteWithData>testRoute({
   ...routeParams,
   verb: "post",
   statusCode: CREATED,
   checks: checkId,
-}) as testRouteWithAgentAndData;
+});
 
-const testGetAllProduct = testRoute({
+const testGetAllProduct = <testRouteNoData>testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResult,
-}) as testRouteWithAgent;
+});
 
-const testGetProduct = testRoute({
+const testGetProduct = <testRouteNoData>testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResult,
-}) as testRouteWithAgentAndParams;
+});
 
-const testUpdateProduct = testRoute({
+const testUpdateProduct = <testRouteWithData>testRoute({
   ...routeParams,
   verb: "put",
-}) as testRouteWithAgentDataAndParams;
+});
 
-const testDeleteProduct = testRoute({
+const testDeleteProduct = <testRouteNoData>testRoute({
   ...routeParams,
   verb: "delete",
-}) as testRouteWithAgentAndParams;
+});
 
-const testGetNonExistentProduct = testRoute({
+const testGetNonExistentProduct = <testRouteNoData>testRoute({
   ...routeParams,
   verb: "get",
   statusCode: NOT_FOUND,
-}) as testRouteWithAgentAndParams;
+});
 
 export {
   testCreateProduct,

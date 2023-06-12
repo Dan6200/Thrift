@@ -4,8 +4,8 @@ import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import { UserDataSchemaDB } from "../../../app-schema/users.js";
 import {
-  testRouteWithAgent,
-  testRouteWithAgentAndData,
+  testRouteWithData,
+  testRouteNoData,
 } from "../../../types-and-interfaces/test-routes.js";
 import testRoute from "../test-route.js";
 
@@ -19,45 +19,37 @@ let validateResult = (data: any) => {
   Joi.assert(userInfo, UserDataSchemaDB);
 };
 
-const routeParams = {};
-
 const testDontGetUser = testRoute({
   verb: "get",
   statusCode: UNAUTHORIZED,
-  path: "/v1/user",
-}) as testRouteWithAgent;
+}) as testRouteNoData;
 
 const testGetUser = testRoute({
   verb: "get",
   statusCode: OK,
   checks: validateResult,
-  path: "/v1/user",
-}) as testRouteWithAgent;
+}) as testRouteNoData;
 
 const testUpdateUser = testRoute({
   verb: "patch",
   statusCode: OK,
   checks: validateResult,
-  path: "/v1/user",
-}) as testRouteWithAgentAndData;
+}) as testRouteWithData;
 
 const testChangeUserPassword = testRoute({
   verb: "patch",
   statusCode: NO_CONTENT,
-  path: "/v1/user/password",
-}) as testRouteWithAgentAndData;
+}) as testRouteWithData;
 
 const testDeleteUser = testRoute({
   verb: "delete",
   statusCode: NO_CONTENT,
-  path: "/v1/user",
-}) as testRouteWithAgent;
+}) as testRouteNoData;
 
 const testGetNonExistentUser = testRoute({
   verb: "get",
   statusCode: NOT_FOUND,
-  path: "/v1/user",
-}) as testRouteWithAgent;
+}) as testRouteNoData;
 
 export {
   testGetUser,

@@ -2,10 +2,8 @@ import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import { ShippingInfoSchemaDB } from "../../../../app-schema/customer/shipping.js";
 import {
-  testRouteWithAgentAndData,
-  testRouteWithAgent,
-  testRouteWithAgentAndParams,
-  testRouteWithAgentDataAndParams,
+  testRouteWithData,
+  testRouteNoData,
 } from "../../../../types-and-interfaces/test-routes.js";
 import testRoute from "../../test-route.js";
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes;
@@ -37,36 +35,36 @@ const testCreateShipping = testRoute({
   verb: "post",
   statusCode: CREATED,
   checks: checkId,
-}) as testRouteWithAgentAndData;
+}) as testRouteWithData;
 
 const testGetAllShipping = testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResultList,
-}) as testRouteWithAgent;
+}) as testRouteNoData;
 
 const testGetShipping = testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResult,
-}) as testRouteWithAgentAndParams;
+}) as testRouteNoData;
 
 const testUpdateShipping = testRoute({
   ...routeParams,
   verb: "put",
-}) as testRouteWithAgentDataAndParams;
+}) as testRouteWithData;
 
 const testDeleteShipping = testRoute({
   ...routeParams,
   verb: "delete",
   statusCode: NO_CONTENT,
-}) as testRouteWithAgentAndParams;
+}) as testRouteNoData;
 
 const testGetNonExistentShipping = testRoute({
   ...routeParams,
   verb: "get",
   statusCode: NOT_FOUND,
-}) as testRouteWithAgentAndParams;
+}) as testRouteNoData;
 
 export {
   testCreateShipping,

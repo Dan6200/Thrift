@@ -1,7 +1,7 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
 import { StatusCodes } from "http-status-codes";
-import { testRouteWithAgent } from "../../../../types-and-interfaces/test-routes.js";
+import { testRouteNoData } from "../../../../types-and-interfaces/test-routes.js";
 import testRoute from "../../test-route.js";
 
 chai.use(chaiHttp).should();
@@ -14,31 +14,31 @@ const testCreateCustomer = testRoute({
   ...routeParams,
   verb: "post",
   statusCode: StatusCodes.CREATED,
-}) as testRouteWithAgent;
+}) as testRouteNoData;
 
 const testGetCustomer = testRoute({
   ...routeParams,
   verb: "get",
   statusCode: StatusCodes.OK,
-}) as testRouteWithAgent;
+}) as testRouteNoData;
 
 const testUpdateCustomer = testRoute({
   ...routeParams,
   verb: "patch",
   statusCode: StatusCodes.OK,
-}) as testRouteWithAgent;
+}) as testRouteNoData;
 
 const testDeleteCustomer = testRoute({
   ...routeParams,
   verb: "delete",
   statusCode: StatusCodes.NO_CONTENT,
-}) as testRouteWithAgent;
+}) as testRouteNoData;
 
 const testGetNonExistentCustomer = testRoute({
   ...routeParams,
   verb: "get",
   statusCode: StatusCodes.NOT_FOUND,
-}) as testRouteWithAgent;
+}) as testRouteNoData;
 
 export {
   testCreateCustomer,

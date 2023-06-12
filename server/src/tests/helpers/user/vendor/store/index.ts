@@ -1,6 +1,10 @@
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import { StoreSchemaDB } from "../../../../../app-schema/vendor/store.js";
+import {
+  testRouteNoData,
+  testRouteWithData,
+} from "../../../../../types-and-interfaces/test-routes.js";
 import testRoute from "../../../test-route.js";
 
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes;
@@ -23,7 +27,6 @@ let validateResult = (data: any) => {
 };
 
 const routeParams = {
-  path: `/v1/user/vendor/stores`,
   statusCode: OK,
 };
 
@@ -32,32 +35,32 @@ const testCreateStore = testRoute({
   verb: "post",
   statusCode: CREATED,
   checks: checkId,
-});
+}) as testRouteWithData;
 
-const testGetAllStore = testRoute({
+const testGetAllStore = <testRouteNoData>testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResultList,
 });
 
-const testGetStore = testRoute({
+const testGetStore = <testRouteNoData>testRoute({
   ...routeParams,
   verb: "get",
   checks: validateResult,
 });
 
-const testUpdateStore = testRoute({
+const testUpdateStore = <testRouteWithData>testRoute({
   ...routeParams,
   verb: "patch",
 });
 
-const testDeleteStore = testRoute({
+const testDeleteStore = <testRouteNoData>testRoute({
   ...routeParams,
   verb: "delete",
   statusCode: NO_CONTENT,
 });
 
-const testGetNonExistentStore = testRoute({
+const testGetNonExistentStore = <testRouteNoData>testRoute({
   ...routeParams,
   verb: "get",
   statusCode: NOT_FOUND,

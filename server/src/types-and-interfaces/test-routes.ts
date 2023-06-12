@@ -5,29 +5,12 @@ interface testRouteParams {
   statusCode: StatusCodes;
   checks?: (response: any) => void;
 }
-type testRouteWithAgent = (agent: ChaiHttp.Agent) => Promise<any>;
+type testRouteNoData = (agent: ChaiHttp.Agent, path: string) => Promise<any>;
 
-type testRouteWithAgentAndData = (
+type testRouteWithData = (
   agent: ChaiHttp.Agent,
-  params: string,
+  path: string,
   data: object
 ) => Promise<any>;
 
-type testRouteWithAgentAndParams = (
-  agent: ChaiHttp.Agent,
-  data: null
-) => Promise<any>;
-
-type testRouteWithAgentDataAndParams = (
-  agent: ChaiHttp.Agent,
-  data: object,
-  params: string
-) => Promise<any>;
-
-export {
-  testRouteParams,
-  testRouteWithAgent,
-  testRouteWithAgentAndData,
-  testRouteWithAgentAndParams,
-  testRouteWithAgentDataAndParams,
-};
+export { testRouteParams, testRouteNoData, testRouteWithData };

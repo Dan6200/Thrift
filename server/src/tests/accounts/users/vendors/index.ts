@@ -35,34 +35,41 @@ const updatedStoresData = <any[]>(
 );
 
 export default function (agent: ChaiHttp.Agent, index: number) {
+  const path = "v1/user/vendor";
+  const storesPath = path + "/store";
   it("it should create a vendor account for the user", () =>
-    testCreateVendor(agent));
+    testCreateVendor(agent, path));
 
-  it("it should get the user's vendor account", () => testGetVendor(agent));
+  it("it should get the user's vendor account", () =>
+    testGetVendor(agent, path));
 
   it("should create a store for the vendor", () =>
-    testCreateStore(agent, storesData[index]));
+    testCreateStore(agent, storesPath, storesData[index]));
 
   it("should fetch the newly created store", () =>
-    testCreateStore(agent, storesData[index]).then(({ store_id }) =>
-      testGetStore(agent, null, "/" + store_id)
+    testCreateStore(agent, storesPath, storesData[index]).then(({ store_id }) =>
+      testGetStore(agent, storesPath + "/" + store_id)
     ));
 
   it("should update the store", () =>
-    testCreateStore(agent, storesData[index]).then(({ store_id }) =>
-      testUpdateStore(agent, updatedStoresData[index], "/" + store_id)
+    testCreateStore(agent, storesPath, storesData[index]).then(({ store_id }) =>
+      testUpdateStore(
+        agent,
+        storesPath + "/" + store_id,
+        updatedStoresData[index]
+      )
     ));
 
   it("should delete the created store and fail to retrieve it", () =>
-    testCreateStore(agent, storesData[index]).then(({ store_id }) =>
-      testDeleteStore(agent, null, "/" + store_id).then(() =>
-        testGetNonExistentStore(agent, null, "/" + store_id)
+    testCreateStore(agent, storesPath, storesData[index]).then(({ store_id }) =>
+      testDeleteStore(agent, storesPath + "/" + store_id).then(() =>
+        testGetNonExistentStore(agent, storesPath + "/" + store_id)
       )
     ));
 
   it("it should delete the user's vendor account", () =>
-    testDeleteVendor(agent));
+    testDeleteVendor(agent, path));
 
   it("it should fail to get the user's vendor account", () =>
-    testGetNonExistentVendor(agent));
+    testGetNonExistentVendor(agent, path));
 }

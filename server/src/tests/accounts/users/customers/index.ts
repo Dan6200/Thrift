@@ -36,45 +36,63 @@ const updatedShippingInfoList = <any[]>(
 );
 
 export default function (agent: ChaiHttp.Agent, index: number) {
+  const path = "v1/user/customer";
+
   it("it should create a customer account for the user", () =>
-    testCreateCustomer(agent, "v1/user/customer"));
+    testCreateCustomer(agent, path));
 
   it("it should get the user's customer account", () =>
-    testGetCustomer(agent, "v1/user/customer"));
+    testGetCustomer(agent, path));
 
   const shippingInfo = shippingInfoList[index];
-  const path = "v1/user/customer/shipping";
+  const shippingPath = "v1/user/customer/shipping";
 
   it(`it should add shipping addresses for the customer then retrieve it`, async () => {
-    const { address_id } = await testCreateShipping(agent, path, shippingInfo);
-    await testGetShipping(agent, path + "/" + address_id);
+    const { address_id } = await testCreateShipping(
+      agent,
+      shippingPath,
+      shippingInfo
+    );
+    await testGetShipping(agent, shippingPath + "/" + address_id);
   });
 
   const updatedShippingInfo = updatedShippingInfoList[index];
 
   it(`it should add a shipping addresses for the customer then update it`, async () => {
-    const { address_id } = await testCreateShipping(agent, path, shippingInfo);
+    const { address_id } = await testCreateShipping(
+      agent,
+      shippingPath,
+      shippingInfo
+    );
     await testUpdateShipping(
       agent,
-      path + "/" + address_id,
+      shippingPath + "/" + address_id,
       updatedShippingInfo
     );
   });
 
   it(`it should add a shipping addresses for the customer then delete it`, async () => {
-    const { address_id } = await testCreateShipping(agent, path, shippingInfo);
-    await testDeleteShipping(agent, path + "/" + address_id);
+    const { address_id } = await testCreateShipping(
+      agent,
+      shippingPath,
+      shippingInfo
+    );
+    await testDeleteShipping(agent, shippingPath + "/" + address_id);
   });
 
   it(`it should fail to retrieve the deleted shipping information`, async () => {
-    const { address_id } = await testCreateShipping(agent, path, shippingInfo);
-    await testDeleteShipping(agent, `${path}/${address_id}`);
-    await testGetNonExistentShipping(agent, `${path}/${address_id}`);
+    const { address_id } = await testCreateShipping(
+      agent,
+      shippingPath,
+      shippingInfo
+    );
+    await testDeleteShipping(agent, `${shippingPath}/${address_id}`);
+    await testGetNonExistentShipping(agent, `${shippingPath}/${address_id}`);
   });
 
   it("it should delete the user's customer account", () =>
-    testDeleteCustomer(agent));
+    testDeleteCustomer(agent, path));
 
   it("it should fail to get the user's customer account", () =>
-    testGetNonExistentCustomer(agent));
+    testGetNonExistentCustomer(agent, path));
 }

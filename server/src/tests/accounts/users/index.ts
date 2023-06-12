@@ -38,30 +38,30 @@ const usersPasswordsUpdated = load(
 ) as UserData[];
 
 export default function (agent: ChaiHttp.Agent, index: number) {
-  const user = newUsers[index];
+  const user = newUsers[index],
+    path = "/v1/user";
 
   it("it should get an unauthorized error when trying to fetch the user", () =>
-    testDontGetUser(agent, "v1/user"));
+    testDontGetUser(agent, path));
 
   it("it should login user", () => emailLogin(agent, user, StatusCodes.OK));
 
-  it("it should get the user's account", () => testGetUser(agent, "v1/user"));
+  it("it should get the user's account", () => testGetUser(agent, path));
 
   const updatedUserInfo = usersInfoUpdated[index];
 
   it("it should update the user's account", () =>
-    testUpdateUser(agent, "v1/user", updatedUserInfo));
+    testUpdateUser(agent, path, updatedUserInfo));
 
   const updatedUserPassword = usersPasswordsUpdated[index];
 
   it("it should change the user's password", () =>
-    testChangeUserPassword(agent, "v1/user/password", updatedUserPassword));
+    testChangeUserPassword(agent, path + "/password", updatedUserPassword));
 
-  it("it should delete the user's account", () =>
-    testDeleteUser(agent, "v1/user"));
+  it("it should delete the user's account", () => testDeleteUser(agent, path));
 
   it("it should fail to get user's account", () =>
-    testGetNonExistentUser(agent, "v1/user"));
+    testGetNonExistentUser(agent, path));
 
   it("it should logout user", () => logout(agent));
 

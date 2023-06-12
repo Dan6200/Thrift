@@ -36,7 +36,7 @@ const updatedShippingInfoList = <any[]>(
 );
 
 export default function (agent: ChaiHttp.Agent, index: number) {
-  const path = "v1/user/customer";
+  const path = "/v1/user/customer";
 
   it("it should create a customer account for the user", () =>
     testCreateCustomer(agent, path));
@@ -45,7 +45,7 @@ export default function (agent: ChaiHttp.Agent, index: number) {
     testGetCustomer(agent, path));
 
   const shippingInfo = shippingInfoList[index];
-  const shippingPath = "v1/user/customer/shipping";
+  const shippingPath = path + "/shipping-info";
 
   it(`it should add shipping addresses for the customer then retrieve it`, async () => {
     const { address_id } = await testCreateShipping(

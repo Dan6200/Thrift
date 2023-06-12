@@ -1,13 +1,24 @@
 import { readFileSync } from "fs";
 import { load } from "js-yaml";
 import { fileURLToPath } from "url";
+import { testCreateVendor } from "../../../../helpers/user/vendor/index.js";
+import { testCreateStore } from "../../../../helpers/user/vendor/store/index.js";
 import {
   testCreateProduct,
   testGetAllProduct,
   testGetProduct,
   testDeleteProduct,
   testGetNonExistentProduct,
+  testUpdateProduct,
 } from "../../../../helpers/user/vendor/store/products/index.js";
+
+const storesDataYaml = fileURLToPath(
+  new URL(
+    "../../../../data/users/vendors/stores/store-data.yaml",
+    import.meta.url
+  )
+);
+const storesData = <any[]>load(readFileSync(storesDataYaml, "utf8"));
 
 const productData = <any[]>(
   load(
@@ -23,33 +34,33 @@ const productData = <any[]>(
   )
 );
 
-// const updatedProductData = <any[]>(
-//   load(
-//     readFileSync(
-//       fileURLToPath(
-//         new URL(
-//           "../../../../data/users/vendors/stores/products/updated-product",
-//           import.meta.url
-//         )
-//       ),
-//       "utf8"
-//     )
-//   )
-// );
+const updatedProductData = <any[]>(
+  load(
+    readFileSync(
+      fileURLToPath(
+        new URL(
+          "../../../../data/users/vendors/stores/products/updated-product.yaml",
+          import.meta.url
+        )
+      ),
+      "utf8"
+    )
+  )
+);
 
-// const productMediaData = <any[]>(
-//   load(
-//     readFileSync(
-//       fileURLToPath(
-//         new URL(
-//           "../../../../data/users/vendors/stores/products/product-media.yaml",
-//           import.meta.url
-//         )
-//       ),
-//       "utf8"
-//     )
-//   )
-// );
+const productMediaData = <any[]>(
+  load(
+    readFileSync(
+      fileURLToPath(
+        new URL(
+          "../../../../data/users/vendors/stores/products/media/media.yaml",
+          import.meta.url
+        )
+      ),
+      "utf8"
+    )
+  )
+);
 
 // const updatedProductMediaData = <any[]>(
 //   load(
@@ -66,25 +77,79 @@ const productData = <any[]>(
 // );
 
 export default function (agent: ChaiHttp.Agent, index: number) {
+  const path = "/v1/user/vendor/stores";
+
+  it("it should create a vendor account for the user", () =>
+    testCreateVendor(agent, "/v1/user/vendor/"));
+
   it("it should create a product for sale", () =>
-    testCreateProduct(agent, productData[index]));
+    testCreateStore(agent, path, storesData[index]).then(({ store_id }) =>
+      testCreateProduct(
+        agent,
+        `${path}/${store_id}/products`,
+        productData[index]
+      )
+    ));
 
   it("it should retrieve all products a vendor has for sale", () =>
-    testGetAllProduct(agent));
+    testCreateStore(agent, path, storesData[index]).then(({ store_id }) =>
+      testCreateProduct(
+        agent,
+        `${path}/${store_id}/products`,
+        productData[index]
+      ).then(({ product_id }) =>
+        testGetAllProduct(agent, `${path}/${store_id}/products/${product_id}`)
+      )
+    ));
 
   it("it should retrieve a specific product a vendor has for sale", () =>
-    testCreateProduct(agent, productData[index]).then(({ product_id }) =>
-      testGetProduct(agent, null, `/${product_id}`)
+    testCreateStore(agent, path, storesData[index]).then(({ store_id }) =>
+      testCreateProduct(
+        agent,
+        `${path}/${store_id}/products`,
+        productData[index]
+      ).then(({ product_id }) =>
+        testGetProduct(agent, `${path}/${store_id}/products/${product_id}`)
+      )
+    ));
+
+  it("it should update a specific product a vendor has for sale", () =>
+    testCreateStore(agent, path, storesData[index]).then(({ store_id }) =>
+      testCreateProduct(
+        agent,
+        `${path}/${store_id}/products`,
+        productData[index]
+      ).then(({ product_id }) =>
+        testUpdateProduct(
+          agent,
+          `${path}/${store_id}/products/${product_id}`,
+          updatedProductData
+        )
+      )
     ));
 
   it("it should delete a product a vendor has for sale", () =>
-    testCreateProduct(agent, productData[index]).then(({ product_id }) =>
-      testDeleteProduct(agent, null, `/${product_id}`)
+    testCreateStore(agent, path, storesData[index]).then(({ store_id }) =>
+      testCreateProduct(
+        agent,
+        `${path}/${store_id}/products`,
+        productData[index]
+      ).then(({ product_id }) =>
+        testDeleteProduct(agent, `${path}/${store_id}/products/${product_id}`)
+      )
     ));
 
   it("it should fail to retrieve a deleted product", async () => {
-    const { product_id } = await testCreateProduct(agent, productData[index]);
-    testDeleteProduct(agent, null, `/${product_id}`);
-    testGetNonExistentProduct(agent, null, `/${product_id}`);
+    const { store_id } = await testCreateStore(agent, path, storesData[index]);
+    const { product_id } = await testCreateProduct(
+      agent,
+      `${path}/${store_id}/products`,
+      productData[index]
+    );
+    testDeleteProduct(agent, `${path}/${store_id}/products/${product_id}`);
+    testGetNonExistentProduct(
+      agent,
+      `${path}/${store_id}/products/${product_id}`
+    );
   });
 }

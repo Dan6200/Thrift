@@ -45,7 +45,7 @@ const testGetProduct = <testRouteNoData>testRoute({
 
 const testUpdateProduct = <testRouteWithData>testRoute({
   ...routeParams,
-  verb: "put",
+  verb: "patch",
 });
 
 const testDeleteProduct = <testRouteNoData>testRoute({

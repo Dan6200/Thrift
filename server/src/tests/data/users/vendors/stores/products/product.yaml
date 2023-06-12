@@ -21,16 +21,6 @@
     list_price: 35,000
     net_price: 30,000
     quantity_available: 17
-    media:
-      - name: smartwatch1
-        path: './smartwatch-testing1.jpg'
-        description: An Oraimo smartwatch
-      - name: smartwatch2
-        path: './smartwatch-testing2.jpg'
-        description: An Oraimo smartwatch
-      - name: smartwatch2
-        path: './smartwatch-testing2.jpg'
-        description: An Oraimo smartwatch
 
 - title: >
     Smart Watch for Men Women, Fitness Watch 1.69" Touch Screen Smartwatch,
@@ -55,16 +45,6 @@
     list_price: 35,000
     net_price: 30,000
     quantity_available: 17
-    media:
-      - name: smartwatch1
-        path: './smartwatch-testing1.jpg'
-        description: An Oraimo smartwatch
-      - name: smartwatch2
-        path: './smartwatch-testing2.jpg'
-        description: An Oraimo smartwatch
-      - name: smartwatch2
-        path: './smartwatch-testing2.jpg'
-        description: An Oraimo smartwatch
 
 - title: >
     Smart Watch for Men Women, Fitness Watch 1.69" Touch Screen Smartwatch,
@@ -89,13 +69,3 @@
     list_price: 35,000
     net_price: 30,000
     quantity_available: 17
-    media:
-      - name: smartwatch1
-        path: './smartwatch-testing1.jpg'
-        description: An Oraimo smartwatch
-      - name: smartwatch2
-        path: './smartwatch-testing2.jpg'
-        description: An Oraimo smartwatch
-      - name: smartwatch2
-        path: './smartwatch-testing2.jpg'
-        description: An Oraimo smartwatch

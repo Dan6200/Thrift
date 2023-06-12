@@ -35,8 +35,8 @@ const updatedStoresData = <any[]>(
 );
 
 export default function (agent: ChaiHttp.Agent, index: number) {
-  const path = "v1/user/vendor";
-  const storesPath = path + "/store";
+  const path = "/v1/user/vendor";
+  const storesPath = path + "/stores";
   it("it should create a vendor account for the user", () =>
     testCreateVendor(agent, path));
 

@@ -1,0 +1,11 @@
+- name: smartwatch1
+  path: "./smartwatch-testing1.jpg"
+  description: An Oraimo smartwatch
+
+- name: smartwatch2
+  path: "./smartwatch-testing2.jpg"
+  description: An Oraimo smartwatch
+
+- name: smartwatch2
+  path: "./smartwatch-testing2.jpg"
+  description: An Oraimo smartwatch

@@ -11,6 +11,17 @@ const ProductSchemaReq = joi
   })
   .required();
 
+const ProductSchemaUpdateReq = joi
+  .object({
+    title: joi.string(),
+    category: joi.string(),
+    description: joi.string(),
+    list_price: joi.number(),
+    net_price: joi.number(),
+    quantity_available: joi.number(),
+  })
+  .required();
+
 const ProductSchemaDB = joi
   .object({
     product_id: joi.string().required(),
@@ -20,9 +31,12 @@ const ProductSchemaDB = joi
     list_price: joi.number().required(),
     net_price: joi.number().required(),
     quantity_available: joi.number().required(),
-    shop_id: joi.string().optional().allow(null),
+    store_id: joi.string().required(),
     vendor_id: joi.string().required(),
+    list_date: joi
+      .alternatives()
+      .try(joi.date().required(), joi.string().required()),
   })
   .required();
 
-export { ProductSchemaReq, ProductSchemaDB };
+export { ProductSchemaReq, ProductSchemaUpdateReq, ProductSchemaDB };

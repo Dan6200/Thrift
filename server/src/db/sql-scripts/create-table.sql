@@ -1,4 +1,5 @@
-drop table if exists user_accounts cascade;
+drop schema if exists public cascade;
+create schema if not exists public;
 
 create table if not exists user_accounts (
 	user_id					bigserial 			primary key,
@@ -14,13 +15,11 @@ create table if not exists user_accounts (
 	check (current_date - dob > 12)
 );
 
-drop table if exists customers cascade;
 
 create table if not exists customers (
 	customer_id			bigint 		primary key	references	user_accounts	on	delete	cascade
 );
 
-drop table if exists shipping_info cascade;
 
 create table if not exists shipping_info (
 	address_id				bigserial		primary key,
@@ -35,19 +34,16 @@ create table if not exists shipping_info (
 	delivery_instructions	varchar
 );
 
-drop table if exists primary_shipping_info cascade;
 
 create table if not exists primary_shipping_info (
 	address_id 			bigint 			primary key 	references 	shipping_info 	on 	delete cascade
 );
 
-drop table if exists vendors cascade;
 
 create table if not exists vendors (
 	vendor_id		bigserial 		primary key	references	user_accounts	on	delete	cascade
 );
 
-drop table if exists stores cascade;
 
 create table if not exists stores (
 	store_id				bigserial			primary key,	
@@ -57,7 +53,6 @@ create table if not exists stores (
 	date_created			date				not null	default		current_date
 );
 
-drop table if exists products cascade;
 
 create table if not exists products (
 	product_id			bigserial			primary key,
@@ -66,12 +61,12 @@ create table if not exists products (
 	description			varchar,
 	list_price			numeric(19,4),
 	net_price			numeric(19,4),
-	vendor_id 			bigint				not null 		references	vendors	on	delete	cascade,
+	vendor_id 			bigint				not null,
+	store_id			bigint 				not null 		references 	stores on delete cascade,
 	list_date			date				not null		default		current_date,
 	quantity_available	int					not null
 );
 
-drop table if exists product_media cascade;
 
 create table if not exists product_media (
 	product_id					bigint				primary key		references	products	on	delete	cascade,
@@ -80,7 +75,6 @@ create table if not exists product_media (
 	description					varchar
 );
 
-drop table if exists shopping_cart cascade;
 
 create table if not exists shopping_cart (
 	cart_id				bigserial			primary key,
@@ -88,7 +82,6 @@ create table if not exists shopping_cart (
 	made				timestamptz		not null	default	now()
 );
 
-drop table if exists shopping_cart_item cascade;
 
 create table if not exists shopping_cart_item (
 	item_id					bigserial			primary	key,
@@ -97,7 +90,6 @@ create table if not exists shopping_cart_item (
 	product_quantity		int				not null		check (product_quantity > 0)
 );
 
-drop table if exists transaction cascade;
 
 create table if not exists transaction (
 	transaction_id				bigserial			primary	key,
@@ -108,7 +100,6 @@ create table if not exists transaction (
 	check (customer_id <> vendor_id)
 );
 
-drop table if exists purchases cascade;
 
 create table if not exists purchases (
 	item_id					bigserial		primary	key,
@@ -117,14 +108,12 @@ create table if not exists purchases (
 	product_quantity		int				not null		default	1	check (product_quantity > 0)
 );
 
-drop table if exists reversed_transaction cascade;
 
 create table if not exists reversed_transaction (
 	transaction_id			bigint			primary	key	references	transaction		on	delete	cascade,
 	reverse_timestamp		timestamptz		not null	default	now()	unique
 );
 
-drop table if exists product_reviews cascade;
 
 create table if not exists product_reviews (
 	product_id				bigint				primary key references	products		on	delete	cascade,
@@ -134,7 +123,6 @@ create table if not exists product_reviews (
 	customer_remark			varchar
 );
 
-drop table if exists vendor_reviews cascade;
 
 create table if not exists vendor_reviews (
 	vendor_id				bigint				primary key 	references	vendors on delete cascade,
@@ -144,7 +132,6 @@ create table if not exists vendor_reviews (
 	customer_remark			varchar
 );
 
-drop table if exists customer_reviews cascade;
 
 create table if not exists customer_reviews (
 	customer_id				bigint				primary key 	references	customers on delete cascade,

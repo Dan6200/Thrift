@@ -46,11 +46,9 @@ export default {
       "\nquery result",
       util.inspect(
         {
-          text,
-          params,
-          duration,
-          rows: res.rowCount,
+          duration: `${duration}ms`,
           result: res.rows,
+          rows: res.rowCount,
         },
         false,
         null,

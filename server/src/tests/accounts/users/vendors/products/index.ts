@@ -1,6 +1,8 @@
+import { log } from "console";
 import { readFileSync } from "fs";
 import { load } from "js-yaml";
 import { fileURLToPath } from "url";
+import db from "../../../../../db/index.js";
 import { testCreateVendor } from "../../../../helpers/user/vendor/index.js";
 import { testCreateStore } from "../../../../helpers/user/vendor/store/index.js";
 import {
@@ -77,6 +79,8 @@ const productMediaData = <any[]>(
 // );
 
 export default function (agent: ChaiHttp.Agent, index: number) {
+  beforeEach(async () => await db.query("delete from stores"));
+
   const path = "/v1/user/vendor/stores";
 
   it("it should create a vendor account for the user", () =>
@@ -123,7 +127,7 @@ export default function (agent: ChaiHttp.Agent, index: number) {
         testUpdateProduct(
           agent,
           `${path}/${store_id}/products/${product_id}`,
-          updatedProductData
+          updatedProductData[index]
         )
       )
     ));

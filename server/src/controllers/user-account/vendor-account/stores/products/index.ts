@@ -1,7 +1,10 @@
 import assert from "assert";
 import { log } from "console";
 import { StatusCodes } from "http-status-codes";
-import { ProductSchemaReq } from "../../../../../app-schema/products.js";
+import {
+  ProductSchemaReq,
+  ProductSchemaUpdateReq,
+} from "../../../../../app-schema/products.js";
 import db from "../../../../../db/index.js";
 import BadRequestError from "../../../../../errors/bad-request.js";
 import {
@@ -20,7 +23,7 @@ type ResponseData = {
 };
 
 const createQuery = [
-  async ({ reqData, params }) => {
+  async ({ reqData, params, userId: vendorId }) => {
     // this makes sure the Store exists before accessing the /user/stores/products endpoint
     const { storeId } = params;
     const dbQuery = await db.query(
@@ -30,13 +33,13 @@ const createQuery = [
     if (!dbQuery.rowCount)
       throw new BadRequestError("Store does not exist. Create a store");
     assert(storeId === dbQuery.rows[0].store_id);
-    log(reqData);
     return await db.query(
       `${Insert("products", [
         ...Object.keys(reqData),
         "store_id",
+        "vendor_id",
       ])} returning product_id`,
-      [...Object.values(reqData), storeId]
+      [...Object.values(reqData), storeId, vendorId]
     );
   },
 ];
@@ -65,11 +68,11 @@ const readAllQuery = [
 ];
 
 const readQuery = [
-  async ({ params, userId }) => {
+  async ({ params }) => {
     let { storeId, productId } = params;
     const dbQuery = await db.query(
       "select store_id from stores where store_id=$1",
-      [userId]
+      [storeId]
     );
     if (!dbQuery.rowCount)
       throw new BadRequestError("Store does not exist. Create a store");
@@ -82,11 +85,11 @@ const readQuery = [
 ];
 
 const updateQuery = [
-  async ({ params, reqData, userId }) => {
+  async ({ params, reqData }) => {
     const { productId, storeId } = params;
     const dbQuery = await db.query(
       "select store_id from stores where store_id=$1",
-      [userId]
+      [storeId]
     );
     if (!dbQuery.rowCount)
       throw new BadRequestError("Store does not exist. Create a store");
@@ -96,10 +99,9 @@ const updateQuery = [
       "product_id",
       Object.keys(reqData)
     );
-    return await db.query(updateCommand + " and store_id=$2", [
+    return await db.query(updateCommand, [
       productId,
       ...Object.values(reqData),
-      storeId,
     ]);
   },
 ];
@@ -109,7 +111,7 @@ const deleteQuery = [
     const { productId, storeId } = params;
     const dbQuery = await db.query(
       "select store_id from stores where store_id=$1",
-      [userId]
+      [storeId]
     );
     if (!dbQuery.rowCount)
       throw new BadRequestError("Store does not exist. Create a store");
@@ -123,6 +125,15 @@ const deleteQuery = [
 
 let validateBody = (data: object): object => {
   const validData = ProductSchemaReq.validate(data);
+  if (validData.error)
+    throw new BadRequestError(
+      "Invalid Data Schema: " + validData.error.message
+    );
+  return validData.value;
+};
+
+let validateBodyPatchUpdate = (data: object): object => {
+  const validData = ProductSchemaUpdateReq.validate(data);
   if (validData.error)
     throw new BadRequestError(
       "Invalid Data Schema: " + validData.error.message
@@ -178,7 +189,14 @@ let getProduct = processRoute(
 let updateProduct = processRoute(
   updateQuery,
   { status: OK },
-  undefined,
+  validateBodyPatchUpdate,
+  validateResult
+);
+
+let updateProductBulkEdit = processRoute(
+  updateQuery,
+  { status: OK },
+  validateBody,
   validateResult
 );
 
@@ -194,5 +212,6 @@ export {
   getAllProducts,
   getProduct,
   updateProduct,
+  updateProductBulkEdit,
   deleteProduct,
 };

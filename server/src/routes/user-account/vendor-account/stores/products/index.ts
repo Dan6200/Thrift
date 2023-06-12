@@ -7,16 +7,19 @@ import {
   getProduct,
   updateProduct,
   deleteProduct,
+  updateProductBulkEdit,
 } from "../../../../../controllers/user-account/vendor-account/stores/products/index.js";
 import { uploadProductMedia } from "../../../../../controllers/user-account/vendor-account/stores/products/media.js";
 const upload = multer({ storage: mediaStorage });
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.route("/").post(createProduct).get(getAllProducts);
 router
   .route("/:productId")
   .get(getProduct)
-  .put(updateProduct)
+  .patch(updateProduct)
+  // allow put for bulk edits for updating product
+  .put(updateProductBulkEdit)
   .delete(deleteProduct);
 
 router

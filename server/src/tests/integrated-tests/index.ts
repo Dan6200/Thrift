@@ -10,9 +10,7 @@ import testVendorAccount from "../accounts/users/vendors/index.js";
 import testProducts from "../accounts/users/vendors/products/index.js";
 
 export default function (index: number): void {
-  before(async () => {
-    await db.query("delete from user_accounts");
-  });
+  before(async () => await db.query("delete from user_accounts"));
   // Testing the register route
   describe(`Testing typical user actions`, async () => {
     const url = "https://thrift-production.up.railway.app";

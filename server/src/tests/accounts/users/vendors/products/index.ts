@@ -7,7 +7,7 @@ import { testCreateVendor } from "../../../../helpers/user/vendor/index.js";
 import { testCreateStore } from "../../../../helpers/user/vendor/store/index.js";
 import {
   testCreateProduct,
-  testGetAllProduct,
+  testGetAllProducts,
   testGetProduct,
   testDeleteProduct,
   testGetNonExistentProduct,
@@ -50,7 +50,7 @@ const updatedProductData = <any[]>(
   )
 );
 
-const productMediaData = <any[]>(
+const { productMediaData, updatedProductMediaData } = <any>(
   load(
     readFileSync(
       fileURLToPath(
@@ -101,9 +101,7 @@ export default function (agent: ChaiHttp.Agent, index: number) {
         agent,
         `${path}/${store_id}/products`,
         productData[index]
-      ).then(({ product_id }) =>
-        testGetAllProduct(agent, `${path}/${store_id}/products/${product_id}`)
-      )
+      ).then(() => testGetAllProducts(agent, `${path}/${store_id}/products`))
     ));
 
   it("it should retrieve a specific product a vendor has for sale", () =>
@@ -150,8 +148,11 @@ export default function (agent: ChaiHttp.Agent, index: number) {
       `${path}/${store_id}/products`,
       productData[index]
     );
-    testDeleteProduct(agent, `${path}/${store_id}/products/${product_id}`);
-    testGetNonExistentProduct(
+    await testDeleteProduct(
+      agent,
+      `${path}/${store_id}/products/${product_id}`
+    );
+    await testGetNonExistentProduct(
       agent,
       `${path}/${store_id}/products/${product_id}`
     );

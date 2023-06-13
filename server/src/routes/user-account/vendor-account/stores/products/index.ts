@@ -22,11 +22,12 @@ router
   .put(updateProductBulkEdit)
   .delete(deleteProduct);
 
+const uploadLimit = 6;
 router
   .route("/:productId/media")
-  .post(upload.single("product-media"), uploadProductMedia)
-  .get()
-  .put()
-  .delete();
+  .post(upload.array("product-media", uploadLimit), uploadProductMedia);
+// .get(getProductMedia)
+// .put(updateProductMedia)
+// .delete(deleteProductMedia);
 
 export default router;

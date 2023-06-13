@@ -26,13 +26,11 @@ const createQuery = [
   async ({ reqData, params, userId: vendorId }) => {
     // this makes sure the Store exists before accessing the /user/stores/products endpoint
     const { storeId } = params;
-    const dbQuery = await db.query(
-      "select store_id from stores where store_id=$1",
-      [storeId]
-    );
+    const dbQuery = await db.query("select 1 from stores where store_id=$1", [
+      storeId,
+    ]);
     if (!dbQuery.rowCount)
       throw new BadRequestError("Store does not exist. Create a store");
-    assert(storeId === dbQuery.rows[0].store_id);
     return await db.query(
       `${Insert("products", [
         ...Object.keys(reqData),
@@ -48,15 +46,13 @@ const readAllQuery = [
   async ({ query, limit, offset, params }) => {
     let { sort } = query;
     const { storeId } = params;
-    const dbQuery = await db.query(
-      "select store_id from stores where store_id=$1",
-      [storeId]
-    );
+    const dbQuery = await db.query("select 1 from stores where store_id=$1", [
+      storeId,
+    ]);
     if (!dbQuery.rowCount)
       throw new BadRequestError("Store does not exist. Create a store");
-    assert(storeId === dbQuery.rows[0].store_id);
     // TODO: you may not need to store anything except the public_id of image in db
-    let queryString = `select select products.*, product_media.filepath from products inner join product_media using (product_id) where store_id=$1`;
+    let queryString = `select products.*, (select json_agg(media) from (select * from product_media where product_id=products.product_id) as media) as media from products where store_id=$1`;
     if (sort) {
       queryString += ` ${handleSortQuery(sort)}`;
     }
@@ -70,16 +66,14 @@ const readAllQuery = [
 const readQuery = [
   async ({ params }) => {
     let { storeId, productId } = params;
-    const dbQuery = await db.query(
-      "select store_id from stores where store_id=$1",
-      [storeId]
-    );
+    const dbQuery = await db.query("select 1 from stores where store_id=$1", [
+      storeId,
+    ]);
     if (!dbQuery.rowCount)
       throw new BadRequestError("Store does not exist. Create a store");
-    assert(storeId === dbQuery.rows[0].store_id);
     return await db.query(
-      `select * from products where product_id=$1 and store_id=$2`,
-      [productId, storeId]
+      `select products.*, (select json_agg(media) from (select * from product_media where product_id=$1) as media) as media from products where product_id=$1`,
+      [productId]
     );
   },
 ];
@@ -87,13 +81,11 @@ const readQuery = [
 const updateQuery = [
   async ({ params, reqData }) => {
     const { productId, storeId } = params;
-    const dbQuery = await db.query(
-      "select store_id from stores where store_id=$1",
-      [storeId]
-    );
+    const dbQuery = await db.query("select 1 from stores where store_id=$1", [
+      storeId,
+    ]);
     if (!dbQuery.rowCount)
       throw new BadRequestError("Store does not exist. Create a store");
-    assert(storeId === dbQuery.rows[0].store_id);
     const updateCommand = Update(
       "products",
       "product_id",
@@ -107,7 +99,7 @@ const updateQuery = [
 ];
 
 const deleteQuery = [
-  async ({ params, userId }) => {
+  async ({ params }) => {
     const { productId, storeId } = params;
     const dbQuery = await db.query(
       "select store_id from stores where store_id=$1",

@@ -33,6 +33,7 @@ const ProductSchemaDB = joi
     quantity_available: joi.number().required(),
     store_id: joi.string().required(),
     vendor_id: joi.string().required(),
+    media: joi.object().allow(null),
     list_date: joi
       .alternatives()
       .try(joi.date().required(), joi.string().required()),

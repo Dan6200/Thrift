@@ -20,6 +20,10 @@ let validateResult = (data: any) => {
   Joi.assert(productInfo, ProductSchemaDB);
 };
 
+let validateResultList = (data: any) => {
+  validateResult(data[0]);
+};
+
 const routeParams = {
   statusCode: OK,
 };
@@ -31,10 +35,10 @@ const testCreateProduct = <testRouteWithData>testRoute({
   checks: checkId,
 });
 
-const testGetAllProduct = <testRouteNoData>testRoute({
+const testGetAllProducts = <testRouteNoData>testRoute({
   ...routeParams,
   verb: "get",
-  checks: validateResult,
+  checks: validateResultList,
 });
 
 const testGetProduct = <testRouteNoData>testRoute({
@@ -61,7 +65,7 @@ const testGetNonExistentProduct = <testRouteNoData>testRoute({
 
 export {
   testCreateProduct,
-  testGetAllProduct,
+  testGetAllProducts,
   testGetProduct,
   testUpdateProduct,
   testDeleteProduct,

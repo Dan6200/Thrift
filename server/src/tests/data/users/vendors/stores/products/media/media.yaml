@@ -1,25 +1,47 @@
 productMediaData:
-  - name: smartwatch1
-    path: "./smartwatch-testing1.jpg"
-    description: An Oraimo smartwatch
+  - - name: smartwatch1
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing3.jpg"
+      description: An Oraimo smartwatch
 
-  - name: smartwatch2
-    path: "./smartwatch-testing2.jpg"
-    description: An Oraimo smartwatch
+    - name: smartwatch2
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing1.jpg"
+      description: An Oraimo smartwatch
 
-  - name: smartwatch2
-    path: "./smartwatch-testing2.jpg"
-    description: An Oraimo smartwatch
+    - name: smartwatch2
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing2.jpg"
+      description: An Oraimo smartwatch
 
-updatedProductMediaData:
-  - name: smartwatch1
-    path: "./smartwatch-testing1.jpg"
-    description: An Oraimo smartwatch
+    - name: smartwatch1
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing3.jpg"
+      description: An Oraimo smartwatch
 
-  - name: smartwatch2
-    path: "./smartwatch-testing2.jpg"
-    description: An Oraimo smartwatch
+    - name: smartwatch2
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing1.jpg"
+      description: An Oraimo smartwatch
 
-  - name: smartwatch2
-    path: "./smartwatch-testing2.jpg"
-    description: An Oraimo smartwatch
+    - name: smartwatch2
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing2.jpg"
+      description: An Oraimo smartwatch
+    - name: smartwatch1
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing3.jpg"
+      description: An Oraimo smartwatch
+
+  - - name: smartwatch2
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing1.jpg"
+      description: An Oraimo smartwatch
+
+    - name: smartwatch2
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing2.jpg"
+      description: An Oraimo smartwatch
+
+    - name: smartwatch1
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing3.jpg"
+      description: An Oraimo smartwatch
+
+    - name: smartwatch2
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing1.jpg"
+      description: An Oraimo smartwatch
+
+    - name: smartwatch2
+      path: "/home/darealestniqqa/dev_work/thrift/server/src/tests/data/users/vendors/stores/products/media/smartwatch-testing2.jpg"
+      description: An Oraimo smartwatch

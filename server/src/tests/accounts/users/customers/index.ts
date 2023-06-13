@@ -1,9 +1,4 @@
 import "express-async-errors";
-import chai from "chai";
-import chaiHttp from "chai-http";
-import { fileURLToPath } from "url";
-import { readFileSync } from "fs";
-import { load } from "js-yaml";
 import {
   testCreateCustomer,
   testGetCustomer,
@@ -18,25 +13,17 @@ import {
   testGetNonExistentShipping,
 } from "../../../helpers/user/customer/shipping.js";
 import { registration } from "../../../helpers/auth/index.js";
-import { UserData } from "../../../../types-and-interfaces/user.js";
-
-const shippingInfoYaml = fileURLToPath(
-  new URL("../../../data/users/customers/shipping-info.yaml", import.meta.url)
-);
-const shippingInfoList = <any[]>load(readFileSync(shippingInfoYaml, "utf8"));
-
-const updatedShippingInfoYaml = fileURLToPath(
-  new URL(
-    "../../../data/users/customers/update-shipping-info.yaml",
-    import.meta.url
-  )
-);
-const updatedShippingInfoList = <any[]>(
-  load(readFileSync(updatedShippingInfoYaml, "utf8"))
-);
+import {
+  newUsers,
+  shippingInfoList,
+  updatedShippingInfoList,
+} from "../../../helpers/load-yaml.js";
 
 export default function (agent: ChaiHttp.Agent, index: number) {
   const path = "/v1/user/customer";
+
+  it("it should register a new user", () =>
+    registration(agent, newUsers[index]));
 
   it("it should create a customer account for the user", () =>
     testCreateCustomer(agent, path));

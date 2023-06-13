@@ -4,15 +4,16 @@ import { Insert } from "../../../../helpers/generate-sql-commands/index.js";
 
 const uploadProductMedia = async (req: any, res: any) => {
   const { productId } = req.params;
+  console.log(req.file);
   const { filename, path: filepath } = req.file;
   const { description } = req.body;
   let dbQuery = await db.query(
     `${Insert("product_media", [
       "product_id",
       "filename",
-      "path",
+      "filepath",
       "description",
-    ])} returning product_id`,
+    ])} returning filename`,
     [productId, filename, filepath, description]
   );
   let { rowCount }: { rowCount: number } = dbQuery;

@@ -1,5 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
+import { log } from "node:console";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { ProductSchemaDB } from "../../../../../../app-schema/products.js";
 import {
   testRouteNoData,
@@ -63,6 +66,29 @@ const testGetNonExistentProduct = <testRouteNoData>testRoute({
   statusCode: NOT_FOUND,
 });
 
+const testUploadProductMedia = async function (
+  serverAgent: ChaiHttp.Agent,
+  urlPath: string,
+  files: any[]
+): Promise<any> {
+  const fieldName = "product-media";
+  const request = serverAgent.post(urlPath);
+  files.forEach((file) =>
+    request.attach(
+      fieldName,
+      readFileSync(file.path),
+      // must include the og-name or won't work
+      path.basename(file.path)
+    )
+  );
+  const response = await request;
+  // .attach(fieldName, readFileSync(data[1].path), path.basename(data[1].path));
+
+  response.should.have.status(CREATED);
+  // Check the data in the body if accurate
+  return response.body;
+};
+
 export {
   testCreateProduct,
   testGetAllProducts,
@@ -70,4 +96,5 @@ export {
   testUpdateProduct,
   testDeleteProduct,
   testGetNonExistentProduct,
+  testUploadProductMedia,
 };

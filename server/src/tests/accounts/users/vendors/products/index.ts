@@ -1,8 +1,12 @@
-import { log } from "console";
-import { readFileSync } from "fs";
-import { load } from "js-yaml";
-import { fileURLToPath } from "url";
 import db from "../../../../../db/index.js";
+import { registration } from "../../../../helpers/auth/index.js";
+import {
+  newUsers,
+  productData,
+  productMediaData,
+  storesData,
+  updatedProductData,
+} from "../../../../helpers/load-yaml.js";
 import { testCreateVendor } from "../../../../helpers/user/vendor/index.js";
 import { testCreateStore } from "../../../../helpers/user/vendor/store/index.js";
 import {
@@ -12,76 +16,16 @@ import {
   testDeleteProduct,
   testGetNonExistentProduct,
   testUpdateProduct,
+  testUploadProductMedia,
 } from "../../../../helpers/user/vendor/store/products/index.js";
-
-const storesDataYaml = fileURLToPath(
-  new URL(
-    "../../../../data/users/vendors/stores/store-data.yaml",
-    import.meta.url
-  )
-);
-const storesData = <any[]>load(readFileSync(storesDataYaml, "utf8"));
-
-const productData = <any[]>(
-  load(
-    readFileSync(
-      fileURLToPath(
-        new URL(
-          "../../../../data/users/vendors/stores/products/product.yaml",
-          import.meta.url
-        )
-      ),
-      "utf8"
-    )
-  )
-);
-
-const updatedProductData = <any[]>(
-  load(
-    readFileSync(
-      fileURLToPath(
-        new URL(
-          "../../../../data/users/vendors/stores/products/updated-product.yaml",
-          import.meta.url
-        )
-      ),
-      "utf8"
-    )
-  )
-);
-
-const { productMediaData, updatedProductMediaData } = <any>(
-  load(
-    readFileSync(
-      fileURLToPath(
-        new URL(
-          "../../../../data/users/vendors/stores/products/media/media.yaml",
-          import.meta.url
-        )
-      ),
-      "utf8"
-    )
-  )
-);
-
-// const updatedProductMediaData = <any[]>(
-//   load(
-//     readFileSync(
-//       fileURLToPath(
-//         new URL(
-//           "../../../../data/users/vendors/stores/products/updated-product-media.yaml",
-//           import.meta.url
-//         )
-//       ),
-//       "utf8"
-//     )
-//   )
-// );
 
 export default function (agent: ChaiHttp.Agent, index: number) {
   beforeEach(async () => await db.query("delete from stores"));
 
   const path = "/v1/user/vendor/stores";
+
+  it("it should register a new user", () =>
+    registration(agent, newUsers[index]));
 
   it("it should create a vendor account for the user", () =>
     testCreateVendor(agent, "/v1/user/vendor/"));
@@ -92,6 +36,21 @@ export default function (agent: ChaiHttp.Agent, index: number) {
         agent,
         `${path}/${store_id}/products`,
         productData[index]
+      )
+    ));
+
+  it("it should create a product for sale then add the product's media", () =>
+    testCreateStore(agent, path, storesData[index]).then(({ store_id }) =>
+      testCreateProduct(
+        agent,
+        `${path}/${store_id}/products`,
+        productData[index]
+      ).then(({ product_id }) =>
+        testUploadProductMedia(
+          agent,
+          `${path}/${store_id}/products/${product_id}/media`,
+          productMediaData[index]
+        )
       )
     ));
 

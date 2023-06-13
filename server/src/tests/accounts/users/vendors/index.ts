@@ -1,6 +1,9 @@
-import { readFileSync } from "fs";
-import { load } from "js-yaml";
-import { fileURLToPath } from "url";
+import { registration } from "../../../helpers/auth/index.js";
+import {
+  newUsers,
+  storesData,
+  updatedStoresData,
+} from "../../../helpers/load-yaml.js";
 import {
   testCreateVendor,
   testDeleteVendor,
@@ -15,28 +18,13 @@ import {
   testGetNonExistentStore,
 } from "../../../helpers/user/vendor/store/index.js";
 
-const storesDataYaml = fileURLToPath(
-  new URL("../../../data/users/vendors/stores/store-data.yaml", import.meta.url)
-);
-const storesData = <any[]>load(readFileSync(storesDataYaml, "utf8"));
-
-const updatedStoresData = <any[]>(
-  load(
-    readFileSync(
-      fileURLToPath(
-        new URL(
-          "../../../data/users/vendors/stores/updated-store-data.yaml",
-          import.meta.url
-        )
-      ),
-      "utf8"
-    )
-  )
-);
-
 export default function (agent: ChaiHttp.Agent, index: number) {
   const path = "/v1/user/vendor";
   const storesPath = path + "/stores";
+
+  it("it should register a new user", () =>
+    registration(agent, newUsers[index]));
+
   it("it should create a vendor account for the user", () =>
     testCreateVendor(agent, path));
 

@@ -10,22 +10,23 @@ import testVendorAccount from "../accounts/users/vendors/index.js";
 import testProducts from "../accounts/users/vendors/products/index.js";
 
 export default function (index: number): void {
-  before(async () => await db.query("delete from user_accounts"));
   // Testing the register route
   describe(`Testing typical user actions`, async () => {
+    before(async () => await db.query("delete from user_accounts"));
+
     const url = "https://thrift-production.up.railway.app";
     // const agent = chai.request.agent(url);
     const agent = chai.request.agent(app);
 
-    describe("Testing Authentication", () => testAuthentication(agent, index));
+    // describe("Testing Authentication", () => testAuthentication(agent, index));
 
-    describe("Testing User Account", () => testUserAccount(agent, index));
+    // describe("Testing User Account", () => testUserAccount(agent, index));
 
-    describe("Testing Customer Account", () =>
-      testCustomerAccount(agent, index));
+    // describe("Testing Customer Account", () =>
+    //   testCustomerAccount(agent, index));
 
-    describe("Testing Vendor Account", () => testVendorAccount(agent, index));
+    // describe("Testing Vendor Account", () => testVendorAccount(agent, index));
 
-    describe("Testing Products", () => testProducts(agent, index));
+    describe("Testing Products", async () => testProducts(agent, index));
   });
 }

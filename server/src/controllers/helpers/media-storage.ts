@@ -21,7 +21,7 @@ export default new CloudinaryStorage({
     folder: "thrift-app-media",
     unique_filename: true,
     overwrite: true,
-    public_id: (_req, file: Express.Multer.File) =>
+    public_id: (_req, file) =>
       `${file.fieldname}-${Math.trunc(Math.random() * 1e9)}`,
   },
 } as Options);

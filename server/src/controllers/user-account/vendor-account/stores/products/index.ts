@@ -59,7 +59,7 @@ const readAllQuery = [
     if (dbQuery.rows[0].vendor_id !== vendorId)
       throw new UnauthenticatedError("Cannot access store.");
     // TODO: you may not need to store anything except the public_id of image in db
-    let queryString = `select products.*, (select json_agg(media) from (select * from product_media where product_id=products.product_id) as media) as media from products where store_id=$1`;
+    let queryString = `select products.*, (select json_agg(media) from (select filename, filepath, description from product_media where product_id=products.product_id) as media) as media from products where store_id=$1`;
     if (sort) {
       queryString += ` ${handleSortQuery(sort)}`;
     }
@@ -82,7 +82,7 @@ const readQuery = [
     if (dbQuery.rows[0].vendor_id !== vendorId)
       throw new UnauthenticatedError("Cannot access store.");
     return await db.query(
-      `select products.*, (select json_agg(media) from (select * from product_media where product_id=$1) as media) as media from products where product_id=$1`,
+      `select products.*, (select json_agg(media) from (select filename, filepath, description from product_media where product_id=$1) as media) as media from products where product_id=$1`,
       [productId]
     );
   },

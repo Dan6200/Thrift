@@ -69,8 +69,8 @@ create table if not exists products (
 
 
 create table if not exists product_media (
-	product_id					bigint				primary key		references	products	on	delete	cascade,
-	filename 					varchar 			not null,
+	product_id					bigint				not null		references	products	on	delete	cascade,
+	filename 					varchar 			primary key,
 	filepath 					varchar 			not null,
 	description					varchar
 );

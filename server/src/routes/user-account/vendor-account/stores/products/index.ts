@@ -25,7 +25,8 @@ router
 const uploadLimit = 6;
 router
   .route("/:productId/media")
-  // .post(upload.single("product-media"), uploadProductMedia)
+  // .post(upload.any(), uploadProductMedia);
+  // .post(upload.single("product-media"), uploadProductMedia);
   .post(upload.array("product-media", uploadLimit), uploadProductMedia);
 // .get(getProductMedia)
 // .put(updateProductMedia)

@@ -27,7 +27,7 @@ const createQuery = [
     const { storeId } = params
     const dbQuery = await db.query(
       'select vendor_id from stores where store_id=$1',
-      [storeId],
+      [storeId]
     )
     if (!dbQuery.rowCount)
       throw new BadRequestError('Store does not exist. Create a store')
@@ -39,7 +39,7 @@ const createQuery = [
         'store_id',
         'vendor_id',
       ])} returning product_id`,
-      [...Object.values(reqData), storeId, vendorId],
+      [...Object.values(reqData), storeId, vendorId]
     )
   },
 ]
@@ -50,7 +50,7 @@ const readAllQuery = [
     const { storeId } = params
     const dbQuery = await db.query(
       'select vendor_id from stores where store_id=$1',
-      [storeId],
+      [storeId]
     )
     if (!dbQuery.rowCount)
       throw new BadRequestError('Store does not exist. Create a store')
@@ -74,7 +74,7 @@ const readQuery = [
     let { storeId, productId } = params
     const dbQuery = await db.query(
       'select vendor_id from stores where store_id=$1',
-      [storeId],
+      [storeId]
     )
     if (!dbQuery.rowCount)
       throw new BadRequestError('Store does not exist. Create a store')
@@ -82,7 +82,7 @@ const readQuery = [
       throw new UnauthenticatedError('Cannot access store.')
     return db.query(
       'select products.*, (select json_agg(media) from (select filename, filepath, description from product_media where product_id=$1) as media) as media from products where product_id=$1',
-      [productId],
+      [productId]
     )
   },
 ]
@@ -92,7 +92,7 @@ const replaceQuery = [
     const { productId, storeId } = params
     const dbQuery = await db.query(
       'select vendor_id from stores where store_id=$1',
-      [storeId],
+      [storeId]
     )
     if (!dbQuery.rowCount)
       throw new BadRequestError('Store does not exist. Create a store')
@@ -108,7 +108,7 @@ const replaceQuery = [
         'store_id',
         'vendor_id',
       ])} returning product_id`,
-      [...Object.values(reqData), storeId, vendorId],
+      [...Object.values(reqData), storeId, vendorId]
     )
   },
 ]
@@ -118,7 +118,7 @@ const updateQuery = [
     const { productId, storeId } = params
     const dbQuery = await db.query(
       'select vendor_id from stores where store_id=$1',
-      [storeId],
+      [storeId]
     )
     if (!dbQuery.rowCount)
       throw new BadRequestError('Store does not exist. Create a store')
@@ -126,6 +126,7 @@ const updateQuery = [
       throw new UnauthenticatedError('Cannot access store.')
     const updateCommand =
       Update('products', 'product_id', Object.keys(reqData)) +
+      ' ' +
       'returning product_id'
     return db.query(updateCommand, [productId, ...Object.values(reqData)])
   },
@@ -136,7 +137,7 @@ const deleteQuery = [
     const { productId, storeId } = params
     const dbQuery = await db.query(
       'select vendor_id from stores where store_id=$1',
-      [storeId],
+      [storeId]
     )
     if (!dbQuery.rowCount)
       throw new BadRequestError('Store does not exist. Create a store')
@@ -144,7 +145,7 @@ const deleteQuery = [
       throw new UnauthenticatedError('Cannot access store.')
     return db.query(
       `delete from products where product_id=$1 and store_id=$2 returning product_id`,
-      [productId, storeId],
+      [productId, storeId]
     )
   },
 ]
@@ -191,42 +192,42 @@ let createProduct = processRoute(
   createQuery,
   { status: CREATED },
   validateBody,
-  validateResult,
+  validateResult
 )
 
 let getAllProducts = processRoute(
   readAllQuery,
   { status: OK },
   undefined,
-  validateListResult,
+  validateListResult
 )
 
 let getProduct = processRoute(
   readQuery,
   { status: OK },
   undefined,
-  validateResult,
+  validateResult
 )
 
 let updateProduct = processRoute(
   updateQuery,
   { status: OK },
   validateBodyPatchUpdate,
-  validateResult,
+  validateResult
 )
 
 let replaceProduct = processRoute(
   replaceQuery,
   { status: OK },
   validateBody,
-  validateResult,
+  validateResult
 )
 
 let deleteProduct = processRoute(
   deleteQuery,
   { status: OK },
   undefined,
-  validateResult,
+  validateResult
 )
 
 export {

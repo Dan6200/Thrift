@@ -11,7 +11,8 @@ import testProducts from '../accounts/users/vendors/products/index.js'
 export default function (index: number): void {
   // Testing the register route
   describe(`Testing typical user actions`, async () => {
-    const url = 'https://thrift-production.up.railway.app'
+    // const url = 'https://thrift-dev.up.railway.app'
+    const url = 'localhost:1024'
     const agent = chai.request.agent(url)
     // const agent = chai.request.agent(app)
 

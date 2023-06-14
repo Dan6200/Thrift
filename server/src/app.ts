@@ -23,12 +23,12 @@ let app: Express = express()
 app.set('trust proxy', 1)
 app.use(cookieParser())
 app.use(
-	rateLimiter({
-		windowMs: 15 * 60 * 1000,
-		max: 100,
-		standardHeaders: true,
-		legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-	}),
+  rateLimiter({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  })
 )
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

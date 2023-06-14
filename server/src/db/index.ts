@@ -26,11 +26,11 @@ export default {
 
   // Copied from official docs, slightly modified
   async query(text: string, params?: Array<any>): Promise<QueryResult<any>> {
-    const start = Date.now()
+    // const start = Date.now()
     setTimeout(function () {
       this.lastQuery = arguments
     })
-    console.log('\nexecuted query:\n', text, params)
+    // console.log('\nexecuted query:\n', text, params)
     // allow a retry if DB fails to connect
     let res: any
     const retryCount = 7
@@ -39,24 +39,24 @@ export default {
       pool.query.bind(pool),
       [text, params],
       retryCount,
-      delay,
+      delay
     )
-    const duration = Date.now() - start
+    // const duration = Date.now() - start
     // add await for this to work
 
-    console.log(
-      '\nquery result',
-      util.inspect(
-        {
-          duration: `${duration}ms`,
-          result: res.rows,
-          rows: res.rowCount,
-        },
-        false,
-        null,
-        true,
-      ),
-    )
+    // console.log(
+    //   '\nquery result',
+    //   util.inspect(
+    //     {
+    //       duration: `${duration}ms`,
+    //       result: res.rows,
+    //       rows: res.rowCount,
+    //     },
+    //     false,
+    //     null,
+    //     true,
+    //   ),
+    // )
 
     return res
   },
@@ -69,7 +69,7 @@ export default {
     const timeout = setTimeout(() => {
       console.error('A client has been checked out for more than 5 seconds!')
       console.error(
-        `The last executed query on this client was: ${client.lastQuery}`,
+        `The last executed query on this client was: ${client.lastQuery}`
       )
     }, 5000)
     // monkey patch the query method to keep track of the last query executed

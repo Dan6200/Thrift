@@ -1,43 +1,43 @@
-import { error, log } from "console";
+import { error, log } from 'console'
 
 enum networkErrors {
-  "ENOENT",
-  "ETIMEDOUT",
-  "ECONNRESET",
-  "ENOTFOUND",
-  "ECONNREFUSED",
-  "ECONNABORTED",
-  "EAI_AGAIN",
+  'ENOENT',
+  'ETIMEDOUT',
+  'ECONNRESET',
+  'ENOTFOUND',
+  'ECONNREFUSED',
+  'ECONNABORTED',
+  'EAI_AGAIN',
 }
-let runOnce: boolean = true;
+let runOnce: boolean = true
 export default async function retryQuery(
   query: (...rest: any[]) => Promise<any>,
   args: any[],
   retries: number,
   ms: number
 ): Promise<any> {
-  let res: any;
+  let res: any
   try {
     if (!retries) {
-      console.log(`db connection failed...quitting`);
-      return;
+      log(`db connection failed...quitting`)
+      return
     }
-    res = query(...args);
-    return res;
+    res = query(...args)
+    return res
   } catch (err) {
-    error(err);
+    error(err)
     if (err.code in networkErrors)
       return new Promise((resolve) => {
-        setTimeout(resolve, ms);
+        setTimeout(resolve, ms)
       }).then(() => {
         if (retries > 1) {
-          if (runOnce) runOnce = false;
-          else ms <<= 1;
-          console.log(`db connection failed...retrying after ${ms}ms`);
-          res = retryQuery(query, args, retries - 1, ms);
+          if (runOnce) runOnce = false
+          else ms <<= 1
+          log(`db connection failed...retrying after ${ms}ms`)
+          res = retryQuery(query, args, retries - 1, ms)
         }
-        return res;
-      });
-    throw err;
+        return res
+      })
+    throw err
   }
 }

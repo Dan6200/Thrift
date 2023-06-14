@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
+import { log } from 'node:console'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { ProductSchemaDB } from '../../../../../../app-schema/products.js'
@@ -34,25 +35,25 @@ const routeParams = {
 const testCreateProduct = async function (
   serverAgent: ChaiHttp.Agent,
   path: string,
-  dataList: object[],
-): Promise<any> {
+  dataList: object[]
+) {
   const responses = await Promise.all(
-    dataList.map(data => serverAgent['post'](path).send(data)),
+    dataList.map((data) => serverAgent['post'](path).send(data))
   )
-  responses.forEach(response => {
+  responses.forEach((response) => {
     response.should.have.status(CREATED)
     // Check that the response contains the product id
     checkId(response.body)
   })
-  return responses.map(response => response.body)
+  return responses.map((response) => response.body)
 }
 
 const testGetAllProducts = async function (
   serverAgent: ChaiHttp.Agent,
   path: string,
-  query: object,
+  query?: object
 ): Promise<any> {
-  const response = await serverAgent['get'](path).query(query)
+  const response = await serverAgent['get'](path).query(query ?? {})
   response.should.have.status(OK)
   // Check that the data in the body is accurate
   validateResultList(response.body)
@@ -65,37 +66,17 @@ const testGetProduct = <testRouteNoData>testRoute({
   checks: validateResult,
 })
 
-const testUpdateProduct = async function (
-  serverAgent: ChaiHttp.Agent,
-  path: string,
-  dataList: object[],
-): Promise<any> {
-  const responses = await Promise.all(
-    dataList.map(data => serverAgent['patch'](path).send(data)),
-  )
-  responses.forEach(response => {
-    response.should.have.status(CREATED)
-    // Check that the response contains the product id
-    checkId(response.body)
-  })
-  return responses.map(response => response.body)
-}
+const testUpdateProduct = <testRouteWithData>testRoute({
+  ...routeParams,
+  verb: 'patch',
+  checks: checkId,
+})
 
-const testReplaceProduct = async function (
-  serverAgent: ChaiHttp.Agent,
-  path: string,
-  dataList: object[],
-): Promise<any> {
-  const responses = await Promise.all(
-    dataList.map(data => serverAgent['put'](path).send(data)),
-  )
-  responses.forEach(response => {
-    response.should.have.status(CREATED)
-    // Check that the response contains the product id
-    checkId(response.body)
-  })
-  return responses.map(response => response.body)
-}
+const testReplaceProduct = <testRouteWithData>testRoute({
+  ...routeParams,
+  verb: 'patch',
+  checks: checkId,
+})
 
 const testDeleteProduct = <testRouteNoData>testRoute({
   ...routeParams,
@@ -111,12 +92,12 @@ const testGetNonExistentProduct = <testRouteNoData>testRoute({
 const testUploadProductMedia = async function (
   serverAgent: ChaiHttp.Agent,
   urlPath: string,
-  files: any[],
+  files: any[]
 ): Promise<any> {
   const fieldName = 'product-media'
   const request = serverAgent.post(urlPath)
   request.field('description', files[0].description)
-  files.forEach(file => {
+  files.forEach((file) => {
     request.attach(fieldName, readFileSync(file.path), path.basename(file.path))
   })
   const response = await request
@@ -127,7 +108,7 @@ const testUploadProductMedia = async function (
   response.body[0].should.be.an('object')
   const responseObject = response.body[0]
   responseObject.should.have.property('filename')
-  return response
+  return response.body
 }
 
 export {

@@ -55,7 +55,7 @@ export const updatedShippingInfoList = <any[]>(
   load(readFileSync(updatedShippingInfoYaml, 'utf8'))
 )
 
-export const { productMediaData, updatedProductMediaData } = <any>(
+export const productMediaData = <any>(
   load(
     readFileSync(
       fileURLToPath(

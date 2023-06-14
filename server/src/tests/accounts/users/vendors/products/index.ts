@@ -1,3 +1,5 @@
+import { log } from 'node:console'
+import 'express-async-errors'
 import db from '../../../../../db/index.js'
 import { registration } from '../../../../helpers/auth/index.js'
 import {
@@ -38,8 +40,8 @@ export default function (agent: ChaiHttp.Agent, index: number) {
       testCreateProduct(
         agent,
         `${path}/${store_id}/products`,
-        productData[index],
-      ),
+        productData[index]
+      )
     ))
 
   it('it should retrieve all products a vendor has for sale', () =>
@@ -47,10 +49,8 @@ export default function (agent: ChaiHttp.Agent, index: number) {
       testCreateProduct(
         agent,
         `${path}/${store_id}/products`,
-        productData[index],
-      ).then(() =>
-        testGetAllProducts(agent, `${path}/${store_id}/products`, {}),
-      ),
+        productData[index]
+      ).then(() => testGetAllProducts(agent, `${path}/${store_id}/products`))
     ))
 
   it('it should retrieve all products a vendor has for sale, sorted by net price ascending', () =>
@@ -58,12 +58,12 @@ export default function (agent: ChaiHttp.Agent, index: number) {
       testCreateProduct(
         agent,
         `${path}/${store_id}/products`,
-        productData[index],
+        productData[index]
       ).then(() =>
         testGetAllProducts(agent, `${path}/${store_id}/products`, {
           sort: '-net_price',
-        }),
-      ),
+        })
+      )
     ))
 
   it('it should retrieve all products a vendor has for sale, offset by 2 and limited by 10', () =>
@@ -71,13 +71,13 @@ export default function (agent: ChaiHttp.Agent, index: number) {
       testCreateProduct(
         agent,
         `${path}/${store_id}/products`,
-        productData[index],
+        productData[index]
       ).then(() =>
         testGetAllProducts(agent, `${path}/${store_id}/products`, {
           offset: 2,
           limit: 10,
-        }),
-      ),
+        })
+      )
     ))
 
   it('it should retrieve a specific product a vendor has for sale', () =>
@@ -85,32 +85,32 @@ export default function (agent: ChaiHttp.Agent, index: number) {
       testCreateProduct(
         agent,
         `${path}/${store_id}/products`,
-        productData[index],
-      ).then(productIds =>
-        productIds.forEach(({ product_id }) =>
-          testGetProduct(agent, `${path}/${store_id}/products/${product_id}`),
-        ),
-      ),
+        productData[index]
+      ).then((productIds) =>
+        Promise.all(
+          productIds.map(({ product_id }) =>
+            testGetProduct(agent, `${path}/${store_id}/products/${product_id}`)
+          )
+        )
+      )
     ))
 
   it("it should create a product for sale, add the product's media, then retrieve the product", async () => {
     const { store_id } = await testCreateStore(agent, path, storesData[index])
-    const productIds: any[] = await testCreateProduct(
+    const productIds = await testCreateProduct(
       agent,
       `${path}/${store_id}/products`,
-      productData[index],
+      productData[index]
     )
-    productIds.forEach(async ({ product_id }, secondaryIndex) => {
+    let secondaryIndex = 0
+    for (const { product_id } of productIds) {
       await testUploadProductMedia(
         agent,
         `${path}/${store_id}/products/${product_id}/media`,
-        productMediaData[index][secondaryIndex],
+        productMediaData[index][secondaryIndex++]
       )
-      await testGetProduct(
-        agent,
-        `${path}/${store_id}/products/${product_id}/media`,
-      )
-    })
+      await testGetProduct(agent, `${path}/${store_id}/products/${product_id}`)
+    }
   })
 
   it('it should update a specific product a vendor has for sale', () =>
@@ -118,16 +118,18 @@ export default function (agent: ChaiHttp.Agent, index: number) {
       testCreateProduct(
         agent,
         `${path}/${store_id}/products`,
-        productData[index],
-      ).then((productIds: any[]) =>
-        productIds.map(({ product_id }, secondaryIndex) =>
-          testUpdateProduct(
-            agent,
-            `${path}/${store_id}/products/${product_id}`,
-            updatedProductData[index][secondaryIndex],
-          ),
-        ),
-      ),
+        productData[index]
+      ).then((productIds) =>
+        Promise.all(
+          productIds.map(({ product_id }, secondaryIndex) =>
+            testUpdateProduct(
+              agent,
+              `${path}/${store_id}/products/${product_id}`,
+              updatedProductData[index][secondaryIndex]
+            )
+          )
+        )
+      )
     ))
 
   it('it should replace an existing product with no information', () =>
@@ -135,16 +137,18 @@ export default function (agent: ChaiHttp.Agent, index: number) {
       testCreateProduct(
         agent,
         `${path}/${store_id}/products`,
-        productData[index],
+        productData[index]
       ).then((productIds: any[]) =>
-        productIds.map(({ product_id }, secondaryIndex) =>
-          testReplaceProduct(
-            agent,
-            `${path}/${store_id}/products/${product_id}`,
-            replaceProductData[index][secondaryIndex],
-          ),
-        ),
-      ),
+        Promise.all(
+          productIds.map(({ product_id }, secondaryIndex) =>
+            testReplaceProduct(
+              agent,
+              `${path}/${store_id}/products/${product_id}`,
+              replaceProductData[index][secondaryIndex]
+            )
+          )
+        )
+      )
     ))
 
   it('it should delete a product a vendor has for sale', () =>
@@ -152,15 +156,17 @@ export default function (agent: ChaiHttp.Agent, index: number) {
       testCreateProduct(
         agent,
         `${path}/${store_id}/products`,
-        productData[index],
+        productData[index]
       ).then((productIds: any[]) =>
-        productIds.map(({ product_id }) =>
-          testDeleteProduct(
-            agent,
-            `${path}/${store_id}/products/${product_id}`,
-          ),
-        ),
-      ),
+        Promise.all(
+          productIds.map(({ product_id }) =>
+            testDeleteProduct(
+              agent,
+              `${path}/${store_id}/products/${product_id}`
+            )
+          )
+        )
+      )
     ))
 
   it('it should fail to retrieve a deleted product', async () => {
@@ -168,17 +174,17 @@ export default function (agent: ChaiHttp.Agent, index: number) {
     const productIds: any[] = await testCreateProduct(
       agent,
       `${path}/${store_id}/products`,
-      productData[index],
+      productData[index]
     )
-    productIds.forEach(async ({ product_id }) => {
+    for (const { product_id } of productIds) {
       await testDeleteProduct(
         agent,
-        `${path}/${store_id}/products/${product_id}`,
+        `${path}/${store_id}/products/${product_id}`
       )
       await testGetNonExistentProduct(
         agent,
-        `${path}/${store_id}/products/${product_id}`,
+        `${path}/${store_id}/products/${product_id}`
       )
-    })
+    }
   })
 }

@@ -11,9 +11,9 @@ import testProducts from '../accounts/users/vendors/products/index.js'
 export default function (index: number): void {
   // Testing the register route
   describe(`Testing typical user actions`, async () => {
-    // const url = 'https://thrift-production.up.railway.app'
-    // const agent = chai.request.agent(url)
-    const agent = chai.request.agent(app)
+    const url = 'https://thrift-production.up.railway.app'
+    const agent = chai.request.agent(url)
+    // const agent = chai.request.agent(app)
 
     describe('Testing Authentication', () => testAuthentication(agent, index))
     describe('Testing User Account', () => testUserAccount(agent, index))

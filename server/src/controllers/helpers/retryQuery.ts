@@ -22,7 +22,7 @@ export default async function retryQuery(
       console.log(`db connection failed...quitting`);
       return;
     }
-    res = await query(...args);
+    res = query(...args);
     return res;
   } catch (err) {
     error(err);

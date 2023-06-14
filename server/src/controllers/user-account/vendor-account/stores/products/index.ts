@@ -1,223 +1,239 @@
-import assert from "assert";
-import { log } from "console";
-import { StatusCodes } from "http-status-codes";
+import { StatusCodes } from 'http-status-codes'
 import {
   ProductSchemaReq,
   ProductSchemaUpdateReq,
-} from "../../../../../app-schema/products.js";
-import db from "../../../../../db/index.js";
-import BadRequestError from "../../../../../errors/bad-request.js";
-import UnauthenticatedError from "../../../../../errors/unauthenticated.js";
+} from '../../../../../app-schema/products.js'
+import db from '../../../../../db/index.js'
+import BadRequestError from '../../../../../errors/bad-request.js'
+import UnauthenticatedError from '../../../../../errors/unauthenticated.js'
 import {
   Insert,
   Update,
-} from "../../../../helpers/generate-sql-commands/index.js";
-import { handleSortQuery } from "../../../../helpers/generate-sql-commands/query-params-handler.js";
-import processRoute from "../../../../helpers/process-route.js";
+} from '../../../../helpers/generate-sql-commands/index.js'
+import { handleSortQuery } from '../../../../helpers/generate-sql-commands/query-params-handler.js'
+import processRoute from '../../../../helpers/process-route.js'
 
-const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
-type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND;
+const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
+type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND
 
 type ResponseData = {
-  status: Status;
-  data?: string | object;
-};
+  status: Status
+  data?: string | object
+}
 
 const createQuery = [
   async ({ reqData, params, userId: vendorId }) => {
     // this makes sure the Store exists before accessing the /user/stores/products endpoint
-    const { storeId } = params;
+    const { storeId } = params
     const dbQuery = await db.query(
-      "select vendor_id from stores where store_id=$1",
-      [storeId]
-    );
+      'select vendor_id from stores where store_id=$1',
+      [storeId],
+    )
     if (!dbQuery.rowCount)
-      throw new BadRequestError("Store does not exist. Create a store");
+      throw new BadRequestError('Store does not exist. Create a store')
     if (dbQuery.rows[0].vendor_id !== vendorId)
-      throw new UnauthenticatedError("Cannot access store.");
-    return await db.query(
-      `${Insert("products", [
+      throw new UnauthenticatedError('Cannot access store.')
+    return db.query(
+      `${Insert('products', [
         ...Object.keys(reqData),
-        "store_id",
-        "vendor_id",
+        'store_id',
+        'vendor_id',
       ])} returning product_id`,
-      [...Object.values(reqData), storeId, vendorId]
-    );
+      [...Object.values(reqData), storeId, vendorId],
+    )
   },
-];
+]
 
 const readAllQuery = [
   async ({ query, limit, offset, params, userId: vendorId }) => {
-    let { sort } = query;
-    const { storeId } = params;
+    let { sort } = query
+    const { storeId } = params
     const dbQuery = await db.query(
-      "select vendor_id from stores where store_id=$1",
-      [storeId]
-    );
+      'select vendor_id from stores where store_id=$1',
+      [storeId],
+    )
     if (!dbQuery.rowCount)
-      throw new BadRequestError("Store does not exist. Create a store");
+      throw new BadRequestError('Store does not exist. Create a store')
     if (dbQuery.rows[0].vendor_id !== vendorId)
-      throw new UnauthenticatedError("Cannot access store.");
+      throw new UnauthenticatedError('Cannot access store.')
     // TODO: you may not need to store anything except the public_id of image in db
-    let queryString = `select products.*, (select json_agg(media) from (select filename, filepath, description from product_media where product_id=products.product_id) as media) as media from products where store_id=$1`;
+    let queryString =
+      'select products.*, (select json_agg(media) from (select filename, filepath, description from product_media where product_id=products.product_id) as media) as media from products where store_id=$1'
     if (sort) {
-      queryString += ` ${handleSortQuery(sort)}`;
+      queryString += ` ${handleSortQuery(sort)}`
     }
-    if (limit) queryString += ` limit ${limit}`;
-    if (offset) queryString += ` offset ${offset}`;
-    log(queryString);
-    return await db.query(queryString, [storeId]);
+    if (limit) queryString += ` limit ${limit}`
+    if (offset) queryString += ` offset ${offset}`
+    const response = db.query(queryString, [storeId])
+    return response
   },
-];
+]
 
 const readQuery = [
   async ({ params, userId: vendorId }) => {
-    let { storeId, productId } = params;
+    let { storeId, productId } = params
     const dbQuery = await db.query(
-      "select vendor_id from stores where store_id=$1",
-      [storeId]
-    );
+      'select vendor_id from stores where store_id=$1',
+      [storeId],
+    )
     if (!dbQuery.rowCount)
-      throw new BadRequestError("Store does not exist. Create a store");
+      throw new BadRequestError('Store does not exist. Create a store')
     if (dbQuery.rows[0].vendor_id !== vendorId)
-      throw new UnauthenticatedError("Cannot access store.");
-    return await db.query(
-      `select products.*, (select json_agg(media) from (select filename, filepath, description from product_media where product_id=$1) as media) as media from products where product_id=$1`,
-      [productId]
-    );
+      throw new UnauthenticatedError('Cannot access store.')
+    return db.query(
+      'select products.*, (select json_agg(media) from (select filename, filepath, description from product_media where product_id=$1) as media) as media from products where product_id=$1',
+      [productId],
+    )
   },
-];
+]
+
+const replaceQuery = [
+  async ({ params, reqData, userId: vendorId }) => {
+    const { productId, storeId } = params
+    const dbQuery = await db.query(
+      'select vendor_id from stores where store_id=$1',
+      [storeId],
+    )
+    if (!dbQuery.rowCount)
+      throw new BadRequestError('Store does not exist. Create a store')
+    if (dbQuery.rows[0].vendor_id !== vendorId)
+      throw new UnauthenticatedError('Cannot access store.')
+    db.query(`delete from products where product_id=$1 and store_id=$2`, [
+      productId,
+      storeId,
+    ])
+    return db.query(
+      `${Insert('products', [
+        ...Object.keys(reqData),
+        'store_id',
+        'vendor_id',
+      ])} returning product_id`,
+      [...Object.values(reqData), storeId, vendorId],
+    )
+  },
+]
 
 const updateQuery = [
   async ({ params, reqData, userId: vendorId }) => {
-    const { productId, storeId } = params;
+    const { productId, storeId } = params
     const dbQuery = await db.query(
-      "select vendor_id from stores where store_id=$1",
-      [storeId]
-    );
+      'select vendor_id from stores where store_id=$1',
+      [storeId],
+    )
     if (!dbQuery.rowCount)
-      throw new BadRequestError("Store does not exist. Create a store");
+      throw new BadRequestError('Store does not exist. Create a store')
     if (dbQuery.rows[0].vendor_id !== vendorId)
-      throw new UnauthenticatedError("Cannot access store.");
-    const updateCommand = Update(
-      "products",
-      "product_id",
-      Object.keys(reqData)
-    );
-    return await db.query(updateCommand, [
-      productId,
-      ...Object.values(reqData),
-    ]);
+      throw new UnauthenticatedError('Cannot access store.')
+    const updateCommand =
+      Update('products', 'product_id', Object.keys(reqData)) +
+      'returning product_id'
+    return db.query(updateCommand, [productId, ...Object.values(reqData)])
   },
-];
+]
 
 const deleteQuery = [
   async ({ params, userId: vendorId }) => {
-    const { productId, storeId } = params;
+    const { productId, storeId } = params
     const dbQuery = await db.query(
-      "select vendor_id from stores where store_id=$1",
-      [storeId]
-    );
+      'select vendor_id from stores where store_id=$1',
+      [storeId],
+    )
     if (!dbQuery.rowCount)
-      throw new BadRequestError("Store does not exist. Create a store");
+      throw new BadRequestError('Store does not exist. Create a store')
     if (dbQuery.rows[0].vendor_id !== vendorId)
-      throw new UnauthenticatedError("Cannot access store.");
-    return await db.query(
-      `delete from products where product_id=$1 and store_id=$2`,
-      [productId, storeId]
-    );
+      throw new UnauthenticatedError('Cannot access store.')
+    return db.query(
+      `delete from products where product_id=$1 and store_id=$2 returning product_id`,
+      [productId, storeId],
+    )
   },
-];
+]
 
 let validateBody = (data: object): object => {
-  const validData = ProductSchemaReq.validate(data);
+  const validData = ProductSchemaReq.validate(data)
   if (validData.error)
-    throw new BadRequestError(
-      "Invalid Data Schema: " + validData.error.message
-    );
-  return validData.value;
-};
+    throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
+  return validData.value
+}
 
 let validateBodyPatchUpdate = (data: object): object => {
-  const validData = ProductSchemaUpdateReq.validate(data);
+  const validData = ProductSchemaUpdateReq.validate(data)
   if (validData.error)
-    throw new BadRequestError(
-      "Invalid Data Schema: " + validData.error.message
-    );
-  return validData.value;
-};
+    throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
+  return validData.value
+}
 
 let validateListResult = (result: any, status: Status): ResponseData => {
   if (result.rowCount === 0)
     return {
       status: 404,
-      data: { msg: "No products found. Please add a product for sale" },
-    };
+      data: { msg: 'No products found. Please add a product for sale' },
+    }
   return {
     status,
     data: result.rows,
-  };
-};
+  }
+}
 
 let validateResult = (result: any, status: Status): ResponseData => {
   if (result.rowCount === 0)
     return {
       status: 404,
-      data: { msg: "Product not found" },
-    };
+      data: { msg: 'Product not found' },
+    }
   return {
     status,
     data: result.rows[result.rowCount - 1],
-  };
-};
+  }
+}
 
 let createProduct = processRoute(
   createQuery,
   { status: CREATED },
   validateBody,
-  validateResult
-);
+  validateResult,
+)
 
 let getAllProducts = processRoute(
   readAllQuery,
   { status: OK },
   undefined,
-  validateListResult
-);
+  validateListResult,
+)
 
 let getProduct = processRoute(
   readQuery,
   { status: OK },
   undefined,
-  validateResult
-);
+  validateResult,
+)
 
 let updateProduct = processRoute(
   updateQuery,
   { status: OK },
   validateBodyPatchUpdate,
-  validateResult
-);
+  validateResult,
+)
 
-let updateProductBulkEdit = processRoute(
-  updateQuery,
+let replaceProduct = processRoute(
+  replaceQuery,
   { status: OK },
   validateBody,
-  validateResult
-);
+  validateResult,
+)
 
 let deleteProduct = processRoute(
   deleteQuery,
   { status: OK },
   undefined,
-  validateResult
-);
+  validateResult,
+)
 
 export {
   createProduct,
   getAllProducts,
   getProduct,
   updateProduct,
-  updateProductBulkEdit,
+  replaceProduct,
   deleteProduct,
-};
+}

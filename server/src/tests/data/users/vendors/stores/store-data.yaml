@@ -2,15 +2,40 @@
 
 - store_name: Oraimo Electronics
   store_page:
-    heading: "Welcome to Oraimo Electronics"
-    media: null
+    heading: 'Oriamo Electronics'
+    navigation: [Home, New Arrivals, Promos, Contact]
+    hero: null
+    body: null
+    products: [id1, id2, id3]
+    media:
+      hero:
+        video: null
+        imges: ['product_shot1.jpg', 'product_shot2.jpg', 'product_shot3.jpg']
+      images:
+        - 'oriamo_headphones.jpg'
+        - 'oriamo_speaker.jpg'
+        - 'oriamo_fitband.jpg'
 
 - store_name: Inspire Denims
   store_page:
-    html: "Welcome to Inspire Demims"
-    media: null
+    heading: 'Inspire Denims'
+    navigation: [Home, New Arrivals, Promos, Contact]
+    hero: null
+    body: null
+    products: [id1, id2, id3]
+    media:
+      hero:
+        video: null
+        imges: ['product_shot1.jpg', 'product_shot2.jpg', 'product_shot3.jpg']
 
 - store_name: Unpopular Fashion
   store_page:
-    html: "Welcome to Unpopular Fashion"
-    media: null
+    heading: 'Welcome to Unpopular Fashion'
+    navigation: [Home, New Arrivals, Promos, Contact]
+    hero: null
+    body: null
+    products: [id1, id2, id3]
+    media:
+      hero:
+        video: null
+        imges: ['product_shot1.jpg', 'product_shot2.jpg', 'product_shot3.jpg']

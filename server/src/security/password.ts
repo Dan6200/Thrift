@@ -10,7 +10,7 @@ const validatePassword = async function (
   candidatePassword: string,
   storedPassword: string
 ): Promise<boolean> {
-  const isMatch = await bcrypt.compare(candidatePassword, storedPassword);
+  const isMatch = bcrypt.compare(candidatePassword, storedPassword);
   return isMatch;
 };
 

@@ -1,31 +1,13 @@
 - recipient_first_name: Daniel
   recipient_last_name: Osa
-  address: 53, Thomas Salako Street, Ogba
-  city: Ikeja
-  state: Lagos
-  postal_code: "290543"
-  delivery_contact: "+234802954252"
-  delivery_instructions: |
-    Call me before you arrive, I may not be home
 
-- recipient_first_name: Kayode
-  recipient_last_name: Kolapo
-  address: |
+- address: |
     Apt. 3c
     22 Adebowale Street Mende
   city: Lagos
-  state: Lagos
-  postal_code: "290543"
-  delivery_contact: "+234802354252"
-  delivery_instructions: |
-    If I am not home, leave the package with the security guard
+  delivery_contact: '+234802354252'
 
-- recipient_first_name: Ebuka
-  recipient_last_name: Eze
-  address: 53, Thomas Salako Street, Ogba
-  city: Abuja
-  state: Federal Capital Territory
-  postal_code: "290543"
-  delivery_contact: "+234902354252"
+- recipient_last_name: Eze
+  delivery_contact: '+234902354252'
   delivery_instructions: |
     Call me before you arrive, I may not be home

@@ -12,9 +12,6 @@ export default async (
       [Id]
     )
   ).rows[0];
-  const isMatch: boolean = await validatePassword(
-    candidatePassword,
-    password.toString()
-  );
+  const isMatch = validatePassword(candidatePassword, password.toString());
   return isMatch;
 };

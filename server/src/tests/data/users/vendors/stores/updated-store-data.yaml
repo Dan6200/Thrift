@@ -2,7 +2,7 @@
 
 - store_name: Oriamo Electronics
   store_page:
-    heading: "Oriamo Electronics"
+    heading: 'Oriamo Electronics'
     navigation: [Home, New Arrivals, Promos, Contact]
     hero: null
     body: null
@@ -10,17 +10,31 @@
     media:
       hero:
         video: null
-        imges: ["product_shot1.jpg", "product_shot2.jpg", "product_shot3.jpg"]
+        imges: ['product_shot1.jpg', 'product_shot2.jpg', 'product_shot3.jpg']
       images:
-        - "oriamo_headphones.jpg"
-        - "oriamo_speaker.jpg"
-        - "oriamo_fitband.jpg"
+        - 'oriamo_headphones.jpg'
+        - 'oriamo_speaker.jpg'
+        - 'oriamo_fitband.jpg'
 
-- store_name: Gucci Fashion
-  store_page:
+- store_page:
     navigation: [Home, New Arrivals, Promos, Contact]
     heading: Well to Gucci Luxury Fashion Store
-    media: null
+    hero: null
+    body: null
+    images: null
 
-- store_name: Inspired Denims
-  store_page: null
+- store_page:
+    heading: 'Welcome to Unpopular Fashion'
+    navigation: [Home, New Arrivals, Promos, Contact]
+    hero:
+      video: advert.webm
+    body: null
+    products: [id1, id2, id3, id4, id5, id6, id123]
+    images:
+      - product-shot-1.jpg
+      - product-shot-2.jpg
+      - product-shot-3.jpg
+      - product-shot-4.jpg
+      - product-shot-5.jpg
+      - product-shot-6.jpg
+      - product-shot-7.jpg

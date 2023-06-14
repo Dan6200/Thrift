@@ -10,7 +10,7 @@ export default async (
   token?: string,
   data?: object
 ) => {
-  return await chai
+  return chai
     .request(server)
     [verb](path)
     .send(data)

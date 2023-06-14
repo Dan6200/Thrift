@@ -1,5 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
+import { log } from "node:console";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { ProductSchemaDB } from "../../../../../../app-schema/products.js";
@@ -72,6 +73,7 @@ const testUploadProductMedia = async function (
 ): Promise<any> {
   const fieldName = "product-media";
   const request = serverAgent.post(urlPath);
+  request.field("description", files[0].description);
   files.forEach((file) => {
     request.attach(
       fieldName,

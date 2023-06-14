@@ -16,10 +16,13 @@ import {
   usersInfoUpdated,
   usersPasswordsUpdated,
 } from "../../helpers/load-yaml.js";
+import db from "../../../db/index.js";
 
 chai.use(chaiHttp).should();
 
 export default function (agent: ChaiHttp.Agent, index: number) {
+  after(async () => db.query("delete from user_accounts"));
+
   const user = newUsers[index],
     path = "/v1/user";
 

@@ -18,15 +18,12 @@ router
   .route("/:productId")
   .get(getProduct)
   .patch(updateProduct)
-  // allow put for bulk edits for updating product
   .put(updateProductBulkEdit)
   .delete(deleteProduct);
 
 const uploadLimit = 6;
 router
   .route("/:productId/media")
-  // .post(upload.any(), uploadProductMedia);
-  // .post(upload.single("product-media"), uploadProductMedia);
   .post(upload.array("product-media", uploadLimit), uploadProductMedia);
 // .get(getProductMedia)
 // .put(updateProductMedia)

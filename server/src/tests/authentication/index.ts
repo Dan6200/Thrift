@@ -12,6 +12,7 @@ import {
   logout,
 } from "../helpers/auth/index.js";
 import { UserData } from "../../types-and-interfaces/user.js";
+import db from "../../db/index.js";
 
 chai.use(chaiHttp).should();
 
@@ -21,6 +22,8 @@ const newUsersYaml = fileURLToPath(
 const newUsers = load(readFileSync(newUsersYaml, "utf8")) as UserData[];
 
 export default function (agent: ChaiHttp.Agent, index: number) {
+  after(async () => db.query("delete from user_accounts"));
+
   const user = newUsers[index];
 
   it("it should register the user", () => registration(agent, user));

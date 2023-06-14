@@ -18,8 +18,11 @@ import {
   shippingInfoList,
   updatedShippingInfoList,
 } from "../../../helpers/load-yaml.js";
+import db from "../../../../db/index.js";
 
 export default function (agent: ChaiHttp.Agent, index: number) {
+  after(async () => db.query("delete from user_accounts"));
+
   const path = "/v1/user/customer";
 
   it("it should register a new user", () =>

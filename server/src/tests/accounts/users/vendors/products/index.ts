@@ -20,6 +20,7 @@ import {
 } from "../../../../helpers/user/vendor/store/products/index.js";
 
 export default function (agent: ChaiHttp.Agent, index: number) {
+  after(async () => db.query("delete from user_accounts"));
   beforeEach(async () => await db.query("delete from stores"));
 
   const path = "/v1/user/vendor/stores";
@@ -36,21 +37,6 @@ export default function (agent: ChaiHttp.Agent, index: number) {
         agent,
         `${path}/${store_id}/products`,
         productData[index]
-      )
-    ));
-
-  it("it should create a product for sale then add the product's media", () =>
-    testCreateStore(agent, path, storesData[index]).then(({ store_id }) =>
-      testCreateProduct(
-        agent,
-        `${path}/${store_id}/products`,
-        productData[index]
-      ).then(({ product_id }) =>
-        testUploadProductMedia(
-          agent,
-          `${path}/${store_id}/products/${product_id}/media`,
-          productMediaData[index]
-        )
       )
     ));
 
@@ -73,6 +59,21 @@ export default function (agent: ChaiHttp.Agent, index: number) {
         testGetProduct(agent, `${path}/${store_id}/products/${product_id}`)
       )
     ));
+
+  it("it should create a product for sale, add the product's media, then retrieve the product", async () => {
+    const { store_id } = await testCreateStore(agent, path, storesData[index]);
+    const { product_id } = await testCreateProduct(
+      agent,
+      `${path}/${store_id}/products`,
+      productData[index]
+    );
+    await testUploadProductMedia(
+      agent,
+      `${path}/${store_id}/products/${product_id}/media`,
+      productMediaData[index]
+    );
+    await testGetProduct(agent, `${path}/${store_id}/products/${product_id}`);
+  });
 
   it("it should update a specific product a vendor has for sale", () =>
     testCreateStore(agent, path, storesData[index]).then(({ store_id }) =>

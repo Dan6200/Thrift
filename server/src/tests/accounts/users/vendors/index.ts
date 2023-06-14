@@ -1,3 +1,4 @@
+import db from "../../../../db/index.js";
 import { registration } from "../../../helpers/auth/index.js";
 import {
   newUsers,
@@ -19,6 +20,8 @@ import {
 } from "../../../helpers/user/vendor/store/index.js";
 
 export default function (agent: ChaiHttp.Agent, index: number) {
+  after(async () => db.query("delete from user_accounts"));
+
   const path = "/v1/user/vendor";
   const storesPath = path + "/stores";
 

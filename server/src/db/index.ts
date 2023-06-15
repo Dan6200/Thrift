@@ -35,12 +35,7 @@ export default {
     let res: any
     const retryCount = 7
     const delay = 500
-    res = await retryQuery(
-      pool.query.bind(pool),
-      [text, params],
-      retryCount,
-      delay
-    )
+    res = retryQuery(pool.query.bind(pool), [text, params], retryCount, delay)
     // const duration = Date.now() - start
     // add await for this to work
 
@@ -48,14 +43,14 @@ export default {
     //   '\nquery result',
     //   util.inspect(
     //     {
-    //       duration: `${duration}ms`,
+    //       // duration: `${duration}ms`,
     //       result: res.rows,
     //       rows: res.rowCount,
     //     },
     //     false,
     //     null,
-    //     true,
-    //   ),
+    //     true
+    //   )
     // )
 
     return res

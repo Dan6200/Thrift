@@ -1,3 +1,4 @@
+import { log } from 'console'
 import { StatusCodes } from 'http-status-codes'
 import {
   ProductSchemaReq,
@@ -45,8 +46,8 @@ const createQuery = [
 ]
 
 const readAllQuery = [
-  async ({ query, limit, offset, params, userId: vendorId }) => {
-    let { sort } = query
+  async ({ query, params, userId: vendorId }) => {
+    let { sort, limit, offset } = query
     const { storeId } = params
     const dbQuery = await db.query(
       'select vendor_id from stores where store_id=$1',
@@ -62,10 +63,11 @@ const readAllQuery = [
     if (sort) {
       queryString += ` ${handleSortQuery(sort)}`
     }
-    if (limit) queryString += ` limit ${limit}`
     if (offset) queryString += ` offset ${offset}`
-    const response = db.query(queryString, [storeId])
-    return response
+    if (limit) queryString += ` limit ${limit}`
+    const dbResponse = db.query(queryString, [storeId])
+    log(queryString, (await dbResponse).rows)
+    return dbResponse
   },
 ]
 

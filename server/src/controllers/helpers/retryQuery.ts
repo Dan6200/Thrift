@@ -22,7 +22,8 @@ export default async function retryQuery(
       log(`db connection failed...quitting`)
       return
     }
-    res = query(...args)
+    // needs await to catch errors
+    res = await query(...args)
     return res
   } catch (err) {
     error(err)

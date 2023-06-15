@@ -1,11 +1,18 @@
-import joi from "joi";
+import joi from 'joi'
 
 const StoreSchemaReq = joi
   .object({
     store_name: joi.string().min(3).max(50).required(),
     store_page: joi.object().required(),
   })
-  .required();
+  .required()
+
+const UpdateStoreSchemaReq = joi
+  .object({
+    store_name: joi.string().min(3).max(50),
+    store_page: joi.object(),
+  })
+  .required()
 
 const StoreSchemaDB = joi
   .object({
@@ -17,6 +24,6 @@ const StoreSchemaDB = joi
       .alternatives()
       .try(joi.string().required(), joi.date().required()),
   })
-  .required();
+  .required()
 
-export { StoreSchemaReq, StoreSchemaDB };
+export { StoreSchemaReq, StoreSchemaDB, UpdateStoreSchemaReq }

@@ -11,6 +11,10 @@ servers:
     variables:
       basePath:
         default: v1
+  - url: https://thrift-dev.up.railway.app/{basePath}
+    variables:
+      basePath:
+        default: v1
 paths:
   /auth/register:
     post:
@@ -24,8 +28,8 @@ paths:
               type: object
               property:
       responses:
-        "201":
-          description: "CREATED"
+        '201':
+          description: 'CREATED'
           content:
             application/json:
               schema:

@@ -1,27 +1,19 @@
 import { StatusCodes } from 'http-status-codes'
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response } from 'express'
 import { error } from 'console'
 
 const errorHandlerMiddleware = async (
-  err: { statusCode: any; message: any },
+  err: { statusCode: StatusCodes; message: 'string' },
   _req: Request,
-  res: Response,
-  _next: NextFunction
+  res: Response
 ) => {
   // error logging
   error(err)
   let customError = {
     // set default
-    statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-    msg: err.message || 'Something went wrong try again later',
+    statusCode: err.statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR,
+    msg: err.message ?? 'Something went wrong try again later',
   }
-  if (customError.statusCode === StatusCodes.NOT_FOUND)
-    res.status(customError.statusCode).send(
-      `<h1>
-			${customError.msg}
-		</h1>
-	`
-    )
   return res.status(customError.statusCode).json({
     msg: customError.msg,
   })

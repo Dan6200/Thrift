@@ -1,11 +1,12 @@
 interface UserData {
-  first_name?: string;
-  last_name?: string;
-  email?: string;
-  phone?: string;
-  password?: Buffer | String;
-  dob?: Date;
-  country?: string;
+	first_name?: string
+	last_name?: string
+	email?: string
+	phone?: string
+	password?: Buffer | String
+	new_password?: Buffer | String
+	dob?: Date
+	country?: string
 }
 
-export { UserData };
+export { UserData }

@@ -1,4 +1,3 @@
-import 'express-async-errors'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import {
@@ -11,41 +10,43 @@ import {
 } from '../../helpers/user/index.js'
 import { StatusCodes } from 'http-status-codes'
 import { emailLogin, logout, registration } from '../../helpers/auth/index.js'
-import {
-	newUsers,
-	usersInfoUpdated,
-	usersPasswordsUpdated,
-} from '../../helpers/load-yaml.js'
 import db from '../../../db/index.js'
+import { UserData } from '../../../types-and-interfaces/user.js'
 
 chai.use(chaiHttp).should()
 
-export default function (agent: ChaiHttp.Agent, index: number) {
+export default function (
+	agent: ChaiHttp.Agent,
+	{
+		userInfo,
+		updatedUserInfo,
+		updatedPassword,
+	}: {
+		userInfo: UserData
+		updatedUserInfo: UserData
+		updatedPassword: UserData
+	}
+) {
 	after(async () => db.query('delete from user_accounts'))
 
-	const user = newUsers[index],
-		path = '/v1/user-account'
+	const path = '/v1/user-account'
 
-	it('it should register a user', () => registration(agent, user))
+	it('it should register a user', () => registration(agent, userInfo))
 
 	it('it should logout user', () => logout(agent))
 
 	it('it should get an unauthorized error when trying to fetch the user', () =>
 		testDontGetUser(agent, path))
 
-	it('it should login user', () => emailLogin(agent, user, StatusCodes.OK))
+	it('it should login user', () => emailLogin(agent, userInfo, StatusCodes.OK))
 
 	it("it should get the user's account", () => testGetUser(agent, path))
-
-	const updatedUserInfo = usersInfoUpdated[index]
 
 	it("it should update the user's account", () =>
 		testUpdateUser(agent, path, updatedUserInfo))
 
-	const updatedUserPassword = usersPasswordsUpdated[index]
-
 	it("it should change the user's password", () =>
-		testChangeUserPassword(agent, path + '/password', updatedUserPassword))
+		testChangeUserPassword(agent, path + '/password', updatedPassword))
 
 	it("it should delete the user's account", () => testDeleteUser(agent, path))
 
@@ -55,5 +56,5 @@ export default function (agent: ChaiHttp.Agent, index: number) {
 	it('it should logout user', () => logout(agent))
 
 	it('it should fail to login the deleted user', () =>
-		emailLogin(agent, user, StatusCodes.UNAUTHORIZED))
+		emailLogin(agent, userInfo, StatusCodes.UNAUTHORIZED))
 }

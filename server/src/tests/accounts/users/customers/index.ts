@@ -1,4 +1,3 @@
-import 'express-async-errors'
 import {
 	testCreateCustomer,
 	testGetCustomer,
@@ -13,20 +12,28 @@ import {
 	testGetNonExistentShipping,
 } from '../../../helpers/user/customer/shipping.js'
 import { registration } from '../../../helpers/auth/index.js'
-import {
-	newUsers,
-	shippingInfoList,
-	updatedShippingInfoList,
-} from '../../../helpers/load-yaml.js'
 import db from '../../../../db/index.js'
+import { UserData } from '../../../../types-and-interfaces/user.js'
 
-export default function (agent: ChaiHttp.Agent, index: number) {
+export default function (
+	agent: ChaiHttp.Agent,
+	{
+		userInfo,
+		userShippingInfo,
+		userShippingInfoUpdated,
+		userPaymentInfo,
+	}: {
+		userInfo: UserData
+		userShippingInfo?: any
+		userShippingInfoUpdated?: any
+		userPaymentInfo?: any
+	}
+) {
 	after(async () => db.query('delete from user_accounts'))
 
 	const path = '/v1/user-account/customer-account'
 
-	it('it should register a new user', () =>
-		registration(agent, newUsers[index]))
+	it('it should register a new user', () => registration(agent, userInfo))
 
 	it('it should create a customer account for the user', () =>
 		testCreateCustomer(agent, path))
@@ -34,7 +41,7 @@ export default function (agent: ChaiHttp.Agent, index: number) {
 	it("it should get the user's customer account", () =>
 		testGetCustomer(agent, path))
 
-	const shippingInfo = shippingInfoList[index]
+	const shippingInfo = userShippingInfo
 	const shippingPath = path + '/shipping'
 
 	it(`it should add shipping addresses for the customer then retrieve it`, async () => {
@@ -46,7 +53,7 @@ export default function (agent: ChaiHttp.Agent, index: number) {
 		await testGetShipping(agent, shippingPath + '/' + address_id)
 	})
 
-	const updatedShippingInfo = updatedShippingInfoList[index]
+	const updatedShippingInfo = userShippingInfoUpdated
 
 	it(`it should add a shipping addresses for the customer then update it`, async () => {
 		const { address_id } = await testCreateShipping(

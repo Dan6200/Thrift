@@ -1,14 +1,14 @@
-const info = {
+const userInfo = {
 	first_name: 'Aisha',
 	last_name: 'Mohammed',
 	email: 'aisha.mohammed@school.edu',
 	phone: '234902539488',
 	password: '236!A15HA04',
-	dob: '2004-6-23',
+	dob: new Date('2004-6-23'),
 	country: 'Nigeria',
 }
 
-const updatedInfo = {
+const updatedUserInfo = {
 	email: 'aishamomo@gmail.com',
 }
 
@@ -17,4 +17,4 @@ const updatedPassword = {
 	new_password: 'sgsdlaWEWRsdf23@#%#@',
 }
 
-export { info, updatedInfo, updatedPassword }
+export { userInfo, updatedUserInfo, updatedPassword }

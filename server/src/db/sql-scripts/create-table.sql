@@ -34,10 +34,19 @@ create table if not exists shipping_info (
 	delivery_instructions	varchar
 );
 
-
-create table if not exists primary_shipping_info (
-	address_id 			bigint 			primary key 	references 	shipping_info 	on 	delete cascade
+create table if not exists payment_info (
+	address_id				bigserial		primary key,
+	customer_id				bigint			not null		references	customers	on	delete	cascade,
+	recipient_first_name	varchar(30)		not null,
+	recipient_last_name		varchar(30)		not null,
+	address					varchar			not null,
+	city					varchar			not null,
+	state					varchar			not null,
+	postal_code				varchar			not null,
+	delivery_contact		varchar			not	null,
+	delivery_instructions	varchar
 );
+
 
 
 create table if not exists vendors (
@@ -91,7 +100,7 @@ create table if not exists shopping_cart_item (
 );
 
 
-create table if not exists transaction (
+create table if not exists transaction_details (
 	transaction_id				bigserial			primary	key,
 	transaction_timestamp		timestamptz			not null		default	now()	unique,
 	customer_id					bigint				not null,

@@ -19,7 +19,20 @@ import {
 	testGetNonExistentStore,
 } from '../../../helpers/user/vendor/store/index.js'
 
-export default function (agent: ChaiHttp.Agent, index: number) {
+export default function (
+	agent: ChaiHttp.Agent,
+	{
+		userInfo,
+		userShippingInfo,
+		userShippingInfoUpdated,
+		userPaymentInfo,
+	}: {
+		userInfo: UserData
+		userShippingInfo?: any
+		userShippingInfoUpdated?: any
+		userPaymentInfo?: any
+	}
+) {
 	after(async () => db.query('delete from user_accounts'))
 
 	const path = '/v1/user-account/vendor-account'

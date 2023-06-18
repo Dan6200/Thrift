@@ -22,8 +22,22 @@ import {
 	testUploadProductMedia,
 	testReplaceProduct,
 } from '../../../../helpers/user/vendor/store/products/index.js'
+import { UserData } from '../../../../../types-and-interfaces/user.js'
 
-export default function (agent: ChaiHttp.Agent, index: number) {
+export default function (
+	agent: ChaiHttp.Agent,
+	{
+		userInfo,
+		userShippingInfo,
+		userShippingInfoUpdated,
+		userPaymentInfo,
+	}: {
+		userInfo: UserData
+		userShippingInfo?: any
+		userShippingInfoUpdated?: any
+		userPaymentInfo?: any
+	}
+) {
 	after(async () => db.query('delete from user_accounts'))
 	beforeEach(async () => await db.query('delete from stores'))
 

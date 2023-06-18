@@ -3,8 +3,8 @@
   address: 53, Thomas Salako Street, Ogba
   city: Abuja
   state: Federal Capital Territory
-  postal_code: "290543"
-  delivery_contact: "+234902354252"
+  postal_code: '290543'
+  delivery_contact: '+234902354252'
   delivery_instructions: |
     Call me before you arrive, I may not be home
 
@@ -15,8 +15,8 @@
     22 Adebowale Street Mende
   city: Lagos
   state: Lagos
-  postal_code: "290543"
-  delivery_contact: "+234802354252"
+  postal_code: '290543'
+  delivery_contact: '+234802354252'
   delivery_instructions: |
     If I am not home, leave the package with the security guard
 
@@ -25,7 +25,7 @@
   address: 53, Thomas Salako Street, Ogba
   city: Abuja
   state: Federal Capital Territory
-  postal_code: "290543"
-  delivery_contact: "+234902354252"
+  postal_code: '290543'
+  delivery_contact: '+234902354252'
   delivery_instructions: |
     Call me before you arrive, I may not be home

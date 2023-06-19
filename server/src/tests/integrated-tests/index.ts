@@ -1,5 +1,4 @@
 //cspell:disable
-import 'express-async-errors'
 import chai from 'chai'
 import app from '../../app.js'
 import testAuthentication from '../authentication/index.js'

@@ -1,4 +1,6 @@
-import { UserData } from '../../../../types-and-interfaces/user.js'
+import * as shipping from './shipping-info.js'
+import * as payments from './payment-info.js'
+import { UserData } from '../../../../../types-and-interfaces/user.js'
 
 const userInfo: UserData = {
 	first_name: 'Ebuka',
@@ -21,4 +23,4 @@ const updatedPassword: UserData = {
 	new_password: 'jayafd3245XF*!&$',
 }
 
-export { userInfo, updatedUserInfo, updatedPassword }
+export { userInfo, updatedUserInfo, updatedPassword, shipping, payments }

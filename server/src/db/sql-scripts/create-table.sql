@@ -93,11 +93,11 @@ create table if not exists shopping_cart_item (
 
 create table if not exists transaction_details (
 	transaction_id			bigserial			primary	key,
-	created 				timestamptz			not null		default	now()	unique,
-	updated 				timestamptz			not null		default	now()	unique,
 	customer_id				bigint				not null,
 	vendor_id				bigint				not null,
 	total_amount			numeric(19,4)		not null,
+	created 				timestamptz			not null		default	now()	unique,
+	updated 				timestamptz			not null		default	now()	unique,
 	check (customer_id <> vendor_id)
 );
 

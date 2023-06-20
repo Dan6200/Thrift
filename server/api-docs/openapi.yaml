@@ -57,17 +57,27 @@ paths:
     get: {}
     patch: {}
     delete: {}
+  /user/customer/payment-info:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
   /user/vendor:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /user/vendor/products:
+  /user/vendor/payment-info:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /user/vendor/shops:
+  /user/vendor/stores:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /user/vendor/stores/products:
     post: {}
     get: {}
     patch: {}

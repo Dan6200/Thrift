@@ -1,6 +1,6 @@
-import { log } from 'console'
 import { StatusCodes } from 'http-status-codes'
 import {
+	ProductSchemaDB,
 	ProductSchemaReq,
 	ProductSchemaUpdateReq,
 } from '../../../../../app-schema/products.js'
@@ -8,19 +8,15 @@ import db from '../../../../../db/index.js'
 import BadRequestError from '../../../../../errors/bad-request.js'
 import UnauthenticatedError from '../../../../../errors/unauthenticated.js'
 import {
+	ResponseData,
+	Status,
+} from '../../../../../types-and-interfaces/response.js'
+import {
 	Insert,
 	Update,
 } from '../../../../helpers/generate-sql-commands/index.js'
 import { handleSortQuery } from '../../../../helpers/generate-sql-commands/query-params-handler.js'
 import processRoute from '../../../../helpers/process-route.js'
-
-const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
-type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND
-
-type ResponseData = {
-	status: Status
-	data?: string | object
-}
 
 const createQuery = async ({
 	reqData: productData,
@@ -37,17 +33,17 @@ const createQuery = async ({
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
 	return db.query(
-		`${Insert('products', [
-			...Object.keys(productData),
-			'store_id',
-			'vendor_id',
-		])} returning product_id`,
+		`${Insert(
+			'products',
+			[...Object.keys(productData), 'store_id', 'vendor_id'],
+			'product_id'
+		)}`,
 		[...Object.values(productData), storeId, vendorId]
 	)
 }
 
 const readAllQuery = async ({
-	query: { sort, limit, offset },
+	queries: { sort, limit, offset },
 	params: { storeId },
 	userId: vendorId,
 }) => {
@@ -59,7 +55,7 @@ const readAllQuery = async ({
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
-	let queryString = `
+	let dbQueryString = `
 		select products.*, 
 			(select json_agg(media) from 
 				(select filename, 
@@ -72,13 +68,11 @@ const readAllQuery = async ({
 					from products 
 				where store_id=$1`
 	if (sort) {
-		queryString += ` ${handleSortQuery(sort)}`
+		dbQueryString += ` ${handleSortQuery(sort)}`
 	}
-	if (offset) queryString += ` offset ${offset}`
-	if (limit) queryString += ` limit ${limit}`
-	const dbResponse = db.query(queryString, [storeId])
-	log(queryString, (await dbResponse).rows)
-	return dbResponse
+	if (offset) dbQueryString += ` offset ${offset}`
+	if (limit) dbQueryString += ` limit ${limit}`
+	return db.query(dbQueryString, [storeId])
 }
 
 const readQuery = async ({
@@ -100,34 +94,11 @@ const readQuery = async ({
 						filepath, description from 
 							product_media 
 							where product_id=$1)
-							as media) 
-						as media 
-					from products 
-				where product_id=$1`,
+						as media) 
+					as media 
+				from products 
+			where product_id=$1`,
 		[productId]
-	)
-}
-
-const replaceQuery = async ({
-	params: { productId, storeId },
-	reqData: productData,
-	userId: vendorId,
-}) => {
-	const dbQuery = await db.query(
-		'select vendor_id from stores where store_id=$1',
-		[storeId]
-	)
-	if (!dbQuery.rowCount)
-		throw new BadRequestError('Store does not exist. Create a store')
-	if (dbQuery.rows[0].vendor_id !== vendorId)
-		throw new UnauthenticatedError('Cannot access store.')
-	return db.query(
-		`${Update('products', 'product_id', [
-			...Object.keys(productData),
-			'store_id',
-			'vendor_id',
-		])} returning product_id`,
-		[productId, ...Object.values(productData), storeId, vendorId]
 	)
 }
 
@@ -146,8 +117,7 @@ const updateQuery = async ({
 		throw new UnauthenticatedError('Cannot access store.')
 	const updateCommand =
 		Update('products', 'product_id', Object.keys(productData)) +
-		' ' +
-		'returning product_id'
+		` returning product_id`
 	return db.query(updateCommand, [productId, ...Object.values(productData)])
 }
 
@@ -186,9 +156,10 @@ const validateBodyPatchUpdate = (data: object): object => {
 const validateListResult = (result: any, status: Status): ResponseData => {
 	if (result.rowCount === 0)
 		return {
-			status: 404,
+			status: NOT_FOUND,
 			data: { msg: 'No products found. Please add a product for sale' },
 		}
+	// validateResult(result.rows[0])
 	return {
 		status,
 		data: result.rows,
@@ -196,9 +167,11 @@ const validateListResult = (result: any, status: Status): ResponseData => {
 }
 
 const validateResult = (result: any, status: Status): ResponseData => {
-	if (result.rowCount === 0)
+	if (!result.rowCount)
+	{
+		const dbResult = ProductSchemaDB.validate(result)
 		return {
-			status: 404,
+			status: NOT_FOUND,
 			data: { msg: 'Product not found' },
 		}
 	return {
@@ -206,6 +179,8 @@ const validateResult = (result: any, status: Status): ResponseData => {
 		data: result.rows[result.rowCount - 1],
 	}
 }
+
+const { CREATED, OK, NOT_FOUND } = StatusCodes
 
 const createProduct = processRoute(
 	createQuery,
@@ -235,13 +210,6 @@ const updateProduct = processRoute(
 	validateResult
 )
 
-const replaceProduct = processRoute(
-	replaceQuery,
-	{ status: OK },
-	validateBody,
-	validateResult
-)
-
 const deleteProduct = processRoute(
 	deleteQuery,
 	{ status: OK },
@@ -254,6 +222,5 @@ export {
 	getAllProducts,
 	getProduct,
 	updateProduct,
-	replaceProduct,
 	deleteProduct,
 }

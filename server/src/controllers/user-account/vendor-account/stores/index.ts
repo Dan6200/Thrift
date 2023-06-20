@@ -1,6 +1,5 @@
 import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import assert from 'node:assert/strict'
 import Joi from 'joi'
 import {
 	StoreSchemaReq,
@@ -13,13 +12,14 @@ import {
 	RequestWithPayload,
 	RequestUserPayload,
 } from '../../../../types-and-interfaces/request.js'
+import {
+	ResponseData,
+	Status,
+} from '../../../../types-and-interfaces/response.js'
 import { Insert, Update } from '../../../helpers/generate-sql-commands/index.js'
+import processRoute from '../../../helpers/process-route.js'
 
-const createQuery = async ({
-	reqData: storeData,
-	params,
-	userId: vendorId,
-}) => {
+const createQuery = async ({ reqData: storeData, userId: vendorId }) => {
 	// check if vendor account exists
 	const dbRes = await db.query(
 		'select vendor_id from vendors where vendor_id=$1',
@@ -38,109 +38,159 @@ const createQuery = async ({
 	// if Over limit throw error
 	if (LIMIT <= recordCount)
 		throw new BadRequestError(`Each vendor is limited to only ${LIMIT} stores`)
-	let store = (
-		await db.query(
-			`${Insert('stores', [
-				'vendor_id',
-				...Object.keys(storeData),
-			])} returning *`,
-			[vendorId, ...Object.values(storeData)]
-		)
-	).rows[0]
-	Joi.assert(store, StoreSchemaDB)
-	response.status(StatusCodes.CREATED).json(store)
+	return await db.query(
+		`${Insert('stores', ['vendor_id', ...Object.keys(storeData)], 'store_id')}`,
+		[vendorId, ...Object.values(storeData)]
+	)
 }
 
-const getAllStores = async (
-	request: RequestWithPayload,
-	response: Response
-) => {
-	const { userId }: RequestUserPayload = request.user
+// const getAllStores = async (
+// 	request: RequestWithPayload,
+// 	response: Response
+// ) => {
+// 	const { userId }: RequestUserPayload = request.user
+// 	const res = await db.query(
+// 		'select vendor_id from vendors where vendor_id=$1',
+// 		[userId]
+// 	)
+// 	if (res.rowCount === 0)
+// 		throw new BadRequestError(
+// 			'No Vendor account found. Please create a Vendor account'
+// 		)
+// 	const vendorId = res.rows[0].vendor_id
+// 	const stores = (
+// 		await db.query(`select * from stores where vendor_id=$1`, [vendorId])
+// 	).rows
+// 	if (stores.length === 0)
+// 		return response
+// 			.status(StatusCodes.NOT_FOUND)
+// 			.send('Vendor has no stores available')
+// 	Joi.assert(stores[0], StoreSchemaDB)
+// 	response.status(StatusCodes.OK).send(stores)
+// }
+
+const readAllQuery = async ({ userId: vendorId }) => {
 	const res = await db.query(
 		'select vendor_id from vendors where vendor_id=$1',
-		[userId]
+		[vendorId]
 	)
 	if (res.rowCount === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
-	const vendorId = res.rows[0].vendor_id
-	const stores = (
-		await db.query(`select * from stores where vendor_id=$1`, [vendorId])
-	).rows
-	if (stores.length === 0)
-		return response
-			.status(StatusCodes.NOT_FOUND)
-			.send('Vendor has no stores available')
-	Joi.assert(stores[0], StoreSchemaDB)
-	response.status(StatusCodes.OK).send(stores)
+	return await db.query(`select * from stores where vendor_id=$1`, [vendorId])
 }
 
-const getStore = async (request: RequestWithPayload, response: Response) => {
-	const { userId }: RequestUserPayload = request.user
+const readQuery = async ({ params: { storeId }, userId: vendorId }) => {
 	const res = await db.query(
 		'select vendor_id from vendors where vendor_id=$1',
-		[userId]
+		[vendorId]
 	)
 	if (res.rowCount === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
-	const { storeId } = request.params
-	const store = (
-		await db.query(`select * from stores where store_id=$1`, [storeId])
-	).rows[0]
-	if (!store)
-		return response
-			.status(StatusCodes.NOT_FOUND)
-			.send('Shipping Information cannot be found')
-	response.status(StatusCodes.OK).send(store)
+	return await db.query(`select * from stores where store_id=$1`, [storeId])
 }
 
-const updateStore = async (request: RequestWithPayload, response: Response) => {
-	const { userId }: RequestUserPayload = request.user
+const updateQuery = async ({
+	params: { storeId },
+	reqData: storeData,
+	userId: vendorId,
+}) => {
 	const res = await db.query(
 		'select vendor_id from vendors where vendor_id=$1',
-		[userId]
+		[vendorId]
 	)
 	if (res.rowCount === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
-	const { storeId } = request.params
-	let validData = UpdateStoreSchemaReq.validate(request.body)
-	if (validData.error)
-		throw new BadRequestError('Invalid request data' + validData.error.message)
-	const storeData = validData.value
 	let fields = Object.keys(storeData),
 		data = Object.values(storeData)
-	const store = (
-		await db.query(
-			`${Update('stores', 'store_id', fields)} returning store_id`,
-			[storeId, ...data]
-		)
-	).rows[0]
-	if (!store) throw new BadRequestError('Put request was unsuccessful')
-	response.status(StatusCodes.OK).send(store)
+	return db.query(
+		`${Update('stores', 'store_id', fields)} returning store_id`,
+		[storeId, ...data]
+	)
 }
 
-const deleteStore = async (request: RequestWithPayload, response: Response) => {
-	const { userId }: RequestUserPayload = request.user
+const deleteQuery = async ({ params: { storeId }, userId: vendorId }) => {
 	const res = await db.query(
 		'select vendor_id from vendors where vendor_id=$1',
-		[userId]
+		[vendorId]
 	)
 	if (res.rowCount === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
-	const { storeId } = request.params
-	await db.query(
+	return db.query(
 		`delete from stores
 			where store_id=$1`,
 		[storeId]
 	)
-	response.status(StatusCodes.NO_CONTENT).send()
 }
+
+const validateBody = (data: object): object => {
+	const validData = StoreSchemaReq.validate(data)
+	if (validData.error)
+		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
+	return validData.value
+}
+
+const validateBodyPatchUpdate = (data: object): object => {
+	const validData = UpdateStoreSchemaReq.validate(data)
+	if (validData.error)
+		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
+	return validData.value
+}
+
+const validateResult = (result: any, status: Status): ResponseData => {
+	if (result.rowCount === 0)
+		return {
+			status: NOT_FOUND,
+			data: { msg: 'Store not found' },
+		}
+	return {
+		status,
+		data: result.rows[result.rowCount - 1],
+	}
+}
+
+const { CREATED, OK, NOT_FOUND } = StatusCodes
+
+const createStore = processRoute(
+	createQuery,
+	{ status: CREATED },
+	validateBody,
+	validateResult
+)
+
+const getAllStores = processRoute(
+	readAllQuery,
+	{ status: OK },
+	undefined,
+	validateListResult
+)
+
+const getStore = processRoute(
+	readQuery,
+	{ status: OK },
+	undefined,
+	validateResult
+)
+
+const updateStore = processRoute(
+	updateQuery,
+	{ status: OK },
+	validateBodyPatchUpdate,
+	validateResult
+)
+
+const deleteStore = processRoute(
+	deleteQuery,
+	{ status: OK },
+	undefined,
+	validateResult
+)
 
 export { createStore, getStore, getAllStores, updateStore, deleteStore }

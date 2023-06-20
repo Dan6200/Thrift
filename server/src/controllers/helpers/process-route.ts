@@ -12,50 +12,49 @@ type ResponseData = {
 	data?: string | object
 }
 export default (
-	dbQuery: (sqlData: object) => any,
-	responseData: ResponseData,
+	dbQuery: (reqData: {
+		userId: string
+		query: object
+		params: object
+		reqBody: object
+	}) => any,
+	status: Status,
 	validateBody?: (data: object) => any,
-	validateResult?: (data: object, status: Status) => ResponseData,
-	processData?: (data: object) => any
+	validateResult?: (data: object, status: Status) => ResponseData
 ) => {
 	// return the route processor middleware
 	return async (request: RequestWithPayload, response: Response) => {
-		// variables
-		let result: any,
-			reqData: any,
-			{ userId } = request.user
-
+		let { userId } = request.user
 		if (!userId)
 			throw new BadRequestError(
 				'Please create the appropriate account before performing this action'
 			)
 		// set status code and response data
 		// Validate request data
-		reqData = request.body
+		let reqBody = request.body
 		if (
-			typeof reqData === 'object' &&
-			Object.values(reqData).length &&
+			typeof reqBody === 'object' &&
+			Object.values(reqBody).length &&
 			validateBody
 		) {
 			// validateBody throws error if body is invalid
-			reqData = validateBody(reqData)
+			reqBody = validateBody(reqBody)
 		}
 		// Process the requestData
-		if (processData && reqData) reqData = processData(reqData as object)
-		let { status, data } = responseData
 		// Make a database query with the request data
-		result = await dbQuery({
+		const dbRes = await dbQuery({
 			userId,
 			params: request.params,
 			query: request.query,
-			reqData,
+			reqBody,
 		})
-		if (result && validateResult) {
+
+		if (validateResult) {
 			// validateBody returns error status code and message if data is invalid
-			;({ status, data } = validateResult(result, responseData.status))
 			// check for errors
-			if (status >= 400) return response.status(status).send(data)
+			;({ status, data } = validateResult(dbRes, status))
 		}
+		data ??= null
 		// Update the data with the same status code
 		response.status(status).send(data)
 	}

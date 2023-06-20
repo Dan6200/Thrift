@@ -1,4 +1,8 @@
-export function Insert(table: string, fields: string[]): string {
+export function Insert(
+	table: string,
+	fields: string[],
+	idName: string
+): string {
 	let insertQuery = `insert into ${table} (\n`
 	const last = fields.length - 1
 	insertQuery += fields.slice(0, last).join(',\n')
@@ -6,7 +10,7 @@ export function Insert(table: string, fields: string[]): string {
 	for (let i = 0; i < last; i++) {
 		insertQuery += `$${i + 1}, `
 	}
-	insertQuery += `$${last + 1})`
+	insertQuery += `$${last + 1}) returning ${idName}`
 	return insertQuery
 }
 
@@ -23,6 +27,6 @@ export function Update(
 		setFieldsToNewValues += `${fields[i]} = $${i + OFFSET},\n`
 	}
 	setFieldsToNewValues += `${fields[last]} = $${last + OFFSET}`
-	let output = `update ${table}\n${setFieldsToNewValues}\nwhere ${idName} = $1`
+	let output = `update ${table}\n${setFieldsToNewValues}\nwhere ${idName} = $1 returning ${idName}`
 	return output
 }

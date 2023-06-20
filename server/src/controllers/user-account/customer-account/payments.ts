@@ -30,10 +30,11 @@ const createPaymentInfo = async (
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	const paymentData = validData.value
 	let dbQuery: QueryResult = await db.query(
-		`${Insert('payment_info', [
-			'customer_id',
-			...Object.keys(paymentData),
-		])} returning payment_id`,
+		`${Insert(
+			'payment_info',
+			['customer_id', ...Object.keys(paymentData)],
+			'payment_id'
+		)}`,
 		[customerId, ...Object.values(paymentData)]
 	)
 	let { rowCount }: { rowCount: number } = dbQuery

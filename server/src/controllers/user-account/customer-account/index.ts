@@ -1,48 +1,42 @@
 import { StatusCodes } from 'http-status-codes'
 import db from '../../../db/index.js'
+import { ResponseData } from '../../../types-and-interfaces/response.js'
 import processRoute from '../../helpers/process-route.js'
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
 
-type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND
+const createQuery = ({ userId: customerId }) =>
+	db.query(`insert into customers values($1) returning customer_id`, [
+		customerId,
+	])
 
-type ResponseData = {
-	status: Status
-	data?: string | object
-}
+const readQuery = ({ userId: customerId }) =>
+	db.query(`select customer_id from customers where customer_id=$1`, [
+		customerId,
+	])
 
-const createQuery = ({ userId }) =>
-	db.query(`insert into customers values($1)`, [userId])
+const deleteQuery = ({ userId: customerId }) =>
+	db.query(`delete from customers where customer_id=$1`, [customerId])
 
-const readQuery = ({ userId }) =>
-	db.query(`select * from customers where customer_id=$1`, [userId])
-
-const deleteQuery = () => db.query(`delete from customers`)
-
-const validateResult = (result: any, status: Status): ResponseData => {
-	if (result.rowCount === 0)
+const validateResult = (data: any): ResponseData => {
+	if (data.rowCount === 0)
 		return {
-			status: 404,
+			status: NOT_FOUND,
 			data: 'Route does not exit',
 		}
 	return {
-		status,
-		data: result.rows[result.rowCount - 1],
+		data,
 	}
 }
 
-const createCustomerAccount = processRoute(createQuery, { status: CREATED })
+const createCustomerAccount = processRoute(createQuery, CREATED, validateResult)
 
 const getCustomerAccount = processRoute(
 	readQuery,
-	{ status: OK },
+	OK,
 	undefined,
 	validateResult
 )
 
-const deleteCustomerAccount = processRoute(
-	deleteQuery,
-	{ status: NO_CONTENT },
-	undefined
-)
+const deleteCustomerAccount = processRoute(deleteQuery, NO_CONTENT, undefined)
 
 export { createCustomerAccount, getCustomerAccount, deleteCustomerAccount }

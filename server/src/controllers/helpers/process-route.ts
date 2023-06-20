@@ -1,13 +1,8 @@
 import { Response } from 'express'
-import { StatusCodes } from 'http-status-codes'
 import { QueryResult } from 'pg'
 import BadRequestError from '../../errors/bad-request.js'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
-import { ResponseData } from '../../types-and-interfaces/response.js'
-
-const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
-
-type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND
+import { ResponseData, Status } from '../../types-and-interfaces/response.js'
 
 export default (
 	dbQuery: (reqData: {

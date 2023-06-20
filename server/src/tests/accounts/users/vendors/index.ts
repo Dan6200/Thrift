@@ -1,4 +1,5 @@
 import db from '../../../../db/index.js'
+import { UserData } from '../../../../types-and-interfaces/user.js'
 import { registration } from '../../../helpers/auth/index.js'
 import {
 	newUsers,

@@ -6,10 +6,17 @@ import testUserAccount from '../accounts/users/index.js'
 import testCustomerAccount from '../accounts/users/customers/index.js'
 import testVendorAccount from '../accounts/users/vendors/index.js'
 import testProducts from '../accounts/users/vendors/products/index.js'
-import * as Ebuka from '../data/users/user-ebuka/index.js'
-import * as Aisha from '../data/users/user-aisha/index.js'
-import * as Mustapha from '../data/users/user-mustapha/index.js'
-const users = [Ebuka, Aisha, Mustapha]
+import * as Ebuka from '../data/users/customers/user-ebuka/index.js'
+import * as Aisha from '../data/users/customers/user-aisha/index.js'
+import * as Mustapha from '../data/users/customers/user-mustapha/index.js'
+import * as Aliyu from '../data/users/vendors/user-aliyu/index.js'
+
+const users = [
+	{ user: Ebuka, type: 'customer' },
+	{ user: Aisha, type: 'customer' },
+	{ user: Mustapha, type: 'customer' },
+	{ user: Aliyu, type: 'vendor' },
+]
 
 export default function (): void {
 	// Testing the register route
@@ -19,13 +26,16 @@ export default function (): void {
 		const agent = chai.request.agent(url)
 		// const agent = chai.request.agent(app)
 
-		for (let user of users) {
+		for (let { user, type } of users) {
 			describe('Testing Authentication', () => testAuthentication(agent, user))
 			describe('Testing User Account', () => testUserAccount(agent, user))
-			describe('Testing Customer Account', () =>
-				testCustomerAccount(agent, user))
-			describe('Testing Vendor Account', () => testVendorAccount(agent, user))
-			describe('Testing Products', async () => testProducts(agent, user))
+			if (type === 'customer')
+				describe('Testing Customer Account', () =>
+					testCustomerAccount(agent, user))
+			else {
+				describe('Testing Vendor Account', () => testVendorAccount(agent, user))
+				describe('Testing Products', async () => testProducts(agent, user))
+			}
 		}
 	})
 }

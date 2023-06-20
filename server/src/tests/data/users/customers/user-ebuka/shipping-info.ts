@@ -1,4 +1,4 @@
-const info = [
+const shippingInfo = [
 	{
 		recipient_first_name: 'Ebuka',
 		recipient_last_name: 'Eze',
@@ -31,7 +31,7 @@ const info = [
 	},
 ]
 
-const updatedInfo = [
+const updatedShippingInfo = [
 	{
 		recipient_first_name: 'Ebuka',
 		recipient_last_name: 'Eze',
@@ -64,4 +64,4 @@ const updatedInfo = [
 	},
 ]
 
-export { info, updatedInfo }
+export { shippingInfo, updatedShippingInfo }

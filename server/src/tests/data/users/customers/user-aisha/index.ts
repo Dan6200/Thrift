@@ -1,5 +1,4 @@
-import * as shipping from './shipping-info.js'
-import * as payments from './payment-info.js'
+import { shippingInfo, updatedShippingInfo } from './shipping-info.js'
 
 const userInfo = {
 	first_name: 'Aisha',
@@ -20,4 +19,10 @@ const updatedPassword = {
 	new_password: 'sgsdlaWEWRsdf23@#%#@',
 }
 
-export { userInfo, updatedUserInfo, updatedPassword, shipping, payments }
+export {
+	userInfo,
+	updatedUserInfo,
+	updatedPassword,
+	shippingInfo,
+	updatedShippingInfo,
+}

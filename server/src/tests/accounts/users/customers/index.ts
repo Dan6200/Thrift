@@ -14,19 +14,22 @@ import {
 import { registration } from '../../../helpers/auth/index.js'
 import db from '../../../../db/index.js'
 import { UserData } from '../../../../types-and-interfaces/user.js'
+import ShippingInfo from '../../../../types-and-interfaces/shipping-info.js'
 
 export default function (
 	agent: ChaiHttp.Agent,
 	{
 		userInfo,
-		userShippingInfo,
-		userShippingInfoUpdated,
-		userPaymentInfo,
+		shippingInfo,
+		updatedShippingInfo,
+		paymentInfo,
+		updatedPaymentInfo,
 	}: {
 		userInfo: UserData
-		userShippingInfo?: any
-		userShippingInfoUpdated?: any
-		userPaymentInfo?: any
+		shippingInfo: ShippingInfo
+		updatedShippingInfo: ShippingInfo
+		paymentInfo: PaymentInfo
+		updatedPaymentInfo: PaymentInfo
 	}
 ) {
 	after(async () => db.query('delete from user_accounts'))
@@ -41,7 +44,6 @@ export default function (
 	it("it should get the user's customer account", () =>
 		testGetCustomer(agent, path))
 
-	const shippingInfo = userShippingInfo
 	const shippingPath = path + '/shipping'
 
 	it(`it should add shipping addresses for the customer then retrieve it`, async () => {
@@ -52,8 +54,6 @@ export default function (
 		)
 		await testGetShipping(agent, shippingPath + '/' + address_id)
 	})
-
-	const updatedShippingInfo = userShippingInfoUpdated
 
 	it(`it should add a shipping addresses for the customer then update it`, async () => {
 		const { address_id } = await testCreateShipping(

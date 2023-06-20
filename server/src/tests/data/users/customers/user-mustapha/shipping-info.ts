@@ -1,10 +1,10 @@
-const info = [
+const shippingInfo: ShippingInfo = [
 	{
 		recipient_first_name: 'Mustapha',
 		recipient_last_name: 'Mohammed',
-		address: '53, Thomas Salako Street, Ogba',
-		city: 'Abuja',
-		state: 'Federal Capital Territory',
+		address: '6 Alaafia Street, Kano, Nigeria',
+		city: 'Kano',
+		state: 'Kano',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
 		delivery_instructions: 'Call me before you arrive, I may not be home',
@@ -12,9 +12,9 @@ const info = [
 	{
 		recipient_first_name: 'Mustapha',
 		recipient_last_name: 'Mohammed',
-		address: '53, Thomas Salako Street, Ogba',
-		city: 'Abuja',
-		state: 'Federal Capital Territory',
+		address: '6 Alaafia Street, Kano, Nigeria',
+		city: 'Kano',
+		state: 'Kano',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
 		delivery_instructions: 'Call me before you arrive, I may not be home',
@@ -22,46 +22,46 @@ const info = [
 	{
 		recipient_first_name: 'Mustapha',
 		recipient_last_name: 'Mohammed',
-		address: '53, Thomas Salako Street, Ogba',
-		city: 'Abuja',
-		state: 'Federal Capital Territory',
-		postal_code: '290543',
-		delivery_contact: '+234902354252',
-		delivery_instructions: 'Call me before you arrive, I may not be home',
-	},
-]
-
-const updatedInfo = [
-	{
-		recipient_first_name: 'Mustapha',
-		recipient_last_name: 'Mohammed',
-		address: '53, Thomas Salako Street, Ogba',
-		city: 'Abuja',
-		state: 'Federal Capital Territory',
-		postal_code: '290543',
-		delivery_contact: '+234902354252',
-		delivery_instructions: 'Call me before you arrive, I may not be home',
-	},
-	{
-		recipient_first_name: 'Mustapha',
-		recipient_last_name: 'Mohammed',
-		address: '53, Thomas Salako Street, Ogba',
-		city: 'Abuja',
-		state: 'Federal Capital Territory',
-		postal_code: '290543',
-		delivery_contact: '+234902354252',
-		delivery_instructions: 'Call me before you arrive, I may not be home',
-	},
-	{
-		recipient_first_name: 'Mustapha',
-		recipient_last_name: 'Mohammed',
-		address: '53, Thomas Salako Street, Ogba',
-		city: 'Abuja',
-		state: 'Federal Capital Territory',
+		address: '6 Alaafia Street, Kano, Nigeria',
+		city: 'Kano',
+		state: 'Kano',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
 		delivery_instructions: 'Call me before you arrive, I may not be home',
 	},
 ]
 
-export { info, updatedInfo }
+const updatedShippingInfo = [
+	{
+		recipient_first_name: 'Mustapha',
+		recipient_last_name: 'Mohammed',
+		address: '6 Alaafia Street, Kano, Nigeria',
+		city: 'Kano',
+		state: 'Kano',
+		postal_code: '290543',
+		delivery_contact: '+234902354252',
+		delivery_instructions: 'Call me before you arrive, I may not be home',
+	},
+	{
+		recipient_first_name: 'Mustapha',
+		recipient_last_name: 'Mohammed',
+		address: '6 Alaafia Street, Kano, Nigeria',
+		city: 'Kano',
+		state: 'Kano',
+		postal_code: '290543',
+		delivery_contact: '+234902354252',
+		delivery_instructions: 'Call me before you arrive, I may not be home',
+	},
+	{
+		recipient_first_name: 'Mustapha',
+		recipient_last_name: 'Mohammed',
+		address: '6 Alaafia Street, Kano, Nigeria',
+		city: 'Kano',
+		state: 'Kano',
+		postal_code: '290543',
+		delivery_contact: '+234902354252',
+		delivery_instructions: 'Call me before you arrive, I may not be home',
+	},
+]
+
+export { shippingInfo, updatedShippingInfo }

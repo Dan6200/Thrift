@@ -52,14 +52,9 @@ let updateUserAccount = async (
 	let { userId }: RequestUserPayload = request.user
 	if (Object.keys(request.body).length === 0)
 		throw new BadRequestError('request data cannot be empty')
-	// TODO: validate and verify updated email and phone numbers
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body)
 	let dbResult = await db.query(
-		// Generates A sql update command.
-		// Takes the database name, the column name of the first item of the array
-		// returns a list of columns from the database table
-		// unit test this function
 		`${Update(
 			'user_accounts',
 			'user_id',
@@ -95,12 +90,10 @@ let updateUserPassword = async (
 	request.body.password = password
 	let fields: string[] = Object.keys(request.body),
 		data: string[] = Object.values(request.body)
-	await db.query(
-		// Generates A sql update command.
-		// Takes the database name, the column name of the first item of the array
-		`${Update('user_accounts', 'user_id', fields)}`,
-		[userId, ...data]
-	)
+	await db.query(`${Update('user_accounts', 'user_id', fields)}`, [
+		userId,
+		...data,
+	])
 	response.status(StatusCodes.NO_CONTENT).end()
 }
 

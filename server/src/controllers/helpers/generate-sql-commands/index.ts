@@ -1,3 +1,4 @@
+// Generates A sql insert command.
 export function Insert(
 	table: string,
 	fields: string[],
@@ -14,6 +15,7 @@ export function Insert(
 	return insertQuery
 }
 
+// Generates A sql update command.
 export function Update(
 	table: string,
 	idName: string,

@@ -148,7 +148,7 @@ const validateResult = (result: any, status: Status): ResponseData => {
 	if (result.rowCount === 0)
 		return {
 			status: NOT_FOUND,
-			data: { msg: 'Store not found' },
+			data: 'Store not found',
 		}
 	return {
 		status,
@@ -160,37 +160,27 @@ const { CREATED, OK, NOT_FOUND } = StatusCodes
 
 const createStore = processRoute(
 	createQuery,
-	{ status: CREATED },
+	CREATED,
 	validateBody,
 	validateResult
 )
 
 const getAllStores = processRoute(
 	readAllQuery,
-	{ status: OK },
+	OK,
 	undefined,
 	validateListResult
 )
 
-const getStore = processRoute(
-	readQuery,
-	{ status: OK },
-	undefined,
-	validateResult
-)
+const getStore = processRoute(readQuery, OK, undefined, validateResult)
 
 const updateStore = processRoute(
 	updateQuery,
-	{ status: OK },
+	OK,
 	validateBodyPatchUpdate,
 	validateResult
 )
 
-const deleteStore = processRoute(
-	deleteQuery,
-	{ status: OK },
-	undefined,
-	validateResult
-)
+const deleteStore = processRoute(deleteQuery, OK, undefined, validateResult)
 
 export { createStore, getStore, getAllStores, updateStore, deleteStore }

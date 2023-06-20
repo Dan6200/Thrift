@@ -5,15 +5,15 @@ import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import { ResponseData, Status } from '../../types-and-interfaces/response.js'
 
 export default (
-	dbQuery: (reqData: {
+	CRUDQuery: (queryData: {
 		userId?: string
 		query?: object
 		params?: object
 		reqBody?: object
 	}) => Promise<QueryResult<any>>,
 	status: Status,
-	validateBody?: (data: any) => object,
-	validateResult?: (data: any) => ResponseData
+	validateBody?: (reqBody: any) => object,
+	validateResult?: (result: QueryResult<any>) => ResponseData
 ) => {
 	// return the route processor middleware
 	return async (request: RequestWithPayload, response: Response) => {
@@ -35,7 +35,7 @@ export default (
 		}
 		// Process the requestData
 		// Make a database query with the request data
-		const dbRes = await dbQuery({
+		const dbRes = await CRUDQuery({
 			userId,
 			params: request.params,
 			query: request.query,

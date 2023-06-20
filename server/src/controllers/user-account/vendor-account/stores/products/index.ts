@@ -2,15 +2,11 @@ import { StatusCodes } from 'http-status-codes'
 import {
 	ProductSchemaDB,
 	ProductSchemaReq,
-	ProductSchemaUpdateReq,
 } from '../../../../../app-schema/products.js'
 import db from '../../../../../db/index.js'
 import BadRequestError from '../../../../../errors/bad-request.js'
 import UnauthenticatedError from '../../../../../errors/unauthenticated.js'
-import {
-	ResponseData,
-	Status,
-} from '../../../../../types-and-interfaces/response.js'
+import { ResponseData } from '../../../../../types-and-interfaces/response.js'
 import {
 	Insert,
 	Update,
@@ -146,76 +142,59 @@ const validateBody = (data: object): object => {
 	return validData.value
 }
 
-const validateBodyPatchUpdate = (data: object): object => {
-	const validData = ProductSchemaUpdateReq.validate(data)
-	if (validData.error)
-		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
-	return validData.value
-}
-
-const validateListResult = (result: any, status: Status): ResponseData => {
-	if (result.rowCount === 0)
+const validateResultList = (data: any): ResponseData => {
+	if (data.rowCount === 0)
 		return {
 			status: NOT_FOUND,
-			data: { msg: 'No products found. Please add a product for sale' },
-		}
-	// validateResult(result.rows[0])
-	return {
-		status,
-		data: result.rows,
-	}
-}
-
-const validateResult = (result: any, status: Status): ResponseData => {
-	if (!result.rowCount)
-	{
-		const dbResult = ProductSchemaDB.validate(result)
-		return {
-			status: NOT_FOUND,
-			data: { msg: 'Product not found' },
+			data: 'No products found. Please add a product for sale',
 		}
 	return {
-		status,
-		data: result.rows[result.rowCount - 1],
+		data,
 	}
 }
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
+const validateResult = (data: any): ResponseData => {
+	if (!data)
+		return {
+			status: NOT_FOUND,
+			data: 'Product not found',
+		}
+	const validateDbResult = ProductSchemaDB.validate(data)
+	if (validateDbResult.error)
+		throw new BadRequestError(
+			'Invalid Data from DB: ' + validateDbResult.error.message
+		)
+	return {
+		data,
+	}
+}
+
 const createProduct = processRoute(
 	createQuery,
-	{ status: CREATED },
+	CREATED,
 	validateBody,
 	validateResult
 )
 
 const getAllProducts = processRoute(
 	readAllQuery,
-	{ status: OK },
+	OK,
 	undefined,
-	validateListResult
+	validateResultList
 )
 
-const getProduct = processRoute(
-	readQuery,
-	{ status: OK },
-	undefined,
-	validateResult
-)
+const getProduct = processRoute(readQuery, OK, undefined, validateResult)
 
 const updateProduct = processRoute(
 	updateQuery,
-	{ status: OK },
-	validateBodyPatchUpdate,
+	OK,
+	validateBody,
 	validateResult
 )
 
-const deleteProduct = processRoute(
-	deleteQuery,
-	{ status: OK },
-	undefined,
-	validateResult
-)
+const deleteProduct = processRoute(deleteQuery, OK, undefined, validateResult)
 
 export {
 	createProduct,

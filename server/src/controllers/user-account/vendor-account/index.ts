@@ -1,55 +1,36 @@
 import { StatusCodes } from 'http-status-codes'
 import db from '../../../db/index.js'
+import { ResponseData } from '../../../types-and-interfaces/response.js'
 import processRoute from '../../helpers/process-route.js'
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
-
-type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND
-
-type ResponseData = {
-	status: Status
-	data?: string | object
-}
 
 const createQuery = ({ userId }) =>
 	db.query(`insert into vendors values($1) returning vendor_id`, [userId])
 
 const readQuery = ({ userId }) =>
-	db.query(`select * from vendors where vendor_id=$1`, [userId])
+	db.query(`select vendor_id from vendors`, [userId])
 
 const deleteQuery = () => db.query(`delete from vendors`)
 
-const validateResult = (result: any, status: Status): ResponseData => {
-	if (result.rowCount === 0) {
-		if (result.command === 'SELECT') {
-			return {
-				status: NOT_FOUND,
-				data: 'Vendor account does not exist. Please create a vendor account',
-			}
+const validateResult = (data: any): ResponseData => {
+	if (!data) {
+		return {
+			status: NOT_FOUND,
+			data: 'Vendor account does not exist. Please create a vendor account',
 		}
-		if (result.command === 'INSERT') throw new Error('INSERT operation failed')
 	}
 	return {
-		status,
-		data: result.rows[result.rowCount - 1],
+		data,
 	}
 }
 
 const createVendorAccount = processRoute(
-		createQuery,
-		{ status: CREATED },
-		undefined,
-		validateResult
-	),
-	getVendorAccount = processRoute(
-		readQuery,
-		{ status: OK },
-		undefined,
-		validateResult
-	),
-	deleteVendorAccount = processRoute(
-		deleteQuery,
-		{ status: NO_CONTENT },
-		undefined
-	)
+	createQuery,
+	CREATED,
+	undefined,
+	validateResult
+)
+const getVendorAccount = processRoute(readQuery, OK, undefined, validateResult)
+const deleteVendorAccount = processRoute(deleteQuery, NO_CONTENT, undefined)
 
 export { createVendorAccount, getVendorAccount, deleteVendorAccount }

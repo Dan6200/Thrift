@@ -1,26 +1,24 @@
 import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { QueryResult } from 'pg'
 import BadRequestError from '../../errors/bad-request.js'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
+import { ResponseData } from '../../types-and-interfaces/response.js'
 
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
 
 type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND
 
-type ResponseData = {
-	status: Status
-	data?: string | object
-}
 export default (
 	dbQuery: (reqData: {
-		userId: string
-		query: object
-		params: object
-		reqBody: object
-	}) => any,
+		userId?: string
+		query?: object
+		params?: object
+		reqBody?: object
+	}) => Promise<QueryResult<any>>,
 	status: Status,
-	validateBody?: (data: object) => any,
-	validateResult?: (data: object, status: Status) => ResponseData
+	validateBody?: (data: any) => object,
+	validateResult?: (data: any) => ResponseData
 ) => {
 	// return the route processor middleware
 	return async (request: RequestWithPayload, response: Response) => {
@@ -52,10 +50,9 @@ export default (
 		if (validateResult) {
 			// validateBody returns error status code and message if data is invalid
 			// check for errors
-			;({ status, data } = validateResult(dbRes, status))
+			const { status: errStatus, data } = validateResult(dbRes)
+			return response.status(errStatus ?? status).send(data)
 		}
-		data ??= null
-		// Update the data with the same status code
-		response.status(status).send(data)
+		response.status(status).end()
 	}
 }

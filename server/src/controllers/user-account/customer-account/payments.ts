@@ -37,10 +37,7 @@
 // 		)}`,
 // 		[customerId, ...Object.values(paymentData)]
 // 	)
-// 	let { rowCount }: { rowCount: number } = dbQuery
-// 	let lastInsert = rowCount ? rowCount - 1 : rowCount
-// 	assert.ok(lastInsert >= 0 && lastInsert < rowCount)
-// 	let paymentAddress = dbQuery.rows[lastInsert]
+// 	let paymentAddress = dbQuery.rows[0]
 // 	response.status(StatusCodes.CREATED).send(paymentAddress)
 // }
 

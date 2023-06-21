@@ -35,15 +35,15 @@ const createQuery = async ({ reqData: storeData, userId: vendorId }) => {
 		'select vendor_id from vendors where vendor_id=$1',
 		[vendorId]
 	)
-	if (dbRes.rowCount === 0)
+	if (dbRes.rows.length === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
 	// limit amount of stores to 5...
 	const LIMIT = 5
 	let recordCount = <number>(
-		(await db.query('select 1 from stores where vendor_id=$1', [vendorId]))
-			.rowCount
+		(await db.query('select 1 from stores where vendor_id=$1', [vendorId])).rows
+			.length
 	)
 	// if Over limit throw error
 	if (LIMIT <= recordCount)
@@ -59,7 +59,7 @@ const readAllQuery = async ({ userId: vendorId }) => {
 		'select vendor_id from vendors where vendor_id=$1',
 		[vendorId]
 	)
-	if (res.rowCount === 0)
+	if (res.rows.length === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
@@ -71,7 +71,7 @@ const readQuery = async ({ params: { storeId }, userId: vendorId }) => {
 		'select vendor_id from vendors where vendor_id=$1',
 		[vendorId]
 	)
-	if (res.rowCount === 0)
+	if (res.rows.length === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
@@ -87,7 +87,7 @@ const updateQuery = async ({
 		'select vendor_id from vendors where vendor_id=$1',
 		[vendorId]
 	)
-	if (res.rowCount === 0)
+	if (res.rows.length === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
@@ -104,7 +104,7 @@ const deleteQuery = async ({ params: { storeId }, userId: vendorId }) => {
 		'select vendor_id from vendors where vendor_id=$1',
 		[vendorId]
 	)
-	if (res.rowCount === 0)
+	if (res.rows.length === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
@@ -128,7 +128,7 @@ const validateBodyUpdate = (data: object): object => {
 const validateResultList = (
 	result: QueryResult<QueryResultRow>
 ): ResponseData => {
-	if (result.rowCount === 0)
+	if (result.rows.length === 0)
 		return {
 			status: NOT_FOUND,
 			data: 'No stores found. Please add a store',
@@ -142,12 +142,12 @@ const validateResultList = (
 }
 
 const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
-	if (result.rowCount === 0)
+	if (result.rows.length === 0)
 		return {
 			status: NOT_FOUND,
 			data: 'Store not found',
 		}
-	const validData = StoreSchemaDB.validate(result.rows[result.rowCount - 1])
+	const validData = StoreSchemaDB.validate(result.rows[result.rows.length - 1])
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {

@@ -6,6 +6,7 @@ import { QueryResult } from 'pg'
 import {
 	ShippingInfoSchemaReq,
 	ShippingInfoSchemaDB,
+	ShippingInfoSchemaDBList,
 } from '../../../app-schema/customer/shipping.js'
 import db from '../../../db/index.js'
 import { BadRequestError } from '../../../errors/index.js'
@@ -45,10 +46,7 @@ const createShippingInfo = async (
 		)}`,
 		[customerId, ...Object.values(shippingData)]
 	)
-	let { rowCount }: { rowCount: number } = dbQuery
-	let lastInsert = rowCount ? rowCount - 1 : rowCount
-	assert.ok(lastInsert >= 0 && lastInsert < rowCount)
-	let shippingAddress = dbQuery.rows[lastInsert]
+	let shippingAddress = dbQuery.rows[0]
 	response.status(StatusCodes.CREATED).send(shippingAddress)
 }
 
@@ -57,16 +55,18 @@ const getAllShippingInfo = async (
 	response: Response
 ) => {
 	const { userId: customerId } = request.user
-	const shippingInfos: any[] = (
+	const rows: any[] = (
 		await db.query(selectShippingInfo + ' where customer_id=$1', [customerId])
 	).rows
-	assert.ok(Array.isArray(shippingInfos))
-	if (shippingInfos.length === 0)
+	if (rows.length === 0)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('customer has no shipping information available')
-	joi.assert(shippingInfos[0], ShippingInfoSchemaDB)
-	response.status(StatusCodes.OK).send(shippingInfos)
+	const validData = ShippingInfoSchemaDBList.validate(rows)
+	if (validData.error)
+		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
+	const allShippingInfo = validData.value
+	response.status(StatusCodes.OK).send(allShippingInfo)
 }
 
 const getShippingInfo = async (
@@ -75,14 +75,17 @@ const getShippingInfo = async (
 ) => {
 	const { addressId } = request.params
 	if (!addressId) throw new BadRequestError('Id parameter not available')
-	const shippingInfo = (
+	const row = (
 		await db.query(selectShippingInfo + ' where address_id=$1', [addressId])
 	).rows[0]
-	if (!shippingInfo)
+	if (!row)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('Shipping Information cannot be found')
-	joi.assert(shippingInfo, ShippingInfoSchemaDB)
+	const validData = ShippingInfoSchemaDBList.validate(row)
+	if (validData.error)
+		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
+	const shippingInfo = validData.value
 	response.status(StatusCodes.OK).send(shippingInfo)
 }
 
@@ -97,18 +100,19 @@ const updateShippingInfo = async (
 	const shippingData = validData.value
 	let fields = Object.keys(shippingData),
 		data = Object.values(shippingData)
-	await db.query(`${Update('shipping_info', 'address_id', fields)}`, [
-		addressId,
-		...data,
-	])
-	const shippingInfo = (
-		await db.query(selectShippingInfo + ' where address_id=$1', [addressId])
+	const row = (
+		await db.query(`${Update('shipping_info', 'address_id', fields)}`, [
+			addressId,
+			...data,
+		])
 	).rows[0]
-	joi.assert(shippingInfo, ShippingInfoSchemaDB)
-	if (!shippingInfo)
-		return response
-			.status(StatusCodes.NOT_FOUND)
-			.send('Shipping Information cannot be found')
+	const validResult = joi
+		.object({ address_id: joi.string().pattern(/\d+/) })
+		.required()
+		.validate(row)
+	if (!validResult.error)
+		throw new BadRequestError('Failed to update shipping info')
+	const shippingInfo = validResult.value
 	response.status(StatusCodes.OK).send(shippingInfo)
 }
 

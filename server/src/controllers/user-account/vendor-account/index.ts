@@ -24,14 +24,14 @@ const deleteQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
 	db.query(Delete('vendor', 'vendor_id', 'vendor_id'), [vendorId])
 
 const validateResult = (result: QueryResult): ResponseData => {
-	if (!result.rowCount) {
+	if (!result.rows.length) {
 		return {
 			status: NOT_FOUND,
 			data: 'Vendor account does not exist. Please create a vendor account',
 		}
 	}
 	const validData = Joi.object({ vendor_id: Joi.string() }).validate(
-		result.rows[result.rowCount - 1]
+		result.rows[0]
 	)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)

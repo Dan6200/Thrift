@@ -25,7 +25,7 @@ const createQuery = async ({
 		'select vendor_id from stores where store_id=$1',
 		[storeId]
 	)
-	if (!dbQuery.rowCount)
+	if (!dbQuery.rows.length)
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
@@ -48,7 +48,7 @@ const readAllQuery = async ({
 		'select vendor_id from stores where store_id=$1',
 		[storeId]
 	)
-	if (!dbQuery.rowCount)
+	if (!dbQuery.rows.length)
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
@@ -80,7 +80,7 @@ const readQuery = async ({
 		'select vendor_id from stores where store_id=$1',
 		[storeId]
 	)
-	if (!dbQuery.rowCount)
+	if (!dbQuery.rows.length)
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
@@ -108,7 +108,7 @@ const updateQuery = async ({
 		'select vendor_id from stores where store_id=$1',
 		[storeId]
 	)
-	if (!dbQuery.rowCount)
+	if (!dbQuery.rows.length)
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
@@ -126,7 +126,7 @@ const deleteQuery = async ({
 		'select vendor_id from stores where store_id=$1',
 		[storeId]
 	)
-	if (!dbQuery.rowCount)
+	if (!dbQuery.rows.length)
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
@@ -146,13 +146,12 @@ const validateBody = (data: object): object => {
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
 const validateResult = (result: QueryResult<any>): ResponseData => {
-	if (!result.rowCount)
+	if (!result.rows.length)
 		return {
 			status: NOT_FOUND,
 			data: 'Product not found',
 		}
-	const { rows, rowCount } = result
-	const validateDbResult = ProductSchemaDB.validate(rows[rowCount - 1])
+	const validateDbResult = ProductSchemaDB.validate(result.rows[0])
 	if (validateDbResult.error)
 		throw new BadRequestError(
 			'Invalid Data from DB: ' + validateDbResult.error.message

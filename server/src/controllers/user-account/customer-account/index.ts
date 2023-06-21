@@ -27,13 +27,13 @@ const deleteQuery: CRUDQueryAuth = ({ userId: customerId }) =>
 	db.query(Delete('customers', 'customer_id', 'customer_id'), [customerId])
 
 const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
-	if (result.rowCount === 0)
+	if (result.rows.length === 0)
 		return {
 			status: NOT_FOUND,
 			data: 'Route does not exit',
 		}
 	const validData = Joi.object({ customer_id: Joi.string() }).validate(
-		result.rows[result.rowCount - 1]
+		result.rows[0]
 	)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)

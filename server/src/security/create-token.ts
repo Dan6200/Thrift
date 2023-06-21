@@ -1,5 +1,6 @@
 import jwt, { Secret } from 'jsonwebtoken'
 
+// TODO: Optimization, is this faster sync or async
 export const createToken = function (
 	userId: string,
 	callback: (token: string) => void

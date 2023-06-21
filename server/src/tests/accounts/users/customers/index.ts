@@ -22,14 +22,14 @@ export default function (
 		userInfo,
 		shippingInfo,
 		updatedShippingInfo,
-		paymentInfo,
-		updatedPaymentInfo,
-	}: {
+	}: // paymentInfo,
+	// updatedPaymentInfo,
+	{
 		userInfo: UserData
 		shippingInfo: ShippingInfo
 		updatedShippingInfo: ShippingInfo
-		paymentInfo: PaymentInfo
-		updatedPaymentInfo: PaymentInfo
+		// paymentInfo: PaymentInfo
+		// updatedPaymentInfo: PaymentInfo
 	}
 ) {
 	after(async () => db.query('delete from user_accounts'))

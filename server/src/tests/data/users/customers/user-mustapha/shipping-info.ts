@@ -1,4 +1,6 @@
-const shippingInfo: ShippingInfo = [
+import ShippingInfo from '../../../../../types-and-interfaces/shipping-info.js'
+
+const shippingInfo: ShippingInfo[] = [
 	{
 		recipient_first_name: 'Mustapha',
 		recipient_last_name: 'Mohammed',

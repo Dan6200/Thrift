@@ -10,6 +10,7 @@ import { BadRequestError, UnauthenticatedError } from '../errors/index.js'
 import { hashPassword, validatePassword } from '../security/password.js'
 import { createToken } from '../security/create-token.js'
 import { Insert } from './helpers/generate-sql-commands/index.js'
+import { log } from 'node:console'
 // TODO: IP address
 // https://github.com/neekware/fullerstack/tree/main/libs/nax-ipware
 
@@ -53,15 +54,14 @@ const register = async (request: Request, response: Response) => {
 	)
 	const { rows } = dbQuery
 	const userId: string = rows[0].user_id
-	createToken(userId, token =>
+	createToken(userId, token => {
 		response
 			.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
 			.status(StatusCodes.CREATED)
 			.json({
 				token,
 			})
-	)
-	response.end()
+	})
 }
 
 const login = async (request: Request, response: Response) => {
@@ -102,10 +102,7 @@ const login = async (request: Request, response: Response) => {
 			user.password.toString()
 		)
 		if (!pwdIsValid) throw new UnauthenticatedError('Invalid Credentials')
-		// TODO: confirm user if there is a different IP Address
-		// TODO: create separate IP Address tables as users may login
-		// ...different IP Addresses
-		token = createToken(user.user_id, token =>
+		createToken(user.user_id, token =>
 			response
 				.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
 				.status(StatusCodes.OK)
@@ -113,8 +110,7 @@ const login = async (request: Request, response: Response) => {
 					token,
 				})
 		)
-	}
-	response.end()
+	} else response.status(StatusCodes.OK).end()
 }
 
 const logout = (_request: Request, response: Response) =>

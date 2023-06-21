@@ -15,14 +15,14 @@ address,
 age,
 dob,
 sex
-) values ($1, $2, $3, $4, $5, $6)`
+) values ($1, $2, $3, $4, $5, $6) returning my_id`
 
 const SQLUPDATE = `update my_table
 set first_name = $2,
 address = $3,
 age = $4,
 sex = $5
-where my_id = $1`
+where my_id = $1 returning my_id`
 
 export default () => {
 	it('it should generate sql statements given the inputs', () =>

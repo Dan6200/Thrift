@@ -4,6 +4,7 @@ import {
 	listOfUpdatedShippingInfo,
 } from './shipping-info.js'
 
+// Make sure test data is correct especially dates
 const userInfo: UserData = {
 	first_name: 'Aisha',
 	last_name: 'Mohammed',
@@ -15,7 +16,7 @@ const userInfo: UserData = {
 }
 
 const updatedUserInfo: UserData = {
-	dob: new Date('2000-16-23'),
+	dob: new Date('2000-10-23'),
 }
 
 const updatedPassword: UserData = {

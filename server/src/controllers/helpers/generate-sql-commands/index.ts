@@ -41,3 +41,16 @@ export function Delete(
 ): string {
 	return `delete from ${table} where ${whereClause}=$1 returning ${idName}`
 }
+
+export function Select(
+	table: string,
+	fields: '*' | string[],
+	whereClause?: string
+): string {
+	let queryString: string
+	if (fields !== '*') {
+		const fieldList = fields.join(',\n')
+		queryString = `select ${fieldList}`
+	} else queryString = `select *`
+	return queryString + ` from ${table}${whereClause ? whereClause : ``}`
+}

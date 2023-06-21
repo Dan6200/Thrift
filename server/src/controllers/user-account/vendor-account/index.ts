@@ -10,12 +10,12 @@ import {
 	ProcessRouteWithoutBodyAndDBResult,
 } from '../../../types-and-interfaces/process-routes.js'
 import { ResponseData } from '../../../types-and-interfaces/response.js'
-import { Delete } from '../../helpers/generate-sql-commands/index.js'
+import { Delete, Insert } from '../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../helpers/process-route.js'
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
 
 const createQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
-	db.query(`insert into vendors values($1) returning vendor_id`, [vendorId])
+	db.query(Insert('vendors', ['vendor_id'], 'vendor_id'), [vendorId])
 
 const readQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
 	db.query(`select vendor_id from vendors`, [vendorId])

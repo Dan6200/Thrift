@@ -33,7 +33,7 @@ set first_name = $2,
 address = $3,
 age = $4,
 sex = $5
-where my_id = $1 returning my_id`
+where my_id=$1 returning my_id`
 
 export default () => {
 	it('it should generate the correct sql INSERT statement given its inputs', () =>
@@ -44,12 +44,12 @@ export default () => {
 		).should.equal(SQLINSERT))
 
 	it('it should generate the correct sql UPDATE statement given its inputs', () =>
-		Update('my_table', 'my_id', [
-			'first_name',
-			'address',
-			'age',
-			'sex',
-		]).should.equal(SQLUPDATE))
+		Update(
+			'my_table',
+			'my_id',
+			['first_name', 'address', 'age', 'sex'],
+			'where my_id=$1'
+		).should.equal(SQLUPDATE))
 
 	it('it should create a database query from a query parameter input', () =>
 		handleSortQuery('-list_price,-net_price,product_id').should.equal(

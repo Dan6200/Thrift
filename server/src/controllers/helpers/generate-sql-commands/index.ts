@@ -19,17 +19,17 @@ export function Insert(
 export function Update(
 	table: string,
 	idName: string,
-	fields: string[]
+	fields: string[],
+	whereClause: string
 ): string {
 	let setFieldsToNewValues = 'set '
 	const last = fields.length - 1
 	// db query parameter list starts from 2, table_id is always first in that list
-	const OFFSET = 2
 	for (let i = 0; i < last; i++) {
-		setFieldsToNewValues += `${fields[i]} = $${i + OFFSET},\n`
+		setFieldsToNewValues += `${fields[i]} = $${i},\n`
 	}
-	setFieldsToNewValues += `${fields[last]} = $${last + OFFSET}`
-	let output = `update ${table}\n${setFieldsToNewValues}\nwhere ${idName} = $1 returning ${idName}`
+	setFieldsToNewValues += `${fields[last]} = $${last}`
+	let output = `update ${table}\n${setFieldsToNewValues}\n${whereClause} returning ${idName}`
 	return output
 }
 
@@ -39,7 +39,7 @@ export function Delete(
 	idName: string,
 	whereClause: string
 ): string {
-	return `delete from ${table} where ${whereClause}=$1 returning ${idName}`
+	return `delete from ${table} where ${whereClause} returning ${idName}`
 }
 
 export function Select(
@@ -52,5 +52,7 @@ export function Select(
 		const fieldList = fields.join(',\n')
 		queryString = `select ${fieldList}`
 	} else queryString = `select *`
-	return queryString + ` from ${table}${whereClause ? whereClause : ``}`
+	return (
+		queryString + ` from ${table}${whereClause ? `where ${whereClause}` : ``}`
+	)
 }

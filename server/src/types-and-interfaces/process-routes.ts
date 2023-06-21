@@ -72,43 +72,38 @@ export type QueryData = {
 	reqBody?: object
 }
 
-// validateBody: (reqBody: any) => object,
-// validateResult: (result: QueryResult<any>) => ResponseData
-//
-export type ProcessRouteWithoutBody = ({
-	CRUDQuery,
-	status,
-	validateResult,
-}: {
-	CRUDQuery: (queryData: QueryData) => QueryResultPromise
-	status: Status
-	validateBody: undefined
+export type ProcessRouteWithoutBody = (
+	CRUDQuery: (queryData: QueryData) => QueryResultPromise,
+	status: Status,
 	validateResult: (result: QueryResult<any>) => ResponseData
-}) => (
+) => (
 	request: RequestWithPayload,
 	response: Response
 ) => Promise<Response<any, Record<string, any>>>
 
-export type ProcessRouteWithNoDBResult = ({
-	CRUDQuery,
-	status,
-	validateBody,
-}: {
-	CRUDQuery: (queryData: QueryData) => QueryResultPromise
-	status: Status
+export type ProcessRouteWithNoDBResult = (
+	CRUDQuery: (queryData: QueryData) => QueryResultPromise,
+	status: Status,
 	validateBody: (reqBody: any) => object
-}) => (
+) => (
 	request: RequestWithPayload,
 	response: Response
 ) => Promise<Response<any, Record<string, any>>>
 
-export type ProcessRouteWithoutBodyAndDBResult = ({
-	CRUDQuery,
-	status,
-}: {
-	CRUDQuery: (queryData: object) => QueryResultPromise
+export type ProcessRouteWithoutBodyAndDBResult = (
+	CRUDQuery: (queryData: object) => QueryResultPromise,
 	status: Status
-}) => (
+) => (
+	request: RequestWithPayload,
+	response: Response
+) => Promise<Response<any, Record<string, any>>>
+
+export type ProcessRouteWithBodyAndDBResult = (
+	CRUDQuery: (queryData: object) => QueryResultPromise,
+	status: Status,
+	validateBody: (reqBody: any) => object,
+	validateResult: (result: QueryResult<any>) => ResponseData
+) => (
 	request: RequestWithPayload,
 	response: Response
 ) => Promise<Response<any, Record<string, any>>>

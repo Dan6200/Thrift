@@ -38,17 +38,11 @@ const processPostRoute = <ProcessRouteWithoutBody>processRoute
 const createVendorAccount = processPostRoute(
 	createQuery,
 	CREATED,
-	undefined,
 	validateResult
 )
 
 const processGetRoute = <ProcessRouteWithoutBody>processRoute
-const getVendorAccount = processGetRoute(
-	readQuery,
-	OK,
-	undefined,
-	validateResult
-)
+const getVendorAccount = processGetRoute(readQuery, OK, validateResult)
 
 const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
 const deleteVendorAccount = processDeleteRoute(deleteQuery, NO_CONTENT)

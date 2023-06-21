@@ -9,6 +9,11 @@ import {
 import db from '../../../../db/index.js'
 import { BadRequestError } from '../../../../errors/index.js'
 import {
+	ProcessRouteWithBodyAndDBResult,
+	ProcessRouteWithoutBody,
+	ProcessRouteWithoutBodyAndDBResult,
+} from '../../../../types-and-interfaces/process-routes.js'
+import {
 	RequestWithPayload,
 	RequestUserPayload,
 } from '../../../../types-and-interfaces/request.js'
@@ -43,31 +48,6 @@ const createQuery = async ({ reqData: storeData, userId: vendorId }) => {
 		[vendorId, ...Object.values(storeData)]
 	)
 }
-
-// const getAllStores = async (
-// 	request: RequestWithPayload,
-// 	response: Response
-// ) => {
-// 	const { userId }: RequestUserPayload = request.user
-// 	const res = await db.query(
-// 		'select vendor_id from vendors where vendor_id=$1',
-// 		[userId]
-// 	)
-// 	if (res.rowCount === 0)
-// 		throw new BadRequestError(
-// 			'No Vendor account found. Please create a Vendor account'
-// 		)
-// 	const vendorId = res.rows[0].vendor_id
-// 	const stores = (
-// 		await db.query(`select * from stores where vendor_id=$1`, [vendorId])
-// 	).rows
-// 	if (stores.length === 0)
-// 		return response
-// 			.status(StatusCodes.NOT_FOUND)
-// 			.send('Vendor has no stores available')
-// 	Joi.assert(stores[0], StoreSchemaDB)
-// 	response.status(StatusCodes.OK).send(stores)
-// }
 
 const readAllQuery = async ({ userId: vendorId }) => {
 	const res = await db.query(
@@ -137,50 +117,60 @@ const validateBody = (data: object): object => {
 	return validData.value
 }
 
-const validateBodyPatchUpdate = (data: object): object => {
+const validateBodyUpdate = (data: object): object => {
 	const validData = UpdateStoreSchemaReq.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return validData.value
 }
 
-const validateResult = (result: any, status: Status): ResponseData => {
+const validateResult = (result: any): ResponseData => {
 	if (result.rowCount === 0)
 		return {
 			status: NOT_FOUND,
 			data: 'Store not found',
 		}
 	return {
-		status,
 		data: result.rows[result.rowCount - 1],
+	}
+}
+
+const validateResultList = (data: any): ResponseData => {
+	if (data.rowCount === 0)
+		return {
+			status: NOT_FOUND,
+			data: 'No products found. Please add a product for sale',
+		}
+	return {
+		data,
 	}
 }
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
-const createStore = processRoute(
+const processPostRoute = <ProcessRouteWithBodyAndDBResult>processRoute
+const createStore = processPostRoute(
 	createQuery,
 	CREATED,
 	validateBody,
 	validateResult
 )
 
-const getAllStores = processRoute(
-	readAllQuery,
-	OK,
-	undefined,
-	validateListResult
-)
+const processGetAllRoute = <ProcessRouteWithoutBody>processRoute
+const getAllStores = processGetAllRoute(readAllQuery, OK, validateResultList)
 
-const getStore = processRoute(readQuery, OK, undefined, validateResult)
+const processGetIDRoute = <ProcessRouteWithoutBody>processRoute
+const getStore = processGetIDRoute(readQuery, OK, validateResult)
 
-const updateStore = processRoute(
+const processPutRoute = <ProcessRouteWithBodyAndDBResult>processRoute
+const updateStore = processPutRoute(
 	updateQuery,
 	OK,
-	validateBodyPatchUpdate,
+	validateBodyUpdate,
 	validateResult
 )
 
-const deleteStore = processRoute(deleteQuery, OK, undefined, validateResult)
+const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
+const deleteStore = processDeleteRoute(deleteQuery, OK, validateResult)
 
 export { createStore, getStore, getAllStores, updateStore, deleteStore }

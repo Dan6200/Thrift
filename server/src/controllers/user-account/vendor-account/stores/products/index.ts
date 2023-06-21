@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
+import { QueryResult } from 'pg'
 import {
 	ProductSchemaDB,
 	ProductSchemaReq,
@@ -142,32 +143,22 @@ const validateBody = (data: object): object => {
 	return validData.value
 }
 
-const validateResultList = (data: any): ResponseData => {
-	if (data.rowCount === 0)
-		return {
-			status: NOT_FOUND,
-			data: 'No products found. Please add a product for sale',
-		}
-	return {
-		data,
-	}
-}
-
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
-const validateResult = (data: any): ResponseData => {
-	if (!data)
+const validateResult = (result: QueryResult<any>): ResponseData => {
+	if (!result.rowCount)
 		return {
 			status: NOT_FOUND,
 			data: 'Product not found',
 		}
-	const validateDbResult = ProductSchemaDB.validate(data)
+	const { rows, rowCount } = result
+	const validateDbResult = ProductSchemaDB.validate(rows[rowCount - 1])
 	if (validateDbResult.error)
 		throw new BadRequestError(
 			'Invalid Data from DB: ' + validateDbResult.error.message
 		)
 	return {
-		data,
+		data: validateDbResult.value,
 	}
 }
 
@@ -178,12 +169,7 @@ const createProduct = processRoute(
 	validateResult
 )
 
-const getAllProducts = processRoute(
-	readAllQuery,
-	OK,
-	undefined,
-	validateResultList
-)
+const getAllProducts = processRoute(readAllQuery, OK, undefined, validateResult)
 
 const getProduct = processRoute(readQuery, OK, undefined, validateResult)
 

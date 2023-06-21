@@ -51,17 +51,17 @@ const register = async (request: Request, response: Response) => {
     ${Insert('user_accounts', Object.keys(userData), 'user_id')}`,
 		Object.values(userData)
 	)
-	let { rowCount }: { rowCount: number } = dbQuery
-	let lastInsert = rowCount ? rowCount - 1 : rowCount
-	assert.ok(lastInsert >= 0 && lastInsert < rowCount)
-	const userId: string = dbQuery.rows[lastInsert].user_id,
-		token: string = createToken(userId)
-	response
-		.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
-		.status(StatusCodes.CREATED)
-		.json({
-			token,
-		})
+	const { rows } = dbQuery
+	const userId: string = rows[0].user_id
+	createToken(userId, token =>
+		response
+			.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
+			.status(StatusCodes.CREATED)
+			.json({
+				token,
+			})
+	)
+	response.end()
 }
 
 const login = async (request: Request, response: Response) => {
@@ -105,14 +105,16 @@ const login = async (request: Request, response: Response) => {
 		// TODO: confirm user if there is a different IP Address
 		// TODO: create separate IP Address tables as users may login
 		// ...different IP Addresses
-		token = createToken(user.user_id)
+		token = createToken(user.user_id, token =>
+			response
+				.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
+				.status(StatusCodes.OK)
+				.json({
+					token,
+				})
+		)
 	}
-	response
-		.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
-		.status(StatusCodes.OK)
-		.json({
-			token,
-		})
+	response.end()
 }
 
 const logout = (_request: Request, response: Response) =>

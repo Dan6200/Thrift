@@ -32,3 +32,12 @@ export function Update(
 	let output = `update ${table}\n${setFieldsToNewValues}\nwhere ${idName} = $1 returning ${idName}`
 	return output
 }
+
+// Avoid writing raw delete sql commands forgetting the where clause is dangerous!
+export function Delete(
+	table: string,
+	idName: string,
+	whereClause: string
+): string {
+	return `delete from ${table} where ${whereClause}=$1 returning ${idName}`
+}

@@ -1,6 +1,7 @@
 import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
+import { QueryResult, QueryResultRow } from 'pg'
 import {
 	StoreSchemaReq,
 	StoreSchemaDB,
@@ -21,7 +22,11 @@ import {
 	ResponseData,
 	Status,
 } from '../../../../types-and-interfaces/response.js'
-import { Insert, Update } from '../../../helpers/generate-sql-commands/index.js'
+import {
+	Delete,
+	Insert,
+	Update,
+} from '../../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../../helpers/process-route.js'
 
 const createQuery = async ({ reqData: storeData, userId: vendorId }) => {
@@ -43,7 +48,7 @@ const createQuery = async ({ reqData: storeData, userId: vendorId }) => {
 	// if Over limit throw error
 	if (LIMIT <= recordCount)
 		throw new BadRequestError(`Each vendor is limited to only ${LIMIT} stores`)
-	return await db.query(
+	return db.query(
 		`${Insert('stores', ['vendor_id', ...Object.keys(storeData)], 'store_id')}`,
 		[vendorId, ...Object.values(storeData)]
 	)
@@ -58,7 +63,7 @@ const readAllQuery = async ({ userId: vendorId }) => {
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
-	return await db.query(`select * from stores where vendor_id=$1`, [vendorId])
+	return db.query(`select * from stores where vendor_id=$1`, [vendorId])
 }
 
 const readQuery = async ({ params: { storeId }, userId: vendorId }) => {
@@ -70,7 +75,7 @@ const readQuery = async ({ params: { storeId }, userId: vendorId }) => {
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
-	return await db.query(`select * from stores where store_id=$1`, [storeId])
+	return db.query(`select * from stores where store_id=$1`, [storeId])
 }
 
 const updateQuery = async ({
@@ -103,11 +108,7 @@ const deleteQuery = async ({ params: { storeId }, userId: vendorId }) => {
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
-	return db.query(
-		`delete from stores
-			where store_id=$1`,
-		[storeId]
-	)
+	return db.query(Delete('stores', 'store_id', 'store_id'), [storeId])
 }
 
 const validateBody = (data: object): object => {
@@ -124,25 +125,33 @@ const validateBodyUpdate = (data: object): object => {
 	return validData.value
 }
 
-const validateResult = (result: any): ResponseData => {
+const validateResultList = (
+	result: QueryResult<QueryResultRow>
+): ResponseData => {
+	if (result.rowCount === 0)
+		return {
+			status: NOT_FOUND,
+			data: 'No stores found. Please add a store',
+		}
+	const validData = StoreSchemaDB.validate(result.rows)
+	if (validData.error)
+		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
+	return {
+		data: validData.value,
+	}
+}
+
+const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
 	if (result.rowCount === 0)
 		return {
 			status: NOT_FOUND,
 			data: 'Store not found',
 		}
+	const validData = StoreSchemaDB.validate(result.rows[result.rowCount - 1])
+	if (validData.error)
+		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {
-		data: result.rows[result.rowCount - 1],
-	}
-}
-
-const validateResultList = (data: any): ResponseData => {
-	if (data.rowCount === 0)
-		return {
-			status: NOT_FOUND,
-			data: 'No products found. Please add a product for sale',
-		}
-	return {
-		data,
+		data: validData.value,
 	}
 }
 

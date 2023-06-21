@@ -1,12 +1,15 @@
 import { StatusCodes } from 'http-status-codes'
-import { QueryResult } from 'pg'
+import Joi from 'joi'
+import { QueryResult, QueryResultRow } from 'pg'
 import db from '../../../db/index.js'
+import BadRequestError from '../../../errors/bad-request.js'
 import {
 	CRUDQueryAuth,
 	ProcessRouteWithoutBody,
 	ProcessRouteWithoutBodyAndDBResult,
 } from '../../../types-and-interfaces/process-routes.js'
 import { ResponseData } from '../../../types-and-interfaces/response.js'
+import { Delete } from '../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../helpers/process-route.js'
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
 
@@ -20,18 +23,22 @@ const readQuery: CRUDQueryAuth = ({ userId: customerId }) =>
 		customerId,
 	])
 
-// NOTE: Never delete without where clause!!!
 const deleteQuery: CRUDQueryAuth = ({ userId: customerId }) =>
-	db.query(`delete from customers where customer_id=$1`, [customerId])
+	db.query(Delete('customers', 'customer_id', 'customer_id'), [customerId])
 
-const validateResult = (data: QueryResult<any>): ResponseData => {
-	if (data.rowCount === 0)
+const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
+	if (result.rowCount === 0)
 		return {
 			status: NOT_FOUND,
 			data: 'Route does not exit',
 		}
+	const validData = Joi.object({ customer_id: Joi.string() }).validate(
+		result.rows[result.rowCount - 1]
+	)
+	if (validData.error)
+		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {
-		data: data.rows[data.rowCount - 1],
+		data: validData.value,
 	}
 }
 

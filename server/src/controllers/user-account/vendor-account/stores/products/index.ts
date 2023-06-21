@@ -2,11 +2,16 @@ import { StatusCodes } from 'http-status-codes'
 import { QueryResult } from 'pg'
 import {
 	ProductSchemaDB,
+	ProductSchemaDBList,
 	ProductSchemaReq,
 } from '../../../../../app-schema/products.js'
 import db from '../../../../../db/index.js'
 import BadRequestError from '../../../../../errors/bad-request.js'
 import UnauthenticatedError from '../../../../../errors/unauthenticated.js'
+import {
+	ProcessRouteWithBodyAndDBResult,
+	ProcessRouteWithoutBody,
+} from '../../../../../types-and-interfaces/process-routes.js'
 import { ResponseData } from '../../../../../types-and-interfaces/response.js'
 import {
 	Insert,
@@ -145,6 +150,22 @@ const validateBody = (data: object): object => {
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
+const validateResultList = (result: QueryResult<any>): ResponseData => {
+	if (!result.rows.length)
+		return {
+			status: NOT_FOUND,
+			data: 'No Product found. Please create a product.',
+		}
+	const validateDbResult = ProductSchemaDBList.validate(result.rows)
+	if (validateDbResult.error)
+		throw new BadRequestError(
+			'Invalid Data from DB: ' + validateDbResult.error.message
+		)
+	return {
+		data: validateDbResult.value,
+	}
+}
+
 const validateResult = (result: QueryResult<any>): ResponseData => {
 	if (!result.rows.length)
 		return {
@@ -161,25 +182,31 @@ const validateResult = (result: QueryResult<any>): ResponseData => {
 	}
 }
 
-const createProduct = processRoute(
+const processPostRoute = <ProcessRouteWithBodyAndDBResult>processRoute
+const processGetAllRoute = <ProcessRouteWithoutBody>processRoute
+const processGetIDRoute = <ProcessRouteWithoutBody>processRoute
+const processPutRoute = <ProcessRouteWithBodyAndDBResult>processRoute
+const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
+
+const createProduct = processPostRoute(
 	createQuery,
 	CREATED,
 	validateBody,
 	validateResult
 )
 
-const getAllProducts = processRoute(readAllQuery, OK, undefined, validateResult)
+const getAllProducts = processGetAllRoute(readAllQuery, OK, validateResultList)
 
-const getProduct = processRoute(readQuery, OK, undefined, validateResult)
+const getProduct = processGetIDRoute(readQuery, OK, validateResult)
 
-const updateProduct = processRoute(
+const updateProduct = processPutRoute(
 	updateQuery,
 	OK,
 	validateBody,
 	validateResult
 )
 
-const deleteProduct = processRoute(deleteQuery, OK, undefined, validateResult)
+const deleteProduct = processDeleteRoute(deleteQuery, OK, validateResult)
 
 export {
 	createProduct,

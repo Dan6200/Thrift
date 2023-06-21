@@ -1,5 +1,8 @@
 import { UserData } from '../../../../../types-and-interfaces/user.js'
-import { shippingInfo, updatedShippingInfo } from './shipping-info.js'
+import {
+	listOfShippingInfo,
+	listOfUpdatedShippingInfo,
+} from './shipping-info.js'
 
 const userInfo: UserData = {
 	first_name: 'Mustapha',
@@ -27,6 +30,6 @@ export {
 	userInfo,
 	updatedUserInfo,
 	updatedPassword,
-	shippingInfo,
-	updatedShippingInfo,
+	listOfShippingInfo,
+	listOfUpdatedShippingInfo,
 }

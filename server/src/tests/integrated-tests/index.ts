@@ -12,12 +12,9 @@ import * as Mustapha from '../data/users/customers/user-mustapha/index.js'
 import * as Aliyu from '../data/users/vendors/user-aliyu/index.js'
 import db from '../../db/index.js'
 
-const users = [
-	{ user: Ebuka, type: 'customer' },
-	{ user: Aisha, type: 'customer' },
-	{ user: Mustapha, type: 'customer' },
-	{ user: Aliyu, type: 'vendor' },
-]
+const users = [Ebuka, Aliyu, Aisha, Mustapha]
+const customers = [Ebuka, Aisha, Mustapha]
+const vendors = [Aliyu]
 
 export default function (): void {
 	// Testing the register route
@@ -28,16 +25,16 @@ export default function (): void {
 		const agent = chai.request.agent(url)
 		// const agent = chai.request.agent(app)
 
-		for (let { user, type } of users) {
+		for (let user of users) {
 			describe('Testing Authentication', () => testAuthentication(agent, user))
 			describe('Testing User Account', () => testUserAccount(agent, user))
-			if (type === 'customer')
-				describe('Testing Customer Account', () =>
-					testCustomerAccount(agent, user))
-			else {
-				describe('Testing Vendor Account', () => testVendorAccount(agent, user))
-				// describe('Testing Products', async () => testProducts(agent, user))
-			}
+			// describe('Testing Products', async () => testProducts(agent, user))
 		}
+		for (let vendor of vendors) {
+			describe('Testing Vendor Account', () => testVendorAccount(agent, vendor))
+		}
+		for (let customer of customers)
+			describe('Testing Customer Account', () =>
+				testCustomerAccount(agent, customer))
 	})
 }

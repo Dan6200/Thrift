@@ -1,3 +1,4 @@
+import assert from 'assert'
 import StoresData from '../../../../types-and-interfaces/stores-data.js'
 import { UserData } from '../../../../types-and-interfaces/user.js'
 import { registration } from '../../../helpers/auth/index.js'
@@ -19,14 +20,12 @@ export default function (
 	agent: ChaiHttp.Agent,
 	{
 		userInfo,
-		vendorStoresData,
-		vendorStoresDataUpdated,
-		vendorPaymentInfo,
+		stores: listOfStoresByVendor,
+		updatedStores: listOfUpdatedStoresByVendor,
 	}: {
 		userInfo: UserData
-		vendorStoresData?: StoresData
-		vendorStoresDataUpdated?: StoresData
-		vendorPaymentInfo?: any
+		stores: StoresData[]
+		updatedStores: StoresData[]
 	}
 ) {
 	const path = '/v1/user-account/vendor-account'
@@ -40,28 +39,42 @@ export default function (
 	it("it should get the user's vendor account", () =>
 		testGetVendor(agent, path))
 
-	it('should create a store for the vendor', () =>
-		testCreateStore(agent, storesPath, vendorStoresData!))
+	it('should create a store for the vendor', async () => {
+		for (const store of listOfStoresByVendor) {
+			testCreateStore(agent, storesPath, store)
+		}
+	})
 
-	it('should fetch the newly created store', () =>
-		testCreateStore(agent, storesPath, vendorStoresData!).then(({ store_id }) =>
+	it('should fetch the newly created store', async () => {
+		for (const store of listOfStoresByVendor) {
+			const { store_id } = await testCreateStore(agent, storesPath, store)
 			testGetStore(agent, storesPath + '/' + store_id)
-		))
+		}
+	})
 
-	it('should update the store', () =>
-		testCreateStore(agent, storesPath, vendorStoresData!).then(({ store_id }) =>
+	it('should update the store', async () => {
+		assert(listOfStoresByVendor.length === listOfUpdatedStoresByVendor.length)
+		const range = listOfStoresByVendor.length - 1
+		for (let idx = 0; idx <= range; idx++) {
+			const { store_id } = await testCreateStore(
+				agent,
+				storesPath,
+				listOfStoresByVendor[idx]
+			)
 			testUpdateStore(
 				agent,
 				storesPath + '/' + store_id,
-				vendorStoresDataUpdated!
+				listOfUpdatedStoresByVendor[idx]
 			)
-		))
+		}
+	})
 
 	it('should delete the created store and fail to retrieve it', () =>
-		testCreateStore(agent, storesPath, vendorStoresData!).then(({ store_id }) =>
-			testDeleteStore(agent, storesPath + '/' + store_id).then(() =>
-				testGetNonExistentStore(agent, storesPath + '/' + store_id)
-			)
+		testCreateStore(agent, storesPath, listOfStoresByVendor!).then(
+			({ store_id }) =>
+				testDeleteStore(agent, storesPath + '/' + store_id).then(() =>
+					testGetNonExistentStore(agent, storesPath + '/' + store_id)
+				)
 		))
 
 	it("it should delete the user's vendor account", () =>

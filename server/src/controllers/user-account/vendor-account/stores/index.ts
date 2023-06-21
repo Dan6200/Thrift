@@ -147,7 +147,7 @@ const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
 			status: NOT_FOUND,
 			data: 'Store not found',
 		}
-	const validData = StoreSchemaDB.validate(result.rows[result.rows.length - 1])
+	const validData = StoreSchemaDB.validate(result.rows[0])
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {

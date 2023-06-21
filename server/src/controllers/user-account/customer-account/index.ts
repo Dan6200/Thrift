@@ -11,6 +11,7 @@ import {
 import { ResponseData } from '../../../types-and-interfaces/response.js'
 import { Delete } from '../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../helpers/process-route.js'
+import { CustomerDBResultSchema } from '../../../app-schema/customer/index.js'
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
 
 const createQuery: CRUDQueryAuth = ({ userId: customerId }) =>
@@ -32,9 +33,7 @@ const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
 			status: NOT_FOUND,
 			data: 'Route does not exit',
 		}
-	const validData = Joi.object({ customer_id: Joi.string() }).validate(
-		result.rows[0]
-	)
+	const validData = CustomerDBResultSchema.validate(result.rows[0])
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {

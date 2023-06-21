@@ -7,6 +7,7 @@ import {
 	ShippingInfoSchemaReq,
 	ShippingInfoSchemaDB,
 	ShippingInfoSchemaDBList,
+	ShippingInfoSchemaDBLean,
 } from '../../../app-schema/customer/shipping.js'
 import db from '../../../db/index.js'
 import { BadRequestError } from '../../../errors/index.js'
@@ -106,10 +107,7 @@ const updateShippingInfo = async (
 			...data,
 		])
 	).rows[0]
-	const validResult = joi
-		.object({ address_id: joi.string().pattern(/\d+/) })
-		.required()
-		.validate(row)
+	const validResult = ShippingInfoSchemaDBLean.validate(row)
 	if (!validResult.error)
 		throw new BadRequestError('Failed to update shipping info')
 	const shippingInfo = validResult.value

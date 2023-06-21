@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
 import { QueryResult } from 'pg'
+import { VendorDBResultSchema } from '../../../app-schema/vendor/index.js'
 import db from '../../../db/index.js'
 import BadRequestError from '../../../errors/bad-request.js'
 import {
@@ -30,9 +31,7 @@ const validateResult = (result: QueryResult): ResponseData => {
 			data: 'Vendor account does not exist. Please create a vendor account',
 		}
 	}
-	const validData = Joi.object({ vendor_id: Joi.string() }).validate(
-		result.rows[0]
-	)
+	const validData = VendorDBResultSchema.validate(result.rows[0])
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {

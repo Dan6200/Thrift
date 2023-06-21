@@ -18,6 +18,12 @@ const ShippingInfoSchemaReq = joi
 	})
 	.required()
 
+const ShippingInfoSchemaDBLean = joi
+	.object({
+		address_id: joi.string().required(),
+	})
+	.required()
+
 const ShippingInfoSchemaDB = joi
 	.object({
 		address_id: joi.string().required(),
@@ -58,4 +64,9 @@ const ShippingInfoSchemaDBList = joi.array().items(
 		.required()
 )
 
-export { ShippingInfoSchemaReq, ShippingInfoSchemaDB, ShippingInfoSchemaDBList }
+export {
+	ShippingInfoSchemaReq,
+	ShippingInfoSchemaDBLean,
+	ShippingInfoSchemaDB,
+	ShippingInfoSchemaDBList,
+}

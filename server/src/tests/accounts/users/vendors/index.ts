@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'node:assert'
 import StoresData from '../../../../types-and-interfaces/stores-data.js'
 import { UserData } from '../../../../types-and-interfaces/user.js'
 import { registration } from '../../../helpers/auth/index.js'
@@ -69,13 +69,13 @@ export default function (
 		}
 	})
 
-	it('should delete the created store and fail to retrieve it', () =>
-		testCreateStore(agent, storesPath, listOfStoresByVendor!).then(
-			({ store_id }) =>
-				testDeleteStore(agent, storesPath + '/' + store_id).then(() =>
-					testGetNonExistentStore(agent, storesPath + '/' + store_id)
-				)
-		))
+	it('should delete the created store and fail to retrieve it', async () => {
+		for (const stores of listOfStoresByVendor) {
+			const { store_id } = await testCreateStore(agent, storesPath, stores)
+			testDeleteStore(agent, storesPath + '/' + store_id)
+			testGetNonExistentStore(agent, storesPath + '/' + store_id)
+		}
+	})
 
 	it("it should delete the user's vendor account", () =>
 		testDeleteVendor(agent, path))

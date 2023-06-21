@@ -15,7 +15,7 @@ import { registration } from '../../../helpers/auth/index.js'
 import db from '../../../../db/index.js'
 import { UserData } from '../../../../types-and-interfaces/user.js'
 import ShippingInfo from '../../../../types-and-interfaces/shipping-info.js'
-import assert from 'assert'
+import assert from 'node:assert'
 
 export default function (
 	agent: ChaiHttp.Agent,
@@ -50,7 +50,7 @@ export default function (
 				shippingPath,
 				shippingInfo
 			)
-			await testGetShipping(agent, shippingPath + '/' + address_id)
+			testGetShipping(agent, shippingPath + '/' + address_id)
 		}
 	})
 
@@ -62,7 +62,7 @@ export default function (
 				shippingPath,
 				listOfShippingInfo[idx]
 			)
-			await testUpdateShipping(
+			testUpdateShipping(
 				agent,
 				shippingPath + '/' + address_id,
 				listOfUpdatedShippingInfo[idx]
@@ -77,7 +77,7 @@ export default function (
 				shippingPath,
 				shippingInfo
 			)
-			await testDeleteShipping(agent, shippingPath + '/' + address_id)
+			testDeleteShipping(agent, shippingPath + '/' + address_id)
 		}
 	})
 

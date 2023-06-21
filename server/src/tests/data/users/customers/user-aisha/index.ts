@@ -1,6 +1,7 @@
+import { UserData } from '../../../../../types-and-interfaces/user.js'
 import { shippingInfo, updatedShippingInfo } from './shipping-info.js'
 
-const userInfo = {
+const userInfo: UserData = {
 	first_name: 'Aisha',
 	last_name: 'Mohammed',
 	email: 'aisha.mohammed@school.edu',
@@ -10,11 +11,11 @@ const userInfo = {
 	country: 'Nigeria',
 }
 
-const updatedUserInfo = {
+const updatedUserInfo: UserData = {
 	email: 'aishamomo@gmail.com',
 }
 
-const updatedPassword = {
+const updatedPassword: UserData = {
 	password: '236!A15HA04',
 	new_password: 'sgsdlaWEWRsdf23@#%#@',
 }

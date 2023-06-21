@@ -1,8 +1,10 @@
-const shippingInfo = [
+import ShippingInfo from '../../../../../types-and-interfaces/shipping-info.js'
+
+const shippingInfo: ShippingInfo[] = [
 	{
 		recipient_first_name: 'Aisha',
 		recipient_last_name: 'Mohammed',
-		street: '53, Thomas Salako Street, Ogba',
+		address: '53, Thomas Salako Street, Ogba',
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
@@ -12,7 +14,7 @@ const shippingInfo = [
 	{
 		recipient_first_name: 'Aisha',
 		recipient_last_name: 'Mohammed',
-		street: '53, Thomas Salako Street, Ogba',
+		address: '53, Thomas Salako Street, Ogba',
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
@@ -22,7 +24,7 @@ const shippingInfo = [
 	{
 		recipient_first_name: 'Aisha',
 		recipient_last_name: 'Mohammed',
-		street: '53, Thomas Salako Street, Ogba',
+		address: '53, Thomas Salako Street, Ogba',
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
@@ -31,11 +33,11 @@ const shippingInfo = [
 	},
 ]
 
-const updatedShippingInfo = [
+const updatedShippingInfo: ShippingInfo[] = [
 	{
 		recipient_first_name: 'Aisha',
 		recipient_last_name: 'Mohammed',
-		street: '53, Thomas Salako Street, Ogba',
+		address: '53, Thomas Salako Street, Ogba',
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
@@ -45,7 +47,7 @@ const updatedShippingInfo = [
 	{
 		recipient_first_name: 'Aisha',
 		recipient_last_name: 'Mohammed',
-		street: '53, Thomas Salako Street, Ogba',
+		address: '53, Thomas Salako Street, Ogba',
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
@@ -55,7 +57,7 @@ const updatedShippingInfo = [
 	{
 		recipient_first_name: 'Aisha',
 		recipient_last_name: 'Mohammed',
-		street: '53, Thomas Salako Street, Ogba',
+		address: '53, Thomas Salako Street, Ogba',
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',

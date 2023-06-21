@@ -1,5 +1,5 @@
-import * as payments from './payment-info.js'
 import { UserData } from '../../../../../types-and-interfaces/user.js'
+import { stores, updatedStores } from './stores/index.js'
 
 const userInfo: UserData = {
 	first_name: 'Aliya',
@@ -22,4 +22,4 @@ const updatedPassword: UserData = {
 	new_password: 'AliMu99$',
 }
 
-export { userInfo, updatedUserInfo, updatedPassword, payments }
+export { userInfo, updatedUserInfo, updatedPassword, stores, updatedStores }

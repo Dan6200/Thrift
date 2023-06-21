@@ -15,19 +15,20 @@ import { registration } from '../../../helpers/auth/index.js'
 import db from '../../../../db/index.js'
 import { UserData } from '../../../../types-and-interfaces/user.js'
 import ShippingInfo from '../../../../types-and-interfaces/shipping-info.js'
+import assert from 'assert'
 
 export default function (
 	agent: ChaiHttp.Agent,
 	{
 		userInfo,
-		shippingInfo,
-		updatedShippingInfo,
+		listOfShippingInfo,
+		listOfUpdatedShippingInfo,
 	}: // paymentInfo,
 	// updatedPaymentInfo,
 	{
 		userInfo: UserData
-		shippingInfo: ShippingInfo
-		updatedShippingInfo: ShippingInfo
+		listOfShippingInfo: ShippingInfo[]
+		listOfUpdatedShippingInfo: ShippingInfo[]
 		// paymentInfo: PaymentInfo
 		// updatedPaymentInfo: PaymentInfo
 	}
@@ -47,44 +48,53 @@ export default function (
 	const shippingPath = path + '/shipping'
 
 	it(`it should add shipping addresses for the customer then retrieve it`, async () => {
-		const { address_id } = await testCreateShipping(
-			agent,
-			shippingPath,
-			shippingInfo
-		)
-		await testGetShipping(agent, shippingPath + '/' + address_id)
+		for (const shippingInfo of listOfShippingInfo) {
+			const { address_id } = await testCreateShipping(
+				agent,
+				shippingPath,
+				shippingInfo
+			)
+			await testGetShipping(agent, shippingPath + '/' + address_id)
+		}
 	})
 
 	it(`it should add a shipping addresses for the customer then update it`, async () => {
-		const { address_id } = await testCreateShipping(
-			agent,
-			shippingPath,
-			shippingInfo
-		)
-		await testUpdateShipping(
-			agent,
-			shippingPath + '/' + address_id,
-			updatedShippingInfo
-		)
+		assert(listOfShippingInfo.length === listOfUpdatedShippingInfo.length)
+		for (let idx = 0; idx < listOfShippingInfo.length; idx++) {
+			const { address_id } = await testCreateShipping(
+				agent,
+				shippingPath,
+				listOfShippingInfo[idx]
+			)
+			await testUpdateShipping(
+				agent,
+				shippingPath + '/' + address_id,
+				listOfUpdatedShippingInfo[idx]
+			)
+		}
 	})
 
 	it(`it should add a shipping addresses for the customer then delete it`, async () => {
-		const { address_id } = await testCreateShipping(
-			agent,
-			shippingPath,
-			shippingInfo
-		)
-		await testDeleteShipping(agent, shippingPath + '/' + address_id)
+		for (const shippingInfo of listOfShippingInfo) {
+			const { address_id } = await testCreateShipping(
+				agent,
+				shippingPath,
+				shippingInfo
+			)
+			await testDeleteShipping(agent, shippingPath + '/' + address_id)
+		}
 	})
 
 	it(`it should fail to retrieve the deleted shipping information`, async () => {
-		const { address_id } = await testCreateShipping(
-			agent,
-			shippingPath,
-			shippingInfo
-		)
-		await testDeleteShipping(agent, `${shippingPath}/${address_id}`)
-		await testGetNonExistentShipping(agent, `${shippingPath}/${address_id}`)
+		for (const shippingInfo of listOfShippingInfo) {
+			const { address_id } = await testCreateShipping(
+				agent,
+				shippingPath,
+				shippingInfo
+			)
+			await testDeleteShipping(agent, `${shippingPath}/${address_id}`)
+			await testGetNonExistentShipping(agent, `${shippingPath}/${address_id}`)
+		}
 	})
 
 	it("it should delete the user's customer account", () =>

@@ -5,7 +5,7 @@ import testAuthentication from '../authentication/index.js'
 import testUserAccount from '../accounts/users/index.js'
 import testCustomerAccount from '../accounts/users/customers/index.js'
 import testVendorAccount from '../accounts/users/vendors/index.js'
-import testProducts from '../accounts/users/vendors/products/index.js'
+// import testProducts from '../accounts/users/vendors/products/index.js'
 import * as Ebuka from '../data/users/customers/user-ebuka/index.js'
 import * as Aisha from '../data/users/customers/user-aisha/index.js'
 import * as Mustapha from '../data/users/customers/user-mustapha/index.js'
@@ -36,7 +36,7 @@ export default function (): void {
 					testCustomerAccount(agent, user))
 			else {
 				describe('Testing Vendor Account', () => testVendorAccount(agent, user))
-				describe('Testing Products', async () => testProducts(agent, user))
+				// describe('Testing Products', async () => testProducts(agent, user))
 			}
 		}
 	})

@@ -25,13 +25,13 @@ const deleteQuery: CRUDQueryAuth = ({ userId: customerId }) =>
 	db.query(`delete from customers where customer_id=$1`, [customerId])
 
 const validateResult = (data: QueryResult<any>): ResponseData => {
-	if (data === undefined)
+	if (data.rowCount === 0)
 		return {
 			status: NOT_FOUND,
 			data: 'Route does not exit',
 		}
 	return {
-		data,
+		data: data.rows[data.rowCount - 1],
 	}
 }
 

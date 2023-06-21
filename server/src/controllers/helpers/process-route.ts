@@ -4,17 +4,22 @@ import BadRequestError from '../../errors/bad-request.js'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import { ResponseData, Status } from '../../types-and-interfaces/response.js'
 
-export default (
+export default ({
+	CRUDQuery,
+	status,
+	validateBody,
+	validateResult,
+}: {
 	CRUDQuery: (queryData: {
 		userId?: string
 		query?: object
 		params?: object
 		reqBody?: object
-	}) => Promise<QueryResult<any>>,
-	status: Status,
-	validateBody?: (reqBody: any) => object,
+	}) => Promise<QueryResult<any>>
+	status: Status
+	validateBody?: (reqBody: any) => object
 	validateResult?: (result: QueryResult<any>) => ResponseData
-) => {
+}) => {
 	// return the route processor middleware
 	return async (request: RequestWithPayload, response: Response) => {
 		let { userId } = request.user

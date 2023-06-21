@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
+import { QueryResult } from 'pg'
 import db from '../../../db/index.js'
 import {
 	CRUDQueryAuth,
@@ -19,15 +20,16 @@ const readQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
 const deleteQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
 	db.query(`delete from vendors where vendor_id=$1`, [vendorId])
 
-const validateResult = (data: any): ResponseData => {
-	if (!data) {
+const validateResult = (result: QueryResult): ResponseData => {
+	if (!result.rowCount) {
 		return {
 			status: NOT_FOUND,
 			data: 'Vendor account does not exist. Please create a vendor account',
 		}
 	}
+	const { rows, rowCount } = result
 	return {
-		data,
+		data: rows[rowCount - 1],
 	}
 }
 

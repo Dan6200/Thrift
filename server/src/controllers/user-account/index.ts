@@ -55,11 +55,7 @@ let updateUserAccount = async (
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body)
 	let dbResult = await db.query(
-		`${Update(
-			'user_accounts',
-			'user_id',
-			fields
-		)} returning ${userDataFields.join(', ')}`,
+		`${Update('user_accounts', 'user_id', fields)}`,
 		[userId, ...data]
 	)
 	assert.equal(dbResult.rows.length, 1)

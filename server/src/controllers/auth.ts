@@ -11,6 +11,7 @@ import { hashPassword, validatePassword } from '../security/password.js'
 import { createToken } from '../security/create-token.js'
 import { Insert } from './helpers/generate-sql-commands/index.js'
 import { log } from 'node:console'
+import { UserData } from '../types-and-interfaces/user.js'
 // TODO: IP address
 // https://github.com/neekware/fullerstack/tree/main/libs/nax-ipware
 
@@ -20,7 +21,7 @@ const register = async (request: Request, response: Response) => {
 		throw new BadRequestError(
 			'Invalid User Data: ' + schemaValidate.error.message
 		)
-	const userData = schemaValidate.value,
+	const userData: UserData = schemaValidate.value,
 		{ phone, email, password } = userData
 	if (!phone && !email) {
 		throw new BadRequestError(`please provide an email address or phone number`)
@@ -46,7 +47,7 @@ const register = async (request: Request, response: Response) => {
 			`)
 		// TODO: SMS verification
 	}
-	userData.password = await hashPassword(password)
+	userData.password = await hashPassword(<string>password)
 	let dbQuery: QueryResult = await db.query(
 		`
     ${Insert('user_accounts', Object.keys(userData), 'user_id')}`,
@@ -65,11 +66,9 @@ const register = async (request: Request, response: Response) => {
 }
 
 const login = async (request: Request, response: Response) => {
-	let email: string, phone: string, password: string
-	email = phone = password = ''
 	let token = request.cookies.token
 	if (!token) {
-		;({ email, phone, password } = request.body)
+		let { email, phone, password }: { [index: string]: string } = request.body
 		if (!email && !phone) {
 			throw new BadRequestError('Please provide email or phone number!')
 		}

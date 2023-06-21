@@ -19,7 +19,7 @@ const vendors = [Aliyu]
 export default function (): void {
 	// Testing the register route
 	describe(`Testing typical user actions`, async () => {
-		beforeEach(() => db.query('delete from user_accounts'))
+		before(() => db.query('delete from user_accounts'))
 		// const url = 'https://thrift-dev.up.railway.app'
 		const url = 'localhost:1024'
 		const agent = chai.request.agent(url)
@@ -28,10 +28,10 @@ export default function (): void {
 		for (let user of users) {
 			describe('Testing Authentication', () => testAuthentication(agent, user))
 			describe('Testing User Account', () => testUserAccount(agent, user))
-			// describe('Testing Products', async () => testProducts(agent, user))
 		}
 		for (let vendor of vendors) {
 			describe('Testing Vendor Account', () => testVendorAccount(agent, vendor))
+			// describe('Testing Products', async () => testProducts(agent, user))
 		}
 		for (let customer of customers)
 			describe('Testing Customer Account', () =>

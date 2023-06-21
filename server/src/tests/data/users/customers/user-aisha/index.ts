@@ -15,7 +15,7 @@ const userInfo: UserData = {
 }
 
 const updatedUserInfo: UserData = {
-	email: 'aishamomo@gmail.com',
+	dob: new Date('2000-16-23'),
 }
 
 const updatedPassword: UserData = {

@@ -17,7 +17,6 @@ const userInfo: UserData = {
 const updatedUserInfo: UserData = {
 	first_name: 'Mustapha',
 	last_name: 'Mohammed',
-	phone: '234808945973',
 	dob: new Date('2000-1-24'),
 }
 

@@ -30,27 +30,36 @@ export default {
 		setTimeout(function () {
 			this.lastQuery = arguments
 		})
-		// console.log('\nexecuted query:\n', text, params)
+		console.log('\nexecuted query:\n', text, params)
 		// allow a retry if DB fails to connect
 		let res: any
 		const retryCount = 7
 		const delay = 500
-		res = retryQuery(pool.query.bind(pool), [text, params], retryCount, delay)
+		// for prod
+		// res = retryQuery(pool.query.bind(pool), [text, params], retryCount, delay)
+
+		// for debugging
+		res = await retryQuery(
+			pool.query.bind(pool),
+			[text, params],
+			retryCount,
+			delay
+		)
 		// const duration = Date.now() - start
 		// add await for this to work
 
-		// console.log(
-		//   '\nquery result',
-		//   util.inspect(
-		//     {
-		//       // duration: `${duration}ms`,
-		//       result: res.rows,
-		//     },
-		//     false,
-		//     null,
-		//     true
-		//   )
-		// )
+		console.log(
+			'\nquery result',
+			util.inspect(
+				{
+					// duration: `${duration}ms`,
+					result: res.rows,
+				},
+				false,
+				null,
+				true
+			)
+		)
 
 		return res
 	},

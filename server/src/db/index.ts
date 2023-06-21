@@ -25,23 +25,29 @@ export default {
 	lastQuery: null,
 
 	// Copied from official docs, slightly modified
-	async query(text: string, params?: Array<any>): Promise<QueryResult<any>> {
+	async query({
+		text,
+		values,
+	}: {
+		text: string
+		values?: Array<any>
+	}): Promise<QueryResult<any>> {
 		// const start = Date.now()
 		setTimeout(function () {
 			this.lastQuery = arguments
 		})
-		console.log('\nexecuted query:\n', text, params)
+		console.log('\nexecuted query:\n', text, values)
 		// allow a retry if DB fails to connect
 		let res: any
 		const retryCount = 7
 		const delay = 500
 		// for prod
-		// res = retryQuery(pool.query.bind(pool), [text, params], retryCount, delay)
+		// res = retryQuery(pool.query.bind(pool), [text, values], retryCount, delay)
 
 		// for debugging
 		res = await retryQuery(
 			pool.query.bind(pool),
-			[text, params],
+			[text, values],
 			retryCount,
 			delay
 		)

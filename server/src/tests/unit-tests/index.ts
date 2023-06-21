@@ -3,6 +3,7 @@ import chai from 'chai'
 import {
 	Insert,
 	Select,
+	SelectWithoutCondition,
 	Update,
 } from '../../controllers/helpers/generate-sql-commands/index.js'
 import { handleSortQuery } from '../../controllers/helpers/generate-sql-commands/query-params-handler.js'
@@ -14,8 +15,7 @@ last_name,
 address,
 age,
 dob,
-sex
-from my_table`
+sex from my_table`
 
 const SQLSELECT2 = `select * from my_table where my_id=$1`
 
@@ -29,11 +29,11 @@ sex
 ) values ($1, $2, $3, $4, $5, $6) returning my_id`
 
 const SQLUPDATE = `update my_table
-set first_name = $2,
-address = $3,
-age = $4,
-sex = $5
-where my_id=$1 returning my_id`
+set first_name = $1,
+address = $2,
+age = $3,
+sex = $4
+where my_id=$5 returning my_id`
 
 export default () => {
 	it('it should generate the correct sql INSERT statement given its inputs', () =>
@@ -48,7 +48,7 @@ export default () => {
 			'my_table',
 			'my_id',
 			['first_name', 'address', 'age', 'sex'],
-			'where my_id=$1'
+			'my_id=$5' // Use fields length + 1
 		).should.equal(SQLUPDATE))
 
 	it('it should create a database query from a query parameter input', () =>
@@ -57,7 +57,7 @@ export default () => {
 		))
 
 	it('it should generate the correct sql SELECT statement', () =>
-		Select('my_table', [
+		SelectWithoutCondition('my_table', [
 			'first_name',
 			'last_name',
 			'address',
@@ -67,5 +67,5 @@ export default () => {
 		]).should.equal(SQLSELECT1))
 
 	it('it should generate the correct sql SELECT statement given its inputs', () =>
-		Select('my_table', '*', 'where my_id=$1').should.equal(SQLSELECT2))
+		Select('my_table', ['*'], 'my_id=$1').should.equal(SQLSELECT2))
 }

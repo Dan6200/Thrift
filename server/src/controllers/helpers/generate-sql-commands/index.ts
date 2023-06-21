@@ -20,16 +20,17 @@ export function Update(
 	table: string,
 	idName: string,
 	fields: string[],
-	whereClause: string
+	condition: string
 ): string {
 	let setFieldsToNewValues = 'set '
 	const last = fields.length - 1
-	// db query parameter list starts from 2, table_id is always first in that list
-	for (let i = 0; i < last; i++) {
+	// db query parameter list starts from 1, in case of a compound condition in the where clause.
+	// The ith condition corresponds to the number of fields(N) + i. i.e cond1=${N+1} OR cond2=${N+2}
+	for (let i = 1; i < last; i++) {
 		setFieldsToNewValues += `${fields[i]} = $${i},\n`
 	}
 	setFieldsToNewValues += `${fields[last]} = $${last}`
-	let output = `update ${table}\n${setFieldsToNewValues}\n${whereClause} returning ${idName}`
+	let output = `update ${table}\n${setFieldsToNewValues}\nwhere ${condition} returning ${idName}`
 	return output
 }
 
@@ -37,22 +38,24 @@ export function Update(
 export function Delete(
 	table: string,
 	idName: string,
-	whereClause: string
+	condition: string
 ): string {
-	return `delete from ${table} where ${whereClause} returning ${idName}`
+	return `delete from ${table} where ${condition} returning ${idName}`
 }
 
 export function Select(
 	table: string,
-	fields: '*' | string[],
-	whereClause?: string
+	fields: string[],
+	condition: string
 ): string {
-	let queryString: string
-	if (fields !== '*') {
-		const fieldList = fields.join(',\n')
-		queryString = `select ${fieldList}`
-	} else queryString = `select *`
-	return (
-		queryString + ` from ${table}${whereClause ? `where ${whereClause}` : ``}`
-	)
+	return `select ${fields.join(',\n')} from ${table}${
+		condition ? ` where ${condition}` : ``
+	}`
+}
+
+export function SelectWithoutCondition(
+	table: string,
+	fields: string[]
+): string {
+	return `select ${fields.join(',\n')} from ${table}`
 }

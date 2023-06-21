@@ -25,16 +25,17 @@ import {
 import {
 	Delete,
 	Insert,
+	Select,
 	Update,
 } from '../../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../../helpers/process-route.js'
 
 const createQuery = async ({ reqData: storeData, userId: vendorId }) => {
 	// check if vendor account exists
-	const dbRes = await db.query(
-		'select vendor_id from vendors where vendor_id=$1',
-		[vendorId]
-	)
+	const dbRes = await db.query({
+		text: Select('vendors', ['1'], 'vendor_id=$1'), //'select 1 from vendors where vendor_id=$1',
+		values: [vendorId],
+	})
 	if (dbRes.rows.length === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
@@ -42,40 +43,52 @@ const createQuery = async ({ reqData: storeData, userId: vendorId }) => {
 	// limit amount of stores to 5...
 	const LIMIT = 5
 	let recordCount = <number>(
-		(await db.query('select 1 from stores where vendor_id=$1', [vendorId])).rows
-			.length
-	)
+		await db.query({
+			text: Select('stores', ['1'], 'vendor_id=$1'),
+			values: [vendorId],
+		})
+	).rows.length
 	// if Over limit throw error
 	if (LIMIT <= recordCount)
 		throw new BadRequestError(`Each vendor is limited to only ${LIMIT} stores`)
-	return db.query(
-		`${Insert('stores', ['vendor_id', ...Object.keys(storeData)], 'store_id')}`,
-		[vendorId, ...Object.values(storeData)]
-	)
+	return db.query({
+		text: Insert(
+			'stores',
+			['vendor_id', ...Object.keys(storeData)],
+			'store_id'
+		),
+		values: [vendorId, ...Object.values(storeData)],
+	})
 }
 
 const readAllQuery = async ({ userId: vendorId }) => {
-	const res = await db.query(
-		'select vendor_id from vendors where vendor_id=$1',
-		[vendorId]
-	)
+	const res = await db.query({
+		text: Select('vendors', ['1'], 'vendor_id=$1'), // 'select 1 from vendors where vendor_id=$1',
+		values: [vendorId],
+	})
 	if (res.rows.length === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
-	return db.query(`select * from stores where vendor_id=$1`, [vendorId])
+	return db.query({
+		text: Select('stores', ['*'], 'vendor_id=$1'),
+		values: [vendorId],
+	})
 }
 
 const readQuery = async ({ params: { storeId }, userId: vendorId }) => {
-	const res = await db.query(
-		'select vendor_id from vendors where vendor_id=$1',
-		[vendorId]
-	)
+	const res = await db.query({
+		text: Select('vendors', ['1'], 'vendor_id=$1'), //'select 1 from vendors where vendor_id=$1',
+		values: [vendorId],
+	})
 	if (res.rows.length === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
-	return db.query(`select * from stores where store_id=$1`, [storeId])
+	return db.query({
+		text: Select('stores', ['*'], `store_id=$1`), //`select * from stores where store_id=$1`,
+		values: [storeId],
+	})
 }
 
 const updateQuery = async ({
@@ -83,32 +96,38 @@ const updateQuery = async ({
 	reqData: storeData,
 	userId: vendorId,
 }) => {
-	const res = await db.query(
-		'select vendor_id from vendors where vendor_id=$1',
-		[vendorId]
-	)
+	const res = await db.query({
+		text: Select('vendors', ['1'], 'vendor_id=$1'),
+		values: [vendorId],
+	})
 	if (res.rows.length === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
 	let fields = Object.keys(storeData),
 		data = Object.values(storeData)
-	return db.query(
-		`${Update('stores', 'store_id', fields)} returning store_id`,
-		[storeId, ...data]
-	)
+	const position = fields.length + 1
+	const condition = `store_id=$${position}`
+	const query = {
+		text: Update('stores', 'store_id', fields, condition),
+		values: [...data, storeId],
+	}
+	return db.query(query)
 }
 
 const deleteQuery = async ({ params: { storeId }, userId: vendorId }) => {
-	const res = await db.query(
-		'select vendor_id from vendors where vendor_id=$1',
-		[vendorId]
-	)
+	const res = await db.query({
+		text: 'select vendor_id from vendors where vendor_id=$1',
+		values: [vendorId],
+	})
 	if (res.rows.length === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
-	return db.query(Delete('stores', 'store_id', 'store_id'), [storeId])
+	return db.query({
+		text: Delete('stores', 'store_id', 'store_id'),
+		values: [storeId],
+	})
 }
 
 const validateBody = (data: object): object => {

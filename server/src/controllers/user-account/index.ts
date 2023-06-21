@@ -55,7 +55,12 @@ let updateUserAccount = async (
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body)
 	let dbResult = await db.query(
-		`${Update('user_accounts', 'user_id', fields)}`,
+		`${Update(
+			'user_accounts',
+			'user_id',
+			fields,
+			`user_id=$${fields.length + 1}`
+		)}`,
 		[userId, ...data]
 	)
 	assert.equal(dbResult.rows.length, 1)
@@ -86,10 +91,15 @@ let updateUserPassword = async (
 	request.body.password = password
 	let fields: string[] = Object.keys(request.body),
 		data: string[] = Object.values(request.body)
-	await db.query(`${Update('user_accounts', 'user_id', fields)}`, [
-		userId,
-		...data,
-	])
+	await db.query(
+		`${Update(
+			'user_accounts',
+			'user_id',
+			fields,
+			`user_id=$${fields.length + 1}`
+		)}`,
+		[userId, ...data]
+	)
 	response.status(StatusCodes.NO_CONTENT).end()
 }
 

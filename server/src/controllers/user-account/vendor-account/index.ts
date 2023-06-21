@@ -22,7 +22,7 @@ const createQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
 	db.query(Insert('vendors', ['vendor_id'], 'vendor_id'), [vendorId])
 
 const readQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
-	db.query(Select('vendors', '*', 'vendor_id=$1'), [vendorId])
+	db.query(Select('vendors', ['1'], 'vendor_id=$1'), [vendorId])
 
 const deleteQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
 	db.query(Delete('vendor', 'vendor_id', 'vendor_id'), [vendorId])

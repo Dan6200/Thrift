@@ -23,20 +23,20 @@ export default function (): void {
 	const agent = chai.request.agent(url)
 	// const agent = chai.request.agent(app)
 
-	// for (let user of users) {
-	// 	const name = user.userInfo.first_name
-	// 	describe(`Testing Authentication for ${name}`, () =>
-	// 		testAuthentication(agent, user))
-	// 	describe(`Testing User Account for ${name}`, () =>
-	// 		testUserAccount(agent, user))
-	// }
+	for (let user of users) {
+		const name = user.userInfo.first_name
+		describe(`Testing Authentication for ${name}`, () =>
+			testAuthentication(agent, user))
+		describe(`Testing User Account for ${name}`, () =>
+			testUserAccount(agent, user))
+	}
 
-	// for (let vendor of vendors) {
-	// 	const name = vendor.userInfo.first_name
-	// 	describe(`Testing Vendor Account for ${name}`, () =>
-	// 		testVendorAccount(agent, vendor))
-	// 	// describe('Testing Products', async () => testProducts(agent, user))
-	// }
+	for (let vendor of vendors) {
+		const name = vendor.userInfo.first_name
+		describe(`Testing Vendor Account for ${name}`, () =>
+			testVendorAccount(agent, vendor))
+		// describe('Testing Products', async () => testProducts(agent, user))
+	}
 
 	for (let customer of customers) {
 		const name = customer.userInfo.first_name

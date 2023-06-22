@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 interface testRouteParams {
 	verb: string
 	statusCode: StatusCodes
-	checks?: (response: any) => void
+	checks?: (response: any) => Promise<void>
 }
 type testRouteNoData = (agent: ChaiHttp.Agent, path: string) => Promise<any>
 

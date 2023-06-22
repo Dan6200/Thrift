@@ -8,18 +8,18 @@ import {
 import testRoute from '../../test-route.js'
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes
 
-let checkId = (data: any) => {
+let checkId = async (data: any) => {
 	data.should.have.property('address_id')
 	data.address_id.should.be.a('string')
 }
 
-let validateResultList = (data: any) => {
+let validateResultList = async (data: any) => {
 	let shippingInfoList = data
 	shippingInfoList.should.be.an('array')
 	for (let shippingInfo of shippingInfoList) validateResult(shippingInfo)
 }
 
-let validateResult = (data: any) => {
+let validateResult = async (data: any) => {
 	let shippingInfo = data
 	shippingInfo.should.be.an('object')
 	Joi.assert(shippingInfo, ShippingInfoSchemaDB)

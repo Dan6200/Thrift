@@ -1,7 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
-import { log } from 'node:console'
-import { readFileSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ProductSchemaDB } from '../../../../../../../app-schema/products.js'
 import {
@@ -12,12 +11,12 @@ import testRoute from '../../../../test-route.js'
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
-let checkId = (data: any) => {
+let checkId = async (data: any) => {
 	data.should.have.property('product_id')
 	data.product_id.should.be.a('string')
 }
 
-let validateResult = (data: any) => {
+let validateResult = async (data: any) => {
 	let productInfo = data
 	productInfo.should.be.an('object')
 	Joi.assert(productInfo, ProductSchemaDB)
@@ -97,9 +96,12 @@ const testUploadProductMedia = async function (
 	const fieldName = 'product-media'
 	const request = serverAgent.post(urlPath)
 	request.field('description', files[0].description)
-	files.forEach(file => {
-		request.attach(fieldName, readFileSync(file.path), path.basename(file.path))
-	})
+	await Promise.all(
+		files.map(async file => {
+			const data = await readFile(file.path)
+			request.attach(fieldName, data, path.basename(file.path))
+		})
+	)
 	const response = await request
 
 	response.should.have.status(CREATED)

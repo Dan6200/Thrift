@@ -35,7 +35,6 @@ const deleteQuery: CRUDQueryAuth = ({ user: { userId: vendorId } }) =>
 	})
 
 const validateResult = async (result: QueryResult): Promise<ResponseData> => {
-	console.log('runs', import.meta.url)
 	if (!result.rows.length) {
 		return {
 			status: NOT_FOUND,

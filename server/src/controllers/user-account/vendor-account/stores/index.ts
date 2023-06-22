@@ -234,7 +234,7 @@ const deleteStore = processDeleteRoute(
 	deleteQuery,
 	OK,
 	undefined,
-	validateResult
+	validateResultHasId
 )
 
 export { createStore, getStore, getAllStores, updateStore, deleteStore }

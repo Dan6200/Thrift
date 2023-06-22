@@ -8,9 +8,9 @@ import {
 } from '../../../../../../types-and-interfaces/test-routes.js'
 import testRoute from '../../../test-route.js'
 
-const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes
+const { CREATED, OK, NOT_FOUND } = StatusCodes
 
-let checkId = (data: any) => {
+let checkId = async (data: any) => {
 	data.should.have.property('store_id')
 	data.store_id.should.be.a('string')
 }
@@ -25,8 +25,7 @@ let validateResultList = async (
 
 let validateResult = async (data: Promise<QueryResult<any>>): Promise<void> => {
 	let storeInfo = await data
-	storeInfo.should.be.an('array')
-	console.log(import.meta.url, storeInfo)
+	storeInfo.should.be.an('object')
 	Joi.assert(storeInfo, StoreSchemaDBResult)
 }
 
@@ -61,7 +60,7 @@ const testUpdateStore = <testRouteWithData>testRoute({
 const testDeleteStore = <testRouteNoData>testRoute({
 	...routeParams,
 	verb: 'delete',
-	statusCode: NO_CONTENT,
+	statusCode: OK,
 })
 
 const testGetNonExistentStore = <testRouteNoData>testRoute({

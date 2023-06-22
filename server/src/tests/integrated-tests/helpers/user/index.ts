@@ -11,7 +11,7 @@ chai.use(chaiHttp).should()
 
 const { OK, NOT_FOUND, NO_CONTENT, UNAUTHORIZED } = StatusCodes
 
-let validateResult = (data: any) => {
+let validateResult = async (data: any) => {
 	// TODO:rewrite this!!
 	let userInfo = data
 	userInfo.should.be.an('object')

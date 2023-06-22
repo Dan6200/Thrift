@@ -14,7 +14,6 @@ import {
 	Select,
 } from '../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../helpers/process-route.js'
-import { CustomerDBResultSchema } from '../../../app-schema/customer/index.js'
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
 
 const createQuery: CRUDQueryAuth = ({ userId: customerId }) =>
@@ -41,11 +40,8 @@ const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
 			status: NOT_FOUND,
 			data: 'Route does not exit',
 		}
-	const validData = CustomerDBResultSchema.validate(result.rows[0])
-	if (validData.error)
-		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {
-		data: validData.value,
+		data: {},
 	}
 }
 
@@ -58,7 +54,11 @@ const createCustomerAccount = processPostRoute(
 )
 
 const processGetRoute = <ProcessRouteWithoutBody>processRoute
-const getCustomerAccount = processGetRoute(readQuery, OK, validateResult)
+const getCustomerAccount = processGetRoute(
+	readQuery,
+	NO_CONTENT,
+	validateResult
+)
 
 const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
 const deleteCustomerAccount = processDeleteRoute(deleteQuery, NO_CONTENT)

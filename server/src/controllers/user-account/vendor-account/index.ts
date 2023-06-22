@@ -1,6 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
 import { QueryResult } from 'pg'
-import { VendorDBResultSchema } from '../../../app-schema/vendor/index.js'
 import db from '../../../db/index.js'
 import BadRequestError from '../../../errors/bad-request.js'
 import {
@@ -15,7 +14,7 @@ import {
 	Select,
 } from '../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../helpers/process-route.js'
-const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
+const { CREATED, NO_CONTENT, NOT_FOUND } = StatusCodes
 
 const createQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
 	db.query({
@@ -42,11 +41,8 @@ const validateResult = (result: QueryResult): ResponseData => {
 			data: 'Vendor account does not exist. Please create a vendor account',
 		}
 	}
-	const validData = VendorDBResultSchema.validate(result.rows[0])
-	if (validData.error)
-		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {
-		data: validData.value,
+		data: {},
 	}
 }
 
@@ -59,7 +55,7 @@ const createVendorAccount = processPostRoute(
 )
 
 const processGetRoute = <ProcessRouteWithoutBody>processRoute
-const getVendorAccount = processGetRoute(readQuery, OK, validateResult)
+const getVendorAccount = processGetRoute(readQuery, NO_CONTENT, validateResult)
 
 const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
 const deleteVendorAccount = processDeleteRoute(deleteQuery, NO_CONTENT)

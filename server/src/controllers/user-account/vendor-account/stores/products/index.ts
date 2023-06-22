@@ -11,8 +11,8 @@ import UnauthenticatedError from '../../../../../errors/unauthenticated.js'
 import {
 	ProcessRouteWithBodyAndDBResult,
 	ProcessRouteWithoutBody,
-	QueryData,
 } from '../../../../../types-and-interfaces/process-routes.js'
+import { RequestWithPayload } from '../../../../../types-and-interfaces/request.js'
 import { ResponseData } from '../../../../../types-and-interfaces/response.js'
 import {
 	Delete,
@@ -24,10 +24,10 @@ import { handleSortQuery } from '../../../../helpers/generate-sql-commands/query
 import processRoute from '../../../../helpers/process-route.js'
 
 const createQuery = async ({
-	reqBody: productData,
+	body: productData,
 	params: { storeId },
-	userId: vendorId,
-}: QueryData) => {
+	user: { userId: vendorId },
+}: RequestWithPayload) => {
 	// makes sure the Store exists before accessing the /user/stores/products endpoint
 	const dbQuery = await db.query({
 		text: Select('stores', ['vendor_id'], 'store_id=$1'),
@@ -48,10 +48,10 @@ const createQuery = async ({
 }
 
 const readAllQuery = async ({
-	queryParams: { sort, limit, offset },
+	query: { sort, limit, offset },
 	params: { storeId },
-	userId: vendorId,
-}: QueryData) => {
+	user: { userId: vendorId },
+}: RequestWithPayload) => {
 	const dbQuery = await db.query({
 		text: Select('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -73,7 +73,7 @@ const readAllQuery = async ({
 					from products 
 				where store_id=$1`
 	if (sort) {
-		dbQueryString += ` ${handleSortQuery(sort)}`
+		dbQueryString += ` ${handleSortQuery(<string>sort)}`
 	}
 	if (offset) dbQueryString += ` offset ${offset}`
 	if (limit) dbQueryString += ` limit ${limit}`
@@ -82,8 +82,8 @@ const readAllQuery = async ({
 
 const readQuery = async ({
 	params: { storeId, productId },
-	userId: vendorId,
-}: QueryData) => {
+	user: { userId: vendorId },
+}: RequestWithPayload) => {
 	const dbQuery = await db.query({
 		text: Select('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -109,9 +109,9 @@ const readQuery = async ({
 
 const updateQuery = async ({
 	params: { productId, storeId },
-	reqBody: productData,
-	userId: vendorId,
-}: QueryData) => {
+	body: productData,
+	user: { userId: vendorId },
+}: RequestWithPayload) => {
 	const dbQuery = await db.query({
 		text: Select('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -137,8 +137,8 @@ const updateQuery = async ({
 
 const deleteQuery = async ({
 	params: { productId, storeId },
-	userId: vendorId,
-}: QueryData) => {
+	user: { userId: vendorId },
+}: RequestWithPayload) => {
 	const dbQuery = await db.query({
 		text: Select('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -153,7 +153,7 @@ const deleteQuery = async ({
 	})
 }
 
-const validateBody = (data: object): object => {
+const validateBody = <T>(data: T): void => {
 	const validData = ProductSchemaReq.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)

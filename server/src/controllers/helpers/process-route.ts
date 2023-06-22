@@ -1,42 +1,37 @@
 import { Response } from 'express'
 import { QueryResult, QueryResultRow } from 'pg'
 import BadRequestError from '../../errors/bad-request.js'
-import { QueryData } from '../../types-and-interfaces/process-routes.js'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import { ResponseData, Status } from '../../types-and-interfaces/response.js'
 
 export default (
-	CRUDQuery: (queryData: QueryData) => Promise<QueryResult<QueryResultRow>>,
+	CRUDQuery: (
+		queryData: RequestWithPayload
+	) => Promise<QueryResult<QueryResultRow>>,
 	status: Status,
-	validateBody: <T>(reqBody: T) => T,
-	validateResult: (result: QueryResult<QueryResultRow>) => ResponseData
+	validateBody?: <T>(body: T) => void,
+	validateResult?: (result: QueryResult<QueryResultRow>) => ResponseData
 ) => {
 	// return the route processor middleware
 	return async (request: RequestWithPayload, response: Response) => {
-		let { userId } = request.user
-		if (!userId)
+		const { user, body } = request
+		if (!user)
 			throw new BadRequestError(
 				'Please create the appropriate account before performing this action'
 			)
 		// set status code and response data
 		// Validate request data
-		let reqBody = request.body
 		if (
-			typeof reqBody === 'object' &&
-			Object.values(reqBody).length &&
+			typeof body === 'object' &&
+			Object.values(body).length &&
 			validateBody
 		) {
 			// validateBody throws error if body is invalid
-			reqBody = validateBody(reqBody)
+			validateBody(body)
 		}
 		// Process the requestData
 		// Make a database query with the request data
-		const dbRes = await CRUDQuery({
-			userId,
-			params: request.params,
-			query: request.query,
-			reqBody,
-		})
+		const dbRes = await CRUDQuery(request)
 
 		if (validateResult) {
 			// validateBody returns error status code and message if data is invalid

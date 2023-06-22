@@ -7,8 +7,6 @@ interface RequestWithPayload extends Request {
 
 interface RequestUserPayload extends JwtPayload {
 	userId: string
-	phone?: string
-	email?: string
 }
 
 export { RequestWithPayload, RequestUserPayload }

@@ -1,11 +1,8 @@
 import { Response } from 'express'
-import joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
-import assert from 'node:assert/strict'
 import { QueryResult } from 'pg'
 import {
 	ShippingInfoSchemaReq,
-	ShippingInfoSchemaDB,
 	ShippingInfoSchemaDBList,
 	ShippingInfoSchemaDBLean,
 } from '../../../app-schema/customer/shipping.js'

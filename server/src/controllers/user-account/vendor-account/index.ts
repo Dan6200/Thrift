@@ -16,19 +16,19 @@ import {
 import processRoute from '../../helpers/process-route.js'
 const { CREATED, NO_CONTENT, NOT_FOUND } = StatusCodes
 
-const createQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
+const createQuery: CRUDQueryAuth = ({ user: { userId: vendorId } }) =>
 	db.query({
 		text: Insert('vendors', ['vendor_id'], 'vendor_id'),
 		values: [vendorId],
 	})
 
-const readQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
+const readQuery: CRUDQueryAuth = ({ user: { userId: vendorId } }) =>
 	db.query({
 		text: Select('vendors', ['1'], 'vendor_id=$1'),
 		values: [vendorId],
 	})
 
-const deleteQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
+const deleteQuery: CRUDQueryAuth = ({ user: { userId: vendorId } }) =>
 	db.query({
 		text: Delete('vendor', 'vendor_id', 'vendor_id'),
 		values: [vendorId],

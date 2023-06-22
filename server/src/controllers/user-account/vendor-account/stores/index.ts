@@ -13,17 +13,9 @@ import {
 import {
 	ProcessRouteWithBodyAndDBResult,
 	ProcessRouteWithoutBody,
-	ProcessRouteWithoutBodyAndDBResult,
-	QueryData,
 } from '../../../../types-and-interfaces/process-routes.js'
-import {
-	RequestWithPayload,
-	RequestUserPayload,
-} from '../../../../types-and-interfaces/request.js'
-import {
-	ResponseData,
-	Status,
-} from '../../../../types-and-interfaces/response.js'
+import { RequestWithPayload } from '../../../../types-and-interfaces/request.js'
+import { ResponseData } from '../../../../types-and-interfaces/response.js'
 import {
 	Delete,
 	Insert,
@@ -33,9 +25,9 @@ import {
 import processRoute from '../../../helpers/process-route.js'
 
 const createQuery = async ({
-	reqBody: storeData,
-	userId: vendorId,
-}: QueryData) => {
+	body: storeData,
+	user: { userId: vendorId },
+}: RequestWithPayload) => {
 	if (!vendorId) throw new UnauthenticatedError('Cannot access resource')
 	// check if vendor account exists
 	const dbRes = await db.query({
@@ -70,7 +62,9 @@ const createQuery = async ({
 	})
 }
 
-const readAllQuery = async ({ userId: vendorId }: QueryData) => {
+const readAllQuery = async ({
+	user: { userId: vendorId },
+}: RequestWithPayload) => {
 	if (!vendorId) throw new UnauthenticatedError('Cannot access resource')
 	const res = await db.query({
 		text: Select('vendors', ['1'], 'vendor_id=$1'), // 'select 1 from vendors where vendor_id=$1',
@@ -87,9 +81,10 @@ const readAllQuery = async ({ userId: vendorId }: QueryData) => {
 }
 
 const readQuery = async ({
-	params: { storeId },
-	userId: vendorId,
-}: QueryData) => {
+	params,
+	user: { userId: vendorId },
+}: RequestWithPayload) => {
+	const { storeId } = params
 	if (!vendorId) throw new UnauthenticatedError('Cannot access resource')
 	const res = await db.query({
 		text: Select('vendors', ['1'], 'vendor_id=$1'), //'select 1 from vendors where vendor_id=$1',
@@ -106,10 +101,12 @@ const readQuery = async ({
 }
 
 const updateQuery = async ({
-	params: { storeId },
-	reqBody: storeData,
-	userId: vendorId,
-}: QueryData) => {
+	params,
+	body: storeData,
+	user: { userId: vendorId },
+}: RequestWithPayload) => {
+	const { storeId } = params
+	if (!storeId) throw new BadRequestError('Need Id param to update resource')
 	const res = await db.query({
 		text: Select('vendors', ['1'], 'vendor_id=$1'),
 		values: [vendorId],
@@ -131,9 +128,10 @@ const updateQuery = async ({
 }
 
 const deleteQuery = async ({
-	params: { storeId },
-	userId: vendorId,
-}: QueryData) => {
+	params,
+	user: { userId: vendorId },
+}: RequestWithPayload) => {
+	const { storeId } = params
 	const res = await db.query({
 		text: 'select vendor_id from vendors where vendor_id=$1',
 		values: [vendorId],
@@ -148,18 +146,16 @@ const deleteQuery = async ({
 	})
 }
 
-const validateBody = <T>(data: T): T => {
+const validateBody = <T>(data: T): void => {
 	const validData = StoreSchemaReq.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
-	return validData.value
 }
 
-const validateBodyUpdate = <T>(data: T): T => {
+const validateBodyUpdate = <T>(data: T): void => {
 	const validData = UpdateStoreSchemaReq.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
-	return validData.value
 }
 
 const validateResultList = (

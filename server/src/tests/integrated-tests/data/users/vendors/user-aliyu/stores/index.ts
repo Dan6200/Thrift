@@ -1,12 +1,14 @@
-export const stores = [
+import StoresData from '../../../../../../../types-and-interfaces/stores-data.js'
+
+export const stores: StoresData[] = [
 	{
 		store_name: 'Inspire Denims',
 		store_page: {
 			heading: 'Inspire Denims',
 			navigation: ['Home', 'New Arrivals', 'Promos', 'Contact'],
 			hero: {
-				video: null,
-				slideshow_images: [
+				media: [
+					'https://promo_video.mov',
 					'https://inspire_denim_jacket.jpg',
 					'https://inspire_denim1.jpg',
 					'https://inspire_denim2.jpg',
@@ -23,8 +25,7 @@ export const stores = [
 			heading: 'Oriamo Electronics',
 			navigation: ['Home', 'New Arrivals', 'Promos', 'Contact'],
 			hero: {
-				video: null,
-				slideshow_images: [
+				media: [
 					'https://oriamo_headphones.jpg',
 					'https://oriamo_speaker.jpg',
 					'https://oriamo_fitband.jpg',
@@ -36,15 +37,14 @@ export const stores = [
 		},
 	},
 ]
-export const updatedStores = [
+export const updatedStores: StoresData[] = [
 	{
 		store_name: 'Inspire Denims',
 		store_page: {
 			heading: 'Inspire Denims',
 			navigation: ['Home', 'New Arrivals', 'Promos', 'Contact'],
 			hero: {
-				video: null,
-				slideshow_images: [
+				media: [
 					'https://inspire_denim_jacket.jpg',
 					'https://inspire_denim1.jpg',
 					'https://inspire_denim2.jpg',
@@ -63,8 +63,7 @@ export const updatedStores = [
 			heading: 'Oriamo Electronics',
 			navigation: ['Home', 'New Arrivals', 'Promos', 'Contact'],
 			hero: {
-				video: null,
-				slideshow_images: [
+				media: [
 					'https://oriamo_headphones.jpg',
 					'https://oriamo_speaker.jpg',
 					'https://oriamo_fitband.jpg',

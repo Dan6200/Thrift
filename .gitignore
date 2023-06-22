@@ -14,6 +14,8 @@ todo*
 **/tmp/**
 **upload**
 **token**
+server-log.txt
+**/tests/product-media/*
 
 # Logs
 logs
@@ -39,4 +41,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-server-log.txt

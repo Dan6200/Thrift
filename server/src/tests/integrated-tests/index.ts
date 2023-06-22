@@ -4,7 +4,7 @@ import testAuthentication from './authentication/index.js'
 import testUserAccount from './accounts/users/index.js'
 import testCustomerAccount from './accounts/users/customers/index.js'
 import testVendorAccount from './accounts/users/vendors/index.js'
-// import testProducts from './accounts/users/vendors/products/index.js'
+import testProducts from './accounts/users/vendors/products/index.js'
 import * as Ebuka from './data/users/customers/user-ebuka/index.js'
 import * as Aisha from './data/users/customers/user-aisha/index.js'
 import * as Mustapha from './data/users/customers/user-mustapha/index.js'
@@ -43,8 +43,9 @@ export default function (): void {
 		describe(`Testing Vendor Account for ${name}`, () =>
 			testVendorAccount(agent, vendor))
 	}
-	// for (let vendor of vendors) {
-	// 	const name = vendor.userInfo.first_name
-	// 	describe(`Testing Products listed by ${name}`, async () => testProducts(agent, user))
-	// }
+	for (let vendor of vendors) {
+		const name = vendor.userInfo.first_name
+		describe(`Testing Products listed by ${name}`, async () =>
+			testProducts(agent, vendor))
+	}
 }

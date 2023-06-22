@@ -1,5 +1,12 @@
 import { UserData } from '../../../../../../types-and-interfaces/user.js'
-import { stores, updatedStores } from './stores/index.js'
+export { stores, updatedStores } from './stores/index.js'
+export {
+	products,
+	productReplaced,
+	productPartialUpdate,
+	productMedia,
+	updatedProductMedia,
+} from './stores/products/index.js'
 
 const userInfo: UserData = {
 	first_name: 'Aliyu',
@@ -20,4 +27,4 @@ const updatedPassword: UserData = {
 	new_password: 'AliMu99$',
 }
 
-export { userInfo, updatedUserInfo, updatedPassword, stores, updatedStores }
+export { userInfo, updatedUserInfo, updatedPassword }

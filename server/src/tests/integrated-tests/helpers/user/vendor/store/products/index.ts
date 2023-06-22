@@ -31,21 +31,12 @@ const routeParams = {
 	statusCode: OK,
 }
 
-const testCreateProduct = async function (
-	serverAgent: ChaiHttp.Agent,
-	path: string,
-	dataList: object[]
-) {
-	const responses = await Promise.all(
-		dataList.map(data => serverAgent['post'](path).send(data))
-	)
-	responses.forEach(response => {
-		response.should.have.status(CREATED)
-		// Check that the response contains the product id
-		checkId(response.body)
-	})
-	return responses.map(response => response.body)
-}
+const testCreateProduct = <testRouteWithData>testRoute({
+	...routeParams,
+	verb: 'post',
+	statusCode: CREATED,
+	checks: checkId,
+})
 
 const testGetAllProducts = async function (
 	serverAgent: ChaiHttp.Agent,

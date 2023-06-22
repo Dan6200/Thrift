@@ -120,11 +120,12 @@ const updateQuery = async ({
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
 	const paramList = [...Object.values(productData), productId]
+	const pos: number = paramList.length
 	const updateCommand = Update(
 		'products',
 		'product_id',
 		Object.keys(productData),
-		`product_id=$${paramList.length}`
+		`product_id=$${pos}`
 	)
 
 	return db.query({

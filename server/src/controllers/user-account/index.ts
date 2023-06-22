@@ -56,13 +56,9 @@ let updateUserAccount = async (
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body)
 	const paramList = [...data, userId]
+	const pos: number = paramList.length
 	let dbResult = await db.query({
-		text: Update(
-			'user_accounts',
-			'user_id',
-			fields,
-			`user_id=$${paramList.length}`
-		),
+		text: Update('user_accounts', 'user_id', fields, `user_id=$${pos}`),
 		values: paramList,
 	})
 	assert.equal(dbResult.rows.length, 1)
@@ -88,14 +84,16 @@ let updateUserPassword = async (
 	if (!pwdIsValid)
 		throw new UnauthenticatedError(`Invalid Credentials,
 				cannot update password`)
-	const password: string = await hashPassword(newPassword)
-	delete request.body.new_password
-	request.body.password = password
-	let fields: string[] = Object.keys(request.body),
-		data: string[] = Object.values(request.body)
-	const paramList = [...data, userId]
+	const password = await hashPassword(newPassword)
+	const paramList = [password, userId]
+	const position: number = paramList.length
 	await db.query({
-		text: Update('user_accounts', 'user_id', fields, `user_id=$${paramList}`),
+		text: Update(
+			'user_accounts',
+			'user_id',
+			['password'],
+			`user_id=$${position}`
+		),
 		values: paramList,
 	})
 	response.status(StatusCodes.NO_CONTENT).end()

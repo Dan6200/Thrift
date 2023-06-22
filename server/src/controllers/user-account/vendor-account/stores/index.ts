@@ -107,7 +107,8 @@ const updateQuery = async ({
 	let fields = Object.keys(storeData),
 		data = Object.values(storeData)
 	const paramList = [...data, storeId]
-	const condition = `store_id=$${paramList.length}`
+	const pos: number = paramList.length
+	const condition = `store_id=$${pos}`
 	const query = {
 		text: Update('stores', 'store_id', fields, condition),
 		values: paramList,

@@ -1,17 +1,15 @@
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs'
 
 const hashPassword = async (password: string): Promise<string> => {
-  const salt: string = await bcrypt.genSalt();
-  const encPassword: string = await bcrypt.hash(password, salt);
-  return encPassword;
-};
+	const salt: string = await bcrypt.genSalt()
+	return bcrypt.hash(password, salt)
+}
 
 const validatePassword = async function (
-  candidatePassword: string,
-  storedPassword: string
+	candidatePassword: string,
+	storedPassword: string
 ): Promise<boolean> {
-  const isMatch = bcrypt.compare(candidatePassword, storedPassword);
-  return isMatch;
-};
+	return bcrypt.compare(candidatePassword, storedPassword)
+}
 
-export { hashPassword, validatePassword };
+export { hashPassword, validatePassword }

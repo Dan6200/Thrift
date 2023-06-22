@@ -26,10 +26,10 @@ export function Update(
 	const last = fields.length - 1
 	// db query parameter list starts from 1, in case of a compound condition in the where clause.
 	// The ith condition corresponds to the number of fields(N) + i. i.e cond1=${N+1} OR cond2=${N+2}
-	for (let i = 1; i < last; i++) {
-		setFieldsToNewValues += `${fields[i]} = $${i},\n`
+	for (let i = 0; i < last; i++) {
+		setFieldsToNewValues += `${fields[i]} = $${i + 1},\n`
 	}
-	setFieldsToNewValues += `${fields[last]} = $${last}`
+	setFieldsToNewValues += `${fields[last]} = $${last + 1}`
 	let output = `update ${table}\n${setFieldsToNewValues}\nwhere ${condition} returning ${idName}`
 	return output
 }

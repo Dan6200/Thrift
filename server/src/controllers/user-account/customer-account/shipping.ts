@@ -99,14 +99,10 @@ const updateShippingInfo = async (
 	let fields = Object.keys(shippingData),
 		data = Object.values(shippingData)
 	const paramList = [...data, addressId]
+	const pos: number = paramList.length
 	const row = (
 		await db.query({
-			text: Update(
-				'shipping_info',
-				'address_id',
-				fields,
-				`address_id=${paramList}`
-			),
+			text: Update('shipping_info', 'address_id', fields, `address_id=${pos}`),
 			values: paramList,
 		})
 	).rows[0]

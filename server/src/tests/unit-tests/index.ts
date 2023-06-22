@@ -48,7 +48,7 @@ export default () => {
 			'my_table',
 			'my_id',
 			['first_name', 'address', 'age', 'sex'],
-			'my_id=$5' // Use fields length + 1
+			'my_id=$5'
 		).should.equal(SQLUPDATE))
 
 	it('it should create a database query from a query parameter input', () =>

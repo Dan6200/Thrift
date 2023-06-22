@@ -8,7 +8,7 @@ const userInfo: UserData = {
 	first_name: 'Ebuka',
 	last_name: 'Eze',
 	email: 'ebukachibueze5489@gmail.com',
-	phone: '+2348063249250',
+	phone: '+2348032649250',
 	password: 'EbukaDa1!',
 	dob: new Date('1999-07-01'),
 	country: 'Nigeria',

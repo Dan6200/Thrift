@@ -21,28 +21,30 @@ const StoreSchemaReq = joi
 	})
 	.required()
 
-const UpdateStoreSchemaReq = joi
-	.object({
-		store_name: joi.string().min(3).max(50).required(),
-		store_page: joi
-			.object({
-				heading: joi.string().required(),
-				navigation: joi.array().items(joi.string()).required(),
-				hero: joi.object({
-					video: joi.array().items(joi.string()).allow(null),
-					slideshow_images: joi.array().items(joi.string()).allow(null),
+const StoreSchemaUpdateReq = joi.object({
+	store_name: joi.string().min(3).max(50).required(),
+	store_page: joi
+		.object({
+			heading: joi.string().required(),
+			navigation: joi.array().items(joi.string()).required(),
+			hero: joi.object({
+				video: joi.array().items(joi.string()).allow(null),
+				slideshow_images: joi.array().items(joi.string()).allow(null),
+			}),
+			body: joi.object({
+				product_listings: joi.object({
+					product_ids: joi.array().items(joi.string()),
 				}),
-				body: joi.object({
-					product_listings: joi.object({
-						product_ids: joi.array().items(joi.string()),
-					}),
-				}),
-			})
-			.required(),
-	})
-	.required()
+			}),
+		})
+		.required(),
+})
 
-const StoreSchemaDB = joi
+const StoreSchemaResLean = joi.object({
+	store_id: joi.string().pattern(/d+/).required(),
+})
+
+const StoreSchemaRes = joi
 	.object({
 		store_id: joi.string().pattern(/\d+/).required(),
 		store_name: joi.string().min(3).max(50).required(),
@@ -68,4 +70,9 @@ const StoreSchemaDB = joi
 	})
 	.required()
 
-export { StoreSchemaReq, StoreSchemaDB, UpdateStoreSchemaReq }
+export {
+	StoreSchemaReq,
+	StoreSchemaUpdateReq,
+	StoreSchemaRes,
+	StoreSchemaResLean,
+}

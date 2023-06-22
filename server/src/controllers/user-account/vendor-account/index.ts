@@ -30,7 +30,7 @@ const readQuery: CRUDQueryAuth = ({ user: { userId: vendorId } }) =>
 
 const deleteQuery: CRUDQueryAuth = ({ user: { userId: vendorId } }) =>
 	db.query({
-		text: Delete('vendor', 'vendor_id', 'vendor_id'),
+		text: Delete('vendors', 'vendor_id', 'vendor_id=$1'),
 		values: [vendorId],
 	})
 

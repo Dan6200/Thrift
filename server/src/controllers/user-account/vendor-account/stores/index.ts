@@ -2,8 +2,9 @@ import { StatusCodes } from 'http-status-codes'
 import { QueryResult, QueryResultRow } from 'pg'
 import {
 	StoreSchemaReq,
-	StoreSchemaDB,
-	UpdateStoreSchemaReq,
+	StoreSchemaRes,
+	StoreSchemaResLean,
+	StoreSchemaUpdateReq,
 } from '../../../../app-schema/vendor/store.js'
 import db from '../../../../db/index.js'
 import {
@@ -141,7 +142,7 @@ const deleteQuery = async ({
 			'No Vendor account found. Please create a Vendor account'
 		)
 	return db.query({
-		text: Delete('stores', 'store_id', 'store_id'),
+		text: Delete('stores', 'store_id', 'store_id=$1'),
 		values: [storeId],
 	})
 }
@@ -153,7 +154,7 @@ const validateBody = <T>(data: T): void => {
 }
 
 const validateBodyUpdate = <T>(data: T): void => {
-	const validData = UpdateStoreSchemaReq.validate(data)
+	const validData = StoreSchemaUpdateReq.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 }
@@ -166,7 +167,7 @@ const validateResultList = (
 			status: NOT_FOUND,
 			data: 'No stores found. Please add a store',
 		}
-	const validData = StoreSchemaDB.validate(result.rows)
+	const validData = StoreSchemaRes.validate(result.rows)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {
@@ -180,7 +181,7 @@ const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
 			status: NOT_FOUND,
 			data: 'Store not found',
 		}
-	const validData = StoreSchemaDB.validate(result.rows[0])
+	const validData = StoreSchemaRes.validate(result.rows[0])
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {
@@ -188,6 +189,15 @@ const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
 	}
 }
 
+const validateResultHasId = (
+	result: QueryResult<QueryResultRow>
+): ResponseData => {
+	const { error, value } = StoreSchemaResLean.validate(result.rows[0])
+	if (error) throw new BadRequestError('The operation was Unsuccessful')
+	return {
+		data: value,
+	}
+}
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
 const processPostRoute = <ProcessRouteWithBodyAndDBResult>processRoute
@@ -195,7 +205,7 @@ const createStore = processPostRoute(
 	createQuery,
 	CREATED,
 	validateBody,
-	validateResult
+	validateResultHasId
 )
 
 const processGetAllRoute = <ProcessRouteWithoutBody>processRoute
@@ -209,7 +219,7 @@ const updateStore = processPutRoute(
 	updateQuery,
 	OK,
 	validateBodyUpdate,
-	validateResult
+	validateResultHasId
 )
 
 const processDeleteRoute = <ProcessRouteWithoutBody>processRoute

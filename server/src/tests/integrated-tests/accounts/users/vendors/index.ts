@@ -41,14 +41,15 @@ export default function (
 
 	it('should create a store for the vendor', async () => {
 		for (const store of listOfStoresByVendor) {
-			testCreateStore(agent, storesPath, store)
+			// await allows for error handling
+			await testCreateStore(agent, storesPath, store)
 		}
 	})
 
 	it('should fetch the newly created store', async () => {
 		for (const store of listOfStoresByVendor) {
 			const { store_id } = await testCreateStore(agent, storesPath, store)
-			testGetStore(agent, storesPath + '/' + store_id)
+			await testGetStore(agent, storesPath + '/' + store_id)
 		}
 	})
 
@@ -61,7 +62,7 @@ export default function (
 				storesPath,
 				listOfStoresByVendor[idx]
 			)
-			testUpdateStore(
+			await testUpdateStore(
 				agent,
 				storesPath + '/' + store_id,
 				listOfUpdatedStoresByVendor[idx]
@@ -72,8 +73,8 @@ export default function (
 	it('should delete the created store and fail to retrieve it', async () => {
 		for (const stores of listOfStoresByVendor) {
 			const { store_id } = await testCreateStore(agent, storesPath, stores)
-			testDeleteStore(agent, storesPath + '/' + store_id)
-			testGetNonExistentStore(agent, storesPath + '/' + store_id)
+			await testDeleteStore(agent, storesPath + '/' + store_id)
+			await testGetNonExistentStore(agent, storesPath + '/' + store_id)
 		}
 	})
 

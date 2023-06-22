@@ -18,7 +18,7 @@ const testCreateVendor = testRoute({
 const testGetVendor = testRoute({
 	...routeParams,
 	verb: 'get',
-	statusCode: StatusCodes.OK,
+	statusCode: StatusCodes.NO_CONTENT,
 }) as testRouteNoData
 
 const testDeleteVendor = testRoute({

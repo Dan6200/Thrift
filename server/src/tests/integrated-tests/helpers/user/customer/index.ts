@@ -19,13 +19,13 @@ const testCreateCustomer = testRoute({
 const testGetCustomer = testRoute({
 	...routeParams,
 	verb: 'get',
-	statusCode: StatusCodes.OK,
+	statusCode: StatusCodes.NO_CONTENT,
 }) as testRouteNoData
 
 const testUpdateCustomer = testRoute({
 	...routeParams,
 	verb: 'patch',
-	statusCode: StatusCodes.OK,
+	statusCode: StatusCodes.NO_CONTENT,
 }) as testRouteNoData
 
 const testDeleteCustomer = testRoute({

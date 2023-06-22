@@ -147,21 +147,21 @@ const deleteQuery = async ({
 	})
 }
 
-const validateBody = <T>(data: T): void => {
+const validateBody = async <T>(data: T) => {
 	const validData = StoreSchemaReqData.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 }
 
-const validateBodyUpdate = <T>(data: T): void => {
+const validateBodyUpdate = async <T>(data: T) => {
 	const validData = StoreSchemaReqDataPartialUpdate.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 }
 
-const validateResultList = (
+const validateResultList = async (
 	result: QueryResult<QueryResultRow>
-): ResponseData => {
+): Promise<ResponseData> => {
 	if (result.rows.length === 0)
 		return {
 			status: NOT_FOUND,
@@ -175,7 +175,9 @@ const validateResultList = (
 	}
 }
 
-const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
+const validateResult = async (
+	result: QueryResult<QueryResultRow>
+): Promise<ResponseData> => {
 	if (result.rows.length === 0)
 		return {
 			status: NOT_FOUND,
@@ -189,9 +191,9 @@ const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
 	}
 }
 
-const validateResultHasId = (
+const validateResultHasId = async (
 	result: QueryResult<QueryResultRow>
-): ResponseData => {
+): Promise<ResponseData> => {
 	const { error, value } = StoreSchemaDBResultLean.validate(result.rows[0])
 	if (error) throw new BadRequestError('The operation was Unsuccessful')
 	return {
@@ -209,10 +211,15 @@ const createStore = processPostRoute(
 )
 
 const processGetAllRoute = <ProcessRouteWithoutBody>processRoute
-const getAllStores = processGetAllRoute(readAllQuery, OK, validateResultList)
+const getAllStores = processGetAllRoute(
+	readAllQuery,
+	OK,
+	undefined,
+	validateResultList
+)
 
 const processGetIDRoute = <ProcessRouteWithoutBody>processRoute
-const getStore = processGetIDRoute(readQuery, OK, validateResult)
+const getStore = processGetIDRoute(readQuery, OK, undefined, validateResult)
 
 const processPutRoute = <ProcessRouteWithBodyAndDBResult>processRoute
 const updateStore = processPutRoute(
@@ -223,6 +230,11 @@ const updateStore = processPutRoute(
 )
 
 const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
-const deleteStore = processDeleteRoute(deleteQuery, OK, validateResult)
+const deleteStore = processDeleteRoute(
+	deleteQuery,
+	OK,
+	undefined,
+	validateResult
+)
 
 export { createStore, getStore, getAllStores, updateStore, deleteStore }

@@ -9,8 +9,10 @@ export default (
 		queryData: RequestWithPayload
 	) => Promise<QueryResult<QueryResultRow>>,
 	status: Status,
-	validateBody?: <T>(body: T) => void,
-	validateResult?: (result: QueryResult<QueryResultRow>) => ResponseData
+	validateBody?: <T>(body: T) => Promise<void>,
+	validateResult?: (
+		result: QueryResult<QueryResultRow>
+	) => Promise<ResponseData>
 ) => {
 	// return the route processor middleware
 	return async (request: RequestWithPayload, response: Response) => {
@@ -27,7 +29,7 @@ export default (
 			validateBody
 		) {
 			// validateBody throws error if body is invalid
-			validateBody(body)
+			await validateBody(body)
 		}
 		// Process the requestData
 		// Make a database query with the request data
@@ -36,7 +38,7 @@ export default (
 		if (validateResult) {
 			// validateBody returns error status code and message if data is invalid
 			// check for errors
-			const { status: errStatus, data } = validateResult(dbRes)
+			const { status: errStatus, data } = await validateResult(dbRes)
 			return response.status(errStatus ?? status).send(data)
 		}
 		response.status(status).end()

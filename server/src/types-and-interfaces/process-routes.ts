@@ -68,7 +68,8 @@ export type Status =
 export type ProcessRouteWithoutBody = (
 	CRUDQuery: (queryData: RequestWithPayload) => QueryResultPromise,
 	status: Status,
-	validateResult: (result: QueryResult<QueryResultRow>) => ResponseData
+	validateBody: undefined,
+	validateResult: (result: QueryResult<QueryResultRow>) => Promise<ResponseData>
 ) => (
 	request: RequestWithPayload,
 	response: Response
@@ -77,7 +78,8 @@ export type ProcessRouteWithoutBody = (
 export type ProcessRouteWithNoDBResult = (
 	CRUDQuery: (queryData: RequestWithPayload) => QueryResultPromise,
 	status: Status,
-	validateBody: <T>(reqBody: T) => void
+	validateResult: undefined,
+	validateBody: <T>(reqBody: T) => Promise<void>
 ) => (
 	request: RequestWithPayload,
 	response: Response
@@ -85,7 +87,9 @@ export type ProcessRouteWithNoDBResult = (
 
 export type ProcessRouteWithoutBodyAndDBResult = (
 	CRUDQuery: (queryData: RequestWithPayload) => QueryResultPromise,
-	status: Status
+	status: Status,
+	validateResult: undefined,
+	validateBody: undefined
 ) => (
 	request: RequestWithPayload,
 	response: Response
@@ -94,8 +98,8 @@ export type ProcessRouteWithoutBodyAndDBResult = (
 export type ProcessRouteWithBodyAndDBResult = (
 	CRUDQuery: (queryData: RequestWithPayload) => QueryResultPromise,
 	status: Status,
-	validateBody: <T>(reqBody: T) => void,
-	validateResult: (result: QueryResult<any>) => ResponseData
+	validateBody: <T>(reqBody: T) => Promise<void>,
+	validateResult: (result: QueryResult<QueryResultRow>) => Promise<ResponseData>
 ) => (
 	request: RequestWithPayload,
 	response: Response

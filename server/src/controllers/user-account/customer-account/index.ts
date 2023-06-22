@@ -33,7 +33,9 @@ const deleteQuery: CRUDQueryAuth = ({ user: { userId: customerId } }) =>
 		values: [customerId],
 	})
 
-const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
+const validateResult = async (
+	result: QueryResult<QueryResultRow>
+): Promise<ResponseData> => {
 	if (result.rows.length === 0)
 		return {
 			status: NOT_FOUND,
@@ -49,6 +51,7 @@ const processPostRoute = <ProcessRouteWithoutBody>processRoute
 const createCustomerAccount = processPostRoute(
 	createQuery,
 	CREATED,
+	undefined,
 	validateResult
 )
 
@@ -56,10 +59,16 @@ const processGetRoute = <ProcessRouteWithoutBody>processRoute
 const getCustomerAccount = processGetRoute(
 	readQuery,
 	NO_CONTENT,
+	undefined,
 	validateResult
 )
 
 const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
-const deleteCustomerAccount = processDeleteRoute(deleteQuery, NO_CONTENT)
+const deleteCustomerAccount = processDeleteRoute(
+	deleteQuery,
+	NO_CONTENT,
+	undefined,
+	undefined
+)
 
 export { createCustomerAccount, getCustomerAccount, deleteCustomerAccount }

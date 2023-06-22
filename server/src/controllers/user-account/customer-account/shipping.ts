@@ -104,7 +104,7 @@ const updateShippingInfo = async (
 			values: paramList,
 		})
 	).rows[0]
-	const validResult = ShippingInfoSchemaDBLean.validate(row)
+	const validResult = ShippingInfoSchemaDBLean.validate(row[0])
 	if (!validResult.error)
 		throw new BadRequestError('Failed to update shipping info')
 	const shippingInfo = validResult.value

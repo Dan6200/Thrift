@@ -153,7 +153,7 @@ const deleteQuery = async ({
 	})
 }
 
-const validateBody = <T>(data: T): void => {
+const validateBody = async <T>(data: T) => {
 	const validData = ProductSchemaReq.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
@@ -162,7 +162,9 @@ const validateBody = <T>(data: T): void => {
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
-const validateResultList = (result: QueryResult<any>): ResponseData => {
+const validateResultList = async (
+	result: QueryResult<any>
+): Promise<ResponseData> => {
 	if (!result.rows.length)
 		return {
 			status: NOT_FOUND,
@@ -178,7 +180,9 @@ const validateResultList = (result: QueryResult<any>): ResponseData => {
 	}
 }
 
-const validateResult = (result: QueryResult<any>): ResponseData => {
+const validateResult = async (
+	result: QueryResult<any>
+): Promise<ResponseData> => {
 	if (!result.rows.length)
 		return {
 			status: NOT_FOUND,
@@ -207,9 +211,14 @@ const createProduct = processPostRoute(
 	validateResult
 )
 
-const getAllProducts = processGetAllRoute(readAllQuery, OK, validateResultList)
+const getAllProducts = processGetAllRoute(
+	readAllQuery,
+	OK,
+	undefined,
+	validateResultList
+)
 
-const getProduct = processGetIDRoute(readQuery, OK, validateResult)
+const getProduct = processGetIDRoute(readQuery, OK, undefined, validateResult)
 
 const updateProduct = processPutRoute(
 	updateQuery,
@@ -218,7 +227,12 @@ const updateProduct = processPutRoute(
 	validateResult
 )
 
-const deleteProduct = processDeleteRoute(deleteQuery, OK, validateResult)
+const deleteProduct = processDeleteRoute(
+	deleteQuery,
+	OK,
+	undefined,
+	validateResult
+)
 
 export {
 	createProduct,

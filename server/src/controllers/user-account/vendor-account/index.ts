@@ -34,7 +34,8 @@ const deleteQuery: CRUDQueryAuth = ({ user: { userId: vendorId } }) =>
 		values: [vendorId],
 	})
 
-const validateResult = (result: QueryResult): ResponseData => {
+const validateResult = async (result: QueryResult): Promise<ResponseData> => {
+	console.log('runs', import.meta.url)
 	if (!result.rows.length) {
 		return {
 			status: NOT_FOUND,
@@ -46,18 +47,28 @@ const validateResult = (result: QueryResult): ResponseData => {
 	}
 }
 
-// Saves from a nasty bugs
 const processPostRoute = <ProcessRouteWithoutBody>processRoute
 const createVendorAccount = processPostRoute(
 	createQuery,
 	CREATED,
+	undefined,
 	validateResult
 )
 
 const processGetRoute = <ProcessRouteWithoutBody>processRoute
-const getVendorAccount = processGetRoute(readQuery, NO_CONTENT, validateResult)
+const getVendorAccount = processGetRoute(
+	readQuery,
+	NO_CONTENT,
+	undefined,
+	validateResult
+)
 
 const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
-const deleteVendorAccount = processDeleteRoute(deleteQuery, NO_CONTENT)
+const deleteVendorAccount = processDeleteRoute(
+	deleteQuery,
+	NO_CONTENT,
+	undefined,
+	undefined
+)
 
 export { createVendorAccount, getVendorAccount, deleteVendorAccount }

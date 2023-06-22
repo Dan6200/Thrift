@@ -9,6 +9,7 @@ export default function ({ verb, statusCode, checks }: testRouteParams) {
 		const response = await serverAgent[verb](path).send(data)
 		response.should.have.status(statusCode)
 		// Check the data in the body if accurate
+		console.log(import.meta.url, response.body)
 		checks && checks(response.body)
 		return response.body
 	}

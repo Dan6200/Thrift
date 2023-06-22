@@ -30,8 +30,11 @@ import { UserData } from '../../../../../../types-and-interfaces/user.js'
 // 		userPaymentInfo?: any
 // 	}
 // ) {
-// 	after(async () => db.query('delete from user_accounts'))
 // 	beforeEach(async () => await db.query('delete from stores'))
+// before (async () => {
+// 	db.query({ text: 'delete from user_accounts' })
+// 	db.query({ text: 'delete from vendors' })
+// })
 
 // 	const path = '/v1/user-account/vendor-account/stores'
 

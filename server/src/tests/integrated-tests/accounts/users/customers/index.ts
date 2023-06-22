@@ -29,7 +29,13 @@ export default function (
 		listOfUpdatedShippingInfo: ShippingInfo[]
 	}
 ) {
-	after(async () => db.query({ text: 'delete from user_accounts' }))
+	before(async () => {
+		await db.query({ text: 'delete from user_accounts' })
+		await db.query({ text: 'delete from customers' })
+	})
+	beforeEach(async () => {
+		await db.query({ text: 'delete from shipping_info' })
+	})
 
 	const path = '/v1/user-account/customer-account'
 
@@ -50,7 +56,7 @@ export default function (
 				shippingPath,
 				shippingInfo
 			)
-			testGetShipping(agent, shippingPath + '/' + address_id)
+			await testGetShipping(agent, shippingPath + '/' + address_id)
 		}
 	})
 
@@ -62,7 +68,7 @@ export default function (
 				shippingPath,
 				listOfShippingInfo[idx]
 			)
-			testUpdateShipping(
+			await testUpdateShipping(
 				agent,
 				shippingPath + '/' + address_id,
 				listOfUpdatedShippingInfo[idx]
@@ -77,7 +83,7 @@ export default function (
 				shippingPath,
 				shippingInfo
 			)
-			testDeleteShipping(agent, shippingPath + '/' + address_id)
+			await testDeleteShipping(agent, shippingPath + '/' + address_id)
 		}
 	})
 

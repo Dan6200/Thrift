@@ -1,4 +1,5 @@
 import assert from 'node:assert'
+import db from '../../../../../db/index.js'
 import StoresData from '../../../../../types-and-interfaces/stores-data.js'
 import { UserData } from '../../../../../types-and-interfaces/user.js'
 import { registration } from '../../../helpers/auth/index.js'
@@ -28,6 +29,12 @@ export default function (
 		updatedStores: StoresData[]
 	}
 ) {
+	before(async () => {
+		await db.query({ text: 'delete from user_accounts' })
+		await db.query({ text: 'delete from vendors' })
+	})
+	beforeEach(async () => await db.query({ text: 'delete from stores' }))
+
 	const path = '/v1/user-account/vendor-account'
 	const storesPath = path + '/stores'
 
@@ -41,7 +48,6 @@ export default function (
 
 	it('should create a store for the vendor', async () => {
 		for (const store of listOfStoresByVendor) {
-			// await allows for error handling
 			await testCreateStore(agent, storesPath, store)
 		}
 	})

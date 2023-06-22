@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
-import { StoreSchemaDB } from '../../../../../../app-schema/vendor/store.js'
+import { QueryResult } from 'pg'
+import { StoreSchemaDBResult } from '../../../../../../app-schema/vendor/store.js'
 import {
 	testRouteWithData,
 	testRouteNoData,
@@ -14,16 +15,19 @@ let checkId = (data: any) => {
 	data.store_id.should.be.a('string')
 }
 
-let validateResultList = (data: any) => {
-	let storeInfoList = data
+let validateResultList = async (
+	data: Promise<QueryResult<any>>
+): Promise<void> => {
+	let storeInfoList = await data
 	storeInfoList.should.be.an('array')
-	for (let storeInfo of storeInfoList) Joi.assert(storeInfo, StoreSchemaDB)
+	Joi.assert(storeInfoList, StoreSchemaDBResult)
 }
 
-let validateResult = (data: any) => {
-	let storeInfo = data
-	storeInfo.should.be.an('object')
-	Joi.assert(storeInfo, StoreSchemaDB)
+let validateResult = async (data: Promise<QueryResult<any>>): Promise<void> => {
+	let storeInfo = await data
+	storeInfo.should.be.an('array')
+	console.log(import.meta.url, storeInfo)
+	Joi.assert(storeInfo, StoreSchemaDBResult)
 }
 
 const routeParams = {

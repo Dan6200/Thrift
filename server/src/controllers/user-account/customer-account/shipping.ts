@@ -5,6 +5,7 @@ import {
 	ShippingInfoSchemaReq,
 	ShippingInfoSchemaDBList,
 	ShippingInfoSchemaDBLean,
+	ShippingInfoSchemaDB,
 } from '../../../app-schema/customer/shipping.js'
 import db from '../../../db/index.js'
 import { BadRequestError } from '../../../errors/index.js'
@@ -77,7 +78,7 @@ const getShippingInfo = async (
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('Shipping Information cannot be found')
-	const validData = ShippingInfoSchemaDBList.validate(row)
+	const validData = ShippingInfoSchemaDB.validate(row[0])
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	const shippingInfo = validData.value
@@ -99,7 +100,7 @@ const updateShippingInfo = async (
 	const pos: number = paramList.length
 	const row = (
 		await db.query({
-			text: Update('shipping_info', 'address_id', fields, `address_id=${pos}`),
+			text: Update('shipping_info', 'address_id', fields, `address_id=$${pos}`),
 			values: paramList,
 		})
 	).rows[0]

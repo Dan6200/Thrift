@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes'
 import { QueryResult, QueryResultRow } from 'pg'
 import {
-	StoreSchemaReq,
-	StoreSchemaRes,
-	StoreSchemaResLean,
-	StoreSchemaUpdateReq,
+	StoreSchemaReqData,
+	StoreSchemaDBResult,
+	StoreSchemaDBResultLean,
+	StoreSchemaReqDataPartialUpdate,
 } from '../../../../app-schema/vendor/store.js'
 import db from '../../../../db/index.js'
 import {
@@ -148,13 +148,13 @@ const deleteQuery = async ({
 }
 
 const validateBody = <T>(data: T): void => {
-	const validData = StoreSchemaReq.validate(data)
+	const validData = StoreSchemaReqData.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 }
 
 const validateBodyUpdate = <T>(data: T): void => {
-	const validData = StoreSchemaUpdateReq.validate(data)
+	const validData = StoreSchemaReqDataPartialUpdate.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 }
@@ -167,7 +167,7 @@ const validateResultList = (
 			status: NOT_FOUND,
 			data: 'No stores found. Please add a store',
 		}
-	const validData = StoreSchemaRes.validate(result.rows)
+	const validData = StoreSchemaDBResult.validate(result.rows)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {
@@ -181,7 +181,7 @@ const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
 			status: NOT_FOUND,
 			data: 'Store not found',
 		}
-	const validData = StoreSchemaRes.validate(result.rows[0])
+	const validData = StoreSchemaDBResult.validate(result.rows[0])
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return {
@@ -192,7 +192,7 @@ const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
 const validateResultHasId = (
 	result: QueryResult<QueryResultRow>
 ): ResponseData => {
-	const { error, value } = StoreSchemaResLean.validate(result.rows[0])
+	const { error, value } = StoreSchemaDBResultLean.validate(result.rows[0])
 	if (error) throw new BadRequestError('The operation was Unsuccessful')
 	return {
 		data: value,

@@ -1,6 +1,6 @@
 import joi from 'joi'
 
-const StoreSchemaReq = joi
+export const StoreSchemaReqData = joi
 	.object({
 		store_name: joi.string().min(3).max(50).required(),
 		store_page: joi
@@ -21,32 +21,30 @@ const StoreSchemaReq = joi
 	})
 	.required()
 
-const StoreSchemaUpdateReq = joi.object({
-	store_name: joi.string().min(3).max(50).required(),
-	store_page: joi
-		.object({
-			heading: joi.string().required(),
-			navigation: joi.array().items(joi.string()).required(),
-			hero: joi.object({
-				video: joi.array().items(joi.string()).allow(null),
-				slideshow_images: joi.array().items(joi.string()).allow(null),
+export const StoreSchemaReqDataPartialUpdate = joi.object({
+	store_name: joi.string().min(3).max(50),
+	store_page: joi.object({
+		heading: joi.string().required(),
+		navigation: joi.array().items(joi.string()).required(),
+		hero: joi.object({
+			video: joi.array().items(joi.string()).allow(null),
+			slideshow_images: joi.array().items(joi.string()).allow(null),
+		}),
+		body: joi.object({
+			product_listings: joi.object({
+				product_ids: joi.array().items(joi.string()),
 			}),
-			body: joi.object({
-				product_listings: joi.object({
-					product_ids: joi.array().items(joi.string()),
-				}),
-			}),
-		})
-		.required(),
+		}),
+	}),
 })
 
-const StoreSchemaResLean = joi.object({
-	store_id: joi.string().pattern(/d+/).required(),
+export const StoreSchemaDBResultLean = joi.object({
+	store_id: joi.string().required(),
 })
 
-const StoreSchemaRes = joi
+export const StoreSchemaDBResult = joi
 	.object({
-		store_id: joi.string().pattern(/\d+/).required(),
+		store_id: joi.string().required(),
 		store_name: joi.string().min(3).max(50).required(),
 		vendor_id: joi.number().required(),
 		store_page: joi
@@ -69,10 +67,3 @@ const StoreSchemaRes = joi
 			.try(joi.string().required(), joi.date().required()),
 	})
 	.required()
-
-export {
-	StoreSchemaReq,
-	StoreSchemaUpdateReq,
-	StoreSchemaRes,
-	StoreSchemaResLean,
-}

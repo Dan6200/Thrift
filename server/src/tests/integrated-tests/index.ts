@@ -17,7 +17,7 @@ const vendors = [Aliyu]
 
 export default function (): void {
 	// Testing the register route
-	before(() => db.query('delete from user_accounts'))
+	before(() => db.query({ text: 'delete from user_accounts' }))
 	// const url = 'https://thrift-dev.up.railway.app'
 	const url = 'localhost:1024'
 	const agent = chai.request.agent(url)

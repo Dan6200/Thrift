@@ -1,5 +1,4 @@
 import { StatusCodes } from 'http-status-codes'
-import Joi from 'joi'
 import { QueryResult } from 'pg'
 import { VendorDBResultSchema } from '../../../app-schema/vendor/index.js'
 import db from '../../../db/index.js'
@@ -19,13 +18,22 @@ import processRoute from '../../helpers/process-route.js'
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
 
 const createQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
-	db.query(Insert('vendors', ['vendor_id'], 'vendor_id'), [vendorId])
+	db.query({
+		text: Insert('vendors', ['vendor_id'], 'vendor_id'),
+		values: [vendorId],
+	})
 
 const readQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
-	db.query(Select('vendors', ['1'], 'vendor_id=$1'), [vendorId])
+	db.query({
+		text: Select('vendors', ['1'], 'vendor_id=$1'),
+		values: [vendorId],
+	})
 
 const deleteQuery: CRUDQueryAuth = ({ userId: vendorId }) =>
-	db.query(Delete('vendor', 'vendor_id', 'vendor_id'), [vendorId])
+	db.query({
+		text: Delete('vendor', 'vendor_id', 'vendor_id'),
+		values: [vendorId],
+	})
 
 const validateResult = (result: QueryResult): ResponseData => {
 	if (!result.rows.length) {

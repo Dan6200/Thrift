@@ -9,14 +9,14 @@ const uploadProductMedia = async (req: any, res: any) => {
 		req.files.map((file: any) => {
 			const { filename, path: filepath } = file
 			// Returns filename as Id instead of product_id
-			return db.query(
-				`${Insert(
+			return db.query({
+				text: Insert(
 					'product_media',
 					['product_id', 'filename', 'filepath', 'description'],
 					'filename'
-				)}`,
-				[productId, filename, filepath, description]
-			)
+				),
+				values: [productId, filename, filepath, description],
+			})
 		})
 	)
 	const fileNames = results.map((result: any) => result.rows[0])

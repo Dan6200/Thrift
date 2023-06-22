@@ -1,5 +1,4 @@
 import { StatusCodes } from 'http-status-codes'
-import Joi from 'joi'
 import { QueryResult, QueryResultRow } from 'pg'
 import db from '../../../db/index.js'
 import BadRequestError from '../../../errors/bad-request.js'
@@ -9,23 +8,32 @@ import {
 	ProcessRouteWithoutBodyAndDBResult,
 } from '../../../types-and-interfaces/process-routes.js'
 import { ResponseData } from '../../../types-and-interfaces/response.js'
-import { Delete } from '../../helpers/generate-sql-commands/index.js'
+import {
+	Delete,
+	Insert,
+	Select,
+} from '../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../helpers/process-route.js'
 import { CustomerDBResultSchema } from '../../../app-schema/customer/index.js'
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
 
 const createQuery: CRUDQueryAuth = ({ userId: customerId }) =>
-	db.query(`insert into customers values($1) returning customer_id`, [
-		customerId,
-	])
+	db.query({
+		text: Insert('customers', ['customer_id'], 'customer_id'), //`insert into customers values($1) returning customer_id`,
+		values: [customerId],
+	})
 
 const readQuery: CRUDQueryAuth = ({ userId: customerId }) =>
-	db.query(`select customer_id from customers where customer_id=$1`, [
-		customerId,
-	])
+	db.query({
+		text: Select('customers', ['1'], 'customer_id=$1'),
+		values: [customerId],
+	})
 
 const deleteQuery: CRUDQueryAuth = ({ userId: customerId }) =>
-	db.query(Delete('customers', 'customer_id', 'customer_id'), [customerId])
+	db.query({
+		text: Delete('customers', 'customer_id', 'customer_id'),
+		values: [customerId],
+	})
 
 const validateResult = (result: QueryResult<QueryResultRow>): ResponseData => {
 	if (result.rows.length === 0)

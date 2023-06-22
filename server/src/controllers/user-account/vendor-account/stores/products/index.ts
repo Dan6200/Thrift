@@ -14,7 +14,9 @@ import {
 } from '../../../../../types-and-interfaces/process-routes.js'
 import { ResponseData } from '../../../../../types-and-interfaces/response.js'
 import {
+	Delete,
 	Insert,
+	Select,
 	Update,
 } from '../../../../helpers/generate-sql-commands/index.js'
 import { handleSortQuery } from '../../../../helpers/generate-sql-commands/query-params-handler.js'
@@ -26,22 +28,22 @@ const createQuery = async ({
 	userId: vendorId,
 }) => {
 	// makes sure the Store exists before accessing the /user/stores/products endpoint
-	const dbQuery = await db.query(
-		'select vendor_id from stores where store_id=$1',
-		[storeId]
-	)
+	const dbQuery = await db.query({
+		text: Select('stores', ['vendor_id'], 'store_id=$1'),
+		values: [storeId],
+	})
 	if (!dbQuery.rows.length)
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
-	return db.query(
-		`${Insert(
+	return db.query({
+		text: Insert(
 			'products',
 			[...Object.keys(productData), 'store_id', 'vendor_id'],
 			'product_id'
-		)}`,
-		[...Object.values(productData), storeId, vendorId]
-	)
+		),
+		values: [...Object.values(productData), storeId, vendorId],
+	})
 }
 
 const readAllQuery = async ({
@@ -49,10 +51,10 @@ const readAllQuery = async ({
 	params: { storeId },
 	userId: vendorId,
 }) => {
-	const dbQuery = await db.query(
-		'select vendor_id from stores where store_id=$1',
-		[storeId]
-	)
+	const dbQuery = await db.query({
+		text: Select('stores', ['vendor_id'], 'store_id=$1'),
+		values: [storeId],
+	})
 	if (!dbQuery.rows.length)
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
@@ -74,23 +76,23 @@ const readAllQuery = async ({
 	}
 	if (offset) dbQueryString += ` offset ${offset}`
 	if (limit) dbQueryString += ` limit ${limit}`
-	return db.query(dbQueryString, [storeId])
+	return db.query({ text: dbQueryString, values: [storeId] })
 }
 
 const readQuery = async ({
 	params: { storeId, productId },
 	userId: vendorId,
 }) => {
-	const dbQuery = await db.query(
-		'select vendor_id from stores where store_id=$1',
-		[storeId]
-	)
+	const dbQuery = await db.query({
+		text: Select('stores', ['vendor_id'], 'store_id=$1'),
+		values: [storeId],
+	})
 	if (!dbQuery.rows.length)
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
-	return db.query(
-		`select products.*, 
+	return db.query({
+		text: `select products.*, 
 				(select json_agg(media) from 
 					(select filename, 
 						filepath, description from 
@@ -100,8 +102,8 @@ const readQuery = async ({
 					as media 
 				from products 
 			where product_id=$1`,
-		[productId]
-	)
+		values: [productId],
+	})
 }
 
 const updateQuery = async ({
@@ -109,36 +111,44 @@ const updateQuery = async ({
 	reqData: productData,
 	userId: vendorId,
 }) => {
-	const dbQuery = await db.query(
-		'select vendor_id from stores where store_id=$1',
-		[storeId]
-	)
+	const dbQuery = await db.query({
+		text: Select('stores', ['vendor_id'], 'store_id=$1'),
+		values: [storeId],
+	})
 	if (!dbQuery.rows.length)
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
-	const updateCommand =
-		Update('products', 'product_id', Object.keys(productData)) +
-		` returning product_id`
-	return db.query(updateCommand, [productId, ...Object.values(productData)])
+	const paramList = [...Object.values(productData), productId]
+	const updateCommand = Update(
+		'products',
+		'product_id',
+		Object.keys(productData),
+		`product_id=$${paramList.length}`
+	)
+
+	return db.query({
+		text: updateCommand,
+		values: paramList,
+	})
 }
 
 const deleteQuery = async ({
 	params: { productId, storeId },
 	userId: vendorId,
 }) => {
-	const dbQuery = await db.query(
-		'select vendor_id from stores where store_id=$1',
-		[storeId]
-	)
+	const dbQuery = await db.query({
+		text: Select('stores', ['vendor_id'], 'store_id=$1'),
+		values: [storeId],
+	})
 	if (!dbQuery.rows.length)
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
-	return db.query(
-		`delete from products where product_id=$1 and store_id=$2 returning product_id`,
-		[productId, storeId]
-	)
+	return db.query({
+		text: Delete('products', 'product_id', 'product_id=$1 and store_id=$2'),
+		values: [productId, storeId],
+	})
 }
 
 const validateBody = (data: object): object => {

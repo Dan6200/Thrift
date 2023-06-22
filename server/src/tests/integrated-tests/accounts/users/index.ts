@@ -27,7 +27,7 @@ export default function (
 		updatedPassword: UserData
 	}
 ) {
-	after(async () => db.query('delete from user_accounts'))
+	after(async () => db.query({ text: 'delete from user_accounts' }))
 
 	const path = '/v1/user-account'
 

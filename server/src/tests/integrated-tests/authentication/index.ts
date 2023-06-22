@@ -16,7 +16,7 @@ export default function (
 	agent: ChaiHttp.Agent,
 	{ userInfo }: { userInfo: UserData }
 ) {
-	after(async () => db.query('delete from user_accounts'))
+	after(async () => db.query({ text: 'delete from user_accounts' }))
 
 	it('it should register the user', () => registration(agent, userInfo))
 

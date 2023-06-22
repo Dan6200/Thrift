@@ -12,7 +12,11 @@ import {
 } from '../../types-and-interfaces/request.js'
 import { UserData } from '../../types-and-interfaces/user.js'
 import validateUserPassword from '../helpers/validate-user-password.js'
-import { Update } from '../helpers/generate-sql-commands/index.js'
+import {
+	Delete,
+	Select,
+	Update,
+} from '../helpers/generate-sql-commands/index.js'
 
 const userDataFields = [
 	'first_name',
@@ -28,13 +32,10 @@ let getUserAccount = async (
 	response: Response
 ) => {
 	let { userId }: RequestUserPayload = request.user
-	let dbResult = await db.query(
-		`select 
-			${userDataFields.join(', ')}
-			from user_accounts 
-			where user_id = $1`,
-		[userId]
-	)
+	let dbResult = await db.query({
+		text: Select('user_accounts', userDataFields, 'user_id=$1'),
+		values: [userId],
+	})
 	if (dbResult.rows.length === 0)
 		return response
 			.status(StatusCodes.NOT_FOUND)
@@ -54,15 +55,16 @@ let updateUserAccount = async (
 		throw new BadRequestError('request data cannot be empty')
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body)
-	let dbResult = await db.query(
-		`${Update(
+	const paramList = [...data, userId]
+	let dbResult = await db.query({
+		text: Update(
 			'user_accounts',
 			'user_id',
 			fields,
-			`user_id=$${fields.length + 1}`
-		)}`,
-		[userId, ...data]
-	)
+			`user_id=$${paramList.length}`
+		),
+		values: paramList,
+	})
 	assert.equal(dbResult.rows.length, 1)
 	const userAccount = dbResult.rows[0]
 	response.status(StatusCodes.OK).json(userAccount)
@@ -91,15 +93,11 @@ let updateUserPassword = async (
 	request.body.password = password
 	let fields: string[] = Object.keys(request.body),
 		data: string[] = Object.values(request.body)
-	await db.query(
-		`${Update(
-			'user_accounts',
-			'user_id',
-			fields,
-			`user_id=$${fields.length + 1}`
-		)}`,
-		[userId, ...data]
-	)
+	const paramList = [...data, userId]
+	await db.query({
+		text: Update('user_accounts', 'user_id', fields, `user_id=$${paramList}`),
+		values: paramList,
+	})
 	response.status(StatusCodes.NO_CONTENT).end()
 }
 
@@ -108,11 +106,10 @@ let deleteUserAccount = async (
 	response: Response
 ) => {
 	let { userId }: RequestUserPayload = request.user
-	await db.query(
-		`delete from user_accounts
-		where user_id = $1`,
-		[userId]
-	)
+	await db.query({
+		text: Delete('user_accounts', 'user_id', 'user_id=$1'),
+		values: [userId],
+	})
 	response.status(StatusCodes.NO_CONTENT).end()
 }
 

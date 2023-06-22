@@ -9,7 +9,7 @@ import db from '../db/index.js'
 import { BadRequestError, UnauthenticatedError } from '../errors/index.js'
 import { hashPassword, validatePassword } from '../security/password.js'
 import { createToken } from '../security/create-token.js'
-import { Insert } from './helpers/generate-sql-commands/index.js'
+import { Insert, Select } from './helpers/generate-sql-commands/index.js'
 import { log } from 'node:console'
 import { UserData } from '../types-and-interfaces/user.js'
 // TODO: IP address
@@ -48,21 +48,29 @@ const register = async (request: Request, response: Response) => {
 		// TODO: SMS verification
 	}
 	userData.password = await hashPassword(<string>password)
-	let dbQuery: QueryResult = await db.query(
-		`
-    ${Insert('user_accounts', Object.keys(userData), 'user_id')}`,
-		Object.values(userData)
-	)
+	let dbQuery: QueryResult = await db.query({
+		text: Insert('user_accounts', Object.keys(userData), 'user_id'),
+		values: Object.values(userData),
+	})
 	const { rows } = dbQuery
 	const userId: string = rows[0].user_id
-	createToken(userId, token => {
-		response
-			.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
-			.status(StatusCodes.CREATED)
-			.json({
-				token,
-			})
-	})
+
+	// createToken(userId, token => {
+	// 	response
+	// 		.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
+	// 		.status(StatusCodes.CREATED)
+	// 		.json({
+	// 			token,
+	// 		})
+	// })
+
+	const token = createToken(userId)
+	response
+		.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
+		.status(StatusCodes.CREATED)
+		.json({
+			token,
+		})
 }
 
 const login = async (request: Request, response: Response) => {
@@ -76,23 +84,17 @@ const login = async (request: Request, response: Response) => {
 		let user: any
 		if (email) {
 			user = (
-				await db.query(
-					`
-			select user_id, password
-			from user_accounts 
-			where email=$1`,
-					[email]
-				)
+				await db.query({
+					text: Select('user_accounts', ['user_id', 'password'], 'email=$1'),
+					values: [email],
+				})
 			).rows[0]
 		} else {
 			user = (
-				await db.query(
-					`
-			select user_id, password
-			from user_accounts 
-			where phone=$1`,
-					[phone]
-				)
+				await db.query({
+					text: Select('user_accounts', ['user_id', 'password'], 'phone=$1'),
+					values: [phone],
+				})
 			).rows[0]
 		}
 		if (!user) throw new UnauthenticatedError('Invalid Credentials')
@@ -101,14 +103,13 @@ const login = async (request: Request, response: Response) => {
 			user.password.toString()
 		)
 		if (!pwdIsValid) throw new UnauthenticatedError('Invalid Credentials')
-		createToken(user.user_id, token =>
-			response
-				.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
-				.status(StatusCodes.OK)
-				.json({
-					token,
-				})
-		)
+		const token = createToken(user.user_id)
+		response
+			.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
+			.status(StatusCodes.OK)
+			.json({
+				token,
+			})
 	} else response.status(StatusCodes.OK).end()
 }
 

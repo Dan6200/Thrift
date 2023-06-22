@@ -27,6 +27,7 @@ const ShippingInfoSchemaDBLean = joi
 const ShippingInfoSchemaDB = joi
 	.object({
 		address_id: joi.string().required(),
+		customer_id: joi.string().required(),
 		recipient_first_name: joi.string().alphanum().min(3).max(30).required(),
 		recipient_last_name: joi.string().alphanum().min(3).max(30).required(),
 		address: joi.string().required(),
@@ -47,6 +48,7 @@ const ShippingInfoSchemaDBList = joi.array().items(
 	joi
 		.object({
 			address_id: joi.string().required(),
+			customer_id: joi.string().required(),
 			recipient_first_name: joi.string().alphanum().min(3).max(30).required(),
 			recipient_last_name: joi.string().alphanum().min(3).max(30).required(),
 			address: joi.string().required(),

@@ -68,17 +68,17 @@ const getShippingInfo = async (
 ) => {
 	const { addressId } = request.params
 	if (!addressId) throw new BadRequestError('Id parameter not available')
-	const row = (
+	const result = (
 		await db.query({
 			text: Select('shipping_info', ['*'], 'address_id=$1'),
 			values: [addressId],
 		})
 	).rows[0]
-	if (!row)
+	if (!result)
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.send('Shipping Information cannot be found')
-	const validData = ShippingInfoSchemaDB.validate(row[0])
+	const validData = ShippingInfoSchemaDB.validate(result)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	const shippingInfo = validData.value

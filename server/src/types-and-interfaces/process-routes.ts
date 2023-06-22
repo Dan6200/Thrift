@@ -66,10 +66,10 @@ export type Status =
 	| typeof NOT_FOUND
 
 export type QueryData = {
-	userId?: string
-	query?: object
-	params?: object
-	reqBody?: object
+	userId: string
+	queryParams: { [key: string]: any }
+	params: { [key: string]: any }
+	reqBody: { [key: string]: any }
 }
 
 export type ProcessRouteWithoutBody = (
@@ -91,7 +91,7 @@ export type ProcessRouteWithNoDBResult = (
 ) => Promise<Response<any, Record<string, any>>>
 
 export type ProcessRouteWithoutBodyAndDBResult = (
-	CRUDQuery: (queryData: object) => QueryResultPromise,
+	CRUDQuery: (queryData: QueryData) => QueryResultPromise,
 	status: Status
 ) => (
 	request: RequestWithPayload,
@@ -99,7 +99,7 @@ export type ProcessRouteWithoutBodyAndDBResult = (
 ) => Promise<Response<any, Record<string, any>>>
 
 export type ProcessRouteWithBodyAndDBResult = (
-	CRUDQuery: (queryData: object) => QueryResultPromise,
+	CRUDQuery: (queryData: QueryData) => QueryResultPromise,
 	status: Status,
 	validateBody: (reqBody: any) => object,
 	validateResult: (result: QueryResult<any>) => ResponseData

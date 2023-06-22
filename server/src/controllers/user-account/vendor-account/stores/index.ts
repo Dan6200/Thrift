@@ -1,6 +1,4 @@
-import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import Joi from 'joi'
 import { QueryResult, QueryResultRow } from 'pg'
 import {
 	StoreSchemaReq,
@@ -8,11 +6,15 @@ import {
 	UpdateStoreSchemaReq,
 } from '../../../../app-schema/vendor/store.js'
 import db from '../../../../db/index.js'
-import { BadRequestError } from '../../../../errors/index.js'
+import {
+	BadRequestError,
+	UnauthenticatedError,
+} from '../../../../errors/index.js'
 import {
 	ProcessRouteWithBodyAndDBResult,
 	ProcessRouteWithoutBody,
 	ProcessRouteWithoutBodyAndDBResult,
+	QueryData,
 } from '../../../../types-and-interfaces/process-routes.js'
 import {
 	RequestWithPayload,
@@ -30,7 +32,11 @@ import {
 } from '../../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../../helpers/process-route.js'
 
-const createQuery = async ({ reqData: storeData, userId: vendorId }) => {
+const createQuery = async ({
+	reqBody: storeData,
+	userId: vendorId,
+}: QueryData) => {
+	if (!vendorId) throw new UnauthenticatedError('Cannot access resource')
 	// check if vendor account exists
 	const dbRes = await db.query({
 		text: Select('vendors', ['1'], 'vendor_id=$1'), //'select 1 from vendors where vendor_id=$1',
@@ -51,6 +57,9 @@ const createQuery = async ({ reqData: storeData, userId: vendorId }) => {
 	// if Over limit throw error
 	if (LIMIT <= recordCount)
 		throw new BadRequestError(`Each vendor is limited to only ${LIMIT} stores`)
+
+	if (!storeData) throw new BadRequestError('No data sent in request body')
+
 	return db.query({
 		text: Insert(
 			'stores',
@@ -61,7 +70,8 @@ const createQuery = async ({ reqData: storeData, userId: vendorId }) => {
 	})
 }
 
-const readAllQuery = async ({ userId: vendorId }) => {
+const readAllQuery = async ({ userId: vendorId }: QueryData) => {
+	if (!vendorId) throw new UnauthenticatedError('Cannot access resource')
 	const res = await db.query({
 		text: Select('vendors', ['1'], 'vendor_id=$1'), // 'select 1 from vendors where vendor_id=$1',
 		values: [vendorId],
@@ -76,7 +86,11 @@ const readAllQuery = async ({ userId: vendorId }) => {
 	})
 }
 
-const readQuery = async ({ params: { storeId }, userId: vendorId }) => {
+const readQuery = async ({
+	params: { storeId },
+	userId: vendorId,
+}: QueryData) => {
+	if (!vendorId) throw new UnauthenticatedError('Cannot access resource')
 	const res = await db.query({
 		text: Select('vendors', ['1'], 'vendor_id=$1'), //'select 1 from vendors where vendor_id=$1',
 		values: [vendorId],
@@ -93,9 +107,9 @@ const readQuery = async ({ params: { storeId }, userId: vendorId }) => {
 
 const updateQuery = async ({
 	params: { storeId },
-	reqData: storeData,
+	reqBody: storeData,
 	userId: vendorId,
-}) => {
+}: QueryData) => {
 	const res = await db.query({
 		text: Select('vendors', ['1'], 'vendor_id=$1'),
 		values: [vendorId],
@@ -116,7 +130,10 @@ const updateQuery = async ({
 	return db.query(query)
 }
 
-const deleteQuery = async ({ params: { storeId }, userId: vendorId }) => {
+const deleteQuery = async ({
+	params: { storeId },
+	userId: vendorId,
+}: QueryData) => {
 	const res = await db.query({
 		text: 'select vendor_id from vendors where vendor_id=$1',
 		values: [vendorId],
@@ -131,14 +148,14 @@ const deleteQuery = async ({ params: { storeId }, userId: vendorId }) => {
 	})
 }
 
-const validateBody = (data: object): object => {
+const validateBody = <T>(data: T): T => {
 	const validData = StoreSchemaReq.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	return validData.value
 }
 
-const validateBodyUpdate = (data: object): object => {
+const validateBodyUpdate = <T>(data: T): T => {
 	const validData = UpdateStoreSchemaReq.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)

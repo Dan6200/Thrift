@@ -11,6 +11,7 @@ import UnauthenticatedError from '../../../../../errors/unauthenticated.js'
 import {
 	ProcessRouteWithBodyAndDBResult,
 	ProcessRouteWithoutBody,
+	QueryData,
 } from '../../../../../types-and-interfaces/process-routes.js'
 import { ResponseData } from '../../../../../types-and-interfaces/response.js'
 import {
@@ -23,10 +24,10 @@ import { handleSortQuery } from '../../../../helpers/generate-sql-commands/query
 import processRoute from '../../../../helpers/process-route.js'
 
 const createQuery = async ({
-	reqData: productData,
+	reqBody: productData,
 	params: { storeId },
 	userId: vendorId,
-}) => {
+}: QueryData) => {
 	// makes sure the Store exists before accessing the /user/stores/products endpoint
 	const dbQuery = await db.query({
 		text: Select('stores', ['vendor_id'], 'store_id=$1'),
@@ -47,10 +48,10 @@ const createQuery = async ({
 }
 
 const readAllQuery = async ({
-	queries: { sort, limit, offset },
+	queryParams: { sort, limit, offset },
 	params: { storeId },
 	userId: vendorId,
-}) => {
+}: QueryData) => {
 	const dbQuery = await db.query({
 		text: Select('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -82,7 +83,7 @@ const readAllQuery = async ({
 const readQuery = async ({
 	params: { storeId, productId },
 	userId: vendorId,
-}) => {
+}: QueryData) => {
 	const dbQuery = await db.query({
 		text: Select('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -108,9 +109,9 @@ const readQuery = async ({
 
 const updateQuery = async ({
 	params: { productId, storeId },
-	reqData: productData,
+	reqBody: productData,
 	userId: vendorId,
-}) => {
+}: QueryData) => {
 	const dbQuery = await db.query({
 		text: Select('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -137,7 +138,7 @@ const updateQuery = async ({
 const deleteQuery = async ({
 	params: { productId, storeId },
 	userId: vendorId,
-}) => {
+}: QueryData) => {
 	const dbQuery = await db.query({
 		text: Select('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],

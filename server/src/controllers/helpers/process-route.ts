@@ -1,19 +1,15 @@
 import { Response } from 'express'
-import { QueryResult } from 'pg'
+import { QueryResult, QueryResultRow } from 'pg'
 import BadRequestError from '../../errors/bad-request.js'
+import { QueryData } from '../../types-and-interfaces/process-routes.js'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import { ResponseData, Status } from '../../types-and-interfaces/response.js'
 
 export default (
-	CRUDQuery: (queryData: {
-		userId?: string
-		query?: object
-		params?: object
-		reqBody?: object
-	}) => Promise<QueryResult<any>>,
+	CRUDQuery: (queryData: QueryData) => Promise<QueryResult<QueryResultRow>>,
 	status: Status,
-	validateBody?: (reqBody: any) => object,
-	validateResult?: (result: QueryResult<any>) => ResponseData
+	validateBody: <T>(reqBody: T) => T,
+	validateResult: (result: QueryResult<QueryResultRow>) => ResponseData
 ) => {
 	// return the route processor middleware
 	return async (request: RequestWithPayload, response: Response) => {

@@ -45,6 +45,6 @@ v1Router.use('/user-account', authenticateUser, userAccountRouter)
 
 app.use('/v1', v1Router)
 // helper middlewares
-app.use(errorHandlerMiddleware)
 app.use(notFound)
+app.use(errorHandlerMiddleware)
 export default app

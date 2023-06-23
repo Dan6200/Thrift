@@ -6,9 +6,9 @@ create table if not exists user_accounts (
 	first_name			varchar(30)		not null,
 	last_name			varchar(30)		not null,
 	email				varchar(320)	unique
-	check (email ~* [^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'),			
+	check (email ~* '^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'),			
 	phone		 		varchar(40)		unique
-	check (phone ~* *(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$'),			
+	check (phone ~* '^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$'),			
 	password			bytea			not null,
 	dob					date			not null,
 	country				varchar			not null,
@@ -57,7 +57,7 @@ create table if not exists products (
 	product_id			bigserial			primary key,
 	title				varchar,
 	category			varchar,
-	description			varchar,
+	description			jsonb,
 	list_price			numeric(19,4),
 	net_price			numeric(19,4),
 	vendor_id 			bigint				not null,

@@ -71,12 +71,6 @@ const testUpdateProduct = <testRouteWithData>testRoute({
 	checks: checkId,
 })
 
-const testReplaceProduct = <testRouteWithData>testRoute({
-	...routeParams,
-	verb: 'patch',
-	checks: checkId,
-})
-
 const testDeleteProduct = <testRouteNoData>testRoute({
 	...routeParams,
 	verb: 'delete',
@@ -118,7 +112,6 @@ export {
 	testGetAllProducts,
 	testGetProduct,
 	testUpdateProduct,
-	testReplaceProduct,
 	testDeleteProduct,
 	testGetNonExistentProduct,
 	testUploadProductMedia,

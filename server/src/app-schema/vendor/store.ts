@@ -8,8 +8,7 @@ export const StoreSchemaReqData = joi
 				heading: joi.string().required(),
 				navigation: joi.array().items(joi.string()).required(),
 				hero: joi.object({
-					video: joi.array().items(joi.string()).allow(null),
-					slideshow_images: joi.array().items(joi.string()).allow(null),
+					media: joi.array().items(joi.string()).allow(null),
 				}),
 				body: joi.object({
 					product_listings: joi.object({
@@ -27,8 +26,7 @@ export const StoreSchemaReqDataPartialUpdate = joi.object({
 		heading: joi.string().required(),
 		navigation: joi.array().items(joi.string()).required(),
 		hero: joi.object({
-			video: joi.array().items(joi.string()).allow(null),
-			slideshow_images: joi.array().items(joi.string()).allow(null),
+			media: joi.array().items(joi.string()).allow(null),
 		}),
 		body: joi.object({
 			product_listings: joi.object({
@@ -52,8 +50,7 @@ export const StoreSchemaDBResult = joi
 				heading: joi.string().required(),
 				navigation: joi.array().items(joi.string()).required(),
 				hero: joi.object({
-					video: joi.array().items(joi.string()).allow(null),
-					slideshow_images: joi.array().items(joi.string()).allow(null),
+					media: joi.array().items(joi.string()).allow(null),
 				}),
 				body: joi.object({
 					product_listings: joi.object({

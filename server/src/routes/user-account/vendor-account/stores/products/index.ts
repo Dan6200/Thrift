@@ -16,7 +16,7 @@ router.route('/').post(createProduct).get(getAllProducts)
 router
 	.route('/:productId')
 	.get(getProduct)
-	.put(updateProduct)
+	.patch(updateProduct)
 	.delete(deleteProduct)
 
 const uploadLimit = 6

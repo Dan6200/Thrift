@@ -9,7 +9,6 @@ import {
 	testGetNonExistentProduct,
 	testUpdateProduct,
 	testUploadProductMedia,
-	testReplaceProduct,
 } from '../../../../helpers/user/vendor/store/products/index.js'
 import db from '../../../../../../db/index.js'
 import { UserData } from '../../../../../../types-and-interfaces/user.js'
@@ -41,11 +40,11 @@ export default function (
 		updatedProductMedia: ProductMedia[]
 	}
 ) {
-	beforeEach(async () => await db.query({ text: 'delete from stores' }))
 	before(async () => {
-		db.query({ text: 'delete from user_accounts' })
-		db.query({ text: 'delete from vendors' })
+		await db.query({ text: 'delete from user_accounts' })
+		await db.query({ text: 'delete from vendors' })
 	})
+	beforeEach(async () => await db.query({ text: 'delete from stores' }))
 
 	const path = '/v1/user-account/vendor-account/stores'
 
@@ -137,25 +136,6 @@ export default function (
 			let secondaryIndex = 0
 			for (const { product_id } of productIds) {
 				testUpdateProduct(
-					agent,
-					`${path}/${store_id}/products/${product_id}`,
-					productReplaced[secondaryIndex++]
-				)
-			}
-		}
-	})
-
-	it('it should replace an existing product with no information', async () => {
-		for (const store of vendorStores) {
-			const { store_id } = await testCreateStore(agent, path, store)
-			const productIds = await testCreateProduct(
-				agent,
-				`${path}/${store_id}/products`,
-				products
-			)
-			let secondaryIndex = 0
-			for (const { product_id } of productIds) {
-				testReplaceProduct(
 					agent,
 					`${path}/${store_id}/products/${product_id}`,
 					productReplaced[secondaryIndex++]

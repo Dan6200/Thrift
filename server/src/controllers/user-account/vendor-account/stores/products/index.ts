@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import { QueryResult } from 'pg'
 import {
 	ProductSchemaDB,
+	ProductSchemaDBLean,
 	ProductSchemaDBList,
 	ProductSchemaReq,
 } from '../../../../../app-schema/products.js'
@@ -180,6 +181,24 @@ const validateResultList = async (
 	}
 }
 
+const checkSuccess = async (
+	result: QueryResult<any>
+): Promise<ResponseData> => {
+	if (!result.rows.length)
+		return {
+			status: NOT_FOUND,
+			data: 'Product not found',
+		}
+	const validateDbResult = ProductSchemaDBLean.validate(result.rows[0])
+	if (validateDbResult.error)
+		throw new BadRequestError(
+			'Invalid Data from DB: ' + validateDbResult.error.message
+		)
+	return {
+		data: validateDbResult.value,
+	}
+}
+
 const validateResult = async (
 	result: QueryResult<any>
 ): Promise<ResponseData> => {
@@ -208,7 +227,7 @@ const createProduct = processPostRoute(
 	createQuery,
 	CREATED,
 	validateBody,
-	validateResult
+	checkSuccess
 )
 
 const getAllProducts = processGetAllRoute(
@@ -224,14 +243,14 @@ const updateProduct = processPutRoute(
 	updateQuery,
 	OK,
 	validateBody,
-	validateResult
+	checkSuccess
 )
 
 const deleteProduct = processDeleteRoute(
 	deleteQuery,
 	OK,
 	undefined,
-	validateResult
+	checkSuccess
 )
 
 export {

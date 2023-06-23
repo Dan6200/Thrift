@@ -78,7 +78,7 @@ create table if not exists product_media (
 create table if not exists shopping_cart (
 	cart_id				bigserial			primary key,
 	customer_id			bigint				not null	references	customers	on	delete	cascade,
-	created				timestamptz			not null	default	now()
+	created				timestamptz			not null	default	now(),
 	updated				timestamptz			not null	default	now()
 );
 
@@ -87,7 +87,7 @@ create table if not exists shopping_cart_item (
 	item_id				bigserial			primary	key,
 	cart_id				bigint				not null		references	shopping_cart	on 	delete	cascade,
 	product_id			bigint				not null		references	products		on delete	cascade,
-	quantity			int					not null		check (product_quantity > 0)
+	quantity			int					not null		check (quantity > 0)
 );
 
 
@@ -105,16 +105,16 @@ create table if not exists transaction_details (
 create table if not exists purchases (
 	item_id					bigserial		primary	key,
 	product_id				bigint			not null		references		products		on delete	cascade,
-	transaction_id			bigint			not null		references		transaction		on delete	cascade,
+	transaction_id			bigint			not null		references		transaction_details		on delete	cascade,
 	created 				timestamptz		not null		default	now()	unique,
 	updated 				timestamptz		not null		default	now()	unique,
-	product_quantity		int				not null		check (product_quantity > 0)
+	quantity		int				not null		check (quantity > 0)
 );
 
 
 create table if not exists product_reviews (
 	product_id				bigint				primary key references	products		on	delete	cascade,
-	transaction_id			bigint				not null	references	transaction	on	delete	cascade,
+	transaction_id			bigint				not null	references	transaction_details	on	delete	cascade,
 	rating					numeric(3,2)		not null,
 	customer_id				bigint				not	null	references	customers	on	delete	cascade,
 	customer_remark			varchar
@@ -124,7 +124,7 @@ create table if not exists product_reviews (
 create table if not exists vendor_reviews (
 	vendor_id				bigint				primary key 	references	vendors on delete cascade,
 	customer_id				bigint				not null		references	customers on delete cascade,
-	transaction_id			bigint				not null		references	transaction on delete cascade,
+	transaction_id			bigint				not null		references	transaction_details on delete cascade,
 	rating					numeric(3,2)	not null,
 	customer_remark			varchar
 );
@@ -133,7 +133,7 @@ create table if not exists vendor_reviews (
 create table if not exists customer_reviews (
 	customer_id				bigint				primary key 	references	customers on delete cascade,
 	vendor_id				bigint				not null		references	vendors on delete cascade,
-	transaction_id			bigint				not null		references	transaction on delete cascade,
+	transaction_id			bigint				not null		references	transaction_details on delete cascade,
 	rating					numeric(3,2)	not null,
 	vendor_remark			varchar
 );

@@ -1,46 +1,74 @@
-import { StatusCodes } from "http-status-codes";
-import db from "../../../db/index.js";
-import processRoute from "../../helpers/process-route.js";
-const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes;
+import { StatusCodes } from 'http-status-codes'
+import { QueryResult, QueryResultRow } from 'pg'
+import db from '../../../db/index.js'
+import {
+	CRUDQueryAuth,
+	ProcessRouteWithoutBody,
+	ProcessRouteWithoutBodyAndDBResult,
+} from '../../../types-and-interfaces/process-routes.js'
+import { ResponseData } from '../../../types-and-interfaces/response.js'
+import {
+	Delete,
+	Insert,
+	Select,
+} from '../../helpers/generate-sql-commands/index.js'
+import processRoute from '../../helpers/process-route.js'
+const { CREATED, NO_CONTENT, NOT_FOUND } = StatusCodes
 
-type Status = typeof CREATED | typeof OK | typeof NO_CONTENT | typeof NOT_FOUND;
+const createQuery: CRUDQueryAuth = ({ user: { userId: customerId } }) =>
+	db.query({
+		text: Insert('customers', ['customer_id'], 'customer_id'), //`insert into customers values($1) returning customer_id`,
+		values: [customerId],
+	})
 
-type ResponseData = {
-  status: Status;
-  data?: string | object;
-};
+const readQuery: CRUDQueryAuth = ({ user: { userId: customerId } }) =>
+	db.query({
+		text: Select('customers', ['1'], 'customer_id=$1'),
+		values: [customerId],
+	})
 
-const createQuery = [
-    ({ userId }) => db.query(`insert into customers values($1)`, [userId]),
-  ],
-  readQuery = [
-    ({ userId }) =>
-      db.query(`select * from customers where customer_id=$1`, [userId]),
-  ],
-  deleteQuery = [() => db.query(`delete from customers`)],
-  validateResult = (result: any, status: Status): ResponseData => {
-    if (result.rowCount === 0)
-      return {
-        status: 404,
-        data: "Route does not exit",
-      };
-    return {
-      status,
-      data: result.rows[result.rowCount - 1],
-    };
-  };
+const deleteQuery: CRUDQueryAuth = ({ user: { userId: customerId } }) =>
+	db.query({
+		text: Delete('customers', 'customer_id', 'customer_id=$1'),
+		values: [customerId],
+	})
 
-let createCustomerAccount = processRoute(createQuery, { status: CREATED }),
-  getCustomerAccount = processRoute(
-    readQuery,
-    { status: OK },
-    undefined,
-    validateResult
-  ),
-  deleteCustomerAccount = processRoute(
-    deleteQuery,
-    { status: NO_CONTENT },
-    undefined
-  );
+const validateResult = async (
+	result: QueryResult<QueryResultRow>
+): Promise<ResponseData> => {
+	if (result.rows.length === 0)
+		return {
+			status: NOT_FOUND,
+			data: 'Route does not exit',
+		}
+	return {
+		data: {},
+	}
+}
 
-export { createCustomerAccount, getCustomerAccount, deleteCustomerAccount };
+// Saves from a nasty bugs
+const processPostRoute = <ProcessRouteWithoutBody>processRoute
+const createCustomerAccount = processPostRoute(
+	createQuery,
+	CREATED,
+	undefined,
+	validateResult
+)
+
+const processGetRoute = <ProcessRouteWithoutBody>processRoute
+const getCustomerAccount = processGetRoute(
+	readQuery,
+	NO_CONTENT,
+	undefined,
+	validateResult
+)
+
+const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
+const deleteCustomerAccount = processDeleteRoute(
+	deleteQuery,
+	NO_CONTENT,
+	undefined,
+	undefined
+)
+
+export { createCustomerAccount, getCustomerAccount, deleteCustomerAccount }

@@ -1,26 +1,50 @@
 //cspell:disable
-import 'express-async-errors'
 import chai from 'chai'
-import app from '../../app.js'
-import testAuthentication from '../authentication/index.js'
-import testUserAccount from '../accounts/users/index.js'
-import testCustomerAccount from '../accounts/users/customers/index.js'
-import testVendorAccount from '../accounts/users/vendors/index.js'
-import testProducts from '../accounts/users/vendors/products/index.js'
+import testAuthentication from './authentication/index.js'
+import testUserAccount from './accounts/users/index.js'
+import testCustomerAccount from './accounts/users/customers/index.js'
+import testVendorAccount from './accounts/users/vendors/index.js'
+import testProducts from './accounts/users/vendors/products/index.js'
+import * as Ebuka from './data/users/customers/user-ebuka/index.js'
+import * as Aisha from './data/users/customers/user-aisha/index.js'
+import * as Mustapha from './data/users/customers/user-mustapha/index.js'
+import * as Aliyu from './data/users/vendors/user-aliyu/index.js'
+import db from '../../db/index.js'
 
-export default function (index: number): void {
-  // Testing the register route
-  describe(`Testing typical user actions`, async () => {
-    // const url = 'https://thrift-dev.up.railway.app'
-    const url = 'localhost:1024'
-    const agent = chai.request.agent(url)
-    // const agent = chai.request.agent(app)
+const users = [Ebuka, Aliyu, Aisha, Mustapha]
+const customers = [Ebuka, Aisha, Mustapha]
+const vendors = [Aliyu]
 
-    describe('Testing Authentication', () => testAuthentication(agent, index))
-    describe('Testing User Account', () => testUserAccount(agent, index))
-    describe('Testing Customer Account', () =>
-      testCustomerAccount(agent, index))
-    describe('Testing Vendor Account', () => testVendorAccount(agent, index))
-    describe('Testing Products', async () => testProducts(agent, index))
-  })
+export default function (): void {
+	// Testing the register route
+	before(() => db.query({ text: 'delete from user_accounts' }))
+	// const url = 'https://thrift-dev.up.railway.app'
+	const url = 'localhost:1024'
+	const agent = chai.request.agent(url)
+
+	for (let user of users) {
+		const name = user.userInfo.first_name
+		describe(`Testing Authentication for ${name}`, () =>
+			testAuthentication(agent, user))
+	}
+	for (let user of users) {
+		const name = user.userInfo.first_name
+		describe(`Testing User Account for ${name}`, () =>
+			testUserAccount(agent, user))
+	}
+	for (let customer of customers) {
+		const name = customer.userInfo.first_name
+		describe(`Testing Customer Account for ${name}`, () =>
+			testCustomerAccount(agent, customer))
+	}
+	for (let vendor of vendors) {
+		const name = vendor.userInfo.first_name
+		describe(`Testing Vendor Account for ${name}`, () =>
+			testVendorAccount(agent, vendor))
+	}
+	for (let vendor of vendors) {
+		const name = vendor.userInfo.first_name
+		describe(`Testing Products listed by ${name}`, async () =>
+			testProducts(agent, vendor))
+	}
 }

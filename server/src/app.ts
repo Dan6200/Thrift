@@ -22,14 +22,16 @@ dotenv.config()
 let app: Express = express()
 app.set('trust proxy', 1)
 app.use(cookieParser())
+/** For Production only
 app.use(
-  rateLimiter({
-    windowMs: 15 * 60 * 1000,
-    max: 200,
-    standardHeaders: true,
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  })
+	rateLimiter({
+		windowMs: 15 * 60 * 1000,
+		max: 100,
+		standardHeaders: true,
+		legacyHeaders: false,
+	})
 )
+**/
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(helmet())
@@ -39,10 +41,10 @@ app.use(morgan('dev'))
 // application routes
 const v1Router = Router()
 v1Router.use('/auth', authRouter)
-v1Router.use('/user', authenticateUser, userAccountRouter)
+v1Router.use('/user-account', authenticateUser, userAccountRouter)
 
 app.use('/v1', v1Router)
 // helper middlewares
-app.use(errorHandlerMiddleware)
 app.use(notFound)
+app.use(errorHandlerMiddleware)
 export default app

@@ -1,14 +1,12 @@
-import { Request } from 'express';
-import { JwtPayload } from 'jsonwebtoken';
+import { Request } from 'express'
+import { JwtPayload } from 'jsonwebtoken'
 
 interface RequestWithPayload extends Request {
-	user: RequestUserPayload;
+	user: RequestUserPayload
 }
 
 interface RequestUserPayload extends JwtPayload {
-	userId: string;
-	phone?: string;
-	email?: string;
+	userId: string
 }
 
-export { RequestWithPayload, RequestUserPayload };
+export { RequestWithPayload, RequestUserPayload }

@@ -1,29 +1,66 @@
 import joi from 'joi'
 
-const StoreSchemaReq = joi
-  .object({
-    store_name: joi.string().min(3).max(50).required(),
-    store_page: joi.object().required(),
-  })
-  .required()
+export const StoreSchemaReqData = joi
+	.object({
+		store_name: joi.string().min(3).max(50).required(),
+		store_page: joi
+			.object({
+				heading: joi.string().required(),
+				navigation: joi.array().items(joi.string()).required(),
+				hero: joi.object({
+					media: joi.array().items(joi.string()).allow(null),
+				}),
+				body: joi.object({
+					product_listings: joi.object({
+						product_ids: joi.array().items(joi.string()),
+					}),
+				}),
+			})
+			.required(),
+	})
+	.required()
 
-const UpdateStoreSchemaReq = joi
-  .object({
-    store_name: joi.string().min(3).max(50),
-    store_page: joi.object(),
-  })
-  .required()
+export const StoreSchemaReqDataPartialUpdate = joi.object({
+	store_name: joi.string().min(3).max(50),
+	store_page: joi.object({
+		heading: joi.string().required(),
+		navigation: joi.array().items(joi.string()).required(),
+		hero: joi.object({
+			media: joi.array().items(joi.string()).allow(null),
+		}),
+		body: joi.object({
+			product_listings: joi.object({
+				product_ids: joi.array().items(joi.string()),
+			}),
+		}),
+	}),
+})
 
-const StoreSchemaDB = joi
-  .object({
-    store_id: joi.string().pattern(/\d+/).required(),
-    store_name: joi.string().min(3).max(50).required(),
-    vendor_id: joi.number().required(),
-    store_page: joi.object().required(),
-    date_created: joi
-      .alternatives()
-      .try(joi.string().required(), joi.date().required()),
-  })
-  .required()
+export const StoreSchemaDBResultLean = joi.object({
+	store_id: joi.string().required(),
+})
 
-export { StoreSchemaReq, StoreSchemaDB, UpdateStoreSchemaReq }
+export const StoreSchemaDBResult = joi
+	.object({
+		store_id: joi.string().required(),
+		store_name: joi.string().min(3).max(50).required(),
+		vendor_id: joi.number().required(),
+		store_page: joi
+			.object({
+				heading: joi.string().required(),
+				navigation: joi.array().items(joi.string()).required(),
+				hero: joi.object({
+					media: joi.array().items(joi.string()).allow(null),
+				}),
+				body: joi.object({
+					product_listings: joi.object({
+						product_ids: joi.array().items(joi.string()),
+					}),
+				}),
+			})
+			.required(),
+		date_created: joi
+			.alternatives()
+			.try(joi.string().required(), joi.date().required()),
+	})
+	.required()

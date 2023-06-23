@@ -1,26 +1,26 @@
-import express from "express";
+import express from 'express'
 import {
-  deleteUserAccount,
-  getUserAccount,
-  updateUserAccount,
-  updateUserPassword,
-} from "../../controllers/user-account/index.js";
-import vendorAccountRouter from "./vendor-account/index.js";
-import customerAccountRouter from "./customer-account/index.js";
-const router = express.Router();
+	deleteUserAccount,
+	getUserAccount,
+	updateUserAccount,
+	updateUserPassword,
+} from '../../controllers/user-account/index.js'
+import vendorAccountRouter from './vendor-account/index.js'
+import customerAccountRouter from './customer-account/index.js'
+const router = express.Router()
 
 router
-  .route("/")
-  .get(getUserAccount)
-  .delete(deleteUserAccount)
-  .patch(updateUserAccount);
+	.route('/')
+	.get(getUserAccount)
+	.delete(deleteUserAccount)
+	.patch(updateUserAccount)
 
 // user password route
-router.route("/password").patch(updateUserPassword);
+router.route('/password').patch(updateUserPassword)
 
 // vendor account route
-router.use("/vendor", vendorAccountRouter);
+router.use('/vendor-account', vendorAccountRouter)
 // customer account route
-router.use("/customer", customerAccountRouter);
+router.use('/customer-account', customerAccountRouter)
 
-export default router;
+export default router

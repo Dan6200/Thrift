@@ -14,6 +14,8 @@ todo*
 **/tmp/**
 **upload**
 **token**
+server-log.txt
+**/tests/product-media/*
 
 # Logs
 logs

@@ -2,7 +2,7 @@
 export type Product = {
 	title: string
 	category: string
-	description: string[]
+	description: { [key: string]: string }
 	list_price: number
 	net_price: number
 	quantity_available: number
@@ -11,7 +11,7 @@ export type Product = {
 export type ProductPartial = {
 	title?: string
 	category?: string
-	description?: string[]
+	description?: { [key: string]: string }
 	list_price?: number
 	net_price?: number
 	quantity_available?: number

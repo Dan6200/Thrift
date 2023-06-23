@@ -56,23 +56,23 @@ export default function (
 	it('it should create a product for sale', async () => {
 		for (const store of vendorStores) {
 			const { store_id } = await testCreateStore(agent, path, store)
-			testCreateProduct(agent, `${path}/${store_id}/products`, products)
+			await testCreateProduct(agent, `${path}/${store_id}/products`, products)
 		}
 	})
 
 	it('it should retrieve all products a vendor has for sale', async () => {
 		for (const stores of vendorStores) {
 			const { store_id } = await testCreateStore(agent, path, stores)
-			testCreateProduct(agent, `${path}/${store_id}/products`, products)
-			testGetAllProducts(agent, `${path}/${store_id}/products`)
+			await testCreateProduct(agent, `${path}/${store_id}/products`, products)
+			await testGetAllProducts(agent, `${path}/${store_id}/products`)
 		}
 	})
 
 	it('it should retrieve all products a vendor has for sale, sorted by net price ascending', async () => {
 		for (const store of vendorStores) {
 			const { store_id } = await testCreateStore(agent, path, store)
-			testCreateProduct(agent, `${path}/${store_id}/products`, products)
-			testGetAllProducts(agent, `${path}/${store_id}/products`, {
+			await testCreateProduct(agent, `${path}/${store_id}/products`, products)
+			await testGetAllProducts(agent, `${path}/${store_id}/products`, {
 				sort: '-net_price',
 			})
 		}
@@ -98,7 +98,10 @@ export default function (
 				products
 			)
 			for (const { product_id } of productIds) {
-				testGetProduct(agent, `${path}/${store_id}/products/${product_id}`)
+				await testGetProduct(
+					agent,
+					`${path}/${store_id}/products/${product_id}`
+				)
 			}
 		}
 	})
@@ -135,7 +138,7 @@ export default function (
 			)
 			let secondaryIndex = 0
 			for (const { product_id } of productIds) {
-				testUpdateProduct(
+				await testUpdateProduct(
 					agent,
 					`${path}/${store_id}/products/${product_id}`,
 					productReplaced[secondaryIndex++]
@@ -153,7 +156,10 @@ export default function (
 				products
 			)
 			for (const { product_id } of productIds) {
-				testDeleteProduct(agent, `${path}/${store_id}/products/${product_id}`)
+				await testDeleteProduct(
+					agent,
+					`${path}/${store_id}/products/${product_id}`
+				)
 			}
 		}
 	})

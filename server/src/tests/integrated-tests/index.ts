@@ -21,28 +21,27 @@ export default function (): void {
 	// const url = 'https://thrift-dev.up.railway.app'
 	const url = 'localhost:1024'
 	const agent = chai.request.agent(url)
-	// const agent = chai.request.agent(app)
 
-	// for (let user of users) {
-	// 	const name = user.userInfo.first_name
-	// 	describe(`Testing Authentication for ${name}`, () =>
-	// 		testAuthentication(agent, user))
-	// }
-	// for (let user of users) {
-	// 	const name = user.userInfo.first_name
-	// 	describe(`Testing User Account for ${name}`, () =>
-	// 		testUserAccount(agent, user))
-	// }
-	// for (let customer of customers) {
-	// 	const name = customer.userInfo.first_name
-	// 	describe(`Testing Customer Account for ${name}`, () =>
-	// 		testCustomerAccount(agent, customer))
-	// }
-	// for (let vendor of vendors) {
-	// 	const name = vendor.userInfo.first_name
-	// 	describe(`Testing Vendor Account for ${name}`, () =>
-	// 		testVendorAccount(agent, vendor))
-	// }
+	for (let user of users) {
+		const name = user.userInfo.first_name
+		describe(`Testing Authentication for ${name}`, () =>
+			testAuthentication(agent, user))
+	}
+	for (let user of users) {
+		const name = user.userInfo.first_name
+		describe(`Testing User Account for ${name}`, () =>
+			testUserAccount(agent, user))
+	}
+	for (let customer of customers) {
+		const name = customer.userInfo.first_name
+		describe(`Testing Customer Account for ${name}`, () =>
+			testCustomerAccount(agent, customer))
+	}
+	for (let vendor of vendors) {
+		const name = vendor.userInfo.first_name
+		describe(`Testing Vendor Account for ${name}`, () =>
+			testVendorAccount(agent, vendor))
+	}
 	for (let vendor of vendors) {
 		const name = vendor.userInfo.first_name
 		describe(`Testing Products listed by ${name}`, async () =>

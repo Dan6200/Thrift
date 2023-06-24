@@ -22,7 +22,7 @@ import { readFile } from 'fs/promises'
 import path from 'path'
 
 const swaggerDocument = await readFile(
-	path.resolve('./server/api-docs/swagger.yaml'),
+	path.resolve('./server/api-docs/openapi.yaml'),
 	'utf8'
 ).then(doc => yaml.load(doc))
 

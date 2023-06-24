@@ -1,0 +1,237 @@
+#cspell:disable
+
+openapi: 3.1.0
+info:
+  title: Thrift eCommerce API
+  description: >
+    This is the API for Thrift eCommerce Store.
+
+    An online eCommerce platform that offers a wide range of products
+    including electronics, fashion, furniture, kitchen items, media and more.
+  version: 1.1.0
+  contact:
+    name: Daniel Nyong
+    email: danielnyong66@gmail.com
+servers:
+  - url: https://thrift-production.up.railway.app/{basePath}
+    description: Production server
+    variables:
+      basePath:
+        default: v1
+  - url: https://thrift-dev.up.railway.app/{basePath}
+    description: Development server
+    variables:
+      basePath:
+        default: v1
+  - url: localhost:{port}/{basePath}
+    description: Local server on computer
+    variables:
+      basePath:
+        default: v1
+      port:
+        default: '1024'
+schemes:
+  - http
+  - https
+components:
+  schemas:
+    UserData:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+          format: password
+        dob:
+          type: string
+          format: date
+        country:
+          type: string
+    LoginInfo:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          format: password
+    GeneralError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    UnauthenticatedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    BadRequestError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    responses:
+      NotFound:
+        description: Entity not found.
+        content:
+          application/json:
+            schema:
+              type: string
+      BadRequestError:
+        description: Illegal operation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BadRequestError'
+      UnauthenticatedError:
+        description: Not authorized to access resource
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnauthenticatedError'
+      GeneralError:
+        description: General Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeneralError'
+    parameters:
+      limitParam:
+        name: limit
+        in: query
+        description: max number of records to retrieve
+        required: false,
+        schema:
+          type: integer
+          format: int32
+      offsetParam:
+        name: offset
+        in: query
+        description: offsets records by the specified amount
+        required: false,
+        schema:
+          type: integer
+          format: int32
+      sortParam:
+        name: sort
+        in: query
+        description: >
+          sorts items ascending or descending based a list of fields.
+        required: false,
+        schema:
+          type: array
+          items:
+            type: string
+    Token:
+      type: object
+      property:
+        token:
+          type: string
+      description: |
+        unique token string used to authenticate the user
+        expires within 30 minutes
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+paths:
+  /auth/register:
+    post:
+      summary: Register an account
+      description: Creates an account for the user and authenticates the new user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserData'
+      responses:
+        '201':
+          description: User Account Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedError'
+  /auth/login:
+    post:
+      summary: Logs in the user.
+      description: |
+        Logs in the user with a token if it exists. 
+        Else login the user with email or phone identification and creates token
+        requestBody:
+          required: false
+          content:
+            application/json:
+              schema: 
+                type: 
+                object:
+                  properties:
+                    $ref: '#/components/schemas/LoginInfo'
+  /user:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /user/customer:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /user/customer/shipping-info:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /user/customer/payment-info:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /user/vendor:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /user/vendor/payment-info:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /user/vendor/stores:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+  /user/vendor/stores/products:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}

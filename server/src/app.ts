@@ -21,7 +21,7 @@ import yaml from 'js-yaml'
 import { readFile } from 'fs/promises'
 import path from 'path'
 
-const swaggerDocument = readFile(
+const swaggerDocument = await readFile(
 	path.resolve('./server/api-docs/swagger.yaml'),
 	'utf8'
 ).then(doc => yaml.load(doc))
@@ -44,7 +44,8 @@ app.use(cookieParser())
 // **/
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(<JSON>swaggerDocument))
+app.get('/', (req, res) => res.json(swaggerDocument))
 
 app.use(helmet())
 app.use(cors())

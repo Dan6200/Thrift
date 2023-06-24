@@ -16,6 +16,10 @@ servers:
     variables:
       basePath:
         default: v1
+  - url: localhost:1024/{basePath}
+    variables:
+      basePath:
+        default: v1
 components:
   securitySchemes:
     BearerAuth:

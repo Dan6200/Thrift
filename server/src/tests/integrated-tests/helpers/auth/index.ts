@@ -1,44 +1,53 @@
 import chai from 'chai'
+import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import { UserData } from '../../../../types-and-interfaces/user.js'
 
-chai.should()
+chai.use(chaiHttp).should()
 
-async function registration(agent: ChaiHttp.Agent, user: UserData) {
-	const response = await agent.post('/v1/auth/register').send(user)
+async function registration(server: string, user: UserData) {
+	const response = await chai
+		.request(server)
+		.post('/v1/auth/register')
+		.send(user)
 	response.should.have.status(StatusCodes.CREATED)
 	response.body.should.be.an('object')
-	const responseObject = response.body
-	responseObject.should.have.property('token')
+	response.body.should.have.property('token')
+	return response
 }
 
 async function emailLogin(
-	agent: ChaiHttp.Agent,
+	server: string,
 	{ email, password }: UserData,
 	statusCode: StatusCodes
 ) {
-	const response = await agent.post('/v1/auth/login').send({ email, password })
+	const response = await chai
+		.request(server)
+		.post('/v1/auth/login')
+		.send({ email, password })
 	response.should.have.status(statusCode)
-	if (statusCode === StatusCodes.OK) {
-		response.body.should.be.an('object')
-	}
+	response.body.should.be.an('object')
+	return response
 }
 
 async function phoneLogin(
-	agent: ChaiHttp.Agent,
+	server: string,
 	{ phone, password }: UserData,
 	statusCode: StatusCodes
 ) {
-	const response = await agent.post('/v1/auth/login').send({ phone, password })
+	const response = await chai
+		.request(server)
+		.post('/v1/auth/login')
+		.send({ phone, password })
 	response.should.have.status(statusCode)
-	if (statusCode === StatusCodes.OK) {
-		response.body.should.be.an('object')
-	}
+	response.body.should.be.an('object')
+	return response
 }
 
-async function logout(agent: ChaiHttp.Agent) {
-	const response = await agent.get('/v1/auth/logout')
+async function logout(server: string) {
+	const response = await chai.request(server).get('/v1/auth/logout')
 	response.should.have.status(StatusCodes.OK)
+	return response
 }
 
 export { registration, emailLogin, phoneLogin, logout }

@@ -17,7 +17,7 @@ let validateResult = async (data: any) => {
 	userInfo.should.be.an('object')
 }
 
-const testDontGetUser = testRoute({
+const testFailToGetUser = testRoute({
 	verb: 'get',
 	statusCode: UNAUTHORIZED,
 }) as testRouteNoData
@@ -51,7 +51,7 @@ const testGetNonExistentUser = testRoute({
 
 export {
 	testGetUser,
-	testDontGetUser,
+	testFailToGetUser,
 	testUpdateUser,
 	testChangeUserPassword,
 	testDeleteUser,

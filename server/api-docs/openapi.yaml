@@ -69,34 +69,22 @@ components:
         password:
           type: string
           format: password
-        example:
-          phone: '+2341234567890'
-          password: password
+      example:
+        phone: '+2341234567890'
+        password: password
     GeneralError:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          enum: [500]
         message:
           type: string
     UnauthenticatedError:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          enum: [401]
         message:
           type: string
     BadRequestError:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          enum: [400]
         message:
           type: string
     responses:

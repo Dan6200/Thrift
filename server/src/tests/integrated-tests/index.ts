@@ -10,7 +10,8 @@ import * as Mustapha from './data/users/customers/user-mustapha/index.js'
 import * as Aliyu from './data/users/vendors/user-aliyu/index.js'
 import db from '../../db/index.js'
 
-const users = [Ebuka, Aliyu, Aisha, Mustapha]
+// const users = [Ebuka, Aliyu, Aisha, Mustapha]
+const users = [Ebuka]
 const customers = [Ebuka, Aisha, Mustapha]
 const vendors = [Aliyu]
 
@@ -24,11 +25,10 @@ export default function (): void {
 	// 		testAuthentication(agent, user))
 	// }
 
-	// for (let user of users) {
-	// 	const name = user.userInfo.first_name
-	// 	describe(`Testing User Account for ${name}`, () =>
-	// 		testUserAccount(agent, user))
-	// }
+	for (let user of users) {
+		const name = user.userInfo.first_name
+		describe(`Testing User Account for ${name}`, () => testUserAccount(user))
+	}
 
 	// for (let customer of customers) {
 	// 	const name = customer.userInfo.first_name
@@ -36,11 +36,11 @@ export default function (): void {
 	// 		testCustomerAccount(agent, customer))
 	// }
 
-	for (let vendor of vendors) {
-		const name = vendor.userInfo.first_name
-		describe(`Testing Vendor Account for ${name}`, () =>
-			testVendorAccount(vendor))
-	}
+	// for (let vendor of vendors) {
+	// 	const name = vendor.userInfo.first_name
+	// 	describe(`Testing Vendor Account for ${name}`, () =>
+	// 		testVendorAccount(vendor))
+	// }
 
 	// 	for (let vendor of vendors) {
 	// 		const name = vendor.userInfo.first_name

@@ -1,3 +1,4 @@
+import 'dotenv'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import {
@@ -5,7 +6,7 @@ import {
 	testUpdateUser,
 	testChangeUserPassword,
 	testDeleteUser,
-	testDontGetUser,
+	testFailToGetUser,
 	testGetNonExistentUser,
 } from '../../helpers/user/index.js'
 import { StatusCodes } from 'http-status-codes'
@@ -14,19 +15,28 @@ import db from '../../../../db/index.js'
 import { UserData } from '../../../../types-and-interfaces/user.js'
 
 chai.use(chaiHttp).should()
+let agent: ChaiHttp.Agent
 
-export default function (
-	agent: ChaiHttp.Agent,
-	{
-		userInfo,
-		updatedUserInfo,
-		updatedPassword,
-	}: {
-		userInfo: UserData
-		updatedUserInfo: UserData
-		updatedPassword: UserData
-	}
-) {
+export default function ({
+	userInfo,
+	updatedUserInfo,
+	updatedPassword,
+}: {
+	userInfo: UserData
+	updatedUserInfo: UserData
+	updatedPassword: UserData
+}) {
+	before(async () => {
+		// Create an agent instance
+		agent = chai.request.agent(process.env.LOCAL_APP_SERVER)
+		// Delete all user accounts
+		await db.query({ text: 'delete from user_accounts' })
+		// Delete all vendors
+	})
+	beforeEach(async () => {
+		// Delete all stores
+		await db.query({ text: 'delete from stores' })
+	})
 	after(async () => await db.query({ text: 'delete from user_accounts' }))
 
 	const path = '/v1/users'
@@ -36,7 +46,7 @@ export default function (
 	it('it should logout user', () => logout(agent))
 
 	it('it should get an unauthorized error when trying to fetch the user', () =>
-		testDontGetUser(agent, path))
+		testFailToGetUser(agent, path))
 
 	it('it should login user', () => emailLogin(agent, userInfo, StatusCodes.OK))
 

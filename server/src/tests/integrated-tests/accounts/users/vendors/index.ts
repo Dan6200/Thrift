@@ -32,7 +32,7 @@ export default function ({
 }) {
 	before(async () => {
 		// Create an agent instance
-		agent = chai.request.agent(process.env.DEV_APP_SERVER)
+		agent = chai.request.agent(process.env.LOCAL_APP_SERVER)
 		// Delete all user accounts
 		await db.query({ text: 'delete from user_accounts' })
 		// Delete all vendors

@@ -16,7 +16,16 @@ import userAccountRouter from './routes/user-account/index.js'
 import errorHandlerMiddleware from './middleware/error-handler.js'
 import authenticateUser from './middleware/authentication.js'
 import notFound from './middleware/not-found.js'
-import swaggerUI from 'swagger-ui-dist'
+import swaggerUi from 'swagger-ui-express'
+import yaml from 'js-yaml'
+import { readFile } from 'fs/promises'
+import path from 'path'
+
+const swaggerDocument = readFile(
+	path.resolve('./server/api-docs/swagger.yaml'),
+	'utf8'
+).then(doc => yaml.load(doc))
+
 dotenv.config()
 
 ////////////// Middlewares //////////////
@@ -35,7 +44,8 @@ app.use(cookieParser())
 // **/
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static(swaggerUI.absolutePath()))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
 app.use(helmet())
 app.use(cors())
 app.use(xss())

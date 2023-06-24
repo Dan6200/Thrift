@@ -1,4 +1,5 @@
 #cspell:disable
+
 openapi: 3.1.0
 info:
   title: Thrift eCommerce API

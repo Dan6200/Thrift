@@ -1,20 +1,170 @@
 #cspell:disable
+
 openapi: 3.1.0
 info:
   title: Thrift eCommerce API
   description: |
-    This API allows users to buy a variety of products from different vendors as well as
-    selling their own products as a vendor.
-  version: 0.0.1
+    This is the API for Thrift eCommerce Store.
+
+    An online eCommerce platform that offers a wide range of products
+    including electronics, fashion, furniture, kitchen items, media and more.
+  version: 1.0.0
+  contact:
+    name: The Developer
+    email: danielnyong66@gmail.com
 servers:
   - url: https://thrift-production.up.railway.app/{basePath}
+    description: Production server
     variables:
       basePath:
         default: v1
   - url: https://thrift-dev.up.railway.app/{basePath}
+    description: Development server
     variables:
       basePath:
         default: v1
+  - url: localhost:{port}/{basePath}
+    description: Local server on computer
+    variables:
+      basePath:
+        default: v1
+      port:
+        default: '1024'
+components:
+  schemas:
+    UserData:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        password:
+          type: string
+          format: password
+        dob:
+          type: string
+          format: date
+        country:
+          type: string
+      example:
+        first_name: Joe
+        last_name: Schmoe
+        email: joeschmoe@fake.email.com
+        phone: '+2341234567890'
+        password: password
+        dob: 2000-4-10
+        country: Nigeria
+    LoginInfo:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        example:
+          phone: '+2341234567890'
+          password: password
+    GeneralError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum: [500]
+        message:
+          type: string
+    UnauthenticatedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum: [401]
+        message:
+          type: string
+    BadRequestError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          enum: [400]
+        message:
+          type: string
+    responses:
+      NotFound:
+        description: Entity not found.
+        content:
+          application/json:
+            schema:
+              type: string
+      BadRequestError:
+        description: Illegal operation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BadRequestError'
+      UnauthenticatedError:
+        description: Not authorized to access resource
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnauthenticatedError'
+      GeneralError:
+        description: General Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeneralError'
+    parameters:
+      limitParam:
+        name: limit
+        in: query
+        description: max number of records to retrieve
+        required: false,
+        schema:
+          type: integer
+          format: int32
+      offsetParam:
+        name: offset
+        in: query
+        description: offsets records by the specified amount
+        required: false,
+        schema:
+          type: integer
+          format: int32
+      sortParam:
+        name: sort
+        in: query
+        description: >
+          sorts items ascending or descending based a list of fields.
+        required: false,
+        schema:
+          type: array
+          items:
+            type: string
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+      description: |
+        unique token string used to authenticate the user
+        expires within 30 minutes.
+      example:
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMzYiLCJpYXQiOjE2ODYwMzg4MzIsImV4cCI6MTY4NjA0MDYzMn0.j8ep358FU8KRSG7ehPdFypoTua5Cr7dgBQdUks8Dkdc'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
 paths:
   /auth/register:
     post:
@@ -25,59 +175,136 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              property:
+              $ref: '#/components/schemas/UserData'
       responses:
         '201':
-          description: 'CREATED'
+          description: User Account Created
           content:
             application/json:
               schema:
-                type: object
-                property:
-                  token:
-                    type: string
-                    description:
-                      unique token string used to authenticate the user
-                      expires within 30 minutes
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: Invalid User Schema
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
   /auth/login:
-    post: {}
-  /user:
+    post:
+      summary: Logs in the user.
+      description: |
+        Logs in the user with a token if it exists. 
+        Else login the user with email or phone identification and creates token
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInfo'
+      responses:
+        '200':
+          description: User Logged In
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: Invalid Login Format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Invalid Login Credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+
+  /users:
+    get:
+      summary: Gets the user.
+      description: Retrieves user information
+      responses:
+        '200':
+          description: User Account Retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserData'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+
+    patch:
+      summary: Update user
+      description: Fully or partially updates the user's information.
+      responses:
+        '200':
+          description: User Account Retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserData'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '400':
+          description: Invalid Login Format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized Access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+    delete: {}
+  /users/customer-account:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /user/customer:
+  /users/customer-account/shipping-info:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /user/customer/shipping-info:
+  /users/customer-account/payment-info:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /user/customer/payment-info:
+  /users/vendor-account:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /user/vendor:
+  /users/vendor-account/payment-info:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /user/vendor/payment-info:
+  /users/vendor-account/stores:
     post: {}
     get: {}
     patch: {}
     delete: {}
-  /user/vendor/stores:
-    post: {}
-    get: {}
-    patch: {}
-    delete: {}
-  /user/vendor/stores/products:
+  /users/vendor-account/stores/products:
     post: {}
     get: {}
     patch: {}

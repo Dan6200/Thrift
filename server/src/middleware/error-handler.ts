@@ -9,7 +9,7 @@ const errorHandlerMiddleware = async (
 	_next: NextFunction // Must have this 4 params to work
 ) => {
 	// error logging
-	// error(err)
+	error(err)
 	let customError = {
 		// set default
 		statusCode: err.statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR,

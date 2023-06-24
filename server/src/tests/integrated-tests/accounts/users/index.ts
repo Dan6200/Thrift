@@ -29,7 +29,7 @@ export default function (
 ) {
 	after(async () => await db.query({ text: 'delete from user_accounts' }))
 
-	const path = '/v1/user-account'
+	const path = '/v1/users'
 
 	it('it should register a user', () => registration(agent, userInfo))
 

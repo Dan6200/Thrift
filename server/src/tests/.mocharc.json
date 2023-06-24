@@ -5,5 +5,6 @@
 	"exit": true,
 	"enable-source-maps": true,
 	"node-option": ["loader=ts-node/esm"],
+	"reporter": "mochawesome",
 	"parallel": true
 }

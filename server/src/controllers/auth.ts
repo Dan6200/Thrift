@@ -55,15 +55,6 @@ const register = async (request: Request, response: Response) => {
 	const { rows } = dbQuery
 	const userId: string = rows[0].user_id
 
-	// createToken(userId, token => {
-	// 	response
-	// 		.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })
-	// 		.status(StatusCodes.CREATED)
-	// 		.json({
-	// 			token,
-	// 		})
-	// })
-
 	const token = createToken(userId)
 	response
 		.cookie('token', token, { httpOnly: true, maxAge: 30 * 60 * 60 })

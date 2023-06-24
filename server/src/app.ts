@@ -54,7 +54,7 @@ app.use(morgan('dev'))
 // application routes
 const v1Router = Router()
 v1Router.use('/auth', authRouter)
-v1Router.use('/user-account', authenticateUser, userAccountRouter)
+v1Router.use('/users', authenticateUser, userAccountRouter)
 
 app.use('/v1', v1Router)
 // helper middlewares

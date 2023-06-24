@@ -16,6 +16,7 @@ todo*
 **token**
 server-log.txt
 **/tests/product-media/*
+mochawesome-*
 
 # Logs
 logs

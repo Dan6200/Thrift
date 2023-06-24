@@ -16,24 +16,26 @@ import userAccountRouter from './routes/user-account/index.js'
 import errorHandlerMiddleware from './middleware/error-handler.js'
 import authenticateUser from './middleware/authentication.js'
 import notFound from './middleware/not-found.js'
+import swaggerUI from 'swagger-ui-dist'
 dotenv.config()
 
 ////////////// Middlewares //////////////
 let app: Express = express()
 app.set('trust proxy', 1)
 app.use(cookieParser())
-/** For Production only
-app.use(
-	rateLimiter({
-		windowMs: 15 * 60 * 1000,
-		max: 100,
-		standardHeaders: true,
-		legacyHeaders: false,
-	})
-)
-**/
+// /** For Production only
+// app.use(
+// 	rateLimiter({
+// 		windowMs: 15 * 60 * 1000,
+// 		max: 100,
+// 		standardHeaders: true,
+// 		legacyHeaders: false,
+// 	})
+// )
+// **/
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(express.static(swaggerUI.absolutePath()))
 app.use(helmet())
 app.use(cors())
 app.use(xss())

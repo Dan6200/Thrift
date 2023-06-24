@@ -1,3 +1,5 @@
+import chai from 'chai'
+import chaiHttp from 'chai-http'
 import { registration } from '../../../../helpers/auth/index.js'
 import { testCreateVendor } from '../../../../helpers/user/vendor/index.js'
 import { testCreateStore } from '../../../../helpers/user/vendor/store/index.js'
@@ -15,36 +17,43 @@ import { UserData } from '../../../../../../types-and-interfaces/user.js'
 import {
 	Product,
 	ProductMedia,
-	ProductPartial,
 } from '../../../../../../types-and-interfaces/products.js'
 import StoresData from '../../../../../../types-and-interfaces/stores-data.js'
 
-export default function (
-	agent: ChaiHttp.Agent,
-	{
-		userInfo,
-		stores: vendorStores,
-		products,
-		productReplaced,
-		productPartialUpdate,
-		productMedia,
-		updatedProductMedia,
-	}: {
-		userInfo: UserData
-		stores: StoresData[]
-		updatedStores?: StoresData[]
-		products: Product[]
-		productReplaced: Product[]
-		productPartialUpdate: ProductPartial[]
-		productMedia: ProductMedia[]
-		updatedProductMedia: ProductMedia[]
-	}
-) {
+chai.use(chaiHttp).should()
+let agent: ChaiHttp.Agent
+
+export default function ({
+	userInfo,
+	stores: vendorStores,
+	products,
+	productReplaced,
+	productMedia,
+}: {
+	userInfo: UserData
+	stores: StoresData[]
+	updatedStores?: StoresData[]
+	products: Product[]
+	productReplaced: Product[]
+	productMedia: ProductMedia[]
+	updatedProductMedia: ProductMedia[]
+}) {
 	before(async () => {
+		// Create an agent instance
+		agent = chai.request.agent(process.env.APP_SERVER)
+		// Delete all user accounts
 		await db.query({ text: 'delete from user_accounts' })
+		// Delete all vendors
 		await db.query({ text: 'delete from vendors' })
+		// Register a new user
+		await registration(agent, userInfo)
+		// Create a vendor account for the user
+		await testCreateVendor(agent, '/v1/user-account/vendor-account/')
 	})
-	beforeEach(async () => await db.query({ text: 'delete from stores' }))
+	beforeEach(async () => {
+		// Delete all stores
+		await db.query({ text: 'delete from stores' })
+	})
 
 	const path = '/v1/user-account/vendor-account/stores'
 

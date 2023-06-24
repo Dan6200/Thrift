@@ -15,6 +15,11 @@ servers:
     variables:
       basePath:
         default: v1
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
 paths:
   /auth/register:
     post:
@@ -37,11 +42,22 @@ paths:
                 property:
                   token:
                     type: string
-                    description:
+                    description: |
                       unique token string used to authenticate the user
                       expires within 30 minutes
   /auth/login:
-    post: {}
+    post:
+      summary: Logs in the user.
+      description: |
+        Logs in the user with a token if exists. 
+        Else login the user with email or phone identification and creates token
+        requestBody:
+          required: false
+          content:
+            application/json:
+              schema: 
+                type: 
+                object
   /user:
     post: {}
     get: {}

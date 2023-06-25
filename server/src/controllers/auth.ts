@@ -89,7 +89,9 @@ const login = async (request: Request, response: Response) => {
 
 const logout = (request: Request, response: Response) => {
 	const authHeader = request.headers.authorization
-	const token = authHeader!.split(' ')[1]
+	if (!authHeader || !authHeader?.startsWith('Bearer '))
+		throw new UnauthenticatedError('Unauthorized Operation')
+	const token = authHeader.split(' ')[1]
 	revokeToken(token)
 	response.status(StatusCodes.OK).end()
 }

@@ -1,6 +1,8 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
+import Joi from 'joi'
+import { UserDataSchemaDB } from '../../../../app-schema/users.js'
 import {
 	testRouteNoData,
 	testRouteWithData,
@@ -12,9 +14,9 @@ chai.use(chaiHttp).should()
 const { OK, NOT_FOUND, NO_CONTENT, UNAUTHORIZED } = StatusCodes
 
 let validateResult = async (data: any) => {
-	// TODO:rewrite this!!
 	let userInfo = data
 	userInfo.should.be.an('object')
+	Joi.assert(userInfo, UserDataSchemaDB)
 }
 
 const testFailToGetUser = testRoute({
@@ -31,7 +33,6 @@ const testGetUser = testRoute({
 const testUpdateUser = testRoute({
 	verb: 'patch',
 	statusCode: OK,
-	checks: validateResult,
 }) as testRouteWithData
 
 const testChangeUserPassword = testRoute({

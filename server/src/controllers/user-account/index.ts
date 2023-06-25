@@ -61,9 +61,8 @@ let updateUserAccount = async (
 		text: Update('user_accounts', 'user_id', fields, `user_id=$${pos}`),
 		values: paramList,
 	})
-	assert.equal(dbResult.rows.length, 1)
-	const userAccount = dbResult.rows[0]
-	response.status(StatusCodes.OK).json(userAccount)
+	if (!dbResult.rows.length) throw new BadRequestError('Update unsuccessful')
+	response.status(StatusCodes.OK).end()
 }
 
 let updateUserPassword = async (
@@ -87,7 +86,7 @@ let updateUserPassword = async (
 	const password = await hashPassword(newPassword)
 	const paramList = [password, userId]
 	const position: number = paramList.length
-	await db.query({
+	const dbResult = await db.query({
 		text: Update(
 			'user_accounts',
 			'user_id',
@@ -96,6 +95,7 @@ let updateUserPassword = async (
 		),
 		values: paramList,
 	})
+	if (!dbResult.rows.length) throw new BadRequestError('Update unsuccessful')
 	response.status(StatusCodes.NO_CONTENT).end()
 }
 
@@ -104,10 +104,11 @@ let deleteUserAccount = async (
 	response: Response
 ) => {
 	let { userId }: RequestUserPayload = request.user
-	await db.query({
+	const dbResult = await db.query({
 		text: Delete('user_accounts', 'user_id', 'user_id=$1'),
 		values: [userId],
 	})
+	if (!dbResult.rows.length) throw new BadRequestError('Delete unsuccessful')
 	response.status(StatusCodes.NO_CONTENT).end()
 }
 

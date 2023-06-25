@@ -44,8 +44,11 @@ async function phoneLogin(
 	return response
 }
 
-async function logout(server: string) {
-	const response = await chai.request(server).get('/v1/auth/logout')
+async function logout(server: string, token: string) {
+	const response = await chai
+		.request(server)
+		.get('/v1/auth/logout')
+		.auth(token, { type: 'bearer' })
 	response.should.have.status(StatusCodes.OK)
 	return response
 }

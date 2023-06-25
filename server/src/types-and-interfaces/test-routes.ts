@@ -5,10 +5,15 @@ interface testRouteParams {
 	statusCode: StatusCodes
 	checks?: (response: any) => Promise<void>
 }
-type testRouteNoData = (agent: ChaiHttp.Agent, path: string) => Promise<any>
+type testRouteNoData = (
+	server: string,
+	token: string,
+	path: string
+) => Promise<any>
 
 type testRouteWithData = (
-	agent: ChaiHttp.Agent,
+	server: string,
+	token: string,
 	path: string,
 	data: Object & { length?: never }
 ) => Promise<any>

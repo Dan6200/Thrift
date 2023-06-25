@@ -17,6 +17,7 @@ todo*
 server-log.txt
 **/tests/product-media/*
 mochawesome-*
+./regexp.txt
 
 # Logs
 logs

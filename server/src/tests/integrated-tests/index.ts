@@ -10,8 +10,7 @@ import * as Mustapha from './data/users/customers/user-mustapha/index.js'
 import * as Aliyu from './data/users/vendors/user-aliyu/index.js'
 import db from '../../db/index.js'
 
-// const users = [Ebuka, Aliyu, Aisha, Mustapha]
-const users = [Ebuka]
+const users = [Ebuka, Aliyu, Aisha, Mustapha]
 const customers = [Ebuka, Aisha, Mustapha]
 const vendors = [Aliyu]
 
@@ -19,11 +18,11 @@ export default function (): void {
 	// Testing the register route
 	before(() => db.query({ text: 'delete from user_accounts' }))
 
-	// for (let user of users) {
-	// 	const name = user.userInfo.first_name
-	// 	describe(`Testing Authentication for ${name}`, () =>
-	// 		testAuthentication(agent, user))
-	// }
+	for (let user of users) {
+		const name = user.userInfo.first_name
+		describe(`Testing Authentication for ${name}`, () =>
+			testAuthentication(user))
+	}
 
 	for (let user of users) {
 		const name = user.userInfo.first_name

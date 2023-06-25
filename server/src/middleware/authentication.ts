@@ -16,17 +16,16 @@ export default async (
 ) => {
 	// check header
 	const authHeader = request.headers.authorization
-	console.log(authHeader)
 	if (!authHeader || !authHeader?.startsWith('Bearer '))
-		throw new UnauthenticatedError('Authentication invalid')
-	const token = authHeader?.split(' ')[1]
+		throw new UnauthenticatedError('Unauthorized Operation')
+	const token = authHeader.split(' ')[1]
 	if (await isTokenRevoked(token))
-		throw new UnauthenticatedError('Unauthorized')
+		throw new UnauthenticatedError('Unauthorized Operation')
 	try {
 		const payload = jwt.verify(token, process.env.JWT_SECRET as Secret)
 		request.user = payload as JwtPayload as RequestUserPayload
 		next()
 	} catch (err) {
-		throw new UnauthenticatedError('Authentication invalid')
+		throw new UnauthenticatedError('Unauthorized Operation')
 	}
 }

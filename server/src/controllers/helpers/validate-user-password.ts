@@ -1,6 +1,6 @@
 import db from '../../db/index.js'
 import { validatePassword } from '../../security/password.js'
-import { Select } from './generate-sql-commands/index.js'
+import { SelectFromTable } from './generate-sql-commands/index.js'
 
 export default async (
 	Id: string,
@@ -8,7 +8,7 @@ export default async (
 ): Promise<boolean> => {
 	let { password }: { password: Buffer } = (
 		await db.query({
-			text: Select('user_accounts', ['password'], 'user_id=$1'),
+			text: SelectFromTable('user_accounts', ['password'], 'user_id=$1'),
 			values: [Id],
 		})
 	).rows[0]

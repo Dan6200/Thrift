@@ -13,9 +13,9 @@ import {
 import { UserData } from '../../types-and-interfaces/user.js'
 import validateUserPassword from '../helpers/validate-user-password.js'
 import {
-	Delete,
-	Select,
-	Update,
+	DeleteInTable,
+	SelectFromTable,
+	UpdateInTable,
 } from '../helpers/generate-sql-commands/index.js'
 
 const userDataFields = [
@@ -33,7 +33,7 @@ let getUserAccount = async (
 ) => {
 	let { userId }: RequestUserPayload = request.user
 	let dbResult = await db.query({
-		text: Select('user_accounts', userDataFields, 'user_id=$1'),
+		text: SelectFromTable('user_accounts', userDataFields, 'user_id=$1'),
 		values: [userId],
 	})
 	if (dbResult.rows.length === 0)
@@ -58,7 +58,7 @@ let updateUserAccount = async (
 	const paramList = [...data, userId]
 	const pos: number = paramList.length
 	let dbResult = await db.query({
-		text: Update('user_accounts', 'user_id', fields, `user_id=$${pos}`),
+		text: UpdateInTable('user_accounts', 'user_id', fields, `user_id=$${pos}`),
 		values: paramList,
 	})
 	if (!dbResult.rows.length) throw new BadRequestError('Update unsuccessful')
@@ -87,7 +87,7 @@ let updateUserPassword = async (
 	const paramList = [password, userId]
 	const position: number = paramList.length
 	const dbResult = await db.query({
-		text: Update(
+		text: UpdateInTable(
 			'user_accounts',
 			'user_id',
 			['password'],
@@ -105,7 +105,7 @@ let deleteUserAccount = async (
 ) => {
 	let { userId }: RequestUserPayload = request.user
 	const dbResult = await db.query({
-		text: Delete('user_accounts', 'user_id', 'user_id=$1'),
+		text: DeleteInTable('user_accounts', 'user_id', 'user_id=$1'),
 		values: [userId],
 	})
 	if (!dbResult.rows.length) throw new BadRequestError('Delete unsuccessful')

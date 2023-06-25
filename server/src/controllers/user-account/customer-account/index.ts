@@ -8,28 +8,28 @@ import {
 } from '../../../types-and-interfaces/process-routes.js'
 import { ResponseData } from '../../../types-and-interfaces/response.js'
 import {
-	Delete,
-	Insert,
-	Select,
+	DeleteInTable,
+	InsertInTable,
+	SelectFromTable,
 } from '../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../helpers/process-route.js'
 const { CREATED, NO_CONTENT, NOT_FOUND } = StatusCodes
 
 const createQuery: CRUDQueryAuth = ({ user: { userId: customerId } }) =>
 	db.query({
-		text: Insert('customers', ['customer_id'], 'customer_id'), //`insert into customers values($1) returning customer_id`,
+		text: InsertInTable('customers', ['customer_id'], 'customer_id'), //`insert into customers values($1) returning customer_id`,
 		values: [customerId],
 	})
 
 const readQuery: CRUDQueryAuth = ({ user: { userId: customerId } }) =>
 	db.query({
-		text: Select('customers', ['1'], 'customer_id=$1'),
+		text: SelectFromTable('customers', ['1'], 'customer_id=$1'),
 		values: [customerId],
 	})
 
 const deleteQuery: CRUDQueryAuth = ({ user: { userId: customerId } }) =>
 	db.query({
-		text: Delete('customers', 'customer_id', 'customer_id=$1'),
+		text: DeleteInTable('customers', 'customer_id', 'customer_id=$1'),
 		values: [customerId],
 	})
 

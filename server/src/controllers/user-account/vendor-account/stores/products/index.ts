@@ -16,10 +16,10 @@ import {
 import { RequestWithPayload } from '../../../../../types-and-interfaces/request.js'
 import { ResponseData } from '../../../../../types-and-interfaces/response.js'
 import {
-	Delete,
-	Insert,
-	Select,
-	Update,
+	DeleteInTable,
+	InsertInTable,
+	SelectFromTable,
+	UpdateInTable,
 } from '../../../../helpers/generate-sql-commands/index.js'
 import { handleSortQuery } from '../../../../helpers/generate-sql-commands/query-params-handler.js'
 import processRoute from '../../../../helpers/process-route.js'
@@ -31,20 +31,21 @@ const createQuery = async ({
 }: RequestWithPayload) => {
 	// makes sure the Store exists before accessing the /user/stores/products endpoint
 	const dbQuery = await db.query({
-		text: Select('stores', ['vendor_id'], 'store_id=$1'),
+		text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
 	})
 	if (!dbQuery.rows.length)
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
+
 	return db.query({
-		text: Insert(
+		text: InsertInTable(
 			'products',
-			[...Object.keys(productData), 'store_id', 'vendor_id'],
+			Object.keys(productData).concat('store_id').concat('vendor_id'),
 			'product_id'
 		),
-		values: [...Object.values(productData), storeId, vendorId],
+		values: Object.values(productData).concat(storeId).concat(vendorId),
 	})
 }
 
@@ -54,7 +55,7 @@ const readAllQuery = async ({
 	user: { userId: vendorId },
 }: RequestWithPayload) => {
 	const dbQuery = await db.query({
-		text: Select('stores', ['vendor_id'], 'store_id=$1'),
+		text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
 	})
 	if (!dbQuery.rows.length)
@@ -86,7 +87,7 @@ const readQuery = async ({
 	user: { userId: vendorId },
 }: RequestWithPayload) => {
 	const dbQuery = await db.query({
-		text: Select('stores', ['vendor_id'], 'store_id=$1'),
+		text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
 	})
 	if (!dbQuery.rows.length)
@@ -114,7 +115,7 @@ const updateQuery = async ({
 	user: { userId: vendorId },
 }: RequestWithPayload) => {
 	const dbQuery = await db.query({
-		text: Select('stores', ['vendor_id'], 'store_id=$1'),
+		text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
 	})
 	if (!dbQuery.rows.length)
@@ -123,7 +124,7 @@ const updateQuery = async ({
 		throw new UnauthenticatedError('Cannot access store.')
 	const paramList = [...Object.values(productData), productId]
 	const pos: number = paramList.length
-	const updateCommand = Update(
+	const updateCommand = UpdateInTable(
 		'products',
 		'product_id',
 		Object.keys(productData),
@@ -141,7 +142,7 @@ const deleteQuery = async ({
 	user: { userId: vendorId },
 }: RequestWithPayload) => {
 	const dbQuery = await db.query({
-		text: Select('stores', ['vendor_id'], 'store_id=$1'),
+		text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
 	})
 	if (!dbQuery.rows.length)
@@ -149,7 +150,11 @@ const deleteQuery = async ({
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
 	return db.query({
-		text: Delete('products', 'product_id', 'product_id=$1 and store_id=$2'),
+		text: DeleteInTable(
+			'products',
+			'product_id',
+			'product_id=$1 and store_id=$2'
+		),
 		values: [productId, storeId],
 	})
 }
@@ -259,4 +264,7 @@ export {
 	getProduct,
 	updateProduct,
 	deleteProduct,
+}
+function Insert(arg0: string, arg1: string[], arg2: string): string {
+	throw new Error('Function not implemented.')
 }

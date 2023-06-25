@@ -1,3 +1,5 @@
+import chai from 'chai'
+import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
 import { readFile } from 'node:fs/promises'
@@ -8,6 +10,8 @@ import {
 	testRouteWithData,
 } from '../../../../../../../types-and-interfaces/test-routes.js'
 import testRoute from '../../../../test-route.js'
+
+chai.use(chaiHttp).should()
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
@@ -32,12 +36,16 @@ const routeParams = {
 }
 
 const testCreateProduct = async function (
-	serverAgent: ChaiHttp.Agent,
+	server: string,
+	token: string,
 	path: string,
 	dataList: object[]
 ) {
+	dataList[0]
 	const responses = await Promise.all(
-		dataList.map(data => serverAgent['post'](path).send(data))
+		dataList.map(data =>
+			chai.request(server).post(path).send(data).auth(token, { type: 'bearer' })
+		)
 	)
 	responses.forEach(response => {
 		response.should.have.status(CREATED)
@@ -48,11 +56,16 @@ const testCreateProduct = async function (
 }
 
 const testGetAllProducts = async function (
-	serverAgent: ChaiHttp.Agent,
+	server: string,
+	token: string,
 	path: string,
 	query?: object
 ): Promise<any> {
-	const response = await serverAgent['get'](path).query(query ?? {})
+	const response = await chai
+		.request(server)
+		.get(path)
+		.query(query ?? {})
+		.auth(token, { type: 'bearer' })
 	response.should.have.status(OK)
 	// Check that the data in the body is accurate
 	validateResultList(response.body)
@@ -83,12 +96,16 @@ const testGetNonExistentProduct = <testRouteNoData>testRoute({
 })
 
 const testUploadProductMedia = async function (
-	serverAgent: ChaiHttp.Agent,
+	server: string,
+	token: string,
 	urlPath: string,
 	files: any[]
 ): Promise<any> {
 	const fieldName = 'product-media'
-	const request = serverAgent.post(urlPath)
+	const request = chai
+		.request(server)
+		.post(urlPath)
+		.auth(token, { type: 'bearer' })
 	request.field('description', files[0].description)
 	await Promise.all(
 		files.map(async file => {

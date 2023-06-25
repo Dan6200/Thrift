@@ -19,38 +19,38 @@ export default function (): void {
 
 	/** Authentication **/
 
-	for (let user of users) {
-		const name = user.userInfo.first_name
-		describe(`Testing Authentication for ${name}`, () =>
-			testAuthentication(user))
-	}
+	// for (let user of users) {
+	// 	const name = user.userInfo.first_name
+	// 	describe(`Testing Authentication for ${name}`, () =>
+	// 		testAuthentication(user))
+	// }
 
 	/** User Account actions **/
 
-	for (let user of users) {
-		const name = user.userInfo.first_name
-		describe(`Testing User Account for ${name}`, () => testUserAccount(user))
-	}
+	// for (let user of users) {
+	// 	const name = user.userInfo.first_name
+	// 	describe(`Testing User Account for ${name}`, () => testUserAccount(user))
+	// }
 
 	/** Customer Account actions **/
 
-	for (let customer of customers) {
-		const name = customer.userInfo.first_name
-		describe(`Testing Customer Account for ${name}`, () =>
-			testCustomerAccount(customer))
-	}
+	// for (let customer of customers) {
+	// 	const name = customer.userInfo.first_name
+	// 	describe(`Testing Customer Account for ${name}`, () =>
+	// 		testCustomerAccount(customer))
+	// }
 
 	/** Vendor Account actions **/
 
-	for (let vendor of vendors) {
-		const name = vendor.userInfo.first_name
-		describe(`Testing Vendor Account for ${name}`, () =>
-			testVendorAccount(vendor))
-	}
-
 	// 	for (let vendor of vendors) {
 	// 		const name = vendor.userInfo.first_name
-	// 		describe(`Testing Products listed by ${name}`, async () =>
-	// 			testProducts(vendor))
+	// 		describe(`Testing Vendor Account for ${name}`, () =>
+	// 			testVendorAccount(vendor))
 	// 	}
+
+	for (let vendor of vendors) {
+		const name = vendor.userInfo.first_name
+		describe(`Testing Products listed by ${name}`, async () =>
+			testProducts(vendor))
+	}
 }

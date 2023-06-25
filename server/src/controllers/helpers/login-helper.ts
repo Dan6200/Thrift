@@ -5,7 +5,7 @@ import BadRequestError from '../../errors/bad-request.js'
 import UnauthenticatedError from '../../errors/unauthenticated.js'
 import { createToken } from '../../security/create-token.js'
 import { validatePassword } from '../../security/password.js'
-import { Select } from './generate-sql-commands/index.js'
+import { SelectFromTable } from './generate-sql-commands/index.js'
 
 export async function loginWithCredentials(
 	request: Request,
@@ -20,14 +20,22 @@ export async function loginWithCredentials(
 	if (email) {
 		user = (
 			await db.query({
-				text: Select('user_accounts', ['user_id', 'password'], 'email=$1'),
+				text: SelectFromTable(
+					'user_accounts',
+					['user_id', 'password'],
+					'email=$1'
+				),
 				values: [email],
 			})
 		).rows[0]
 	} else {
 		user = (
 			await db.query({
-				text: Select('user_accounts', ['user_id', 'password'], 'phone=$1'),
+				text: SelectFromTable(
+					'user_accounts',
+					['user_id', 'password'],
+					'phone=$1'
+				),
 				values: [phone],
 			})
 		).rows[0]

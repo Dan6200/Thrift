@@ -14,9 +14,10 @@ import {
 	RequestUserPayload,
 } from '../../../types-and-interfaces/request.js'
 import {
-	Insert,
-	Select,
-	Update,
+	DeleteInTable,
+	InsertInTable,
+	SelectFromTable,
+	UpdateInTable,
 } from '../../helpers/generate-sql-commands/index.js'
 
 const createShippingInfo = async (
@@ -28,8 +29,18 @@ const createShippingInfo = async (
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	const shippingData = validData.value
+	// Limit the amout of shipping addresses a user can have:
+	const LIMIT = 5
+	const count: number = (
+		await db.query({
+			text: SelectFromTable('shipping_info', ['1'], 'customer_id=$1'),
+			values: [customerId],
+		})
+	).rows.length
+	if (count > LIMIT)
+		throw new BadRequestError(`Cannot have more than ${LIMIT} stores`)
 	let dbQuery: QueryResult = await db.query({
-		text: Insert(
+		text: InsertInTable(
 			'shipping_info',
 			['customer_id', ...Object.keys(shippingData)],
 			'address_id'
@@ -47,7 +58,7 @@ const getAllShippingInfo = async (
 	const { userId: customerId } = request.user
 	const rows: any[] = (
 		await db.query({
-			text: Select('shipping_info', ['*'], 'customer_id=$1'),
+			text: SelectFromTable('shipping_info', ['*'], 'customer_id=$1'),
 			values: [customerId],
 		})
 	).rows
@@ -70,7 +81,7 @@ const getShippingInfo = async (
 	if (!addressId) throw new BadRequestError('Id parameter not available')
 	const result = (
 		await db.query({
-			text: Select('shipping_info', ['*'], 'address_id=$1'),
+			text: SelectFromTable('shipping_info', ['*'], 'address_id=$1'),
 			values: [addressId],
 		})
 	).rows[0]
@@ -100,7 +111,12 @@ const updateShippingInfo = async (
 	const pos: number = paramList.length
 	const row = (
 		await db.query({
-			text: Update('shipping_info', 'address_id', fields, `address_id=$${pos}`),
+			text: UpdateInTable(
+				'shipping_info',
+				'address_id',
+				fields,
+				`address_id=$${pos}`
+			),
 			values: paramList,
 		})
 	).rows[0]
@@ -117,8 +133,7 @@ const deleteShippingInfo = async (
 ) => {
 	const { addressId } = request.params
 	await db.query({
-		text: `delete from shipping_info
-			where address_id=$1`,
+		text: DeleteInTable('shipping_info', 'address_id', 'address_id=$1'),
 		values: [addressId],
 	})
 	response.status(StatusCodes.NO_CONTENT).send()

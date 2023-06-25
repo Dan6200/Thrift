@@ -18,10 +18,10 @@ import {
 import { RequestWithPayload } from '../../../../types-and-interfaces/request.js'
 import { ResponseData } from '../../../../types-and-interfaces/response.js'
 import {
-	Delete,
-	Insert,
-	Select,
-	Update,
+	DeleteInTable,
+	InsertInTable,
+	SelectFromTable,
+	UpdateInTable,
 } from '../../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../../helpers/process-route.js'
 
@@ -32,29 +32,29 @@ const createQuery = async ({
 	if (!vendorId) throw new UnauthenticatedError('Cannot access resource')
 	// check if vendor account exists
 	const dbRes = await db.query({
-		text: Select('vendors', ['1'], 'vendor_id=$1'), //'select 1 from vendors where vendor_id=$1',
+		text: SelectFromTable('vendors', ['1'], 'vendor_id=$1'), //'select 1 from vendors where vendor_id=$1',
 		values: [vendorId],
 	})
 	if (dbRes.rows.length === 0)
 		throw new BadRequestError(
 			'No Vendor account found. Please create a Vendor account'
 		)
-	// limit amount of stores to 5...
-	const LIMIT = 5
-	let recordCount = <number>(
+	let recordsCount = <number>(
 		await db.query({
-			text: Select('stores', ['1'], 'vendor_id=$1'),
+			text: SelectFromTable('stores', ['1'], 'vendor_id=$1'),
 			values: [vendorId],
 		})
 	).rows.length
+	// limit amount of stores
+	const LIMIT = 5
 	// if Over limit throw error
-	if (LIMIT <= recordCount)
+	if (LIMIT <= recordsCount)
 		throw new BadRequestError(`Each vendor is limited to only ${LIMIT} stores`)
 
 	if (!storeData) throw new BadRequestError('No data sent in request body')
 
 	return db.query({
-		text: Insert(
+		text: InsertInTable(
 			'stores',
 			['vendor_id', ...Object.keys(storeData)],
 			'store_id'
@@ -68,7 +68,7 @@ const readAllQuery = async ({
 }: RequestWithPayload) => {
 	if (!vendorId) throw new UnauthenticatedError('Cannot access resource')
 	const res = await db.query({
-		text: Select('vendors', ['1'], 'vendor_id=$1'), // 'select 1 from vendors where vendor_id=$1',
+		text: SelectFromTable('vendors', ['1'], 'vendor_id=$1'), // 'select 1 from vendors where vendor_id=$1',
 		values: [vendorId],
 	})
 	if (res.rows.length === 0)
@@ -76,7 +76,7 @@ const readAllQuery = async ({
 			'No Vendor account found. Please create a Vendor account'
 		)
 	return db.query({
-		text: Select('stores', ['*'], 'vendor_id=$1'),
+		text: SelectFromTable('stores', ['*'], 'vendor_id=$1'),
 		values: [vendorId],
 	})
 }
@@ -88,7 +88,7 @@ const readQuery = async ({
 	const { storeId } = params
 	if (!vendorId) throw new UnauthenticatedError('Cannot access resource')
 	const res = await db.query({
-		text: Select('vendors', ['1'], 'vendor_id=$1'), //'select 1 from vendors where vendor_id=$1',
+		text: SelectFromTable('vendors', ['1'], 'vendor_id=$1'), //'select 1 from vendors where vendor_id=$1',
 		values: [vendorId],
 	})
 	if (res.rows.length === 0)
@@ -96,7 +96,7 @@ const readQuery = async ({
 			'No Vendor account found. Please create a Vendor account'
 		)
 	return db.query({
-		text: Select('stores', ['*'], `store_id=$1`), //`select * from stores where store_id=$1`,
+		text: SelectFromTable('stores', ['*'], `store_id=$1`), //`select * from stores where store_id=$1`,
 		values: [storeId],
 	})
 }
@@ -109,7 +109,7 @@ const updateQuery = async ({
 	const { storeId } = params
 	if (!storeId) throw new BadRequestError('Need Id param to update resource')
 	const res = await db.query({
-		text: Select('vendors', ['1'], 'vendor_id=$1'),
+		text: SelectFromTable('vendors', ['1'], 'vendor_id=$1'),
 		values: [vendorId],
 	})
 	if (res.rows.length === 0)
@@ -122,7 +122,7 @@ const updateQuery = async ({
 	const pos: number = paramList.length
 	const condition = `store_id=$${pos}`
 	const query = {
-		text: Update('stores', 'store_id', fields, condition),
+		text: UpdateInTable('stores', 'store_id', fields, condition),
 		values: paramList,
 	}
 	return db.query(query)
@@ -142,7 +142,7 @@ const deleteQuery = async ({
 			'No Vendor account found. Please create a Vendor account'
 		)
 	return db.query({
-		text: Delete('stores', 'store_id', 'store_id=$1'),
+		text: DeleteInTable('stores', 'store_id', 'store_id=$1'),
 		values: [storeId],
 	})
 }

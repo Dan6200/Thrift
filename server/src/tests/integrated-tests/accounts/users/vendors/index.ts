@@ -20,7 +20,10 @@ import {
 } from '../../../helpers/user/vendor/store/index.js'
 
 chai.use(chaiHttp).should()
-let agent: ChaiHttp.Agent
+
+const server = process.env.LOCAL_APP_SERVER!
+let token: string
+
 export default function ({
 	userInfo,
 	stores: listOfStoresByVendor,
@@ -32,13 +35,14 @@ export default function ({
 }) {
 	before(async () => {
 		// Create an agent instance
-		agent = chai.request.agent(process.env.LOCAL_APP_SERVER)
 		// Delete all user accounts
 		await db.query({ text: 'delete from user_accounts' })
 		// Delete all vendors
 		await db.query({ text: 'delete from vendors' })
-		// Register a new user
-		await registration(agent, userInfo)
+		// Register a new user and retrieve token
+		;({
+			body: { token },
+		} = await registration(server, userInfo))
 	})
 	beforeEach(async () => {
 		// Delete all stores
@@ -50,173 +54,87 @@ export default function ({
 
 	describe('Vendor account management', () => {
 		it('should create a vendor account for the user', async () => {
-			await testCreateVendor(agent, vendorsPath)
+			await testCreateVendor(server, token, vendorsPath)
 		})
 
 		it("should retrieve the user's vendor account", async () => {
-			await testGetVendor(agent, vendorsPath)
+			await testGetVendor(server, token, vendorsPath)
 		})
 
 		it("should delete the user's vendor account", () =>
-			testDeleteVendor(agent, vendorsPath))
+			testDeleteVendor(server, token, vendorsPath))
 
 		it("should fail to retrieve the user's vendor account", () => {
-			testGetNonExistentVendor(agent, vendorsPath)
+			testGetNonExistentVendor(server, token, vendorsPath)
 		})
 	})
 
 	describe('Store management', () => {
 		beforeEach(async () => {
 			// Create a vendor account before each test
-			await testCreateVendor(agent, vendorsPath)
+			await testCreateVendor(server, token, vendorsPath)
 		})
 
 		afterEach(async () => {
 			// Delete the vendor account after each test
-			await testDeleteVendor(agent, vendorsPath)
+			await testDeleteVendor(server, token, vendorsPath)
 		})
 
-		it('should create a store for the vendor', async () => {
-			for (const store of listOfStoresByVendor) {
-				await testCreateStore(agent, storesPath, store)
-			}
+		describe('Create Store', function () {
+			it('should create a store for the vendor', async () => {
+				for (const store of listOfStoresByVendor) {
+					await testCreateStore(server, token, storesPath, store)
+				}
+			})
 		})
 
-		it('should create then fetch the newly created store', async () => {
-			for (const store of listOfStoresByVendor) {
-				const { store_id } = await testCreateStore(agent, storesPath, store)
-				await testGetStore(agent, storesPath + '/' + store_id)
-			}
-		})
+		describe('Actions on Store', function () {
+			let storeIds: string[]
+			before(async function () {
+				for (const store of listOfStoresByVendor) {
+					const { store_id } = await testCreateStore(
+						server,
+						token,
+						storesPath,
+						store
+					)
+					storeIds.push(store_id)
+				}
+			})
+			it('it should fetch all the stores with a loop', async () => {
+				for (const storeId of storeIds) {
+					await testGetStore(server, token, storesPath + '/' + storeId)
+				}
+			})
 
-		it('should update the store', async () => {
-			assert(listOfStoresByVendor.length === listOfUpdatedStoresByVendor.length)
-			const range = listOfStoresByVendor.length - 1
-			for (let idx = 0; idx <= range; idx++) {
-				const { store_id } = await testCreateStore(
-					agent,
-					storesPath,
-					listOfStoresByVendor[idx]
-				)
-				await testUpdateStore(
-					agent,
-					storesPath + '/' + store_id,
-					listOfUpdatedStoresByVendor[idx]
-				)
-			}
-		})
+			it('should update all the stores with a loop', async () => {
+				assert(storeIds.length === listOfUpdatedStoresByVendor.length)
+				const range = storeIds.length - 1
+				for (let idx = 0; idx <= range; idx++) {
+					await testUpdateStore(
+						server,
+						token,
+						storesPath + '/' + storeIds[idx],
+						listOfUpdatedStoresByVendor[idx]
+					)
+				}
+			})
 
-		it('should delete the created store and fail to retrieve it', async () => {
-			for (const stores of listOfStoresByVendor) {
-				const { store_id } = await testCreateStore(agent, storesPath, stores)
-				await testDeleteStore(agent, storesPath + '/' + store_id)
-				await testGetNonExistentStore(agent, storesPath + '/' + store_id)
-			}
+			it('should delete all the stores with a loop', async () => {
+				for (const storeId of storeIds) {
+					await testDeleteStore(server, token, storesPath + '/' + storeId)
+				}
+			})
+
+			it('should fail to retrieve any store', async () => {
+				for (const storeId of storeIds) {
+					await testGetNonExistentStore(
+						server,
+						token,
+						storesPath + '/' + storeId
+					)
+				}
+			})
 		})
 	})
 }
-
-/**
-chai.use(chaiHttp).should()
-let agent: ChaiHttp.Agent
-export default function ({
-	userInfo,
-	stores: listOfStoresByVendor,
-	updatedStores: listOfUpdatedStoresByVendor,
-}: {
-	userInfo: UserData
-	stores: StoresData[]
-	updatedStores: StoresData[]
-}) {
-	before(async () => {
-		// Create an agent instance
-		agent = chai.request.agent(process.env.APP_SERVER)
-		// Delete all user accounts
-		await db.query({ text: 'delete from user_accounts' })
-		// Delete all vendors
-		await db.query({ text: 'delete from vendors' })
-		// Register a new user
-		await registration(agent, userInfo)
-	})
-	beforeEach(async () => {
-		// Delete all stores
-		await db.query({ text: 'delete from stores' })
-	})
-
-	const vendorsPath = '/v1/user-account/vendor-account'
-	const storesPath = vendorsPath + '/stores'
-
-	it('it should create a vendor account for the user', async () => {
-		await (
-			testCreateVendor(agent, vendorsPath),
-		)
-	})
-
-	it("it should retrieve the user's vendor account", async () => {
-		await (
-			testGetVendor(agent, vendorsPath),
-		)
-	})
-
-	it('should create a store for the vendor', async () => {
-		for (const store of listOfStoresByVendor) {
-			await (
-				testCreateStore(agent, storesPath, store),
-			)
-		}
-	})
-
-	it('should create then fetch the newly created store', async () => {
-		for (const store of listOfStoresByVendor) {
-			const { store_id } = await (
-				testCreateStore(agent, storesPath, store),
-			)
-			await (
-				testGetStore(agent, storesPath + '/' + store_id),
-			)
-		}
-	})
-
-	it('should update the store', async () => {
-		assert(listOfStoresByVendor.length === listOfUpdatedStoresByVendor.length)
-		const range = listOfStoresByVendor.length - 1
-		for (let idx = 0; idx <= range; idx++) {
-			const { store_id } = await (
-				testCreateStore(agent, storesPath, listOfStoresByVendor[idx]),
-			)
-			await (
-				testUpdateStore(
-					agent,
-					storesPath + '/' + store_id,
-					listOfUpdatedStoresByVendor[idx]
-				),
-			)
-		}
-	})
-
-	it('should delete the created store and fail to retrieve it', async () => {
-		for (const stores of listOfStoresByVendor) {
-			const { store_id } = await (
-				testCreateStore(agent, storesPath, stores),
-			)
-			await (
-				testDeleteStore(agent, storesPath + '/' + store_id),
-			)
-			await (
-				testGetNonExistentStore(agent, storesPath + '/' + store_id),
-			)
-		}
-	})
-
-	it("it should delete the user's vendor account", () =>
-		(
-			testDeleteVendor(agent, vendorsPath),
-		))
-
-	it("it should fail to retrieve the user's vendor account", () => {
-		(
-			testGetNonExistentVendor(agent, vendorsPath),
-		)
-	})
-}
-**/

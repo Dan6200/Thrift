@@ -6,7 +6,10 @@ import db from '../db/index.js'
 import { BadRequestError, UnauthenticatedError } from '../errors/index.js'
 import { hashPassword, validatePassword } from '../security/password.js'
 import { createToken } from '../security/create-token.js'
-import { Insert, Select } from './helpers/generate-sql-commands/index.js'
+import {
+	InsertInTable,
+	SelectFromTable,
+} from './helpers/generate-sql-commands/index.js'
 import { UserData } from '../types-and-interfaces/user.js'
 import { revokeToken } from './helpers/revoke-token.js'
 // TODO: IP address
@@ -45,7 +48,7 @@ const register = async (request: Request, response: Response) => {
 	}
 	userData.password = await hashPassword(<string>password)
 	let dbQuery: QueryResult = await db.query({
-		text: Insert('user_accounts', Object.keys(userData), 'user_id'),
+		text: InsertInTable('user_accounts', Object.keys(userData), 'user_id'),
 		values: Object.values(userData),
 	})
 	const { rows } = dbQuery
@@ -66,14 +69,22 @@ const login = async (request: Request, response: Response) => {
 	if (email) {
 		user = (
 			await db.query({
-				text: Select('user_accounts', ['user_id', 'password'], 'email=$1'),
+				text: SelectFromTable(
+					'user_accounts',
+					['user_id', 'password'],
+					'email=$1'
+				),
 				values: [email],
 			})
 		).rows[0]
 	} else {
 		user = (
 			await db.query({
-				text: Select('user_accounts', ['user_id', 'password'], 'phone=$1'),
+				text: SelectFromTable(
+					'user_accounts',
+					['user_id', 'password'],
+					'phone=$1'
+				),
 				values: [phone],
 			})
 		).rows[0]

@@ -1,10 +1,9 @@
 // cspell:disable
 import chai from 'chai'
 import {
-	Insert,
-	Select,
-	SelectWithoutCondition,
-	Update,
+	InsertInTable,
+	SelectFromTable,
+	UpdateInTable,
 } from '../../controllers/helpers/generate-sql-commands/index.js'
 import { handleSortQuery } from '../../controllers/helpers/generate-sql-commands/query-params-handler.js'
 
@@ -45,17 +44,17 @@ where my_id=$2 returning my_id`
 
 export default () => {
 	it('it should generate the correct sql INSERT statement given its inputs', () =>
-		Insert(
+		InsertInTable(
 			'my_table',
 			['first_name', 'last_name', 'address', 'age', 'dob', 'sex'],
 			'my_id'
 		).should.equal(SQLINSERT))
 
 	it('it should generate the correct sql INSERT statement given its inputs', () =>
-		Insert('my_table', ['first_name'], 'my_id').should.equal(SQLINSERT2))
+		InsertInTable('my_table', ['first_name'], 'my_id').should.equal(SQLINSERT2))
 
 	it('it should generate the correct sql UPDATE statement given its inputs', () =>
-		Update(
+		UpdateInTable(
 			'my_table',
 			'my_id',
 			['first_name', 'address', 'age', 'sex'],
@@ -63,7 +62,7 @@ export default () => {
 		).should.equal(SQLUPDATE))
 
 	it('it should generate the correct sql UPDATE statement given its inputs', () =>
-		Update('my_table', 'my_id', ['address'], 'my_id=$2').should.equal(
+		UpdateInTable('my_table', 'my_id', ['address'], 'my_id=$2').should.equal(
 			SQLUPDATE2
 		))
 
@@ -77,16 +76,6 @@ export default () => {
 			`order by product_id asc, list_price asc, net_price desc`
 		))
 
-	it('it should generate the correct sql SELECT statement', () =>
-		SelectWithoutCondition('my_table', [
-			'first_name',
-			'last_name',
-			'address',
-			'age',
-			'dob',
-			'sex',
-		]).should.equal(SQLSELECT1))
-
 	it('it should generate the correct sql SELECT statement given its inputs', () =>
-		Select('my_table', ['*'], 'my_id=$1').should.equal(SQLSELECT2))
+		SelectFromTable('my_table', ['*'], 'my_id=$1').should.equal(SQLSELECT2))
 }

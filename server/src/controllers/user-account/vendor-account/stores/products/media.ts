@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import db from '../../../../../db/index.js'
-import { Insert } from '../../../../helpers/generate-sql-commands/index.js'
+import { InsertInTable } from '../../../../helpers/generate-sql-commands/index.js'
 
 const uploadProductMedia = async (req: any, res: any) => {
 	const { productId } = req.params
@@ -10,7 +10,7 @@ const uploadProductMedia = async (req: any, res: any) => {
 			const { filename, path: filepath } = file
 			// Returns filename as Id instead of product_id
 			return db.query({
-				text: Insert(
+				text: InsertInTable(
 					'product_media',
 					['product_id', 'filename', 'filepath', 'description'],
 					'filename'

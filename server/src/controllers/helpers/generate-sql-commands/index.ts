@@ -1,5 +1,5 @@
 // Generates A sql insert command.
-export function Insert(
+export function InsertInTable(
 	table: string,
 	fields: string[],
 	idName: string
@@ -16,7 +16,7 @@ export function Insert(
 }
 
 // Generates A sql update command.
-export function Update(
+export function UpdateInTable(
 	table: string,
 	idName: string,
 	fields: string[],
@@ -34,8 +34,7 @@ export function Update(
 	return output
 }
 
-// Avoid writing raw delete sql commands forgetting the where clause is dangerous!
-export function Delete(
+export function DeleteInTable(
 	table: string,
 	idName: string,
 	condition: string
@@ -43,7 +42,7 @@ export function Delete(
 	return `delete from ${table} where ${condition} returning ${idName}`
 }
 
-export function Select(
+export function SelectFromTable(
 	table: string,
 	fields: string[],
 	condition: string
@@ -51,11 +50,4 @@ export function Select(
 	return `select ${fields.join(',\n')} from ${table}${
 		condition ? ` where ${condition}` : ``
 	}`
-}
-
-export function SelectWithoutCondition(
-	table: string,
-	fields: string[]
-): string {
-	return `select ${fields.join(',\n')} from ${table}`
 }

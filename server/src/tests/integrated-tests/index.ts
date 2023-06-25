@@ -15,8 +15,9 @@ const customers = [Ebuka, Aisha, Mustapha]
 const vendors = [Aliyu]
 
 export default function (): void {
-	// Testing the register route
 	before(() => db.query({ text: 'delete from user_accounts' }))
+
+	/** Authentication **/
 
 	for (let user of users) {
 		const name = user.userInfo.first_name
@@ -24,22 +25,28 @@ export default function (): void {
 			testAuthentication(user))
 	}
 
+	/** User Account actions **/
+
 	for (let user of users) {
 		const name = user.userInfo.first_name
 		describe(`Testing User Account for ${name}`, () => testUserAccount(user))
 	}
 
-	// for (let customer of customers) {
-	// 	const name = customer.userInfo.first_name
-	// 	describe(`Testing Customer Account for ${name}`, () =>
-	// 		testCustomerAccount(customer))
-	// }
+	/** Customer Account actions **/
 
-	// for (let vendor of vendors) {
-	// 	const name = vendor.userInfo.first_name
-	// 	describe(`Testing Vendor Account for ${name}`, () =>
-	// 		testVendorAccount(vendor))
-	// }
+	for (let customer of customers) {
+		const name = customer.userInfo.first_name
+		describe(`Testing Customer Account for ${name}`, () =>
+			testCustomerAccount(customer))
+	}
+
+	/** Vendor Account actions **/
+
+	for (let vendor of vendors) {
+		const name = vendor.userInfo.first_name
+		describe(`Testing Vendor Account for ${name}`, () =>
+			testVendorAccount(vendor))
+	}
 
 	// 	for (let vendor of vendors) {
 	// 		const name = vendor.userInfo.first_name

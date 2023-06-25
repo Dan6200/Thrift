@@ -32,18 +32,24 @@ export default function ({
 }) {
 	before(async () => {
 		await db.query({ text: 'delete from user_accounts' })
-		await db.query({ text: 'delete from customers' })
 		;({
 			body: { token },
 		} = await registration(server, userInfo))
 	})
-	beforeEach(async () => {
-		await db.query({ text: 'delete from shipping_info' })
+	after(async function () {
+		await db.query({ text: 'delete from user_accounts' })
 	})
 
-	const path = '/v1/user-account/customer-account'
+	const path = '/v1/users/customer-account'
 
 	describe('Customer Account', () => {
+		before(async () => {
+			await db.query({ text: 'delete from customers' })
+		})
+		after(async function () {
+			await db.query({ text: 'delete from customers' })
+		})
+
 		it('it should create a customer account for the user', () =>
 			testCreateCustomer(server, token, path))
 
@@ -58,6 +64,15 @@ export default function ({
 	})
 
 	describe('Shipping Addresses', () => {
+		before(async function () {
+			await testCreateCustomer(server, token, path)
+		})
+		after(async function () {
+			await testDeleteCustomer(server, token, path)
+		})
+		beforeEach(async () => {
+			await db.query({ text: 'delete from shipping_info' })
+		})
 		const shippingPath = path + '/shipping'
 
 		it(`it should add shipping addresses for the customer then retrieve it`, async () => {

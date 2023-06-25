@@ -32,7 +32,7 @@ export default function (): void {
 	// for (let customer of customers) {
 	// 	const name = customer.userInfo.first_name
 	// 	describe(`Testing Customer Account for ${name}`, () =>
-	// 		testCustomerAccount(agent, customer))
+	// 		testCustomerAccount(customer))
 	// }
 
 	// for (let vendor of vendors) {

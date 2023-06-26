@@ -10,7 +10,7 @@ const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes
 
 let checkId = async (data: any) => {
 	data.should.have.property('shipping_info_id')
-	data.shipping_info_id.should.be.a('string')
+	data.shipping_info_id.should.be.a('number')
 }
 
 let validateResultList = async (data: any) => {

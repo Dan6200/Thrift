@@ -16,6 +16,7 @@ import assert from 'node:assert'
 import db from '../../../../../db/pg/index.js'
 import ShippingInfo from '../../../../../types-and-interfaces/shipping-info.js'
 import { UserData } from '../../../../../types-and-interfaces/user.js'
+import { log } from 'node:console'
 
 // Set server url
 const server = process.env.LOCAL_APP_SERVER!
@@ -70,9 +71,6 @@ export default function ({
 		after(async function () {
 			await testDeleteCustomer(server, token, path)
 		})
-		// beforeEach(async () => {
-		// 	await db.query({ text: 'delete from shipping_info' })
-		// })
 		const shippingPath = path + '/shipping'
 
 		const shippingIds: string[] = []

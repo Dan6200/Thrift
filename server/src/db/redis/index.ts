@@ -15,16 +15,23 @@ export default {
 		if (client.isOpen) return
 		await client.connect()
 	},
+	async disconnect() {
+		if (client.isOpen) client.disconnect()
+	},
 	async getClient() {
 		this.connect()
 		return client
 	},
 	async sAdd(key: string, value: string) {
 		this.connect()
-		return client.sAdd(key, value)
+		const retVal = client.sAdd(key, value)
+		this.disconnect()
+		return retVal
 	},
 	async sIsMember(key: string, value: string) {
 		this.connect()
-		return client.sIsMember(key, value)
+		const retVal = client.sIsMember(key, value)
+		this.disconnect()
+		return retVal
 	},
 }

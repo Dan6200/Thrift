@@ -9,7 +9,7 @@
 		"start": "node server/built/server.js",
 		"test": "ts-mocha --esm -r dotenv/config --config server/src/tests/.mocharc.json -p server/src/tsconfig.json server/src/tests/*.ts",
 		"dev": "nodemon --esm server/src/server.ts",
-		"build": "CI=false tsc -p server/src/tsconfig.json",
+		"build": "tsc -p server/src/tsconfig.json",
 		"dev-web-client": "cd client && npx next dev",
 		"build-web-client": "cd client && npx next build",
 		"start-web-client": "cd client && npx next start",

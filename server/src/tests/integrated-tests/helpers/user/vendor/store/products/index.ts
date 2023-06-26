@@ -2,7 +2,6 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
-import { log } from 'node:console'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ProductSchemaDB } from '../../../../../../../app-schema/products.js'
@@ -18,7 +17,7 @@ const { CREATED, OK, NOT_FOUND } = StatusCodes
 
 let checkId = async (data: any) => {
 	data.should.have.property('product_id')
-	data.product_id.should.be.a('string')
+	data.product_id.should.be.a('number')
 }
 
 let validateResult = async (data: any) => {

@@ -13,7 +13,6 @@ todo*
 *.vim
 **/tmp/**
 **upload**
-**token**
 server-log.txt
 **/tests/product-media/*
 mochawesome-*

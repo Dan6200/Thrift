@@ -11,7 +11,7 @@ const router = express.Router()
 router.route('/').post(createShippingInfo).get(getAllShippingInfo)
 
 router
-	.route('/:addressId')
+	.route('/:shippingInfoId')
 	.get(getShippingInfo)
 	// put not patch. client fetches data and then replaces with new version
 	.put(updateShippingInfo)

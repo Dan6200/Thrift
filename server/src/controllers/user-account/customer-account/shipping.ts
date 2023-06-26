@@ -43,7 +43,7 @@ const createShippingInfo = async (
 		text: InsertInTable(
 			'shipping_info',
 			['customer_id', ...Object.keys(shippingData)],
-			'address_id'
+			'shipping_info_id'
 		),
 		values: [customerId, ...Object.values(shippingData)],
 	})
@@ -77,12 +77,12 @@ const getShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	const { addressId } = request.params
-	if (!addressId) throw new BadRequestError('Id parameter not available')
+	const { shippingInfoId } = request.params
+	if (!shippingInfoId) throw new BadRequestError('Id parameter not available')
 	const result = (
 		await db.query({
-			text: SelectFromTable('shipping_info', ['*'], 'address_id=$1'),
-			values: [addressId],
+			text: SelectFromTable('shipping_info', ['*'], 'shipping_info_id=$1'),
+			values: [shippingInfoId],
 		})
 	).rows[0]
 	if (!result)
@@ -100,22 +100,22 @@ const updateShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	const { addressId } = request.params
+	const { shippingInfoId } = request.params
 	const validData = ShippingInfoSchemaReq.validate(request.body)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	const shippingData = validData.value
 	let fields = Object.keys(shippingData),
 		data = Object.values(shippingData)
-	const paramList = [...data, addressId]
+	const paramList = [...data, shippingInfoId]
 	const pos: number = paramList.length
 	const row = (
 		await db.query({
 			text: UpdateInTable(
 				'shipping_info',
-				'address_id',
+				'shipping_info_id',
 				fields,
-				`address_id=$${pos}`
+				`shipping_info_id=$${pos}`
 			),
 			values: paramList,
 		})
@@ -131,10 +131,14 @@ const deleteShippingInfo = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
-	const { addressId } = request.params
+	const { shippingInfoId } = request.params
 	await db.query({
-		text: DeleteInTable('shipping_info', 'address_id', 'address_id=$1'),
-		values: [addressId],
+		text: DeleteInTable(
+			'shipping_info',
+			'shipping_info_id',
+			'shipping_info_id=$1'
+		),
+		values: [shippingInfoId],
 	})
 	response.status(StatusCodes.NO_CONTENT).send()
 }

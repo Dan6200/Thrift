@@ -9,8 +9,8 @@ import testRoute from '../../test-route.js'
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes
 
 let checkId = async (data: any) => {
-	data.should.have.property('address_id')
-	data.address_id.should.be.a('string')
+	data.should.have.property('shipping_info_id')
+	data.shipping_info_id.should.be.a('string')
 }
 
 let validateResultList = async (data: any) => {

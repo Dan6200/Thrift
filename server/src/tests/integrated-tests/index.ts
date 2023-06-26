@@ -34,11 +34,11 @@ export default function (): void {
 
 	/** Customer Account actions **/
 
-	// for (let customer of customers) {
-	// 	const name = customer.userInfo.first_name
-	// 	describe(`Testing Customer Account for ${name}`, () =>
-	// 		testCustomerAccount(customer))
-	// }
+	for (let customer of customers) {
+		const name = customer.userInfo.first_name
+		describe(`Testing Customer Account for ${name}`, () =>
+			testCustomerAccount(customer))
+	}
 
 	/** Vendor Account actions **/
 

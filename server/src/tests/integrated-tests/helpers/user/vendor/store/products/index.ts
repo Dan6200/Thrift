@@ -54,18 +54,6 @@ const testCreateProduct = async function* (
 		checkId(response.body)
 		yield response.body
 	}
-
-	// const responses = await Promise.all(
-	// 	dataList.map(data =>
-	// 		chai.request(server).post(path).send(data).auth(token, { type: 'bearer' })
-	// 	)
-	// )
-	// return responses.map(response => {
-	// 	response.should.have.status(CREATED)
-	// 	// Check that the response contains the product id
-	// 	checkId(response.body)
-	// 	return response.body
-	// })
 }
 
 const testGetAllProducts = async function (

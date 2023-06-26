@@ -37,17 +37,17 @@ export const StoreSchemaReqDataPartialUpdate = joi.object({
 })
 
 export const StoreSchemaDBResultLean = joi.object({
-	store_id: joi.string().required(),
+	store_id: joi.number().required(),
 })
 
 export const StoreSchemaDBResult = joi
 	.object({
-		store_id: joi.string().required(),
+		store_id: joi.number().required(),
 		store_name: joi.string().min(3).max(50).required(),
 		vendor_id: joi.number().required(),
 		store_page: joi
 			.object({
-				heading: joi.string().required(),
+				heading: joi.number().required(),
 				navigation: joi.array().items(joi.string()).required(),
 				hero: joi.object({
 					media: joi.array().items(joi.string()).allow(null),

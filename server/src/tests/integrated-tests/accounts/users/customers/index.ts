@@ -94,7 +94,7 @@ export default function ({
 		})
 
 		it(`it should update all shipping addresses for the customer`, async () => {
-			for (const [idx, shippingId] of shippingIds) {
+			for (const [idx, shippingId] of shippingIds.entries()) {
 				await testUpdateShipping(
 					server,
 					token,

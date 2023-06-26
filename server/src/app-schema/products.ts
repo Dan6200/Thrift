@@ -13,21 +13,21 @@ const ProductSchemaReq = joi
 
 const ProductSchemaDBLean = joi
 	.object({
-		product_id: joi.string().required(),
+		product_id: joi.number().required(),
 	})
 	.required()
 
 const ProductSchemaDB = joi
 	.object({
-		product_id: joi.string().required(),
+		product_id: joi.number().required(),
 		title: joi.string().required(),
 		category: joi.string().required(),
 		description: joi.object().required(),
 		list_price: joi.number().required(),
 		net_price: joi.number().required(),
 		quantity_available: joi.number().required(),
-		store_id: joi.string().required(),
-		vendor_id: joi.string().required(),
+		store_id: joi.number().required(),
+		vendor_id: joi.number().required(),
 		media: joi.array().allow(null),
 		list_date: joi
 			.alternatives()
@@ -38,15 +38,15 @@ const ProductSchemaDB = joi
 const ProductSchemaDBList = joi.array().items(
 	joi
 		.object({
-			product_id: joi.string().required(),
+			product_id: joi.number().required(),
 			title: joi.string().required(),
 			category: joi.string().required(),
 			description: joi.object().required(),
 			list_price: joi.number().required(),
 			net_price: joi.number().required(),
 			quantity_available: joi.number().required(),
-			store_id: joi.string().required(),
-			vendor_id: joi.string().required(),
+			store_id: joi.number().required(),
+			vendor_id: joi.number().required(),
 			media: joi.array().allow(null),
 			list_date: joi
 				.alternatives()

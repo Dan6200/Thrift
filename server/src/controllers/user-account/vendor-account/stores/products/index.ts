@@ -6,7 +6,7 @@ import {
 	ProductSchemaDBList,
 	ProductSchemaReq,
 } from '../../../../../app-schema/products.js'
-import db from '../../../../../db/index.js'
+import db from '../../../../../db/pg/index.js'
 import BadRequestError from '../../../../../errors/bad-request.js'
 import UnauthenticatedError from '../../../../../errors/unauthenticated.js'
 import {
@@ -104,8 +104,8 @@ const readQuery = async ({
 						as media) 
 					as media 
 				from products 
-			where product_id=$1`,
-		values: [productId],
+			where product_id=$1 and store_id=$2`,
+		values: [productId, storeId],
 	})
 }
 
@@ -122,13 +122,13 @@ const updateQuery = async ({
 		throw new BadRequestError('Store does not exist. Create a store')
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
-	const paramList = [...Object.values(productData), productId]
+	const paramList = [...Object.values(productData), productId, storeId]
 	const pos: number = paramList.length
 	const updateCommand = UpdateInTable(
 		'products',
 		'product_id',
 		Object.keys(productData),
-		`product_id=$${pos}`
+		`product_id=$${pos - 1} and store_id=$${pos}`
 	)
 
 	return db.query({

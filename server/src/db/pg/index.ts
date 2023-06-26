@@ -2,7 +2,8 @@ import util from 'util'
 // cspell:disable
 import nodePostgres, { QueryResult } from 'pg'
 const { Pool } = nodePostgres
-import retryQuery from '../controllers/helpers/retryQuery.js'
+import retryQuery from '../../controllers/helpers/retryQuery.js'
+import client from '../redis/index.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -41,7 +42,7 @@ export default {
 		console.log('\nexecuted query:\n', text, values)
 		// allow a retry if DB fails to connect
 		let res: any
-		const retryCount = 7
+		const retryCount = 2
 		const delay = 500
 		// for prod
 		// res = retryQuery(pool.query.bind(pool), [text, values], retryCount, delay)

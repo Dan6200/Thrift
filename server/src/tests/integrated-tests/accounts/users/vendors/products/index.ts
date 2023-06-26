@@ -12,7 +12,7 @@ import {
 	testUpdateProduct,
 	testUploadProductMedia,
 } from '../../../../helpers/user/vendor/store/products/index.js'
-import db from '../../../../../../db/index.js'
+import db from '../../../../../../db/pg/index.js'
 import { UserData } from '../../../../../../types-and-interfaces/user.js'
 import {
 	Product,
@@ -56,13 +56,14 @@ export default function ({
 	})
 	beforeEach(async () => {
 		if (!token) throw new Error('access token undefined')
-		// Delete all stores
-		await db.query({ text: 'delete from stores' })
 	})
 
+	let storeIds: Map<string, string | null> = new Map()
 	describe('Testing Products In Each Store', async function () {
-		let storeIds: string[]
 		before(async () => {
+			// Delete all stores
+			await db.query({ text: 'delete from stores' })
+
 			for (const store of vendorStores) {
 				const { store_id } = await testCreateStore(
 					server,
@@ -70,13 +71,13 @@ export default function ({
 					storesRoute,
 					store
 				)
-				storeIds.push(store_id)
+				storeIds.set(store_id, null)
 			}
 		})
 
 		describe('Product Creation', async () => {
 			for (const storeId of storeIds) {
-				await testCreateProduct(
+				testCreateProduct(
 					server,
 					token,
 					`${storesRoute}/${storeId}/products`,
@@ -85,21 +86,24 @@ export default function ({
 			}
 		})
 
-		describe('Operations on The Created Product', async () => {
-			let productIds: string[]
+		describe('Products Operations', async () => {
 			before(async () => {
-				for (const storeId of storeIds) {
-					productIds = await testCreateProduct(
+				let count = 0
+				for (const [storeId] of storeIds.entries()) {
+					if (count++ >= products.length) break
+					for await (const { product_id } of testCreateProduct(
 						server,
 						token,
 						`${storesRoute}/${storeId}/products`,
 						products
-					)
+					)) {
+						storeIds.set(storeId, product_id)
+					}
 				}
 			})
 
 			it('it should retrieve all the products from each store', async () => {
-				for (const storeId of storeIds) {
+				for (const [storeId] of storeIds) {
 					await testGetAllProducts(
 						server,
 						token,
@@ -109,7 +113,7 @@ export default function ({
 			})
 
 			it('it should retrieve all products from each store, sorted by net price ascending', async () => {
-				for (const storeId of storeIds) {
+				for (const [storeId] of storeIds) {
 					await testGetAllProducts(
 						server,
 						token,
@@ -122,116 +126,73 @@ export default function ({
 			})
 
 			it('it should retrieve all products from each store, results offset by 2 and limited by 10', async () => {
-				for (const storeId of storeIds) {
+				for (const [storeId] of storeIds) {
 					await testGetAllProducts(
 						server,
 						token,
 						`${storesRoute}/${storeId}/products`,
 						{
-							offset: 2,
-							limit: 10,
+							offset: 1,
+							limit: 2,
 						}
 					)
 				}
 			})
 
 			it('it should retrieve a specific product a vendor has for sale', async () => {
-				for (const storeId of storeIds) {
-					for (const productId of productIds) {
-						await testGetProduct(
-							server,
-							token,
-							`${storesRoute}/${storeId}/products/${productId}`
-						)
-					}
+				for (const [storeId, productId] of storeIds) {
+					await testGetProduct(
+						server,
+						token,
+						`${storesRoute}/${storeId}/products/${productId}`
+					)
 				}
 			})
 
-			describe('Product Media', () => {
-				it("it should add the product's media to an existing product", async () => {
-					for (const storeId of storeIds) {
-						for (const productId of productIds) {
-							await testUploadProductMedia(
-								server,
-								token,
-								`${storesRoute}/${storeId}/products/${productId}/media`,
-								productMedia
-							)
-						}
-					}
-				})
+			it("it should add the product's media to an existing product", async () => {
+				for (const [storeId, productId] of storeIds) {
+					await testUploadProductMedia(
+						server,
+						token,
+						`${storesRoute}/${storeId}/products/${productId}/media`,
+						productMedia
+					)
+				}
 			})
 
-			it('it should update a specific product a vendor has for sale', async () => {
-				for (const storeId of storeIds) {
-					for (const productId of productIds) {
-						let secondaryIndex = 0
-						for (const productId of productIds) {
-							await testUpdateProduct(
-								server,
-								token,
-								`${storesRoute}/${storeId}/products/${productId}`,
-								productReplaced[secondaryIndex++]
-							)
-						}
-					}
+			it('it should update all the products a vendor has for sale', async () => {
+				let idx = 0
+				for (const [storeId, productId] of storeIds) {
+					await testUpdateProduct(
+						server,
+						token,
+						`${storesRoute}/${storeId}/products/${productId}`,
+						productReplaced[idx++]
+					)
+				}
+			})
+
+			it('it should delete all the product a vendor has for sale', async () => {
+				for (const [storeId, productId] of storeIds) {
+					await testDeleteProduct(
+						server,
+						token,
+						`${storesRoute}/${storeId}/products/${productId}`
+					)
+				}
+			})
+
+			it('it should fail to retrieve any of the deleted products', async () => {
+				for (const [storeId, productId] of storeIds) {
+					await testGetNonExistentProduct(
+						server,
+						token,
+						`${storesRoute}/${storeId}/products/${productId}`
+					)
 				}
 			})
 
 			//end
 		})
-	})
-
-	it('it should delete a product a vendor has for sale', async () => {
-		for (const store of vendorStores) {
-			const { store_id } = await testCreateStore(
-				server,
-				token,
-				storesRoute,
-				store
-			)
-			const productIds = await testCreateProduct(
-				server,
-				token,
-				`${storesRoute}/${store_id}/products`,
-				products
-			)
-			for (const { product_id } of productIds) {
-				await testDeleteProduct(
-					server,
-					token,
-					`${storesRoute}/${store_id}/products/${product_id}`
-				)
-			}
-		}
-	})
-
-	it('it should fail to retrieve a deleted product', async () => {
-		for (const store of vendorStores) {
-			const { store_id } = await testCreateStore(
-				server,
-				token,
-				storesRoute,
-				store
-			)
-			const productIds: any[] = await testCreateProduct(
-				server,
-				token,
-				`${storesRoute}/${store_id}/products`,
-				products
-			)
-			for (const { product_id } of productIds) {
-				await testDeleteProduct(
-					server,
-					token,
-					`${storesRoute}/${store_id}/products/${product_id}`
-				)
-				await testGetNonExistentProduct(
-					server,
-					token,
-					`${storesRoute}/${store_id}/products/${product_id}`
-				)
-			}
-		}
 	})
 }

@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import { QueryResult } from 'pg'
-import db from '../../../db/index.js'
+import db from '../../../db/pg/index.js'
 import {
 	CRUDQueryAuth,
 	ProcessRouteWithoutBody,

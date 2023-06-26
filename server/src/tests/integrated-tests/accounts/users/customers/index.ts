@@ -13,7 +13,7 @@ import {
 } from '../../../helpers/user/customer/shipping.js'
 import { registration } from '../../../helpers/auth/index.js'
 import assert from 'node:assert'
-import db from '../../../../../db/index.js'
+import db from '../../../../../db/pg/index.js'
 import ShippingInfo from '../../../../../types-and-interfaces/shipping-info.js'
 import { UserData } from '../../../../../types-and-interfaces/user.js'
 

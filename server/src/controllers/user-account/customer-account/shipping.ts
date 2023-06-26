@@ -7,7 +7,7 @@ import {
 	ShippingInfoSchemaDBLean,
 	ShippingInfoSchemaDB,
 } from '../../../app-schema/customer/shipping.js'
-import db from '../../../db/index.js'
+import db from '../../../db/pg/index.js'
 import { BadRequestError } from '../../../errors/index.js'
 import {
 	RequestWithPayload,

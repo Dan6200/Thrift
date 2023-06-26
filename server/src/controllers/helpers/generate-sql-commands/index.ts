@@ -2,7 +2,7 @@
 export function InsertInTable(
 	table: string,
 	fields: string[],
-	idName: string
+	retValue: string // Change to array
 ): string {
 	let insertQuery = `insert into ${table} (\n`
 	const last = fields.length - 1
@@ -11,7 +11,7 @@ export function InsertInTable(
 	for (let i = 0; i < last; i++) {
 		insertQuery += `$${i + 1}, `
 	}
-	insertQuery += `$${last + 1}) returning ${idName}`
+	insertQuery += `$${last + 1}) returning ${retValue}`
 	return insertQuery
 }
 

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
 import { UserDataSchemaDB } from '../../app-schema/users.js'
-import db from '../../db/index.js'
+import db from '../../db/pg/index.js'
 import { BadRequestError, UnauthenticatedError } from '../../errors/index.js'
 import { hashPassword } from '../../security/password.js'
 import {

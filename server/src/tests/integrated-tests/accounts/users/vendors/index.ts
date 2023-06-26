@@ -1,7 +1,7 @@
 import chai from 'chai'
 import { assert } from 'chai'
 import chaiHttp from 'chai-http'
-import db from '../../../../../db/index.js'
+import db from '../../../../../db/pg/index.js'
 import StoresData from '../../../../../types-and-interfaces/stores-data.js'
 import { UserData } from '../../../../../types-and-interfaces/user.js'
 import { registration } from '../../../helpers/auth/index.js'

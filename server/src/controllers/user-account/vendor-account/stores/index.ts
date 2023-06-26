@@ -6,7 +6,7 @@ import {
 	StoreSchemaDBResultLean,
 	StoreSchemaReqDataPartialUpdate,
 } from '../../../../app-schema/vendor/store.js'
-import db from '../../../../db/index.js'
+import db from '../../../../db/pg/index.js'
 import {
 	BadRequestError,
 	UnauthenticatedError,

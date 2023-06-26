@@ -1,4 +1,4 @@
-import { error, log } from 'console'
+import { log } from 'console'
 
 enum networkErrors {
 	'ENOENT',
@@ -22,9 +22,8 @@ export default async function retryQuery(
 			log(`db connection failed...quitting`)
 			return
 		}
-		// needs await to catch errors
-		// res = await query(...args)
-		res = query(...args)
+		// needs await to catch errors!
+		res = await query(...args)
 		return res
 	} catch (err) {
 		if (err.code in networkErrors)
@@ -39,5 +38,6 @@ export default async function retryQuery(
 				}
 				return res
 			})
+		else throw err
 	}
 }

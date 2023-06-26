@@ -1,4 +1,4 @@
-import db from '../../db/index.js'
+import db from '../../db/pg/index.js'
 import { validatePassword } from '../../security/password.js'
 import { SelectFromTable } from './generate-sql-commands/index.js'
 

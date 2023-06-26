@@ -2,6 +2,7 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
+import { log } from 'node:console'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ProductSchemaDB } from '../../../../../../../app-schema/products.js'
@@ -35,24 +36,36 @@ const routeParams = {
 	statusCode: OK,
 }
 
-const testCreateProduct = async function (
+const testCreateProduct = async function* (
 	server: string,
 	token: string,
 	path: string,
 	dataList: object[]
 ) {
-	dataList[0]
-	const responses = await Promise.all(
-		dataList.map(data =>
-			chai.request(server).post(path).send(data).auth(token, { type: 'bearer' })
-		)
-	)
-	responses.forEach(response => {
+	const range = dataList.length
+	for (let idx = 0; idx < range; idx++) {
+		const response = await chai
+			.request(server)
+			.post(path)
+			.send(dataList[idx])
+			.auth(token, { type: 'bearer' })
 		response.should.have.status(CREATED)
 		// Check that the response contains the product id
 		checkId(response.body)
-	})
-	return responses.map(response => response.body)
+		yield response.body
+	}
+
+	// const responses = await Promise.all(
+	// 	dataList.map(data =>
+	// 		chai.request(server).post(path).send(data).auth(token, { type: 'bearer' })
+	// 	)
+	// )
+	// return responses.map(response => {
+	// 	response.should.have.status(CREATED)
+	// 	// Check that the response contains the product id
+	// 	checkId(response.body)
+	// 	return response.body
+	// })
 }
 
 const testGetAllProducts = async function (

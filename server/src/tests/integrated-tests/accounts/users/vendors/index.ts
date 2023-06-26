@@ -1,6 +1,7 @@
 import chai from 'chai'
 import { assert } from 'chai'
 import chaiHttp from 'chai-http'
+import { log } from 'console'
 import db from '../../../../../db/pg/index.js'
 import StoresData from '../../../../../types-and-interfaces/stores-data.js'
 import { UserData } from '../../../../../types-and-interfaces/user.js'
@@ -44,12 +45,8 @@ export default function ({
 			body: { token },
 		} = await registration(server, userInfo))
 	})
-	beforeEach(async () => {
-		// Delete all stores
-		await db.query({ text: 'delete from stores' })
-	})
 
-	const vendorsPath = '/v1/user-account/vendor-account'
+	const vendorsPath = '/v1/users/vendor-account'
 	const storesPath = vendorsPath + '/stores'
 
 	describe('Vendor account management', () => {
@@ -70,71 +67,61 @@ export default function ({
 	})
 
 	describe('Store management', () => {
-		beforeEach(async () => {
+		before(async () => {
+			// Delete all vendors
+			await db.query({ text: 'delete from vendors' })
 			// Create a vendor account before each test
 			await testCreateVendor(server, token, vendorsPath)
 		})
 
-		afterEach(async () => {
+		after(async () => {
 			// Delete the vendor account after each test
 			await testDeleteVendor(server, token, vendorsPath)
 		})
 
-		describe('Create Store', function () {
-			it('should create a store for the vendor', async () => {
-				for (const store of listOfStoresByVendor) {
-					await testCreateStore(server, token, storesPath, store)
-				}
-			})
+		let storeIds: string[] = []
+		it('should create a store for the vendor', async () => {
+			// Create stores using store information
+			for (const store of listOfStoresByVendor) {
+				const { store_id } = await testCreateStore(
+					server,
+					token,
+					storesPath,
+					store
+				)
+				storeIds.push(store_id)
+			}
 		})
 
-		describe('Actions on Store', function () {
-			let storeIds: string[]
-			before(async function () {
-				for (const store of listOfStoresByVendor) {
-					const { store_id } = await testCreateStore(
-						server,
-						token,
-						storesPath,
-						store
-					)
-					storeIds.push(store_id)
-				}
-			})
-			it('it should fetch all the stores with a loop', async () => {
-				for (const storeId of storeIds) {
-					await testGetStore(server, token, storesPath + '/' + storeId)
-				}
-			})
+		it('it should fetch all the stores with a loop', async () => {
+			for (const storeId of storeIds) {
+				await testGetStore(server, token, storesPath + '/' + storeId)
+			}
+		})
 
-			it('should update all the stores with a loop', async () => {
-				assert(storeIds.length === listOfUpdatedStoresByVendor.length)
-				const range = storeIds.length - 1
-				for (let idx = 0; idx <= range; idx++) {
-					await testUpdateStore(
-						server,
-						token,
-						storesPath + '/' + storeIds[idx],
-						listOfUpdatedStoresByVendor[idx]
-					)
-				}
-			})
+		it('should update all the stores with a loop', async () => {
+			assert(storeIds.length === listOfUpdatedStoresByVendor.length)
+			const range = storeIds.length - 1
+			for (let idx = 0; idx <= range; idx++) {
+				await testUpdateStore(
+					server,
+					token,
+					storesPath + '/' + storeIds[idx],
+					listOfUpdatedStoresByVendor[idx]
+				)
+			}
+		})
 
-			it('should delete all the stores with a loop', async () => {
-				for (const storeId of storeIds) {
-					await testDeleteStore(server, token, storesPath + '/' + storeId)
-				}
-			})
+		it('should delete all the stores with a loop', async () => {
+			for (const storeId of storeIds) {
+				await testDeleteStore(server, token, storesPath + '/' + storeId)
+			}
+		})
 
-			it('should fail to retrieve any store', async () => {
-				for (const storeId of storeIds) {
-					await testGetNonExistentStore(
-						server,
-						token,
-						storesPath + '/' + storeId
-					)
-				}
-			})
+		it('should fail to retrieve any store', async () => {
+			for (const storeId of storeIds) {
+				await testGetNonExistentStore(server, token, storesPath + '/' + storeId)
+			}
 		})
 	})
 }

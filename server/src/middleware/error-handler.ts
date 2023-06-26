@@ -6,10 +6,10 @@ const errorHandlerMiddleware = async (
 	err: { statusCode: StatusCodes; message: 'string' },
 	_req: Request,
 	res: Response,
-	_next: NextFunction // Must have this 4 params to work
+	_next: NextFunction // Must have these 4 params to work
 ) => {
 	// error logging
-	// error(err)
+	error(err)
 
 	let customError = {
 		// set default

@@ -47,7 +47,7 @@ export const StoreSchemaDBResult = joi
 		vendor_id: joi.number().required(),
 		store_page: joi
 			.object({
-				heading: joi.number().required(),
+				heading: joi.string().required(),
 				navigation: joi.array().items(joi.string()).required(),
 				hero: joi.object({
 					media: joi.array().items(joi.string()).allow(null),

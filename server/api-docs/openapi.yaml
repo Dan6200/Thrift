@@ -394,16 +394,12 @@ paths:
           description: Updated Successfully
 
         '400':
-          description: Invalid Data format
+          description: Update Unsuccessful
           $ref: '#/components/schemas/responses/BadRequestError'
 
         '401':
           description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
-
-        '404':
-          description: User not found
-          $ref: '#/components/schemas/responses/NotFound'
 
     delete:
       summary: Delete user
@@ -414,7 +410,6 @@ paths:
       responses:
         '204':
           description: Deleted Successfully
-          example:
 
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
@@ -438,15 +433,12 @@ paths:
           description: User Password Updated
 
         '400':
+          description: Password update unsuccessful
           $ref: '#/components/schemas/responses/BadRequestError'
 
         '401':
           description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
-
-        '404':
-          description: User not found
-          $ref: '#/components/schemas/responses/NotFound'
 
   /users/customer-account:
     post:
@@ -651,10 +643,135 @@ paths:
           $ref: '#/components/schemas/responses/NotFound'
 
   /users/customer-account/payment-info:
-    post: {}
-    get: {}
-    patch: {}
-    delete: {}
+    post:
+      summary: Creates payment information
+      description: |
+        Creates payment address and information for
+        the customer account. Customers can have a 
+        maximum of only 5 payment addresses and information.
+      security: [BearerAuth: []]
+      responses:
+        '201':
+          description: |
+            Payment information added to Customer Account.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/PaymentInfoId'
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+    get:
+      summary: Retrieves all the payment information
+      description: |
+        Retrieves all the payment information for the 
+        customer account.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Retrieved all the payment information added to a 
+            Customer's Account.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/PaymentInfoList'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No payment information found for the customer
+          $ref: '#/components/schemas/responses/NotFound'
+
+  /users/customer-account/payment-info/{paymentInfoId}:
+    get:
+      summary: Retrieves payment information.
+      description: |
+        Retrieves the payment information with Id - paymentInfoId
+        for the customer.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Retrieves the payment information with Id
+            paymentInfoId
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/PaymentInfo'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No payment information found for the customer
+          $ref: '#/components/schemas/responses/NotFound'
+
+    put:
+      summary: Replace payment information.
+      description: |
+        Replaces the payment information with Id - paymentInfoId
+        for the customer.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Replaced the payment information with a new one
+            and returns its Id.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/PaymentInfoId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No payment information found for the customer
+          $ref: '#/components/schemas/responses/NotFound'
+
+    delete:
+      summary: Deletes payment information.
+      description: |
+        Deletes the payment information with Id - paymentInfoId
+        for the customer.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Deleted the payment information with Id
+            paymentInfoId and returned it's Id
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/PaymentInfoId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No payment information found for the customer
+          $ref: '#/components/schemas/responses/NotFound'
 
   /users/vendor-account:
     post: {}

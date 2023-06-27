@@ -96,7 +96,8 @@ let updateUserPassword = async (
 		),
 		values: paramList,
 	})
-	if (!dbResult.rows.length) throw new BadRequestError('Update unsuccessful')
+	if (!dbResult.rows.length)
+		throw new BadRequestError('Password update unsuccessful')
 	response.status(StatusCodes.NO_CONTENT).end()
 }
 

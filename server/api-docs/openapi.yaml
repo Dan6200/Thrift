@@ -237,7 +237,7 @@ paths:
 
   /auth/login:
     post:
-      summary: Log In User.
+      summary: Logs In User.
       description: |
         Logs in the user with a token if it exists. 
         Else login the user with email or phone identification and creates token
@@ -277,7 +277,7 @@ paths:
 
   /auth/logout:
     get:
-      summary: Log Out User
+      summary: Logs Out User
       security:
         - BearerAuth: []
 
@@ -432,7 +432,7 @@ paths:
           $ref: '#/components/schemas/responses/NotFound'
 
     delete:
-      summary: Delete Customer Account
+      summary: Deletes Customer Account
       description: Deletes the Customer Account
       security: [BearerAuth: []]
 
@@ -457,6 +457,25 @@ paths:
 
   /users/customer-account/shipping-info:
     post:
+      summary: Creates shipping information
+      description: |
+        Creates shipping address and information for
+        the customer account. Customers can have a 
+        maximum of only 5 shipping addresses and information.
+      security: [BearerAuth: []]
+      responses:
+        '201':
+          description: |
+            Shipping information added to Customer Account.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ShippingInfoId'
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
+
     get:
   /users/customer-account/shipping-info/{shippingInfoId}:
     get: {}

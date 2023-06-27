@@ -29,7 +29,7 @@ const createShippingInfo = async (
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
 	const shippingData = validData.value
-	// Limit the amout of shipping addresses a user can have:
+	// Limit the amount of shipping addresses a user can have:
 	const LIMIT = 5
 	const count: number = (
 		await db.query({
@@ -47,8 +47,8 @@ const createShippingInfo = async (
 		),
 		values: [customerId, ...Object.values(shippingData)],
 	})
-	let shippingAddress = dbQuery.rows[0]
-	response.status(StatusCodes.CREATED).send(shippingAddress)
+	let shippingInfoId = dbQuery.rows[0]
+	response.status(StatusCodes.CREATED).send(shippingInfoId)
 }
 
 const getAllShippingInfo = async (

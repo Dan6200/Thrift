@@ -548,6 +548,7 @@ paths:
           description: |
             No shipping information found for the customer
           $ref: '#/components/schemas/responses/NotFound'
+
   /users/customer-account/shipping-info/{shippingInfoId}:
     get:
       summary: Retrieves shipping information.
@@ -602,6 +603,7 @@ paths:
           description: |
             No shipping information found for the customer
           $ref: '#/components/schemas/responses/NotFound'
+
     delete:
       summary: Deletes shipping information.
       description: |
@@ -634,21 +636,25 @@ paths:
     get: {}
     patch: {}
     delete: {}
+
   /users/vendor-account:
     post: {}
     get: {}
     patch: {}
     delete: {}
+
   /users/vendor-account/payment-info:
     post: {}
     get: {}
     patch: {}
     delete: {}
+
   /users/vendor-account/stores:
     post: {}
     get: {}
     patch: {}
     delete: {}
+
   /users/vendor-account/stores/products:
     post: {}
     get: {}

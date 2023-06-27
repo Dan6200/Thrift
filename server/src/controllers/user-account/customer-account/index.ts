@@ -4,7 +4,6 @@ import db from '../../../db/pg/index.js'
 import {
 	CRUDQueryAuth,
 	ProcessRouteWithoutBody,
-	ProcessRouteWithoutBodyAndDBResult,
 } from '../../../types-and-interfaces/process-routes.js'
 import { ResponseData } from '../../../types-and-interfaces/response.js'
 import {
@@ -13,7 +12,7 @@ import {
 	SelectFromTable,
 } from '../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../helpers/process-route.js'
-const { CREATED, NO_CONTENT, NOT_FOUND } = StatusCodes
+const { CREATED, NOT_FOUND, OK } = StatusCodes
 
 const createQuery: CRUDQueryAuth = ({ user: { userId: customerId } }) =>
 	db.query({
@@ -58,17 +57,17 @@ const createCustomerAccount = processPostRoute(
 const processGetRoute = <ProcessRouteWithoutBody>processRoute
 const getCustomerAccount = processGetRoute(
 	readQuery,
-	NO_CONTENT,
+	OK,
 	undefined,
 	validateResult
 )
 
-const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
+const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
 const deleteCustomerAccount = processDeleteRoute(
 	deleteQuery,
-	NO_CONTENT,
+	OK,
 	undefined,
-	undefined
+	validateResult
 )
 
 export { createCustomerAccount, getCustomerAccount, deleteCustomerAccount }

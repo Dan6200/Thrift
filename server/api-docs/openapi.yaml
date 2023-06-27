@@ -88,6 +88,7 @@ components:
         password: 'my password'
         dob: 2000-4-10
         country: Nigeria
+
     UserDataRetrieved:
       type: object
       properties:
@@ -285,6 +286,9 @@ paths:
         '204':
           description: User Logged Out
 
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+
         '401':
           description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
@@ -304,6 +308,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserDataSent'
 
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+
         '401':
           description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
@@ -317,15 +324,18 @@ paths:
       description: Fully or partially updates the user's information.
       security:
         - BearerAuth: []
+
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UserDataSent'
+
             examples:
               Example 1:
-                summary: You can update all fields - Except password field
+                summary: |
+                  You can update all fields - Except password field
                 value:
                   first_name: Ebuka
                   last_name: Eze
@@ -364,6 +374,9 @@ paths:
       '204':
         description: Deleted Successfully
 
+      '400':
+        $ref: '#/components/schemas/responses/BadRequestError'
+
       '401':
         description: Unauthorized Access
         $ref: '#/components/schemas/responses/UnauthenticatedError'
@@ -388,6 +401,9 @@ paths:
               schema:
                 $ref: '#/components/schema/CustomerId'
 
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+
         '401':
           description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
@@ -405,6 +421,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/CustomerId'
 
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+
+        '401':
+          description: Unauthorized Access
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+        '404':
+          description: Customer Account not found
+          $ref: '#/components/schemas/responses/NotFound'
+
+    delete:
+      summary: Delete Customer Account
+      description: Deletes the Customer Account
+      security: [BearerAuth: []]
+
+      responses:
+        '204':
+          description: Customer Account Retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerId'
+
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+
         '401':
           description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
@@ -413,8 +456,6 @@ paths:
           description: User not found
           $ref: '#/components/schemas/responses/NotFound'
 
-    patch: {}
-    delete: {}
   /users/customer-account/shipping-info:
     post: {}
     get: {}

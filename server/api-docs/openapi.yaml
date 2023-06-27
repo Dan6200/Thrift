@@ -921,10 +921,11 @@ paths:
             No store's data found for the vendor
           $ref: '#/components/schemas/responses/NotFound'
 
-    put:
-      summary: Replace store's data.
+    patch:
+      summary: Updates the store's data.
       description: |
-        Replaces the store's data with Id - storeId
+        Fully or Partially updates the store's data 
+        with Id - storeId
         for the vendor.
       security: [BearerAuth: []]
       responses:
@@ -1106,7 +1107,17 @@ paths:
             No payment information found for the vendor
           $ref: '#/components/schemas/responses/NotFound'
 
-  /users/vendor-account/stores/products:
+  /users/vendor-account/stores/{storeId}/products:
+    post: {}
+    get: {}
+
+  /users/vendor-account/stores/{storeId}/products/{productId}:
+    post: {}
+    get: {}
+    patch: {}
+    delete: {}
+
+  /users/vendor-account/stores/{storeId}/products/{productId}/media:
     post: {}
     get: {}
     patch: {}

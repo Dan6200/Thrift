@@ -774,22 +774,337 @@ paths:
           $ref: '#/components/schemas/responses/NotFound'
 
   /users/vendor-account:
-    post: {}
-    get: {}
-    patch: {}
-    delete: {}
+    post:
+      summary: Creates a vendor account.
+      description: |
+        Creates a vendor account for the user.
+      security:
+        - BearerAuth: []
 
-  /users/vendor-account/payment-info:
-    post: {}
-    get: {}
-    patch: {}
-    delete: {}
+      responses:
+        '201':
+          description: Vendor Account Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/VendorId'
+
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+
+        '401':
+          description: Unauthorized Access
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+    get:
+      summary: Gets Vendor
+      description: Retrieves the Vendor Id
+      security: [BearerAuth: []]
+
+      responses:
+        '200':
+          description: Vendor Account Retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorId'
+
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+
+        '401':
+          description: Unauthorized Access
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+        '404':
+          description: Vendor Account not found
+          $ref: '#/components/schemas/responses/NotFound'
+
+    delete:
+      summary: Deletes Vendor Account
+      description: Deletes the Vendor Account
+      security: [BearerAuth: []]
+
+      responses:
+        '200':
+          description: Vendor Account Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorId'
+
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+
+        '401':
+          description: Unauthorized Access
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+        '404':
+          description: Vendor Account not found
+          $ref: '#/components/schemas/responses/NotFound'
 
   /users/vendor-account/stores:
-    post: {}
-    get: {}
-    patch: {}
-    delete: {}
+    post:
+      summary: Creates store's data
+      description: |
+        Creates the vendor's stores for the vendor account,
+        where they can sell products. Vendors can have a 
+        maximum of only 5 stores.
+      security: [BearerAuth: []]
+      responses:
+        '201':
+          description: |
+            Stores added to Vendor Account.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/StoreId'
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+    get:
+      summary: Retrieves all the store's data
+      description: |
+        Retrieves all the store's data for the 
+        vendor account.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Retrieved all the store's data added to a 
+            Vendor's Account.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/Stores'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No store's data found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
+
+  /users/vendor-account/stores/{storeId}:
+    get:
+      summary: Retrieves store's data.
+      description: |
+        Retrieves the store's data with Id - storeId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Retrieves the store's data with Id
+            storeId
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/Store'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No store's data found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
+
+    put:
+      summary: Replace store's data.
+      description: |
+        Replaces the store's data with Id - storeId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Replaced the store's data with a new one
+            and returns its Id.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/StoreId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No store's data found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
+
+    delete:
+      summary: Deletes store's data.
+      description: |
+        Deletes the store's data with Id - storeId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Deleted the store's data with Id
+            storeId and returned it's Id
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/StoreId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No store's data found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
+
+  /users/vendor-account/payment-info:
+    post:
+      summary: Creates payment information
+      description: |
+        Creates payment address and information for
+        the vendor account. Vendors can have a 
+        maximum of only 5 payment addresses and information.
+      security: [BearerAuth: []]
+      responses:
+        '201':
+          description: |
+            Payment information added to Vendor Account.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/PaymentInfoId'
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+    get:
+      summary: Retrieves all the payment information
+      description: |
+        Retrieves all the payment information for the 
+        vendor account.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Retrieved all the payment information added to a 
+            Vendor's Account.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/PaymentInfoList'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No payment information found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
+
+  /users/vendor-account/payment-info/{paymentInfoId}:
+    get:
+      summary: Retrieves payment information.
+      description: |
+        Retrieves the payment information with Id - paymentInfoId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Retrieves the payment information with Id
+            paymentInfoId
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/PaymentInfo'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No payment information found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
+
+    put:
+      summary: Replace payment information.
+      description: |
+        Replaces the payment information with Id - paymentInfoId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Replaced the payment information with a new one
+            and returns its Id.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/PaymentInfoId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No payment information found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
+
+    delete:
+      summary: Deletes payment information.
+      description: |
+        Deletes the payment information with Id - paymentInfoId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Deleted the payment information with Id
+            paymentInfoId and returned it's Id
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/PaymentInfoId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No payment information found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
 
   /users/vendor-account/stores/products:
     post: {}

@@ -50,14 +50,13 @@ components:
           type: string
 
     CustomerId:
-      type:
-        object:
-        properties:
-          customer_id:
-            type: integer
-            format: int32
-        example:
-          customer_id: 17
+      type: object
+      properties:
+        customer_id:
+          type: integer
+          format: int32
+      example:
+        customer_id: 17
 
     UserDataSent:
       type: object
@@ -439,7 +438,7 @@ paths:
 
       responses:
         '200':
-          description: Customer Account Retrieved
+          description: Customer Account Deleted
           content:
             application/json:
               schema:

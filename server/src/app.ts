@@ -32,7 +32,7 @@ dotenv.config()
 let app: Express = express()
 app.set('trust proxy', 1)
 app.use(cookieParser())
-///** For Production only
+// /** For Production only
 app.use(
 	rateLimiter({
 		windowMs: 15 * 60 * 1000,

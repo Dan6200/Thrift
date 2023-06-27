@@ -12,27 +12,31 @@ info:
   contact:
     name: The Developer
     email: danielnyong66@gmail.com
+
 servers:
   - url: https://thrift-production.up.railway.app/{basePath}
     description: Production server
     variables:
       basePath:
         default: v1
+
   - url: https://thrift-dev.up.railway.app/{basePath}
     description: Development server
     variables:
       basePath:
         default: v1
-  - url: localhost:{port}/{basePath}
+
+  - url: http://localhost:{port}/{basePath}
     description: Local server on computer
     variables:
       basePath:
         default: v1
       port:
         default: '1024'
+
 components:
   schemas:
-    UserData:
+    UserDataSent:
       type: object
       properties:
         first_name:
@@ -60,6 +64,32 @@ components:
         password: password
         dob: 2000-4-10
         country: Nigeria
+
+    UserDataRetrieved:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        dob:
+          type: string
+          format: date
+        country:
+          type: string
+      example:
+        first_name: Joe
+        last_name: Schmoe
+        email: joeschmoe@fake.email.com
+        phone: '+2341234567890'
+        dob: 2000-4-10
+        country: Nigeria
+
     LoginInfo:
       type: object
       properties:
@@ -72,46 +102,47 @@ components:
       example:
         phone: '+2341234567890'
         password: password
-    GeneralError:
-      type: object
-      properties:
-        message:
-          type: string
+
     UnauthenticatedError:
       type: object
       properties:
         message:
           type: string
+
     BadRequestError:
       type: object
       properties:
         message:
           type: string
+
+    NotFound:
+      type: object
+      properties:
+        message:
+          type: string
+
     responses:
       NotFound:
         description: Entity not found.
         content:
           application/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/NotFound'
+
       BadRequestError:
         description: Illegal operation
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BadRequestError'
+
       UnauthenticatedError:
         description: Not authorized to access resource
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UnauthenticatedError'
-      GeneralError:
-        description: General Error
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GeneralError'
+
     parameters:
       limitParam:
         name: limit
@@ -121,6 +152,7 @@ components:
         schema:
           type: integer
           format: int32
+
       offsetParam:
         name: offset
         in: query
@@ -129,6 +161,7 @@ components:
         schema:
           type: integer
           format: int32
+
       sortParam:
         name: sort
         in: query
@@ -139,6 +172,7 @@ components:
           type: array
           items:
             type: string
+
     Token:
       type: object
       properties:
@@ -149,10 +183,13 @@ components:
         expires within 30 minutes.
       example:
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMzYiLCJpYXQiOjE2ODYwMzg4MzIsImV4cCI6MTY4NjA0MDYzMn0.j8ep358FU8KRSG7ehPdFypoTua5Cr7dgBQdUks8Dkdc'
+
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
+      bearerFormat: JWT
+
 paths:
   /auth/register:
     post:
@@ -163,7 +200,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserData'
+              $ref: '#/components/schemas/UserDataSent'
+
       responses:
         '201':
           description: User Account Created
@@ -171,12 +209,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Token'
+
         '400':
           description: Invalid User Schema
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
+
   /auth/login:
     post:
       summary: Logs in the user.
@@ -189,6 +229,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/LoginInfo'
+
       responses:
         '200':
           description: User Logged In
@@ -196,12 +237,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Token'
+
         '400':
           description: Invalid Login Format
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
+
         '401':
           description: Invalid Login Credentials
           content:
@@ -209,23 +252,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
 
+  /auth/logout:
+    get:
+      summary: Log In User
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User Logged In
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+
   /users:
     get:
       summary: Gets the user.
       description: Retrieves user information
+      security:
+        - BearerAuth: []
+
       responses:
         '200':
           description: User Account Retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserData'
-        '404':
-          description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
+                $ref: '#/components/schemas/UserDataSent'
+
         '401':
           description: Unauthorized Access
           content:
@@ -233,35 +287,67 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
 
-    patch:
-      summary: Update user
-      description: Fully or partially updates the user's information.
-      responses:
-        '200':
-          description: User Account Retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserData'
         '404':
           description: User not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotFoundError'
+                $ref: '#/components/schemas/NotFound'
+
+    patch:
+      summary: Update user
+      description: Fully or partially updates the user's information.
+      security:
+        - BearerAuth: []
+
+      responses:
+        '204':
+          description: Updated Successfully
+
         '400':
-          description: Invalid Login Format
+          description: Invalid Data format
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
+
         '401':
           description: Unauthorized Access
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
-    delete: {}
+
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+
+    delete:
+      summary: Delete user
+      description: Deletes the user's information.
+      security:
+        - BearerAuth: []
+
+      '204':
+        description: Deleted Successfully
+
+      '401':
+        description: Unauthorized Access
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BadRequestError'
+
+      '404':
+        description: User not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotFound'
+
   /users/customer-account:
     post: {}
     get: {}

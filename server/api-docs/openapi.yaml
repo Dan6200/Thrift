@@ -438,7 +438,7 @@ paths:
       security: [BearerAuth: []]
 
       responses:
-        '204':
+        '200':
           description: Customer Account Retrieved
           content:
             application/json:
@@ -453,13 +453,15 @@ paths:
           $ref: '#/components/schemas/responses/UnauthenticatedError'
 
         '404':
-          description: User not found
+          description: Customer Account not found
           $ref: '#/components/schemas/responses/NotFound'
 
   /users/customer-account/shipping-info:
-    post: {}
+    post:
+    get:
+  /users/customer-account/shipping-info/{shippingInfoId}:
     get: {}
-    patch: {}
+    put: {}
     delete: {}
   /users/customer-account/payment-info:
     post: {}

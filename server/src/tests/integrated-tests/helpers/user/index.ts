@@ -32,7 +32,7 @@ const testGetUser = testRoute({
 
 const testUpdateUser = testRoute({
 	verb: 'patch',
-	statusCode: OK,
+	statusCode: NO_CONTENT,
 }) as testRouteWithData
 
 const testChangeUserPassword = testRoute({

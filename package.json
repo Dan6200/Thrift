@@ -23,6 +23,7 @@
 		"@types/chai-http": "^4.2.0",
 		"@types/js-yaml": "^4.0.5",
 		"@types/mocha": "^10.0.1",
+		"@types/swagger-jsdoc": "^6.0.1",
 		"@typescript-eslint/eslint-plugin": "^5.50.0",
 		"chai": "^4.3.7",
 		"eslint": "^8.0.1",
@@ -71,7 +72,6 @@
 		"multer-storage-cloudinary": "^4.0.0",
 		"pg": "^8.8.0",
 		"redis": "^4.6.7",
-		"swagger-ui-dist": "^5.1.0",
 		"swagger-ui-express": "^4.6.3",
 		"typescript": "*",
 		"xss-clean": "^0.1.1"

@@ -26,16 +26,39 @@ servers:
       basePath:
         default: v1
 
-  - url: http://localhost:{port}/{basePath}
-    description: Local server on computer
-    variables:
-      basePath:
-        default: v1
-      port:
-        default: '1024'
-
 components:
   schemas:
+    UserDataUpdate:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        password:
+          type: string
+          format: password
+        dob:
+          type: string
+          format: date
+        country:
+          type: string
+
+    CustomerId:
+      type:
+        object:
+        properties:
+          customer_id:
+            type: integer
+            format: int32
+        example:
+          customer_id: 17
+
     UserDataSent:
       type: object
       properties:
@@ -56,15 +79,15 @@ components:
           format: date
         country:
           type: string
+
       example:
         first_name: Joe
         last_name: Schmoe
         email: joeschmoe@fake.email.com
         phone: '+2341234567890'
-        password: password
+        password: 'my password'
         dob: 2000-4-10
         country: Nigeria
-
     UserDataRetrieved:
       type: object
       properties:
@@ -82,6 +105,7 @@ components:
           format: date
         country:
           type: string
+
       example:
         first_name: Joe
         last_name: Schmoe
@@ -99,9 +123,6 @@ components:
         password:
           type: string
           format: password
-      example:
-        phone: '+2341234567890'
-        password: password
 
     UnauthenticatedError:
       type: object
@@ -212,23 +233,31 @@ paths:
 
         '400':
           description: Invalid User Schema
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
+          $ref: '#/components/schemas/responses/BadRequestError'
 
   /auth/login:
     post:
-      summary: Logs in the user.
+      summary: Log In User.
       description: |
         Logs in the user with a token if it exists. 
         Else login the user with email or phone identification and creates token
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/LoginInfo'
+            examples:
+              Example 1:
+                summary: You can login with your phone number
+                value:
+                  phone: '+2341234567890'
+                  password: password
+              Example 2:
+                summary: Or you can login with your email address
+                value:
+                  email: joeschmoe@fake.email.com
+                  password: password
 
       responses:
         '200':
@@ -240,30 +269,25 @@ paths:
 
         '400':
           description: Invalid Login Format
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
+          $ref: '#/components/schemas/responses/BadRequestError'
 
         '401':
           description: Invalid Login Credentials
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
 
   /auth/logout:
     get:
-      summary: Log In User
+      summary: Log Out User
       security:
         - BearerAuth: []
+
       responses:
-        '200':
-          description: User Logged In
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Token'
+        '204':
+          description: User Logged Out
+
+        '401':
+          description: Unauthorized Access
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
 
   /users:
     get:
@@ -282,23 +306,38 @@ paths:
 
         '401':
           description: Unauthorized Access
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
 
         '404':
           description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/schemas/responses/NotFound'
 
     patch:
       summary: Update user
       description: Fully or partially updates the user's information.
       security:
         - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDataSent'
+            examples:
+              Example 1:
+                summary: You can update all fields - Except password field
+                value:
+                  first_name: Ebuka
+                  last_name: Eze
+                  email: ebukaeze@fake.email.com
+                  phone: '+2341234567890'
+                  password: password
+                  dob: 2000-4-10
+                  country: Nigeria
+              Example 2:
+                summary: Or update at least one field
+                value:
+                  first_name: Ebuka
 
       responses:
         '204':
@@ -306,24 +345,15 @@ paths:
 
         '400':
           description: Invalid Data format
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
+          $ref: '#/components/schemas/responses/BadRequestError'
 
         '401':
           description: Unauthorized Access
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
 
         '404':
           description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFound'
+          $ref: '#/components/schemas/responses/NotFound'
 
     delete:
       summary: Delete user
@@ -336,21 +366,53 @@ paths:
 
       '401':
         description: Unauthorized Access
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BadRequestError'
+        $ref: '#/components/schemas/responses/UnauthenticatedError'
 
       '404':
         description: User not found
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NotFound'
+        $ref: '#/components/schemas/responses/NotFound'
 
   /users/customer-account:
-    post: {}
-    get: {}
+    post:
+      summary: Creates a customer account.
+      description: |
+        Creates a customer account for the user.
+      security:
+        - BearerAuth: []
+
+      responses:
+        '201':
+          description: Customer Account Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/CustomerId'
+
+        '401':
+          description: Unauthorized Access
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+    get:
+      summary: Gets Customer
+      description: Retrieves the Customer Id
+      security: [BearerAuth: []]
+
+      responses:
+        '200':
+          description: Customer Account Retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerId'
+
+        '401':
+          description: Unauthorized Access
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+        '404':
+          description: User not found
+          $ref: '#/components/schemas/responses/NotFound'
+
     patch: {}
     delete: {}
   /users/customer-account/shipping-info:

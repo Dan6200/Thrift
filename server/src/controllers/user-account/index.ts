@@ -53,6 +53,7 @@ let updateUserAccount = async (
 	let { userId }: RequestUserPayload = request.user
 	if (Object.keys(request.body).length === 0)
 		throw new BadRequestError('request data cannot be empty')
+	// if (Object.hasOwn(request.body, 'password')
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body)
 	const paramList = [...data, userId]
@@ -62,7 +63,7 @@ let updateUserAccount = async (
 		values: paramList,
 	})
 	if (!dbResult.rows.length) throw new BadRequestError('Update unsuccessful')
-	response.status(StatusCodes.OK).end()
+	response.status(StatusCodes.NO_CONTENT).end()
 }
 
 let updateUserPassword = async (

@@ -45,7 +45,7 @@ app.use(
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(<JSON>swaggerDocument))
-app.get('/', (_req, res) => res.json(swaggerDocument))
+app.get('/swagger.json', (_req, res) => res.json(swaggerDocument))
 
 app.use(helmet())
 app.use(cors())

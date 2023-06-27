@@ -26,7 +26,7 @@ servers:
       basePath:
         default: v1
 
-  - url: localhost:{port}/{basePath}
+  - url: http://localhost:{port}/{basePath}
     description: Local server on computer
     variables:
       basePath:
@@ -253,10 +253,10 @@ paths:
                 $ref: '#/components/schemas/BadRequestError'
 
   /auth/logout:
-    security:
-      - BearerAuth: []
-
     get:
+      summary: Log In User
+      security:
+        - BearerAuth: []
       responses:
         '200':
           description: User Logged In
@@ -266,12 +266,11 @@ paths:
                 $ref: '#/components/schemas/Token'
 
   /users:
-    security:
-      - BearerAuth: []
-
     get:
       summary: Gets the user.
       description: Retrieves user information
+      security:
+        - BearerAuth: []
 
       responses:
         '200':
@@ -298,6 +297,8 @@ paths:
     patch:
       summary: Update user
       description: Fully or partially updates the user's information.
+      security:
+        - BearerAuth: []
 
       responses:
         '204':
@@ -325,6 +326,11 @@ paths:
                 $ref: '#/components/schemas/NotFound'
 
     delete:
+      summary: Delete user
+      description: Deletes the user's information.
+      security:
+        - BearerAuth: []
+
       '204':
         description: Deleted Successfully
 

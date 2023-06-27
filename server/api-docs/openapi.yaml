@@ -124,6 +124,7 @@ components:
 
     LoginInfo:
       type: object
+      required: [email, phone, password]
       properties:
         email:
           type: string
@@ -159,6 +160,12 @@ components:
         address:
           type: string
         city:
+          type: string
+        state:
+          type: string
+        postal_code:
+          type: string
+        delivery_contact:
           type: string
 
     UnauthenticatedError:
@@ -240,7 +247,8 @@ components:
         unique token string used to authenticate the user
         expires within 30 minutes.
       example:
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMzYiLCJpYXQiOjE2ODYwMzg4MzIsImV4cCI6MTY4NjA0MDYzMn0.j8ep358FU8KRSG7ehPdFypoTua5Cr7dgBQdUks8Dkdc'
+        token: |
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMzYiLCJpYXQiOjE2ODYwMzg4MzIsImV4cCI6MTY4NjA0MDYzMn0.j8ep358FU8KRSG7ehPdFypoTua5Cr7dgBQdUks8Dkdc'
 
   securitySchemes:
     BearerAuth:

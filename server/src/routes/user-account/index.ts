@@ -16,7 +16,7 @@ router
 	.patch(updateUserAccount)
 
 // user password route
-router.route('/password').patch(updateUserPassword)
+router.route('/password').put(updateUserPassword)
 
 // vendor account route
 router.use('/vendor-account', vendorAccountRouter)

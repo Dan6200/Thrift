@@ -40,9 +40,6 @@ components:
           format: email
         phone:
           type: string
-        password:
-          type: string
-          format: password
         dob:
           type: string
           format: date
@@ -385,7 +382,6 @@ paths:
                   last_name: Eze
                   email: ebukaeze@fake.email.com
                   phone: '+2341234567890'
-                  password: password
                   dob: 2000-4-10
                   country: Nigeria
               Example 2:
@@ -415,19 +411,41 @@ paths:
       security:
         - BearerAuth: []
 
-      '204':
-        description: Deleted Successfully
+      responses:
+        '204':
+          description: Deleted Successfully
 
-      '400':
-        $ref: '#/components/schemas/responses/BadRequestError'
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
 
-      '401':
-        description: Unauthorized Access
-        $ref: '#/components/schemas/responses/UnauthenticatedError'
+        '401':
+          description: Unauthorized Access
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
 
-      '404':
-        description: User not found
-        $ref: '#/components/schemas/responses/NotFound'
+        '404':
+          description: User not found
+          $ref: '#/components/schemas/responses/NotFound'
+
+  /users/password:
+    put:
+      summary: Change password
+      description: Verifies and updates the users password.
+      security: [BearerAuth: []]
+
+      responses:
+        '204':
+          description: User Password Updated
+
+        '400':
+          $ref: '#/components/schemas/responses/BadRequestError'
+
+        '401':
+          description: Unauthorized Access
+          $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+        '404':
+          description: User not found
+          $ref: '#/components/schemas/responses/NotFound'
 
   /users/customer-account:
     post:

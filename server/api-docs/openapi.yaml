@@ -124,6 +124,33 @@ components:
           type: string
           format: password
 
+    ShippingInfoId:
+      type: object
+      properties:
+        shipping_info_id:
+          type: integer
+          format: int32
+
+    ShippingInfoReq:
+      type: object
+      required:
+        - recipient_first_name
+        - recipient_last_name
+        - address
+        - city
+        - state
+        - postal_code
+        - delivery_contact
+      properties:
+        recipient_first_name:
+          type: string
+        recipient_last_name:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+
     UnauthenticatedError:
       type: object
       properties:
@@ -470,17 +497,120 @@ paths:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/ShippingInfoId'
+                  $ref: |
+                    '#/components/schemas/ShippingInfoId'
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
         '401':
           $ref: '#/components/schemas/responses/UnauthenticatedError'
 
     get:
+      summary: Retrieves all the shipping information
+      description: |
+        Retrieves all the shipping information for the 
+        customer account.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Retrieved all the shipping information added to a 
+            Customer's Account.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/ShippingInfoList'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No shipping information found for the customer
+          $ref: '#/components/schemas/responses/NotFound'
   /users/customer-account/shipping-info/{shippingInfoId}:
-    get: {}
-    put: {}
-    delete: {}
+    get:
+      summary: Retrieves shipping information.
+      description: |
+        Retrieves the shipping information with Id - shippingInfoId
+        for the customer.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Retrieves the shipping information with Id
+            shippingInfoId
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/ShippingInfo'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No shipping information found for the customer
+          $ref: '#/components/schemas/responses/NotFound'
+
+    put:
+      summary: Replace shipping information.
+      description: |
+        Replaces the shipping information with Id - shippingInfoId
+        for the customer.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Replaced the shipping information with a new one
+            and returns its Id.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/ShippingInfoId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No shipping information found for the customer
+          $ref: '#/components/schemas/responses/NotFound'
+    delete:
+      summary: Deletes shipping information.
+      description: |
+        Deletes the shipping information with Id - shippingInfoId
+        for the customer.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Deleted the shipping information with Id
+            shippingInfoId and returned it's Id
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/ShippingInfoId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No shipping information found for the customer
+          $ref: '#/components/schemas/responses/NotFound'
+
   /users/customer-account/payment-info:
     post: {}
     get: {}

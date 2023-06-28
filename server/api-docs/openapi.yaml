@@ -1254,7 +1254,7 @@ paths:
             application/json:
               schema:
                 $ref: |
-                  '#/components/schemas/MediaId'
+                  '#/components/schemas/mediaFile'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1304,7 +1304,7 @@ paths:
             application/json:
               schema:
                 $ref: |
-                  '#/components/schemas/MediaId'
+                  '#/components/schemas/mediaFile'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1331,7 +1331,7 @@ paths:
             application/json:
               schema:
                 $ref: |
-                  '#/components/schemas/MediaId'
+                  '#/components/schemas/mediaFile'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'

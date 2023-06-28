@@ -3,7 +3,7 @@ import {
 	createVendorAccount,
 	getVendorAccount,
 	deleteVendorAccount,
-} from '../../../controllers/user-account/vendor-account/index.js'
+} from '../../../controllers/my-account/vendor-account/index.js'
 import storeRouter from './stores/index.js'
 // import paymentsRouter from './payments.js'
 const router = express.Router()

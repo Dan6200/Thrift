@@ -4,9 +4,9 @@ import {
 	getUserAccount,
 	updateUserAccount,
 	updateUserPassword,
-} from '../../controllers/user-account/index.js'
-import vendorAccountRouter from './vendor-account/index.js'
-import customerAccountRouter from './customer-account/index.js'
+} from '../../controllers/my-account/index.js'
+import vendorAccountRouter from './vendor/index.js'
+import customerAccountRouter from './customer/index.js'
 const router = express.Router()
 
 router
@@ -18,9 +18,9 @@ router
 // user password route
 router.route('/password').put(updateUserPassword)
 
-// vendor account route
-// router.use('/vendor-account', vendorAccountRouter)
-// customer account route
-// router.use('/customer-account', customerAccountRouter)
+// users vendor account route
+router.use('/vendor', vendorAccountRouter)
+// users customer account route
+router.use('/customer', customerAccountRouter)
 
 export default router

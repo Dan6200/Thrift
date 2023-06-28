@@ -1249,7 +1249,7 @@ paths:
         '201':
           description: |
             Uploaded a new media to the product with Id
-            productId and returned it's Id
+            productId and returned it's filename
             content:
               application/json:
                 schema:
@@ -1287,17 +1287,19 @@ paths:
           description: |
             No media files found for the product
           $ref: '#/components/schemas/responses/NotFound'
+
+  /users/vendor-account/stores/{storeId}/products/{productId}/media/{the filename given in its route parameters}:
     patch:
       summary: Updates media file.
       description: |
-        Updates the media file with Id - mediaId
+        Updates the media file with the filename given in its route parameters
         for the vendor.
       security: [BearerAuth: []]
       responses:
         '200':
           description: |
             Updated the media file with a new one
-            and returns its Id.
+            and returns its the filename given in its route parameters.
             content:
               application/json:
                 schema:
@@ -1317,14 +1319,14 @@ paths:
     delete:
       summary: Deletes media file.
       description: |
-        Deletes the media file with Id - mediaId
+        Deletes the media file with the filename given in its route parameters
         for the vendor.
       security: [BearerAuth: []]
       responses:
         '200':
           description: |
-            Deleted the media file with Id
-            mediaId and returned it's Id
+            Deleted the media file with the filename given in its route parameters
+            mediaId and returned it's the filename given in its route parameters
             content:
               application/json:
                 schema:

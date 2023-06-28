@@ -419,10 +419,10 @@ paths:
           description: Internal Server Error
           $ref: '#/components/schemas/responses/UnExpectedError'
 
-  /users:
+  /account:
     get:
-      summary: Gets the user.
-      description: Retrieves user information
+      summary: Gets the account information.
+      description: Retrieves account information
       security:
         - BearerAuth: []
 
@@ -524,7 +524,7 @@ paths:
           description: Internal Server Error
           $ref: '#/components/schemas/responses/UnExpectedError'
 
-  /users/password:
+  /account/password:
     put:
       summary: Change password
       description: Verifies and updates the users password.
@@ -546,7 +546,7 @@ paths:
           description: Internal Server Error
           $ref: '#/components/schemas/responses/UnExpectedError'
 
-  /users/customer-account:
+  /account/customer:
     post:
       summary: Creates a customer account.
       description: |
@@ -638,7 +638,7 @@ paths:
           description: Internal Server Error
           $ref: '#/components/schemas/responses/UnExpectedError'
 
-  /users/customer-account/shipping-info:
+  /shipping-info:
     post:
       summary: Creates shipping information
       description: |
@@ -714,7 +714,7 @@ paths:
             Internal Server Error
           $ref: '#/components/schemas/responses/UnExpectedError'
 
-  /users/customer-account/shipping-info/{shippingInfoId}:
+  /shipping-info/{shippingInfoId}:
     get:
       summary: Retrieves shipping information.
       description: |
@@ -824,7 +824,7 @@ paths:
           description: Internal Server Error
           $ref: '#/components/schemas/responses/UnExpectedError'
 
-  /users/customer-account/payment-info:
+  /payment-info:
     post:
       summary: Creates payment information
       description: |
@@ -891,7 +891,7 @@ paths:
             No payment information found for the customer
           $ref: '#/components/schemas/responses/NotFound'
 
-  /users/customer-account/payment-info/{paymentInfoId}:
+  /payment-info/{paymentInfoId}:
     get:
       summary: Retrieves payment information.
       description: |
@@ -973,7 +973,7 @@ paths:
             No payment information found for the customer
           $ref: '#/components/schemas/responses/NotFound'
 
-  /users/vendor-account:
+  /account/vendor:
     post:
       summary: Creates a vendor account.
       description: |
@@ -1044,7 +1044,7 @@ paths:
           description: Vendor Account not found
           $ref: '#/components/schemas/responses/NotFound'
 
-  /users/vendor-account/stores:
+  /stores:
     post:
       summary: Creates store's data
       description: |
@@ -1093,7 +1093,7 @@ paths:
             No store's data found for the vendor
           $ref: '#/components/schemas/responses/NotFound'
 
-  /users/vendor-account/stores/{storeId}:
+  /stores/{storeId}:
     get:
       summary: Retrieves store's data.
       description: |
@@ -1174,140 +1174,141 @@ paths:
         '404':
           description: |
             No store's data found for the vendor
-          $ref: '#/components/schemas/responses/NotFound'
+          $ref:
+            '#/components/schemas/responses/NotFound'
 
-  /users/vendor-account/payment-info:
-    post:
-      summary: Creates payment information
-      description: |
-        Creates payment address and information for
-        the vendor account. Vendors can have a 
-        maximum of only 5 payment addresses and information.
-      security: [BearerAuth: []]
-      responses:
-        '201':
-          description: |
-            Payment information added to Vendor Account.
-          content:
-            application/json:
-              schema:
-                # $ref: |
-                #   '#/components/schemas/PaymentInfoId'
-        '400':
-          $ref: '#/components/schemas/responses/BadRequestError'
-        '401':
-          $ref: '#/components/schemas/responses/UnauthenticatedError'
+            # /payment-info:
+            #   post:
+            #     summary: Creates payment information
+            #     description: |
+            #       Creates payment address and information for
+            #       the vendor account. Vendors can have a
+            #       maximum of only 5 payment addresses and information.
+            #     security: [BearerAuth: []]
+            #     responses:
+            #       '201':
+            #         description: |
+            #           Payment information added to Vendor Account.
+            #         content:
+            #           application/json:
+            #             schema:
+            #               # $ref: |
+            #               #   '#/components/schemas/PaymentInfoId'
+            #       '400':
+            #         $ref: '#/components/schemas/responses/BadRequestError'
+            #       '401':
+            #         $ref: '#/components/schemas/responses/UnauthenticatedError'
 
-    get:
-      summary: Retrieves all the payment information
-      description: |
-        Retrieves all the payment information for the 
-        vendor account.
-      security: [BearerAuth: []]
-      responses:
-        '200':
-          description: |
-            Retrieved all the payment information added to a 
-            Vendor's Account.
-          content:
-            application/json:
-              schema:
-                # $ref: |
-                #   '#/components/schemas/PaymentInfoList'
-        '400':
-          $ref: |
-            '#/components/schemas/responses/BadRequestError'
-        '401':
-          $ref: |
-            '#/components/schemas/responses/UnauthenticatedError'
-        '404':
-          description: |
-            No payment information found for the vendor
-          $ref: '#/components/schemas/responses/NotFound'
+            #   get:
+            #     summary: Retrieves all the payment information
+            #     description: |
+            #       Retrieves all the payment information for the
+            #       vendor account.
+            #     security: [BearerAuth: []]
+            #     responses:
+            #       '200':
+            #         description: |
+            #           Retrieved all the payment information added to a
+            #           Vendor's Account.
+            #         content:
+            #           application/json:
+            #             schema:
+            #               # $ref: |
+            #               #   '#/components/schemas/PaymentInfoList'
+            #       '400':
+            #         $ref: |
+            #           '#/components/schemas/responses/BadRequestError'
+            #       '401':
+            #         $ref: |
+            #           '#/components/schemas/responses/UnauthenticatedError'
+            #       '404':
+            #         description: |
+            #           No payment information found for the vendor
+            #         $ref: '#/components/schemas/responses/NotFound'
 
-  /users/vendor-account/payment-info/{paymentInfoId}:
-    get:
-      summary: Retrieves payment information.
-      description: |
-        Retrieves the payment information with Id - paymentInfoId
-        for the vendor.
-      security: [BearerAuth: []]
-      responses:
-        '200':
-          description: |
-            Retrieves the payment information with Id
-            paymentInfoId
-          content:
-            application/json:
-              schema:
-                # $ref: |
-                #   '#/components/schemas/PaymentInfo'
-        '400':
-          $ref: |
-            '#/components/schemas/responses/BadRequestError'
-        '401':
-          $ref: |
-            '#/components/schemas/responses/UnauthenticatedError'
-        '404':
-          description: |
-            No payment information found for the vendor
-          $ref: '#/components/schemas/responses/NotFound'
+            # /users/vendor-account/payment-info/{paymentInfoId}:
+            #   get:
+            #     summary: Retrieves payment information.
+            #     description: |
+            #       Retrieves the payment information with Id - paymentInfoId
+            #       for the vendor.
+            #     security: [BearerAuth: []]
+            #     responses:
+            #       '200':
+            #         description: |
+            #           Retrieves the payment information with Id
+            #           paymentInfoId
+            #         content:
+            #           application/json:
+            #             schema:
+            #               # $ref: |
+            #               #   '#/components/schemas/PaymentInfo'
+            #       '400':
+            #         $ref: |
+            #           '#/components/schemas/responses/BadRequestError'
+            #       '401':
+            #         $ref: |
+            #           '#/components/schemas/responses/UnauthenticatedError'
+            #       '404':
+            #         description: |
+            #           No payment information found for the vendor
+            #         $ref: '#/components/schemas/responses/NotFound'
 
-    put:
-      summary: Replace payment information.
-      description: |
-        Replaces the payment information with Id - paymentInfoId
-        for the vendor.
-      security: [BearerAuth: []]
-      responses:
-        '200':
-          description: |
-            Replaced the payment information with a new one
-            and returns its Id.
-          content:
-            application/json:
-              schema:
-                # $ref: |
-                #   '#/components/schemas/PaymentInfoId'
-        '400':
-          $ref: |
-            '#/components/schemas/responses/BadRequestError'
-        '401':
-          $ref: |
-            '#/components/schemas/responses/UnauthenticatedError'
-        '404':
-          description: |
-            No payment information found for the vendor
-          $ref: '#/components/schemas/responses/NotFound'
+            #   put:
+            #     summary: Replace payment information.
+            #     description: |
+            #       Replaces the payment information with Id - paymentInfoId
+            #       for the vendor.
+            #     security: [BearerAuth: []]
+            #     responses:
+            #       '200':
+            #         description: |
+            #           Replaced the payment information with a new one
+            #           and returns its Id.
+            #         content:
+            #           application/json:
+            #             schema:
+            #               # $ref: |
+            #               #   '#/components/schemas/PaymentInfoId'
+            #       '400':
+            #         $ref: |
+            #           '#/components/schemas/responses/BadRequestError'
+            #       '401':
+            #         $ref: |
+            #           '#/components/schemas/responses/UnauthenticatedError'
+            #       '404':
+            #         description: |
+            #           No payment information found for the vendor
+            #         $ref: '#/components/schemas/responses/NotFound'
 
-    delete:
-      summary: Deletes payment information.
-      description: |
-        Deletes the payment information with Id - paymentInfoId
-        for the vendor.
-      security: [BearerAuth: []]
-      responses:
-        '200':
-          description: |
-            Deleted the payment information with Id
-            paymentInfoId and returned it's Id
-          content:
-            application/json:
-              schema:
-                # $ref: |
-                #   '#/components/schemas/PaymentInfoId'
-        '400':
-          $ref: |
-            '#/components/schemas/responses/BadRequestError'
-        '401':
-          $ref: |
-            '#/components/schemas/responses/UnauthenticatedError'
-        '404':
-          description: |
-            No payment information found for the vendor
-          $ref: '#/components/schemas/responses/NotFound'
+            #   delete:
+            #     summary: Deletes payment information.
+            #     description: |
+            #       Deletes the payment information with Id - paymentInfoId
+            #       for the vendor.
+            #     security: [BearerAuth: []]
+            #     responses:
+            #       '200':
+            #         description: |
+            #           Deleted the payment information with Id
+            #           paymentInfoId and returned it's Id
+            #         content:
+            #           application/json:
+            #             schema:
+            #               # $ref: |
+            #               #   '#/components/schemas/PaymentInfoId'
+            #       '400':
+            #         $ref: |
+            #           '#/components/schemas/responses/BadRequestError'
+            #       '401':
+            #         $ref: |
+            #           '#/components/schemas/responses/UnauthenticatedError'
+            #       '404':
+            #         description: |
+            #           No payment information found for the vendor
+            #         $ref: '#/components/schemas/responses/NotFound'
 
-  /users/vendor-account/stores/{storeId}/products:
+  /products:
     post:
       summary: Adds a new product to the store
       description: |
@@ -1357,7 +1358,7 @@ paths:
             No products found for the store
           $ref: '#/components/schemas/responses/NotFound'
 
-  /users/vendor-account/stores/{storeId}/products/{productId}:
+  /products/{productId}:
     get:
       summary: Retrieves product information.
       description: |
@@ -1438,7 +1439,7 @@ paths:
             No product found for the vendor
           $ref: '#/components/schemas/responses/NotFound'
 
-  /users/vendor-account/stores/{storeId}/products/{productId}/media:
+  /media:
     post:
       summary: Uploads a new media to the product
       description: |
@@ -1488,7 +1489,7 @@ paths:
             No media files found for the product
           $ref: '#/components/schemas/responses/NotFound'
 
-  /users/vendor-account/stores/{storeId}/products/{productId}/media/{filename}:
+  /media/{filename}:
     put:
       summary: Updates media file.
       description: |

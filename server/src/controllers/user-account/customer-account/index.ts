@@ -14,24 +14,6 @@ import {
 import processRoute from '../../helpers/process-route.js'
 const { CREATED, NOT_FOUND, OK } = StatusCodes
 
-const createQuery: CRUDQueryAuth = ({ user: { userId: customerId } }) =>
-	db.query({
-		text: InsertInTable('customers', ['customer_id'], 'customer_id'), //`insert into customers values($1) returning customer_id`,
-		values: [customerId],
-	})
-
-const readQuery: CRUDQueryAuth = ({ user: { userId: customerId } }) =>
-	db.query({
-		text: SelectFromTable('customers', ['1'], 'customer_id=$1'),
-		values: [customerId],
-	})
-
-const deleteQuery: CRUDQueryAuth = ({ user: { userId: customerId } }) =>
-	db.query({
-		text: DeleteInTable('customers', 'customer_id', 'customer_id=$1'),
-		values: [customerId],
-	})
-
 const validateResult = async (
 	result: QueryResult<QueryResultRow>
 ): Promise<ResponseData> => {
@@ -43,6 +25,30 @@ const validateResult = async (
 	return {
 		data: {},
 	}
+}
+
+const createQuery: CRUDQueryAuth = async ({ user: { userId: customerId } }) => {
+	let result = await db.query({
+		text: InsertInTable('customers', ['customer_id'], 'customer_id'), //`insert into customers values($1) returning customer_id`,
+		values: [customerId],
+	})
+	await validateResult(result)
+}
+
+const readQuery: CRUDQueryAuth = async ({ user: { userId: customerId } }) => {
+	let result = await db.query({
+		text: SelectFromTable('customers', ['1'], 'customer_id=$1'),
+		values: [customerId],
+	})
+	await validateResult(result)
+}
+
+const deleteQuery: CRUDQueryAuth = async ({ user: { userId: customerId } }) => {
+	let result = await db.query({
+		text: DeleteInTable('customers', 'customer_id', 'customer_id=$1'),
+		values: [customerId],
+	})
+	await validateResult(result)
 }
 
 // Saves from a nasty bugs

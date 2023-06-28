@@ -28,7 +28,7 @@ servers:
 
 components:
   schemas:
-    UserDataUpdate:
+    UserDataUpdated:
       type: object
       properties:
         first_name:
@@ -238,7 +238,21 @@ components:
         message:
           type: string
 
+    UnExpectedError:
+      type: object
+      properties:
+        message:
+          type: string
+        description: Error message
+
     responses:
+      default:
+        description: Unexpected error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnExpectedError'
+
       NotFound:
         description: Entity not found.
         content:
@@ -332,6 +346,14 @@ paths:
           description: Invalid User Schema
           $ref: '#/components/schemas/responses/BadRequestError'
 
+        '409':
+          description: User Already Exists
+          $ref: '#/components/schemas/responses/ConflictError'
+
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
+
   /auth/login:
     post:
       summary: Logs In User.
@@ -372,6 +394,10 @@ paths:
           description: Invalid Login Credentials
           $ref: '#/components/schemas/responses/UnauthenticatedError'
 
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
+
   /auth/logout:
     get:
       summary: Logs Out User
@@ -388,6 +414,10 @@ paths:
         '401':
           description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
 
   /users:
     get:
@@ -415,6 +445,10 @@ paths:
           description: User not found
           $ref: '#/components/schemas/responses/NotFound'
 
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
+
     patch:
       summary: Update user
       description: Fully or partially updates the user's information.
@@ -426,7 +460,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDataSent'
+              $ref: '#/components/schemas/UserDataUpdated'
 
             examples:
               Example 1:
@@ -456,6 +490,14 @@ paths:
           description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
 
+        '404':
+          description: User not found
+          $ref: '#/components/schemas/responses/NotFound'
+
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
+
     delete:
       summary: Delete user
       description: Deletes the user's information.
@@ -467,6 +509,7 @@ paths:
           description: Deleted Successfully
 
         '400':
+          description: Delete Unsuccessful
           $ref: '#/components/schemas/responses/BadRequestError'
 
         '401':
@@ -476,6 +519,10 @@ paths:
         '404':
           description: User not found
           $ref: '#/components/schemas/responses/NotFound'
+
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
 
   /users/password:
     put:
@@ -495,6 +542,10 @@ paths:
           description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
 
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
+
   /users/customer-account:
     post:
       summary: Creates a customer account.
@@ -512,11 +563,24 @@ paths:
                 $ref: '#/components/schema/CustomerId'
 
         '400':
+          description: Customer Account Not Created
           $ref: '#/components/schemas/responses/BadRequestError'
 
         '401':
           description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+        '404':
+          description: Customer Account Not Found
+          $ref: '#/components/schemas/responses/NotFound'
+
+        '409':
+          description: Customer Account Already Exists
+          $ref: '#/components/schemas/responses/ConflictError'
+
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
 
     get:
       summary: Gets Customer
@@ -542,6 +606,10 @@ paths:
           description: Customer Account not found
           $ref: '#/components/schemas/responses/NotFound'
 
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
+
     delete:
       summary: Deletes Customer Account
       description: Deletes the Customer Account
@@ -565,6 +633,10 @@ paths:
         '404':
           description: Customer Account not found
           $ref: '#/components/schemas/responses/NotFound'
+
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
 
   /users/customer-account/shipping-info:
     post:
@@ -591,9 +663,24 @@ paths:
                 $ref: |
                   '#/components/schemas/ShippingInfoId'
         '400':
+          description: |
+            Shipping information not added to Customer Account.
           $ref: '#/components/schemas/responses/BadRequestError'
+
         '401':
+          description: |
+            Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+        '404':
+          description: |
+            Customer Account not found
+          $ref: '#/components/schemas/responses/NotFound'
+
+        '500':
+          description: |
+            Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
 
     get:
       summary: Retrieves all the shipping information
@@ -622,6 +709,11 @@ paths:
             No shipping information found for the customer
           $ref: '#/components/schemas/responses/NotFound'
 
+        '500':
+          description: |
+            Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
+
   /users/customer-account/shipping-info/{shippingInfoId}:
     get:
       summary: Retrieves shipping information.
@@ -640,15 +732,23 @@ paths:
                 $ref: |
                   '#/components/schemas/ShippingInfoRetrieved'
         '400':
+          description: Cannot retrieve shipping information
           $ref: |
             '#/components/schemas/responses/BadRequestError'
+
         '401':
+          description: Unauthorized Access
           $ref: |
             '#/components/schemas/responses/UnauthenticatedError'
+
         '404':
           description: |
             No shipping information found for the customer
           $ref: '#/components/schemas/responses/NotFound'
+
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
 
     put:
       summary: Replace shipping information.
@@ -656,6 +756,13 @@ paths:
         Replaces the shipping information with Id - shippingInfoId
         for the customer.
       security: [BearerAuth: []]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: |
+                '#/components/schemas/ShippingInfoUpdated'
       responses:
         '200':
           description: |
@@ -667,15 +774,21 @@ paths:
                 $ref: |
                   '#/components/schemas/ShippingInfoId'
         '400':
+          description: Cannot replace shipping information
           $ref: |
             '#/components/schemas/responses/BadRequestError'
         '401':
+          description: Unauthorized Access
           $ref: |
             '#/components/schemas/responses/UnauthenticatedError'
         '404':
           description: |
             No shipping information found for the customer
           $ref: '#/components/schemas/responses/NotFound'
+
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
 
     delete:
       summary: Deletes shipping information.
@@ -694,15 +807,22 @@ paths:
                 $ref: |
                   '#/components/schemas/ShippingInfoId'
         '400':
+          description: Failed to delete shipping information
           $ref: |
             '#/components/schemas/responses/BadRequestError'
+
         '401':
+          description: Unauthorized Access
           $ref: |
             '#/components/schemas/responses/UnauthenticatedError'
         '404':
           description: |
             No shipping information found for the customer
           $ref: '#/components/schemas/responses/NotFound'
+
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
 
   /users/customer-account/payment-info:
     post:
@@ -712,6 +832,13 @@ paths:
         the customer account. Customers can have a 
         maximum of only 5 payment addresses and information.
       security: [BearerAuth: []]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentInfoSent'
+
       responses:
         '201':
           description: |
@@ -719,12 +846,23 @@ paths:
           content:
             application/json:
               schema:
-                # $ref: |
-                #   '#/components/schemas/PaymentInfoId'
+                $ref: |
+                  '#/components/schemas/PaymentInfoId'
         '400':
+          description: Failed to add payment information to Customer Account.
           $ref: '#/components/schemas/responses/BadRequestError'
+
         '401':
+          description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
+
+        '404':
+          description: Customer Account not found
+          $ref: '#/components/schemas/responses/NotFound'
+
+        '500':
+          description: Internal Server Error
+          $ref: '#/components/schemas/responses/UnExpectedError'
 
     get:
       summary: Retrieves all the payment information

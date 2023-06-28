@@ -19,8 +19,8 @@ router
 router.route('/password').put(updateUserPassword)
 
 // vendor account route
-router.use('/vendor-account', vendorAccountRouter)
+// router.use('/vendor-account', vendorAccountRouter)
 // customer account route
-router.use('/customer-account', customerAccountRouter)
+// router.use('/customer-account', customerAccountRouter)
 
 export default router

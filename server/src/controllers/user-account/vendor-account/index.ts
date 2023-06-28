@@ -15,24 +15,6 @@ import {
 import processRoute from '../../helpers/process-route.js'
 const { CREATED, NO_CONTENT, NOT_FOUND } = StatusCodes
 
-const createQuery: CRUDQueryAuth = ({ user: { userId: vendorId } }) =>
-	db.query({
-		text: InsertInTable('vendors', ['vendor_id'], 'vendor_id'),
-		values: [vendorId],
-	})
-
-const readQuery: CRUDQueryAuth = ({ user: { userId: vendorId } }) =>
-	db.query({
-		text: SelectFromTable('vendors', ['1'], 'vendor_id=$1'),
-		values: [vendorId],
-	})
-
-const deleteQuery: CRUDQueryAuth = ({ user: { userId: vendorId } }) =>
-	db.query({
-		text: DeleteInTable('vendors', 'vendor_id', 'vendor_id=$1'),
-		values: [vendorId],
-	})
-
 const validateResult = async (result: QueryResult): Promise<ResponseData> => {
 	if (!result.rows.length) {
 		return {
@@ -43,6 +25,30 @@ const validateResult = async (result: QueryResult): Promise<ResponseData> => {
 	return {
 		data: {},
 	}
+}
+
+const createQuery: CRUDQueryAuth = async ({ user: { userId: vendorId } }) => {
+	let result = await db.query({
+		text: InsertInTable('vendors', ['vendor_id'], 'vendor_id'),
+		values: [vendorId],
+	})
+	await validateResult(result)
+}
+
+const readQuery: CRUDQueryAuth = async ({ user: { userId: vendorId } }) => {
+	let result = await db.query({
+		text: SelectFromTable('vendors', ['1'], 'vendor_id=$1'),
+		values: [vendorId],
+	})
+	await validateResult(result)
+}
+
+const deleteQuery: CRUDQueryAuth = async ({ user: { userId: vendorId } }) => {
+	let result = await db.query({
+		text: DeleteInTable('vendors', 'vendor_id', 'vendor_id=$1'),
+		values: [vendorId],
+	})
+	await validateResult(result)
 }
 
 const processPostRoute = <ProcessRouteWithoutBody>processRoute

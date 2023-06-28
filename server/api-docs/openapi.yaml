@@ -1108,17 +1108,235 @@ paths:
           $ref: '#/components/schemas/responses/NotFound'
 
   /users/vendor-account/stores/{storeId}/products:
-    post: {}
-    get: {}
+    post:
+      summary: Adds a new product to the store
+      description: |
+        Adds a new product to the store with Id - productId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '201':
+          description: |
+            Added a new product to the store with Id
+            productId and returned it's Id
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/ProductId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+    get:
+      summary: Retrieves all the products
+      description: |
+        Retrieves all the products for the 
+        store.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Retrieved all the products added to a 
+            store.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/ProductList'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No products found for the store
+          $ref: '#/components/schemas/responses/NotFound'
 
   /users/vendor-account/stores/{storeId}/products/{productId}:
-    post: {}
-    get: {}
-    patch: {}
-    delete: {}
+    get:
+      summary: Retrieves product information.
+      description: |
+        Retrieves the product information with Id - productId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Retrieves the product information with Id
+            productId
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/Product'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No product found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
+
+    patch:
+      summary: Updates product information.
+      description: |
+        Updates the product information with Id - productId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Updated the product information with a new one
+            and returns its Id.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/ProductId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No product found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
+    delete:
+      summary: Deletes product information.
+      description: |
+        Deletes the product information with Id - productId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Deleted the product information with Id
+            productId and returned it's Id
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/ProductId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No product found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
 
   /users/vendor-account/stores/{storeId}/products/{productId}/media:
-    post: {}
-    get: {}
-    patch: {}
-    delete: {}
+    post:
+      summary: Uploads a new media to the product
+      description: |
+        Uploads a new media to the product with Id - productId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '201':
+          description: |
+            Uploaded a new media to the product with Id
+            productId and returned it's Id
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/MediaId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+    get:
+      summary: Retrieves all the media files
+      description: |
+        Retrieves all the media files for the 
+        product.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Retrieved all the media files added to a 
+            product.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/MediaList'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No media files found for the product
+          $ref: '#/components/schemas/responses/NotFound'
+    patch:
+      summary: Updates media file.
+      description: |
+        Updates the media file with Id - mediaId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Updated the media file with a new one
+            and returns its Id.
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/MediaId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No media file found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'
+
+    delete:
+      summary: Deletes media file.
+      description: |
+        Deletes the media file with Id - mediaId
+        for the vendor.
+      security: [BearerAuth: []]
+      responses:
+        '200':
+          description: |
+            Deleted the media file with Id
+            mediaId and returned it's Id
+            content:
+              application/json:
+                schema:
+                  $ref: |
+                    '#/components/schemas/MediaId'
+        '400':
+          $ref: |
+            '#/components/schemas/responses/BadRequestError'
+        '401':
+          $ref: |
+            '#/components/schemas/responses/UnauthenticatedError'
+        '404':
+          description: |
+            No media file found for the vendor
+          $ref: '#/components/schemas/responses/NotFound'

@@ -523,11 +523,11 @@ paths:
         '201':
           description: |
             Shipping information added to Customer Account.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/ShippingInfoId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/ShippingInfoId'
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
         '401':
@@ -544,11 +544,11 @@ paths:
           description: |
             Retrieved all the shipping information added to a 
             Customer's Account.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/ShippingInfoList'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/ShippingInfoList'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -572,11 +572,11 @@ paths:
           description: |
             Retrieves the shipping information with Id
             shippingInfoId
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/ShippingInfo'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/ShippingInfo'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -599,11 +599,11 @@ paths:
           description: |
             Replaced the shipping information with a new one
             and returns its Id.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/ShippingInfoId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/ShippingInfoId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -626,11 +626,11 @@ paths:
           description: |
             Deleted the shipping information with Id
             shippingInfoId and returned it's Id
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/ShippingInfoId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/ShippingInfoId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -654,11 +654,11 @@ paths:
         '201':
           description: |
             Payment information added to Customer Account.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/PaymentInfoId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/PaymentInfoId'
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
         '401':
@@ -675,11 +675,11 @@ paths:
           description: |
             Retrieved all the payment information added to a 
             Customer's Account.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/PaymentInfoList'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/PaymentInfoList'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -703,11 +703,11 @@ paths:
           description: |
             Retrieves the payment information with Id
             paymentInfoId
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/PaymentInfo'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/PaymentInfo'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -730,11 +730,11 @@ paths:
           description: |
             Replaced the payment information with a new one
             and returns its Id.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/PaymentInfoId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/PaymentInfoId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -757,11 +757,11 @@ paths:
           description: |
             Deleted the payment information with Id
             paymentInfoId and returned it's Id
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/PaymentInfoId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/PaymentInfoId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -784,10 +784,10 @@ paths:
       responses:
         '201':
           description: Vendor Account Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schema/VendorId'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schema/VendorId'
 
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
@@ -804,10 +804,10 @@ paths:
       responses:
         '200':
           description: Vendor Account Retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VendorId'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VendorId'
 
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
@@ -828,10 +828,10 @@ paths:
       responses:
         '200':
           description: Vendor Account Deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VendorId'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VendorId'
 
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
@@ -856,11 +856,11 @@ paths:
         '201':
           description: |
             Stores added to Vendor Account.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/StoreId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/StoreId'
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
         '401':
@@ -877,11 +877,11 @@ paths:
           description: |
             Retrieved all the store's data added to a 
             Vendor's Account.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/Stores'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/Stores'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -905,11 +905,11 @@ paths:
           description: |
             Retrieves the store's data with Id
             storeId
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/Store'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/Store'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -933,11 +933,11 @@ paths:
           description: |
             Replaced the store's data with a new one
             and returns its Id.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/StoreId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/StoreId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -960,11 +960,11 @@ paths:
           description: |
             Deleted the store's data with Id
             storeId and returned it's Id
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/StoreId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/StoreId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -988,11 +988,11 @@ paths:
         '201':
           description: |
             Payment information added to Vendor Account.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/PaymentInfoId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/PaymentInfoId'
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
         '401':
@@ -1009,11 +1009,11 @@ paths:
           description: |
             Retrieved all the payment information added to a 
             Vendor's Account.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/PaymentInfoList'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/PaymentInfoList'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1037,11 +1037,11 @@ paths:
           description: |
             Retrieves the payment information with Id
             paymentInfoId
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/PaymentInfo'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/PaymentInfo'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1064,11 +1064,11 @@ paths:
           description: |
             Replaced the payment information with a new one
             and returns its Id.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/PaymentInfoId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/PaymentInfoId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1091,11 +1091,11 @@ paths:
           description: |
             Deleted the payment information with Id
             paymentInfoId and returned it's Id
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/PaymentInfoId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/PaymentInfoId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1119,11 +1119,11 @@ paths:
           description: |
             Added a new product to the store with Id
             productId and returned it's Id
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/ProductId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/ProductId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1141,11 +1141,11 @@ paths:
           description: |
             Retrieved all the products added to a 
             store.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/ProductList'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/ProductList'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1169,11 +1169,11 @@ paths:
           description: |
             Retrieves the product information with Id
             productId
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/Product'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/Product'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1196,11 +1196,11 @@ paths:
           description: |
             Updated the product information with a new one
             and returns its Id.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/ProductId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/ProductId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1222,11 +1222,11 @@ paths:
           description: |
             Deleted the product information with Id
             productId and returned it's Id
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/ProductId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/ProductId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1250,11 +1250,11 @@ paths:
           description: |
             Uploaded a new media to the product with Id
             productId and returned it's filename
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/MediaId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/MediaId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1272,11 +1272,11 @@ paths:
           description: |
             Retrieved all the media files added to a 
             product.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/MediaList'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/MediaList'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1300,11 +1300,11 @@ paths:
           description: |
             Updated the media file with a new one
             and returns its the filename given in its route parameters.
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/MediaId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/MediaId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1327,11 +1327,11 @@ paths:
           description: |
             Deleted the media file with the filename given in its route parameters
             mediaId and returned it's the filename given in its route parameters
-            content:
-              application/json:
-                schema:
-                  $ref: |
-                    '#/components/schemas/MediaId'
+          content:
+            application/json:
+              schema:
+                $ref: |
+                  '#/components/schemas/MediaId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'

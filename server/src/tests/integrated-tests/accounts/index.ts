@@ -1,18 +1,21 @@
 import 'dotenv'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
+import { StatusCodes } from 'http-status-codes'
+import { UserData } from '../../../types-and-interfaces/user.js'
+import {
+	registration,
+	logout,
+	emailLogin,
+} from '../helper-functions/auth/index.js'
 import {
 	testGetUser,
 	testUpdateUser,
 	testChangeUserPassword,
 	testDeleteUser,
-	testFailToGetUser,
 	testGetNonExistentUser,
-} from '../../helpers/user/index.js'
-import { StatusCodes } from 'http-status-codes'
-import { emailLogin, logout, registration } from '../../helpers/auth/index.js'
-import db from '../../../../db/pg/index.js'
-import { UserData } from '../../../../types-and-interfaces/user.js'
+} from '../helper-functions/user/index.js'
+import db from '../../../db/pg/index.js'
 
 chai.use(chaiHttp).should()
 

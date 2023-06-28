@@ -1,22 +1,20 @@
+import ShippingInfo from '../../../../types-and-interfaces/shipping-info.js'
+import { UserData } from '../../../../types-and-interfaces/user.js'
+import { registration } from '../../helper-functions/auth/index.js'
 import {
 	testCreateCustomer,
 	testGetCustomer,
 	testDeleteCustomer,
 	testGetNonExistentCustomer,
-} from '../../../helpers/user/customer/index.js'
+} from '../../helper-functions/user/customer/index.js'
 import {
 	testCreateShipping,
 	testGetShipping,
 	testUpdateShipping,
 	testDeleteShipping,
 	testGetNonExistentShipping,
-} from '../../../helpers/user/customer/shipping.js'
-import { registration } from '../../../helpers/auth/index.js'
-import assert from 'node:assert'
-import db from '../../../../../db/pg/index.js'
-import ShippingInfo from '../../../../../types-and-interfaces/shipping-info.js'
-import { UserData } from '../../../../../types-and-interfaces/user.js'
-import { log } from 'node:console'
+} from '../../helper-functions/user/customer/shipping.js'
+import db from '../../../../db/pg/index.js'
 
 // Set server url
 const server = process.env.LOCAL_APP_SERVER!

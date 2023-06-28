@@ -1289,7 +1289,7 @@ paths:
           $ref: '#/components/schemas/responses/NotFound'
 
   /users/vendor-account/stores/{storeId}/products/{productId}/media/{the filename given in its route parameters}:
-    patch:
+    put:
       summary: Updates media file.
       description: |
         Updates the media file with the filename given in its route parameters

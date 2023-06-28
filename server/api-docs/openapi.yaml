@@ -28,6 +28,10 @@ servers:
 
 components:
   schemas:
+    ShippingInfoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ShippingInfoSent'
     UserDataUpdate:
       type: object
       properties:
@@ -52,6 +56,7 @@ components:
         customer_id:
           type: integer
           format: int32
+      description: unique identifier for a customer
       example:
         customer_id: 17
 
@@ -139,7 +144,7 @@ components:
           type: integer
           format: int32
 
-    ShippingInfoReq:
+    ShippingInfoSent:
       type: object
       required:
         - recipient_first_name
@@ -149,6 +154,7 @@ components:
         - state
         - postal_code
         - delivery_contact
+        - delivery_instructions
       properties:
         recipient_first_name:
           type: string
@@ -164,6 +170,55 @@ components:
           type: string
         delivery_contact:
           type: string
+      example:
+        value:
+          recipient_first_name: Ebuka
+          recipient_last_name: Eze
+          phone: '+2341234567890'
+          address: 53, Thomas Salako Street, Ogba,
+          city: Ikeja
+          state: Lagos
+          postal_code: 123456
+          country: Nigeria
+          delivery_contact: '+234902354252'
+          delivery_instructions: |
+            Call me before you arrive, I may not be home
+
+    ShippingInfoRetrieved:
+      type: object
+      properties:
+        shipping_info_id:
+          type: integer
+          format: int32
+        recipient_first_name:
+          type: string
+        recipient_last_name:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postal_code:
+          type: string
+        delivery_contact:
+          type: string
+        delivery_instructions:
+          type: string
+      example:
+        shipping_info_id: 1
+        recipient_first_name: Ebuka
+        recipient_last_name: Eze
+        phone: '+2341234567890'
+        address: 53, Thomas Salako Street, Ogba,
+        city: Ikeja
+        state: Lagos
+        postal_code: 123456
+        country: Nigeria
+        delivery_contact: '+234902354252'
+        delivery_instructions: |
+          Call me before you arrive, I may not be home
 
     UnauthenticatedError:
       type: object
@@ -347,7 +402,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDataSent'
+                $ref: '#/components/schemas/UserDataRetrieved'
 
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
@@ -519,6 +574,13 @@ paths:
         the customer account. Customers can have a 
         maximum of only 5 shipping addresses and information.
       security: [BearerAuth: []]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShippingInfoSent'
+
       responses:
         '201':
           description: |
@@ -576,7 +638,7 @@ paths:
             application/json:
               schema:
                 $ref: |
-                  '#/components/schemas/ShippingInfo'
+                  '#/components/schemas/ShippingInfoRetrieved'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -657,8 +719,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: |
-                  '#/components/schemas/PaymentInfoId'
+                # $ref: |
+                #   '#/components/schemas/PaymentInfoId'
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
         '401':
@@ -678,8 +740,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: |
-                  '#/components/schemas/PaymentInfoList'
+                # $ref: |
+                #   '#/components/schemas/PaymentInfoList'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -706,8 +768,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: |
-                  '#/components/schemas/PaymentInfo'
+                # $ref: |
+                #   '#/components/schemas/PaymentInfo'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -733,8 +795,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: |
-                  '#/components/schemas/PaymentInfoId'
+                # $ref: |
+                #   '#/components/schemas/PaymentInfoId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -760,8 +822,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: |
-                  '#/components/schemas/PaymentInfoId'
+                # $ref: |
+                #   '#/components/schemas/PaymentInfoId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -991,8 +1053,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: |
-                  '#/components/schemas/PaymentInfoId'
+                # $ref: |
+                #   '#/components/schemas/PaymentInfoId'
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
         '401':
@@ -1012,8 +1074,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: |
-                  '#/components/schemas/PaymentInfoList'
+                # $ref: |
+                #   '#/components/schemas/PaymentInfoList'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1040,8 +1102,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: |
-                  '#/components/schemas/PaymentInfo'
+                # $ref: |
+                #   '#/components/schemas/PaymentInfo'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1067,8 +1129,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: |
-                  '#/components/schemas/PaymentInfoId'
+                # $ref: |
+                #   '#/components/schemas/PaymentInfoId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1094,8 +1156,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: |
-                  '#/components/schemas/PaymentInfoId'
+                # $ref: |
+                #   '#/components/schemas/PaymentInfoId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'

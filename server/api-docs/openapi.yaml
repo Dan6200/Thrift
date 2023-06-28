@@ -28,10 +28,6 @@ servers:
 
 components:
   schemas:
-    ShippingInfoList:
-      type: array
-      items:
-        $ref: '#/components/schemas/ShippingInfoSent'
     UserDataUpdate:
       type: object
       properties:
@@ -171,18 +167,17 @@ components:
         delivery_contact:
           type: string
       example:
-        value:
-          recipient_first_name: Ebuka
-          recipient_last_name: Eze
-          phone: '+2341234567890'
-          address: 53, Thomas Salako Street, Ogba,
-          city: Ikeja
-          state: Lagos
-          postal_code: 123456
-          country: Nigeria
-          delivery_contact: '+234902354252'
-          delivery_instructions: |
-            Call me before you arrive, I may not be home
+        recipient_first_name: Ebuka
+        recipient_last_name: Eze
+        phone: '+2341234567890'
+        address: 53, Thomas Salako Street, Ogba,
+        city: Ikeja
+        state: Lagos
+        postal_code: 123456
+        country: Nigeria
+        delivery_contact: '+234902354252'
+        delivery_instructions: |
+          Call me before you arrive, I may not be home
 
     ShippingInfoRetrieved:
       type: object
@@ -219,6 +214,11 @@ components:
         delivery_contact: '+234902354252'
         delivery_instructions: |
           Call me before you arrive, I may not be home
+
+    ShippingInfoRetrievedList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ShippingInfoSent'
 
     UnauthenticatedError:
       type: object
@@ -610,7 +610,7 @@ paths:
             application/json:
               schema:
                 $ref: |
-                  '#/components/schemas/ShippingInfoList'
+                  '#/components/schemas/ShippingInfoRetrievedList'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'

@@ -1288,7 +1288,7 @@ paths:
             No media files found for the product
           $ref: '#/components/schemas/responses/NotFound'
 
-  /users/vendor-account/stores/{storeId}/products/{productId}/media/{the filename given in its route parameters}:
+  /users/vendor-account/stores/{storeId}/products/{productId}/media/{filename}:
     put:
       summary: Updates media file.
       description: |

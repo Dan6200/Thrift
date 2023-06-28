@@ -1,3 +1,4 @@
+// cspell:ignore alphanum
 import joi from 'joi'
 
 const ShippingInfoSchemaReq = joi
@@ -14,11 +15,11 @@ const ShippingInfoSchemaReq = joi
 				/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
 			)
 			.required(),
-		delivery_instructions: joi.string().required(),
+		delivery_instructions: joi.array().items(joi.string().required()),
 	})
 	.required()
 
-const ShippingInfoSchemaDBLean = joi
+const ShippingInfoSchemaID = joi
 	.object({
 		shipping_info_id: joi.number().required(),
 	})
@@ -40,7 +41,7 @@ const ShippingInfoSchemaDB = joi
 				/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
 			)
 			.required(),
-		delivery_instructions: joi.string().required(),
+		delivery_instructions: joi.array().items(joi.string().required()),
 	})
 	.required()
 
@@ -61,14 +62,14 @@ const ShippingInfoSchemaDBList = joi.array().items(
 					/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
 				)
 				.required(),
-			delivery_instructions: joi.string().required(),
+			delivery_instructions: joi.array().items(joi.string().required()),
 		})
 		.required()
 )
 
 export {
 	ShippingInfoSchemaReq,
-	ShippingInfoSchemaDBLean,
+	ShippingInfoSchemaID,
 	ShippingInfoSchemaDB,
 	ShippingInfoSchemaDBList,
 }

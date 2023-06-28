@@ -57,6 +57,7 @@ app.use(xss())
 app.use(morgan('dev'))
 // application routes
 const v1Router = Router()
+v1Router.get('/', (_req, res) => res.send('Welcome to Thrift eCommerce API'))
 v1Router.use('/auth', authRouter)
 v1Router.use('/account', authenticateUser, accountRouter)
 v1Router.use('/stores', authenticateUser, storesRouter)

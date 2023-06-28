@@ -20,7 +20,7 @@ export const StoreSchemaReqData = joi
 	})
 	.required()
 
-export const StoreSchemaReqDataPartialUpdate = joi.object({
+export const StoreSchemaReqDataPartial = joi.object({
 	store_name: joi.string().min(3).max(50),
 	store_page: joi.object({
 		heading: joi.string().required(),

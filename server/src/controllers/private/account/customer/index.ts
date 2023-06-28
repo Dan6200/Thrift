@@ -31,15 +31,7 @@ const validateResult = async (
 
 const createQuery: CRUDQueryAuth = async ({ user: { userId: customerId } }) => {
 	let result = await db.query({
-		text: InsertInTable('customers', ['customer_id'], 'customer_id'), //`insert into customers values($1) returning customer_id`,
-		values: [customerId],
-	})
-	await validateResult(result)
-}
-
-const readQuery: CRUDQueryAuth = async ({ user: { userId: customerId } }) => {
-	let result = await db.query({
-		text: SelectFromTable('customers', ['1'], 'customer_id=$1'),
+		text: InsertInTable('customers', ['customer_id'], 'customer_id'),
 		values: [customerId],
 	})
 	await validateResult(result)
@@ -60,9 +52,6 @@ const createCustomerAccount = processPostRoute(
 	undefined,
 	undefined
 )
-
-const processGetRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
-const getCustomerAccount = processGetRoute(readQuery, OK, undefined, undefined)
 
 const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
 const deleteCustomerAccount = processDeleteRoute(

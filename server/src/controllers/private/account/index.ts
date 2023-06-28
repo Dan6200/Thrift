@@ -1,22 +1,22 @@
 import { Response } from 'express'
-import assert from 'node:assert/strict'
 import joi from 'joi'
+import db from '../../../db/pg/index.js'
 import { StatusCodes } from 'http-status-codes'
-import { UserDataSchemaDB } from '../../app-schema/users.js'
-import db from '../../db/pg/index.js'
-import { BadRequestError, UnauthenticatedError } from '../../errors/index.js'
-import { hashPassword } from '../../security/password.js'
+import { UserDataSchemaDB } from '../../../app-schema/users.js'
+import BadRequestError from '../../../errors/bad-request.js'
+import UnauthenticatedError from '../../../errors/unauthenticated.js'
+import { hashPassword } from '../../../security/password.js'
 import {
 	RequestWithPayload,
 	RequestUserPayload,
-} from '../../types-and-interfaces/request.js'
-import { UserData } from '../../types-and-interfaces/user.js'
-import validateUserPassword from '../helpers/validate-user-password.js'
+} from '../../../types-and-interfaces/request.js'
+import { UserData } from '../../../types-and-interfaces/user.js'
 import {
-	DeleteInTable,
 	SelectFromTable,
 	UpdateInTable,
-} from '../helpers/generate-sql-commands/index.js'
+	DeleteInTable,
+} from '../../helpers/generate-sql-commands/index.js'
+import validateUserPassword from '../../helpers/validate-user-password.js'
 
 const userDataFields = [
 	'first_name',
@@ -53,7 +53,8 @@ let updateUserAccount = async (
 	let { userId }: RequestUserPayload = request.user
 	if (Object.keys(request.body).length === 0)
 		throw new BadRequestError('request data cannot be empty')
-	// if (Object.hasOwn(request.body, 'password')
+	if (Object.hasOwn(request.body, 'password'))
+		throw new BadRequestError('Cannot update password here')
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body)
 	const paramList = [...data, userId]
@@ -73,6 +74,10 @@ let updateUserPassword = async (
 	let { userId }: RequestUserPayload = request.user
 	if (Object.keys(request.body).length === 0)
 		throw new BadRequestError('request data cannot be empty')
+	// check if password exists in request body
+	// throw a bad request error if it does not
+	if (!Object.hasOwn(request.body, 'password'))
+		throw new BadRequestError('Provide current password')
 	let {
 		password: oldPassword,
 		new_password: newPassword,

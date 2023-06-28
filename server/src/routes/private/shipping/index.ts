@@ -5,7 +5,7 @@ import {
 	getShippingInfo,
 	updateShippingInfo,
 	deleteShippingInfo,
-} from '../../../controllers/user-account/customer-account/shipping.js'
+} from '../../../controllers/private/shipping-info/index.js'
 const router = express.Router()
 
 router.route('/').post(createShippingInfo).get(getAllShippingInfo)
@@ -13,7 +13,6 @@ router.route('/').post(createShippingInfo).get(getAllShippingInfo)
 router
 	.route('/:shippingInfoId')
 	.get(getShippingInfo)
-	// put not patch. client fetches data and then replaces with new version
 	.put(updateShippingInfo)
 	.delete(deleteShippingInfo)
 

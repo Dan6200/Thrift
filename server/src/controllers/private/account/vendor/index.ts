@@ -1,18 +1,18 @@
 import { StatusCodes } from 'http-status-codes'
 import { QueryResult } from 'pg'
-import db from '../../../db/pg/index.js'
 import {
 	CRUDQueryAuth,
-	ProcessRouteWithoutBody,
 	ProcessRouteWithoutBodyAndDBResult,
-} from '../../../types-and-interfaces/process-routes.js'
-import { ResponseData } from '../../../types-and-interfaces/response.js'
+} from '../../../../types-and-interfaces/process-routes.js'
+import { ResponseData } from '../../../../types-and-interfaces/response.js'
+import db from '../../../../db/pg/index.js'
 import {
-	DeleteInTable,
 	InsertInTable,
 	SelectFromTable,
-} from '../../helpers/generate-sql-commands/index.js'
-import processRoute from '../../helpers/process-route.js'
+	DeleteInTable,
+} from '../../../helpers/generate-sql-commands/index.js'
+import processRoute from '../../../helpers/process-route.js'
+
 const { CREATED, NO_CONTENT, NOT_FOUND } = StatusCodes
 
 const validateResult = async (result: QueryResult): Promise<ResponseData> => {
@@ -51,20 +51,20 @@ const deleteQuery: CRUDQueryAuth = async ({ user: { userId: vendorId } }) => {
 	await validateResult(result)
 }
 
-const processPostRoute = <ProcessRouteWithoutBody>processRoute
+const processPostRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
 const createVendorAccount = processPostRoute(
 	createQuery,
 	CREATED,
 	undefined,
-	validateResult
+	undefined
 )
 
-const processGetRoute = <ProcessRouteWithoutBody>processRoute
+const processGetRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
 const getVendorAccount = processGetRoute(
 	readQuery,
 	NO_CONTENT,
 	undefined,
-	validateResult
+	undefined
 )
 
 const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute

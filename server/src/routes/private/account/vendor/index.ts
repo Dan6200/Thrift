@@ -3,9 +3,7 @@ import {
 	createVendorAccount,
 	getVendorAccount,
 	deleteVendorAccount,
-} from '../../../controllers/my-account/vendor-account/index.js'
-import storeRouter from './stores/index.js'
-// import paymentsRouter from './payments.js'
+} from '../../../../controllers/private/account/vendor/index.js'
 const router = express.Router()
 
 router
@@ -14,6 +12,4 @@ router
 	.get(getVendorAccount)
 	.delete(deleteVendorAccount)
 
-router.use('/stores', storeRouter)
-// router.use('/payment-info', paymentsRouter)
 export default router

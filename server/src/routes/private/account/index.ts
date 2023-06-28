@@ -1,12 +1,12 @@
 import express from 'express'
-import {
-	deleteUserAccount,
-	getUserAccount,
-	updateUserAccount,
-	updateUserPassword,
-} from '../../controllers/my-account/index.js'
 import vendorAccountRouter from './vendor/index.js'
 import customerAccountRouter from './customer/index.js'
+import {
+	getUserAccount,
+	deleteUserAccount,
+	updateUserAccount,
+	updateUserPassword,
+} from '../../../controllers/private/account/index.js'
 const router = express.Router()
 
 router

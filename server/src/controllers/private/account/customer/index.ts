@@ -1,17 +1,19 @@
 import { StatusCodes } from 'http-status-codes'
 import { QueryResult, QueryResultRow } from 'pg'
-import db from '../../../db/pg/index.js'
 import {
 	CRUDQueryAuth,
 	ProcessRouteWithoutBody,
-} from '../../../types-and-interfaces/process-routes.js'
-import { ResponseData } from '../../../types-and-interfaces/response.js'
+	ProcessRouteWithoutBodyAndDBResult,
+} from '../../../../types-and-interfaces/process-routes.js'
+import { ResponseData } from '../../../../types-and-interfaces/response.js'
 import {
-	DeleteInTable,
 	InsertInTable,
 	SelectFromTable,
-} from '../../helpers/generate-sql-commands/index.js'
-import processRoute from '../../helpers/process-route.js'
+	DeleteInTable,
+} from '../../../helpers/generate-sql-commands/index.js'
+import processRoute from '../../../helpers/process-route.js'
+import db from '../../../../db/pg/index.js'
+
 const { CREATED, NOT_FOUND, OK } = StatusCodes
 
 const validateResult = async (
@@ -51,29 +53,23 @@ const deleteQuery: CRUDQueryAuth = async ({ user: { userId: customerId } }) => {
 	await validateResult(result)
 }
 
-// Saves from a nasty bugs
-const processPostRoute = <ProcessRouteWithoutBody>processRoute
+const processPostRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
 const createCustomerAccount = processPostRoute(
 	createQuery,
 	CREATED,
 	undefined,
-	validateResult
+	undefined
 )
 
-const processGetRoute = <ProcessRouteWithoutBody>processRoute
-const getCustomerAccount = processGetRoute(
-	readQuery,
-	OK,
-	undefined,
-	validateResult
-)
+const processGetRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
+const getCustomerAccount = processGetRoute(readQuery, OK, undefined, undefined)
 
-const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
+const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
 const deleteCustomerAccount = processDeleteRoute(
 	deleteQuery,
 	OK,
 	undefined,
-	validateResult
+	undefined
 )
 
 export { createCustomerAccount, getCustomerAccount, deleteCustomerAccount }

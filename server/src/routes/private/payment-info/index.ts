@@ -1,6 +1,6 @@
-//////////////////////////////////////////////
-// Vendor Payment Information Router
-//////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
+// Payment Info Routes - For Customers, Vendors, and Stores
+/////////////////////////////////////////////////////////////
 // import express from 'express'
 // import {
 // 	createPaymentInfo,
@@ -8,7 +8,7 @@
 // 	getPaymentInfo,
 // 	updatePaymentInfo,
 // 	deletePaymentInfo,
-// } from '../../../controllers/user-account/customer-account/payments.js'
+// } from '../../../controllers/payment-info.js'
 // const router = express.Router()
 
 // router.route('/').post(createPaymentInfo).get(getAllPaymentInfo)

@@ -59,7 +59,7 @@ const createQuery = async ({
 		text: InsertInTable(
 			'shipping_info',
 			['customer_id', ...Object.keys(shippingData)],
-			'shipping_id'
+			'shipping_info_id'
 		),
 		values: [customerId, ...Object.values(shippingData)],
 	})

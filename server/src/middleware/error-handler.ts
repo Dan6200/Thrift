@@ -1,6 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
 import { NextFunction, Request, Response } from 'express'
-import { error } from 'console'
 
 const errorHandlerMiddleware = async (
 	err: { statusCode: StatusCodes; message: 'string' },
@@ -8,8 +7,8 @@ const errorHandlerMiddleware = async (
 	res: Response,
 	_next: NextFunction // Must have these 4 params to work
 ) => {
-	// error logging
-	error(err)
+	// error logging, comment out for production
+	// error(err)
 
 	let customError = {
 		// set default

@@ -27,8 +27,6 @@ const createQuery = async ({
 	body: storeData,
 	user: { userId: vendorId },
 }: RequestWithPayload) => {
-	debugger
-	console.log('storeData', storeData)
 	if (!vendorId) throw new UnauthenticatedError('Cannot access resource')
 	// check if vendor account exists
 	const dbRes = await db.query({

@@ -79,7 +79,6 @@ export default function ({
 		it('it should Add a couple products to each store', async () => {
 			let idx: number, store: StoresData
 			for ([idx, store] of vendorStores.entries()) {
-				console.log('index store', idx, store)
 				const { store_id } = await testCreateStore(
 					server,
 					token,

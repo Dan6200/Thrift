@@ -1,12 +1,12 @@
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
 import { QueryResult } from 'pg'
-import { StoreSchemaDBResult } from '../../../../../../app-schema/vendor/store.js'
+import { StoreSchemaDBResult } from '../../../../app-schema/stores.js'
 import {
 	testRouteWithData,
 	testRouteNoData,
-} from '../../../../../../types-and-interfaces/test-routes.js'
-import testRoute from '../../../test-route.js'
+} from '../../../../types-and-interfaces/test-routes.js'
+import testRoute from '../test-route.js'
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 

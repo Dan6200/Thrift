@@ -20,7 +20,7 @@ import db from '../../../db/pg/index.js'
 chai.use(chaiHttp).should()
 
 // Set server url
-const server = process.env.LOCAL_APP_SERVER!
+const server = process.env.DEV_APP_SERVER!
 
 export default function ({
 	userInfo,

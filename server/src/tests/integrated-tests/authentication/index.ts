@@ -16,7 +16,7 @@ chai.use(chaiHttp).should()
 export default function ({ userInfo }: { userInfo: UserData }) {
 	describe('User Authentication', () => {
 		let token: string
-		const server = process.env.LOCAL_APP_SERVER!
+		const server = process.env.DEV_APP_SERVER!
 		before(async () => {
 			await db.query({ text: 'delete from user_accounts' })
 		})

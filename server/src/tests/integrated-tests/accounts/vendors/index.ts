@@ -1,28 +1,27 @@
 import chai from 'chai'
 import { assert } from 'chai'
 import chaiHttp from 'chai-http'
-import { log } from 'console'
-import db from '../../../../../db/pg/index.js'
-import StoresData from '../../../../../types-and-interfaces/stores-data.js'
-import { UserData } from '../../../../../types-and-interfaces/user.js'
-import { registration } from '../../../helpers/auth/index.js'
+import db from '../../../../db/pg/index.js'
+import StoresData from '../../../../types-and-interfaces/stores-data.js'
+import { UserData } from '../../../../types-and-interfaces/user.js'
+import { registration } from '../../helper-functions/auth/index.js'
 import {
 	testCreateVendor,
 	testGetVendor,
 	testDeleteVendor,
 	testGetNonExistentVendor,
-} from '../../../helpers/user/vendor/index.js'
+} from '../../helper-functions/vendor/index.js'
 import {
 	testCreateStore,
 	testGetStore,
 	testUpdateStore,
 	testDeleteStore,
 	testGetNonExistentStore,
-} from '../../../helpers/user/vendor/store/index.js'
+} from '../../helper-functions/store/index.js'
 
 chai.use(chaiHttp).should()
 
-const server = process.env.LOCAL_APP_SERVER!
+const server = process.env.DEV_APP_SERVER!
 let token: string
 
 export default function ({

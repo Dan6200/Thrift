@@ -1,11 +1,12 @@
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
-import { ShippingInfoSchemaDB } from '../../../../../app-schema/customer/shipping.js'
+import { ShippingInfoSchemaDB } from '../../../../app-schema/shipping.js'
 import {
 	testRouteWithData,
 	testRouteNoData,
-} from '../../../../../types-and-interfaces/test-routes.js'
-import testRoute from '../../test-route.js'
+} from '../../../../types-and-interfaces/test-routes.js'
+import testRoute from '../test-route.js'
+
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes
 
 let checkId = async (data: any) => {

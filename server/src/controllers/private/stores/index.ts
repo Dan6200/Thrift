@@ -5,7 +5,7 @@ import {
 	StoreSchemaReqDataPartial,
 	StoreSchemaDBResult,
 	StoreSchemaDBResultLean,
-} from '../../../app-schema/vendor/store.js'
+} from '../../../app-schema/stores.js'
 import BadRequestError from '../../../errors/bad-request.js'
 import UnauthenticatedError from '../../../errors/unauthenticated.js'
 import {

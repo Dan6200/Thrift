@@ -13,11 +13,11 @@ import {
 	testUpdateShipping,
 	testDeleteShipping,
 	testGetNonExistentShipping,
-} from '../../helper-functions/user/customer/shipping.js'
+} from '../../helper-functions/shipping/index.js'
 import db from '../../../../db/pg/index.js'
 
 // Set server url
-const server = process.env.LOCAL_APP_SERVER!
+const server = process.env.DEV_APP_SERVER!
 let token: string
 
 export default function ({

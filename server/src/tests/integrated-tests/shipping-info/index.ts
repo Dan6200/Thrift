@@ -12,10 +12,10 @@ import {
 	testUpdateShipping,
 	testDeleteShipping,
 	testGetNonExistentShipping,
-} from '../helper-functions/user/customer/shipping.js'
+} from '../helper-functions/shipping/index.js'
 
 // Set server url
-const server = process.env.LOCAL_APP_SERVER!
+const server = process.env.DEV_APP_SERVER!
 let token: string
 const path = '/v1/account/customer'
 

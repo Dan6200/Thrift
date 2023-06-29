@@ -4,12 +4,12 @@ import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
-import { ProductSchemaDB } from '../../../../../../../app-schema/products.js'
+import { ProductSchemaDB } from '../../../../app-schema/products.js'
 import {
 	testRouteNoData,
 	testRouteWithData,
-} from '../../../../../../../types-and-interfaces/test-routes.js'
-import testRoute from '../../../../test-route.js'
+} from '../../../../types-and-interfaces/test-routes.js'
+import testRoute from '../test-route.js'
 
 chai.use(chaiHttp).should()
 

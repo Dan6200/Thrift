@@ -5,24 +5,24 @@ import {
 	ProductSchemaDBLean,
 	ProductSchemaDBList,
 	ProductSchemaReq,
-} from '../../../../../app-schema/products.js'
-import db from '../../../../../db/pg/index.js'
-import BadRequestError from '../../../../../errors/bad-request.js'
-import UnauthenticatedError from '../../../../../errors/unauthenticated.js'
+} from '../../../app-schema/products.js'
+import db from '../../../db/pg/index.js'
+import BadRequestError from '../../../errors/bad-request.js'
+import UnauthenticatedError from '../../../errors/unauthenticated.js'
 import {
 	ProcessRouteWithBodyAndDBResult,
 	ProcessRouteWithoutBody,
-} from '../../../../../types-and-interfaces/process-routes.js'
-import { RequestWithPayload } from '../../../../../types-and-interfaces/request.js'
-import { ResponseData } from '../../../../../types-and-interfaces/response.js'
+} from '../../../types-and-interfaces/process-routes.js'
+import { RequestWithPayload } from '../../../types-and-interfaces/request.js'
+import { ResponseData } from '../../../types-and-interfaces/response.js'
 import {
 	DeleteInTable,
 	InsertInTable,
 	SelectFromTable,
 	UpdateInTable,
-} from '../../../../helpers/generate-sql-commands/index.js'
-import { handleSortQuery } from '../../../../helpers/generate-sql-commands/query-params-handler.js'
-import processRoute from '../../../../helpers/process-route.js'
+} from '../../helpers/generate-sql-commands/index.js'
+import { handleSortQuery } from '../../helpers/generate-sql-commands/query-params-handler.js'
+import processRoute from '../../helpers/process-route.js'
 
 const createQuery = async ({
 	body: productData,

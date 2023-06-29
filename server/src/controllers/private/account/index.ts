@@ -12,7 +12,6 @@ import {
 } from '../../../types-and-interfaces/request.js'
 import { UserData } from '../../../types-and-interfaces/user.js'
 import {
-	SelectFromTable,
 	UpdateInTable,
 	DeleteInTable,
 } from '../../helpers/generate-sql-commands/index.js'
@@ -27,13 +26,23 @@ const userDataFields = [
 	'dob',
 ]
 
+const getUserInfoQuery = `
+SELECT ${userDataFields.map(field => `ua.${field}`).join(', ')}
+       CASE WHEN c.customer_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_customer,
+       CASE WHEN v.vendor_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_vendor
+FROM user_accounts ua
+LEFT JOIN customers c
+ON ua.user_id = c.customer_id
+LEFT JOIN vendors v
+ON ua.user_id = v.vendor_id;`
+
 let getUserAccount = async (
 	request: RequestWithPayload,
 	response: Response
 ) => {
 	let { userId }: RequestUserPayload = request.user
 	let dbResult = await db.query({
-		text: SelectFromTable('user_accounts', userDataFields, 'user_id=$1'),
+		text: getUserInfoQuery,
 		values: [userId],
 	})
 	if (dbResult.rows.length === 0)

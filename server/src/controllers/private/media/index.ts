@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
-import db from '../../../../../db/pg/index.js'
-import { InsertInTable } from '../../../../helpers/generate-sql-commands/index.js'
+import { InsertInTable } from '../../helpers/generate-sql-commands/index.js'
+import db from '../../../db/pg/index.js'
 
 const uploadProductMedia = async (req: any, res: any) => {
 	const { productId } = req.params

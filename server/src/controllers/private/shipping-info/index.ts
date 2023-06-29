@@ -5,7 +5,7 @@ import {
 	ShippingInfoSchemaDBList,
 	ShippingInfoSchemaID,
 	ShippingInfoSchemaDB,
-} from '../../../app-schema/customer/shipping.js'
+} from '../../../app-schema/shipping.js'
 import db from '../../../db/pg/index.js'
 import { BadRequestError, UnauthenticatedError } from '../../../errors/index.js'
 import {

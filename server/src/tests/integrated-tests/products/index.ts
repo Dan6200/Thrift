@@ -1,24 +1,24 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
-import { registration } from '../../../../helpers/auth/index.js'
-import { testCreateVendor } from '../../../../helpers/user/vendor/index.js'
-import { testCreateStore } from '../../../../helpers/user/vendor/store/index.js'
+import {
+	Product,
+	ProductMedia,
+} from '../../../types-and-interfaces/products.js'
+import StoresData from '../../../types-and-interfaces/stores-data.js'
+import { UserData } from '../../../types-and-interfaces/user.js'
+import { registration } from '../helper-functions/auth/index.js'
 import {
 	testCreateProduct,
 	testGetAllProducts,
 	testGetProduct,
+	testUploadProductMedia,
+	testUpdateProduct,
 	testDeleteProduct,
 	testGetNonExistentProduct,
-	testUpdateProduct,
-	testUploadProductMedia,
-} from '../../../../helpers/user/vendor/store/products/index.js'
-import db from '../../../../../../db/pg/index.js'
-import { UserData } from '../../../../../../types-and-interfaces/user.js'
-import {
-	Product,
-	ProductMedia,
-} from '../../../../../../types-and-interfaces/products.js'
-import StoresData from '../../../../../../types-and-interfaces/stores-data.js'
+} from '../helper-functions/products/index.js'
+import { testCreateStore } from '../helper-functions/store/index.js'
+import { testCreateVendor } from '../helper-functions/vendor/index.js'
+import db from '../../../db/pg/index.js'
 
 chai.use(chaiHttp).should()
 let server: string, token: string
@@ -42,7 +42,7 @@ export default function ({
 }) {
 	before(async function () {
 		//  Set the server url
-		server = process.env.LOCAL_APP_SERVER!
+		server = process.env.DEV_APP_SERVER!
 		// Delete all user accounts
 		await db.query({ text: 'delete from user_accounts' })
 		// Delete all vendors

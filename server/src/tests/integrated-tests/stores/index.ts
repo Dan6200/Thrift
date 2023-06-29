@@ -14,9 +14,7 @@ import {
 } from '../helper-functions/store/index.js'
 import {
 	testCreateVendor,
-	testGetVendor,
 	testDeleteVendor,
-	testGetNonExistentVendor,
 } from '../helper-functions/vendor/index.js'
 
 chai.use(chaiHttp).should()
@@ -68,6 +66,7 @@ export default function ({
 					server,
 					token,
 					storesPath,
+					null,
 					store
 				)
 				storeIds.push(store_id)
@@ -87,6 +86,7 @@ export default function ({
 					server,
 					token,
 					storesPath + '/' + storeId,
+					null,
 					listOfUpdatedStoresByVendor[idx]
 				)
 			}

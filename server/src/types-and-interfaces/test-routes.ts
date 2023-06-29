@@ -22,14 +22,15 @@ export type testRouteWithQParamsAndData = (
 	server: string,
 	token: string,
 	path: string,
-	data: object & { length?: never },
-	query: { [k: string]: any } & { length?: never }
+	query: { [k: string]: any } & { length?: never },
+	data: object & { length?: never }
 ) => Promise<any>
 
 type testRouteWithData = (
 	server: string,
 	token: string,
 	path: string,
+	query: null,
 	data: object & { length?: never }
 ) => Promise<any>
 

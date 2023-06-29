@@ -41,8 +41,8 @@ const testCreateProduct = async function* (
 	server: string,
 	token: string,
 	path: string,
-	dataList: object[],
-	query?: object
+	query: object,
+	dataList: object[]
 ) {
 	const range = dataList.length
 	for (let idx = 0; idx < range; idx++) {
@@ -51,7 +51,7 @@ const testCreateProduct = async function* (
 			.post(path)
 			.send(dataList[idx])
 			.auth(token, { type: 'bearer' })
-			.query(query ?? {})
+			.query(query)
 		response.should.have.status(CREATED)
 		// Check that the response contains the product id
 		checkId(response.body)

@@ -13,6 +13,7 @@ import {
 	testGetNonExistentShipping,
 } from '../helper-functions/shipping/index.js'
 import { AccountData } from '../../../types-and-interfaces/account.js'
+import assert from 'assert'
 
 // Set server url
 const server = process.env.LOCAL_APP_SERVER!
@@ -50,6 +51,7 @@ export default function ({
 				server,
 				token,
 				shippingPath,
+				null,
 				shippingInfo
 			)
 			shippingIds.push(shipping_info_id)
@@ -63,11 +65,13 @@ export default function ({
 	})
 
 	it(`it should update all shipping addresses for the customer`, async () => {
+		assert(shippingIds.length === listOfUpdatedShippingInfo.length)
 		for (const [idx, shippingId] of shippingIds.entries()) {
 			await testUpdateShipping(
 				server,
 				token,
 				shippingPath + '/' + shippingId,
+				null,
 				listOfUpdatedShippingInfo[idx]
 			)
 		}

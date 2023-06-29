@@ -47,13 +47,14 @@ export default function ({
 			testGetAccount(server, token, path))
 
 		it("it should update the user's account", () =>
-			testUpdateAccount(server, token, path, updatedAccountInfo))
+			testUpdateAccount(server, token, path, null, updatedAccountInfo))
 
 		it("it should change the user's password", () =>
 			testChangeAccountPassword(
 				server,
 				token,
 				path + '/password',
+				null,
 				updatedPassword
 			))
 

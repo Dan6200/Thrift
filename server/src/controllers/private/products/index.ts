@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import { QueryResult } from 'pg'
+import { QueryResult, QueryResultRow } from 'pg'
 import {
 	ProductSchemaDB,
 	ProductSchemaDBLean,
@@ -25,12 +25,16 @@ import { handleSortQuery } from '../../helpers/generate-sql-commands/query-param
 import processRoute from '../../helpers/process-route.js'
 
 /**
+ * @param {RequestWithPayload} req
+ * @returns {Promise<QueryResult<QueryResultRow>>}
+ * @description Create a new product
+ *
  */
 const createQuery = async ({
 	body: productData,
-	params: { storeId },
+	query: { store_id: storeId },
 	user: { userId: vendorId },
-}: RequestWithPayload) => {
+}: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
 	const dbQuery = await db.query({
 		text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -52,11 +56,16 @@ const createQuery = async ({
 	})
 }
 
+/**
+ * @param {RequestWithPayload} req
+ * @returns {Promise<QueryResult<QueryResultRow>>}
+ * @description Retrieve all products
+ *
+ **/
 const readAllQuery = async ({
-	query: { sort, limit, offset },
-	params: { storeId },
+	query: { store_id: storeId, sort, limit, offset },
 	user: { userId: vendorId },
-}: RequestWithPayload) => {
+}: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
 	const dbQuery = await db.query({
 		text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -87,10 +96,16 @@ const readAllQuery = async ({
 	return db.query({ text: dbQueryString, values: [storeId] })
 }
 
+/**
+ * @param {RequestWithPayload} req
+ * @returns {Promise<QueryResult<QueryResultRow>>}
+ * @description Retrieve a product
+ **/
 const readQuery = async ({
-	params: { storeId, productId },
+	params: { productId },
+	query: { store_id: storeId },
 	user: { userId: vendorId },
-}: RequestWithPayload) => {
+}: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
 	const dbQuery = await db.query({
 		text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -116,11 +131,17 @@ const readQuery = async ({
 	})
 }
 
+/**
+ * @param {RequestWithPayload} req
+ * @returns {Promise<QueryResult<QueryResultRow>>}
+ * @description Update a product
+ * */
 const updateQuery = async ({
-	params: { productId, storeId },
+	params: { productId },
+	query: { store_id: storeId },
 	body: productData,
 	user: { userId: vendorId },
-}: RequestWithPayload) => {
+}: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
 	const dbQuery = await db.query({
 		text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -146,10 +167,16 @@ const updateQuery = async ({
 	})
 }
 
+/**
+ * @param {RequestWithPayload} req
+ * @returns {Promise<QueryResult<QueryResultRow>>}
+ * @description Delete a product
+ * */
 const deleteQuery = async ({
-	params: { productId, storeId },
+	params: { productId },
+	query: { store_id: storeId },
 	user: { userId: vendorId },
-}: RequestWithPayload) => {
+}: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
 	const dbQuery = await db.query({
 		text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
@@ -170,7 +197,12 @@ const deleteQuery = async ({
 	})
 }
 
-const validateBody = async <T>(data: T) => {
+/**
+ * @param {T} data
+ * @returns {Promise<any>}
+ * @description Validate the request body
+ * */
+const validateBody = async <T>(data: T): Promise<any> => {
 	const validData = ProductSchemaReq.validate(data)
 	if (validData.error)
 		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
@@ -179,6 +211,11 @@ const validateBody = async <T>(data: T) => {
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
+/**
+ * @param {QueryResult<any>} result
+ * @returns {Promise<ResponseData>}
+ * @description Validate a list of products
+ * */
 const validateResultList = async (
 	result: QueryResult<any>
 ): Promise<ResponseData> => {
@@ -197,24 +234,30 @@ const validateResultList = async (
 	}
 }
 
+/**
+ * @param {QueryResult<any>} result
+ * @returns {Promise<ResponseData>}
+ * @description Checks if the query was successful, and Id is returned
+ * */
 const checkSuccess = async (
 	result: QueryResult<any>
 ): Promise<ResponseData> => {
-	if (!result.rows.length)
-		return {
-			status: NOT_FOUND,
-			data: 'Product not found',
-		}
+	if (!result.rows.length) throw new BadRequestError('Operation unsuccessful')
 	const validateDbResult = ProductSchemaDBLean.validate(result.rows[0])
 	if (validateDbResult.error)
 		throw new BadRequestError(
-			'Invalid Data from DB: ' + validateDbResult.error.message
+			'Operation unsuccessful: ' + validateDbResult.error.message
 		)
 	return {
 		data: validateDbResult.value,
 	}
 }
 
+/**
+ * @param {QueryResult<any>} result
+ * @returns {Promise<ResponseData>}
+ * @description Validate the retrieved product.
+ * */
 const validateResult = async (
 	result: QueryResult<any>
 ): Promise<ResponseData> => {
@@ -275,7 +318,4 @@ export {
 	getProduct,
 	updateProduct,
 	deleteProduct,
-}
-function Insert(arg0: string, arg1: string[], arg2: string): string {
-	throw new Error('Function not implemented.')
 }

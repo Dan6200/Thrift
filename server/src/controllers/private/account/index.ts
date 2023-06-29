@@ -42,7 +42,6 @@ let getUserAccount = async (
 	response: Response
 ) => {
 	let { userId }: RequestUserPayload = request.user
-	console.log(getUserInfoQuery)
 	let dbResult = await db.query({
 		text: getUserInfoQuery,
 		values: [userId],

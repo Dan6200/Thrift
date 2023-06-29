@@ -232,6 +232,12 @@ components:
         message:
           type: string
 
+    ConflictError:
+      type: object
+      properties:
+        message:
+          type: string
+
     NotFound:
       type: object
       properties:

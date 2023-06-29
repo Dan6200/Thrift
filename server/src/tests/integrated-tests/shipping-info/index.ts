@@ -17,7 +17,7 @@ import {
 // Set server url
 const server = process.env.LOCAL_APP_SERVER!
 let token: string
-const path = '/v1/users/customer-account'
+const path = '/v1/account/customer'
 
 export default function ({
 	userInfo,
@@ -35,6 +35,7 @@ export default function ({
 		} = await registration(server, userInfo))
 		await testCreateCustomer(server, token, path)
 	})
+
 	after(async function () {
 		await db.query({ text: 'delete from user_accounts' })
 		await testDeleteCustomer(server, token, path)

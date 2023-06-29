@@ -1,15 +1,15 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
-import {
-	registration,
-	phoneLogin,
-	emailLogin,
-	logout,
-} from '../helpers/auth/index.js'
 import db from '../../../db/pg/index.js'
 import { UserData } from '../../../types-and-interfaces/user.js'
-import { testFailToGetUser } from '../helpers/user/index.js'
+import {
+	registration,
+	emailLogin,
+	phoneLogin,
+	logout,
+} from '../helper-functions/auth/index.js'
+import { testFailToGetUser } from '../helper-functions/user/index.js'
 
 chai.use(chaiHttp).should()
 

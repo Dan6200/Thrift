@@ -31,7 +31,7 @@ export default function ({
 	updatedUserInfo: UserData
 	updatedPassword: UserData
 }) {
-	const path = '/v1/users'
+	const path = '/v1/account'
 	let token: string
 	describe('User account management', () => {
 		before(async () => {

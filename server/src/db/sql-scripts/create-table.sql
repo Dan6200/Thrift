@@ -88,7 +88,7 @@ create table if not exists shopping_cart_item (
   item_id      serial   primary   key,
   cart_id      int      not       null   references   shopping_cart   on   delete   cascade,
   product_id   int      not       null   references   products        on   delete   cascade,
-  quantity     int      not       null   check        (quantity       0)
+  quantity     int      not       null   check        (quantity > 0)
 );
 
 

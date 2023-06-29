@@ -1,6 +1,5 @@
 import db from '../../../db/pg/index.js'
 import ShippingInfo from '../../../types-and-interfaces/shipping-info.js'
-import { UserData } from '../../../types-and-interfaces/user.js'
 import { registration } from '../helper-functions/auth/index.js'
 import {
 	testCreateCustomer,
@@ -13,6 +12,7 @@ import {
 	testDeleteShipping,
 	testGetNonExistentShipping,
 } from '../helper-functions/shipping/index.js'
+import { AccountData } from '../../../types-and-interfaces/account.js'
 
 // Set server url
 const server = process.env.DEV_APP_SERVER!
@@ -24,7 +24,7 @@ export default function ({
 	listOfShippingInfo,
 	listOfUpdatedShippingInfo,
 }: {
-	userInfo: UserData
+	userInfo: AccountData
 	listOfShippingInfo: ShippingInfo[]
 	listOfUpdatedShippingInfo: ShippingInfo[]
 }) {

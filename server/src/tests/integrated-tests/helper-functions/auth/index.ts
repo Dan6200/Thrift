@@ -1,11 +1,11 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
-import { UserData } from '../../../../types-and-interfaces/user.js'
+import { AccountData } from '../../../../types-and-interfaces/account.js'
 
 chai.use(chaiHttp).should()
 
-async function registration(server: string, user: UserData) {
+async function registration(server: string, user: AccountData) {
 	const response = await chai
 		.request(server)
 		.post('/v1/auth/register')
@@ -18,7 +18,7 @@ async function registration(server: string, user: UserData) {
 
 async function emailLogin(
 	server: string,
-	{ email, password }: UserData,
+	{ email, password }: AccountData,
 	statusCode: StatusCodes
 ) {
 	const response = await chai
@@ -32,7 +32,7 @@ async function emailLogin(
 
 async function phoneLogin(
 	server: string,
-	{ phone, password }: UserData,
+	{ phone, password }: AccountData,
 	statusCode: StatusCodes
 ) {
 	const response = await chai

@@ -2,7 +2,6 @@ import { Response } from 'express'
 import joi from 'joi'
 import db from '../../../db/pg/index.js'
 import { StatusCodes } from 'http-status-codes'
-import { UserDataSchemaDB } from '../../../app-schema/users.js'
 import BadRequestError from '../../../errors/bad-request.js'
 import UnauthenticatedError from '../../../errors/unauthenticated.js'
 import { hashPassword } from '../../../security/password.js'
@@ -10,14 +9,15 @@ import {
 	RequestWithPayload,
 	RequestUserPayload,
 } from '../../../types-and-interfaces/request.js'
-import { UserData } from '../../../types-and-interfaces/user.js'
 import {
 	UpdateInTable,
 	DeleteInTable,
 } from '../../helpers/generate-sql-commands/index.js'
 import validateUserPassword from '../../helpers/validate-user-password.js'
+import { AccountDataSchemaDB } from '../../../app-schema/account.js'
+import { AccountData } from '../../../types-and-interfaces/account.js'
 
-const userDataFields = [
+const accountDataFields = [
 	'first_name',
 	'last_name',
 	'email',
@@ -27,14 +27,15 @@ const userDataFields = [
 ]
 
 const getUserInfoQuery = `
-SELECT ${userDataFields.map(field => `ua.${field}`).join(', ')}
+SELECT ${accountDataFields.map(field => `ua.${field}`).join(', ')},
        CASE WHEN c.customer_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_customer,
        CASE WHEN v.vendor_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_vendor
 FROM user_accounts ua
 LEFT JOIN customers c
 ON ua.user_id = c.customer_id
 LEFT JOIN vendors v
-ON ua.user_id = v.vendor_id;`
+ON ua.user_id = v.vendor_id
+WHERE ua.user_id = $1`
 
 let getUserAccount = async (
 	request: RequestWithPayload,
@@ -50,10 +51,10 @@ let getUserAccount = async (
 		return response
 			.status(StatusCodes.NOT_FOUND)
 			.json({ msg: 'User cannot be found' })
-	let userData = dbResult.rows[0]
-	joi.assert(userData, UserDataSchemaDB)
-	let userAccount: UserData = userData
-	response.status(StatusCodes.OK).json(userAccount)
+	let accountData = dbResult.rows[0]
+	joi.assert(accountData, AccountDataSchemaDB)
+	let account: AccountData = accountData
+	response.status(StatusCodes.OK).json(account)
 }
 
 let updateUserAccount = async (

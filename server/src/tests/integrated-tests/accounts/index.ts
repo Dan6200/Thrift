@@ -2,34 +2,34 @@ import 'dotenv'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
-import { UserData } from '../../../types-and-interfaces/user.js'
 import {
 	registration,
 	logout,
 	emailLogin,
 } from '../helper-functions/auth/index.js'
 import {
-	testGetUser,
-	testUpdateUser,
-	testChangeUserPassword,
-	testDeleteUser,
-	testGetNonExistentUser,
+	testGetAccount,
+	testUpdateAccount,
+	testChangeAccountPassword,
+	testDeleteAccount,
+	testGetNonExistentAccount,
 } from '../helper-functions/user/index.js'
 import db from '../../../db/pg/index.js'
+import { AccountData } from '../../../types-and-interfaces/account.js'
 
 chai.use(chaiHttp).should()
 
 // Set server url
-const server = process.env.DEV_APP_SERVER!
+const server = process.env.LOCAL_APP_SERVER!
 
 export default function ({
-	userInfo,
-	updatedUserInfo,
+	accountInfo,
+	updatedAccountInfo,
 	updatedPassword,
 }: {
-	userInfo: UserData
-	updatedUserInfo: UserData
-	updatedPassword: UserData
+	accountInfo: AccountData
+	updatedAccountInfo: AccountData
+	updatedPassword: AccountData
 }) {
 	const path = '/v1/account'
 	let token: string
@@ -38,19 +38,19 @@ export default function ({
 			// Delete all user accounts
 			await db.query({ text: 'delete from user_accounts' })
 			// Create a new user for each tests
-			const response = await registration(server, userInfo)
+			const response = await registration(server, accountInfo)
 			// Store the token returned
 			token = response.body.token
 		})
 
 		it("it should get the user's account", () =>
-			testGetUser(server, token, path))
+			testGetAccount(server, token, path))
 
 		it("it should update the user's account", () =>
-			testUpdateUser(server, token, path, updatedUserInfo))
+			testUpdateAccount(server, token, path, updatedAccountInfo))
 
 		it("it should change the user's password", () =>
-			testChangeUserPassword(
+			testChangeAccountPassword(
 				server,
 				token,
 				path + '/password',
@@ -58,14 +58,14 @@ export default function ({
 			))
 
 		it("it should delete the user's account", () =>
-			testDeleteUser(server, token, path))
+			testDeleteAccount(server, token, path))
 
 		it("it should fail to get user's account", () =>
-			testGetNonExistentUser(server, token, path))
+			testGetNonExistentAccount(server, token, path))
 
 		it('it should logout user', () => logout(server, token))
 
 		it('it should fail to login the deleted user', () =>
-			emailLogin(server, userInfo, StatusCodes.UNAUTHORIZED))
+			emailLogin(server, accountInfo, StatusCodes.UNAUTHORIZED))
 	})
 }

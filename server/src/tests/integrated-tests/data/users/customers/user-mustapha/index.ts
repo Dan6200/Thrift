@@ -1,10 +1,11 @@
-import { UserData } from '../../../../../../types-and-interfaces/user.js'
+// cspell: disable
+import { AccountData } from '../../../../../../types-and-interfaces/account.js'
 import {
 	listOfShippingInfo,
 	listOfUpdatedShippingInfo,
 } from './shipping-info.js'
 
-const userInfo: UserData = {
+const accountInfo: AccountData = {
 	first_name: 'Mustapha',
 	last_name: 'Mohammed',
 	email: 'mustymomo1019@outlook.com',
@@ -14,20 +15,20 @@ const userInfo: UserData = {
 	country: 'Nigeria',
 }
 
-const updatedUserInfo: UserData = {
+const updatedAccountInfo: AccountData = {
 	first_name: 'Mustapha',
 	last_name: 'Mohammed',
 	dob: new Date('2000-1-24'),
 }
 
-const updatedPassword: UserData = {
+const updatedPassword: AccountData = {
 	password: '123AishaBaggy9384',
 	new_password: 'jay^a3245XF*!&$',
 }
 
 export {
-	userInfo,
-	updatedUserInfo,
+	accountInfo,
+	updatedAccountInfo,
 	updatedPassword,
 	listOfShippingInfo,
 	listOfUpdatedShippingInfo,

@@ -2,7 +2,7 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
-import { UserDataSchemaDB } from '../../../../app-schema/users.js'
+import { AccountDataSchemaDB } from '../../../../app-schema/account.js'
 import {
 	testRouteNoData,
 	testRouteWithData,
@@ -16,45 +16,45 @@ const { OK, NOT_FOUND, NO_CONTENT, UNAUTHORIZED } = StatusCodes
 let validateResult = async (data: any) => {
 	let userInfo = data
 	userInfo.should.be.an('object')
-	Joi.assert(userInfo, UserDataSchemaDB)
+	Joi.assert(userInfo, AccountDataSchemaDB)
 }
 
-const testFailToGetUser = testRoute({
+const testFailToGetAccount = testRoute({
 	verb: 'get',
 	statusCode: UNAUTHORIZED,
 }) as testRouteNoData
 
-const testGetUser = testRoute({
+const testGetAccount = testRoute({
 	verb: 'get',
 	statusCode: OK,
 	checks: validateResult,
 }) as testRouteNoData
 
-const testUpdateUser = testRoute({
+const testUpdateAccount = testRoute({
 	verb: 'patch',
 	statusCode: NO_CONTENT,
 }) as testRouteWithData
 
-const testChangeUserPassword = testRoute({
-	verb: 'patch',
+const testChangeAccountPassword = testRoute({
+	verb: 'put',
 	statusCode: NO_CONTENT,
 }) as testRouteWithData
 
-const testDeleteUser = testRoute({
+const testDeleteAccount = testRoute({
 	verb: 'delete',
 	statusCode: NO_CONTENT,
 }) as testRouteNoData
 
-const testGetNonExistentUser = testRoute({
+const testGetNonExistentAccount = testRoute({
 	verb: 'get',
 	statusCode: NOT_FOUND,
 }) as testRouteNoData
 
 export {
-	testGetUser,
-	testFailToGetUser,
-	testUpdateUser,
-	testChangeUserPassword,
-	testDeleteUser,
-	testGetNonExistentUser,
+	testGetAccount,
+	testFailToGetAccount,
+	testUpdateAccount,
+	testChangeAccountPassword,
+	testDeleteAccount,
+	testGetNonExistentAccount,
 }

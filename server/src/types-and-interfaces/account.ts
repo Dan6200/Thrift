@@ -1,4 +1,4 @@
-interface UserData {
+interface AccountData {
 	first_name?: string
 	last_name?: string
 	email?: string
@@ -9,4 +9,4 @@ interface UserData {
 	country?: string
 }
 
-export { UserData }
+export { AccountData }

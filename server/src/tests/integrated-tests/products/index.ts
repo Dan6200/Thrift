@@ -5,7 +5,6 @@ import {
 	ProductMedia,
 } from '../../../types-and-interfaces/products.js'
 import StoresData from '../../../types-and-interfaces/stores-data.js'
-import { UserData } from '../../../types-and-interfaces/user.js'
 import { registration } from '../helper-functions/auth/index.js'
 import {
 	testCreateProduct,
@@ -19,6 +18,7 @@ import {
 import { testCreateStore } from '../helper-functions/store/index.js'
 import { testCreateVendor } from '../helper-functions/vendor/index.js'
 import db from '../../../db/pg/index.js'
+import { AccountData } from '../../../types-and-interfaces/account.js'
 
 chai.use(chaiHttp).should()
 let server: string, token: string
@@ -32,7 +32,7 @@ export default function ({
 	productReplaced,
 	productMedia,
 }: {
-	userInfo: UserData
+	userInfo: AccountData
 	stores: StoresData[]
 	updatedStores?: StoresData[]
 	products: Product[]

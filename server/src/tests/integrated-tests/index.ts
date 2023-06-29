@@ -16,12 +16,10 @@ const customers = [Ebuka, Aisha, Mustapha]
 const vendors = [Aliyu]
 
 export default function (): void {
-	before(() => db.query({ text: 'delete from user_accounts' }))
-
 	/** Authentication **/
 
 	for (let user of users) {
-		const name = user.userInfo.first_name
+		const name = user.accountInfo.first_name
 		describe(`Testing Authentication for ${name}`, () =>
 			testAuthentication(user))
 	}
@@ -29,14 +27,14 @@ export default function (): void {
 	/** User Account actions **/
 
 	for (let user of users) {
-		const name = user.userInfo.first_name
+		const name = user.accountInfo.first_name
 		describe(`Testing User Account for ${name}`, () => testUserAccount(user))
 	}
 
 	/** Customer Account actions **/
 
 	// for (let customer of customers) {
-	// 	const name = customer.userInfo.first_name
+	// 	const name = customer.accountInfo.first_name
 	// 	describe(`Testing Customer Account for ${name}`, () =>
 	// 		testCustomerAccount(customer))
 	// }
@@ -44,7 +42,7 @@ export default function (): void {
 	/** Shipping Info related tests **/
 
 	// for (let customer of customers) {
-	// 	const name = customer.userInfo.first_name
+	// 	const name = customer.accountInfo.first_name
 	// 	describe(`Testing Shipping Information in ${name}'s account`, async () =>
 	// 		testShipping(customer))
 	// }
@@ -52,7 +50,7 @@ export default function (): void {
 	/** Vendor Account actions **/
 
 	// for (let vendor of vendors) {
-	// 	const name = vendor.userInfo.first_name
+	// 	const name = vendor.accountInfo.first_name
 	// 	describe(`Testing Vendor Account for ${name}`, () =>
 	// 		testVendorAccount(vendor))
 	// }
@@ -60,7 +58,7 @@ export default function (): void {
 	/** Product related tests **/
 
 	// for (let vendor of vendors) {
-	// 	const name = vendor.userInfo.first_name
+	// 	const name = vendor.accountInfo.first_name
 	// 	describe(`Testing Products listed by ${name}`, async () =>
 	// 		testProducts(vendor))
 	// }

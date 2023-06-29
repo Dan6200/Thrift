@@ -2,32 +2,32 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import db from '../../../db/pg/index.js'
-import { UserData } from '../../../types-and-interfaces/user.js'
+import { AccountData } from '../../../types-and-interfaces/account.js'
 import {
 	registration,
 	emailLogin,
 	phoneLogin,
 	logout,
 } from '../helper-functions/auth/index.js'
-import { testFailToGetUser } from '../helper-functions/user/index.js'
+import { testFailToGetAccount } from '../helper-functions/user/index.js'
 
 chai.use(chaiHttp).should()
 
-export default function ({ userInfo }: { userInfo: UserData }) {
-	describe('User Authentication', () => {
+export default function ({ accountInfo }: { accountInfo: AccountData }) {
+	describe('User Account Authentication', () => {
 		let token: string
-		const server = process.env.DEV_APP_SERVER!
+		const server = process.env.LOCAL_APP_SERVER!
 		before(async () => {
 			await db.query({ text: 'delete from user_accounts' })
 		})
 
-		it('it should register the user', () => registration(server, userInfo))
+		it('it should register the user', () => registration(server, accountInfo))
 
 		it('it should login the user with email', () =>
-			emailLogin(server, userInfo, StatusCodes.OK))
+			emailLogin(server, accountInfo, StatusCodes.OK))
 
 		it('it should login the user with phone', () =>
-			phoneLogin(server, userInfo, StatusCodes.OK).then(
+			phoneLogin(server, accountInfo, StatusCodes.OK).then(
 				({ body: { token: resToken } }) => (token = resToken)
 			))
 
@@ -41,7 +41,7 @@ export default function ({ userInfo }: { userInfo: UserData }) {
 			it('it should logout the user', () => logout(server, token))
 
 			it(`it should get an unauthorized error when trying to fetch the user`, () =>
-				testFailToGetUser(server, token, '/v1/users'))
+				testFailToGetAccount(server, token, '/v1/account'))
 		})
 	})
 }

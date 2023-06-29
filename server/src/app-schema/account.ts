@@ -1,8 +1,8 @@
-// Purpose: Joi schema for user data
+// Purpose: Joi schema for account data
 // cspell:ignore alphanum
 import joi from 'joi'
 
-const UserDataSchemaRequest = joi
+const AccountDataSchemaRequest = joi
 	.object({
 		first_name: joi.string().alphanum().min(3).max(30).required(),
 		last_name: joi.string().alphanum().min(3).max(30).required(),
@@ -24,7 +24,7 @@ const UserDataSchemaRequest = joi
 	})
 	.required()
 
-const UserDataSchemaDB = joi
+const AccountDataSchemaDB = joi
 	.object({
 		first_name: joi.string().alphanum().min(3).max(30).required(),
 		last_name: joi.string().alphanum().min(3).max(30).required(),
@@ -42,7 +42,9 @@ const UserDataSchemaDB = joi
 			.required(),
 		dob: joi.alternatives().try(joi.date().required(), joi.string().required()),
 		country: joi.string().required(),
+		is_customer: joi.boolean().required(),
+		is_vendor: joi.boolean().required(),
 	})
 	.required()
 
-export { UserDataSchemaRequest, UserDataSchemaDB }
+export { AccountDataSchemaRequest, AccountDataSchemaDB }

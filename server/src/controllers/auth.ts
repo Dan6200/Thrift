@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { QueryResult } from 'pg'
-import { UserDataSchemaRequest } from '../app-schema/users.js'
 import db from '../db/pg/index.js'
 import { BadRequestError, UnauthenticatedError } from '../errors/index.js'
 import { hashPassword, validatePassword } from '../security/password.js'
@@ -10,17 +9,18 @@ import {
 	InsertInTable,
 	SelectFromTable,
 } from './helpers/generate-sql-commands/index.js'
-import { UserData } from '../types-and-interfaces/user.js'
 import { revokeToken } from './helpers/revoke-token.js'
+import { AccountDataSchemaRequest } from '../app-schema/account.js'
+import { AccountData } from '../types-and-interfaces/account.js'
 // TODO: IP address
 
 const register = async (request: Request, response: Response) => {
-	const schemaValidate = UserDataSchemaRequest.validate(request.body)
+	const schemaValidate = AccountDataSchemaRequest.validate(request.body)
 	if (schemaValidate.error)
 		throw new BadRequestError(
 			'Invalid User Data: ' + schemaValidate.error.message
 		)
-	const userData: UserData = schemaValidate.value,
+	const userData: AccountData = schemaValidate.value,
 		{ phone, email, password } = userData
 	if (!phone && !email) {
 		throw new BadRequestError(`please provide an email address or phone number`)

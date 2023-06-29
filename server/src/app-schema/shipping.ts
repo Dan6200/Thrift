@@ -15,7 +15,9 @@ const ShippingInfoSchemaReq = joi
 				/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
 			)
 			.required(),
-		delivery_instructions: joi.array().items(joi.string().required()),
+		delivery_instructions: joi.object({
+			text: joi.array().items(joi.string().required()),
+		}),
 	})
 	.required()
 
@@ -41,7 +43,9 @@ const ShippingInfoSchemaDB = joi
 				/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
 			)
 			.required(),
-		delivery_instructions: joi.array().items(joi.string().required()),
+		delivery_instructions: joi.object({
+			text: joi.array().items(joi.string().required()),
+		}),
 	})
 	.required()
 
@@ -62,7 +66,9 @@ const ShippingInfoSchemaDBList = joi.array().items(
 					/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
 				)
 				.required(),
-			delivery_instructions: joi.array().items(joi.string().required()),
+			delivery_instructions: joi.object({
+				text: joi.array().items(joi.string().required()),
+			}),
 		})
 		.required()
 )

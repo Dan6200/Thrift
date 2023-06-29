@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser'
 // routers
 import authRouter from './routes/auth.js'
 import accountRouter from './routes/private/account/index.js'
+import shippingRouter from './routes/private/shipping/index.js'
 import productsRouter from './routes/private/products/index.js'
 import storesRouter from './routes/private/stores/index.js'
 import mediaRouter from './routes/private/media/index.js'
@@ -60,6 +61,7 @@ const v1Router = Router()
 v1Router.get('/', (_req, res) => res.send('Welcome to Thrift eCommerce API'))
 v1Router.use('/auth', authRouter)
 v1Router.use('/account', authenticateUser, accountRouter)
+v1Router.use('/shipping-info', authenticateUser, shippingRouter)
 v1Router.use('/stores', authenticateUser, storesRouter)
 v1Router.use('/products', authenticateUser, productsRouter)
 v1Router.use('/media', authenticateUser, mediaRouter)

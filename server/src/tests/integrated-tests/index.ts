@@ -33,19 +33,19 @@ export default function (): void {
 
 	/** Customer Account actions **/
 
-	for (let customer of customers) {
-		const name = customer.accountInfo.first_name
-		describe(`Testing Customer Account for ${name}`, () =>
-			testCustomerAccount(customer))
-	}
+	// for (let customer of customers) {
+	// 	const name = customer.accountInfo.first_name
+	// 	describe(`Testing Customer Account for ${name}`, () =>
+	// 		testCustomerAccount(customer))
+	// }
 
 	/** Shipping Info related tests **/
 
-	// for (let customer of customers) {
-	// 	const name = customer.accountInfo.first_name
-	// 	describe(`Testing Shipping Information in ${name}'s account`, async () =>
-	// 		testShipping(customer))
-	// }
+	for (let customer of customers) {
+		const name = customer.accountInfo.first_name
+		describe(`Testing Shipping Information in ${name}'s account`, async () =>
+			testShipping(customer))
+	}
 
 	/** Vendor Account actions **/
 

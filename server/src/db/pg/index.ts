@@ -1,9 +1,7 @@
-import util from 'util'
 // cspell:disable
 import nodePostgres, { QueryResult } from 'pg'
 const { Pool } = nodePostgres
 import retryQuery from '../../controllers/helpers/retryQuery.js'
-import client from '../redis/index.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -14,7 +12,7 @@ const pool = new Pool({
 	host: process.env.PGHOST,
 	database: process.env.PGDATABASE,
 	password: process.env.PGPASSWORD,
-	port: parseInt(process.env.PGPORT as string),
+	port: +process.env.PGPORT!,
 	ssl: {
 		rejectUnauthorized: false,
 	},
@@ -44,7 +42,7 @@ export default {
 		//
 		// allow a retry if DB fails to connect
 		let res: any
-		const retryCount = 2
+		const retryCount = 7
 		const delay = 500
 		// for prod
 		res = retryQuery(pool.query.bind(pool), [text, values], retryCount, delay)
@@ -65,7 +63,7 @@ export default {
 		// 	'\nquery result',
 		// 	util.inspect(
 		// 		{
-		// 			// duration: `${duration}ms`,
+		// 			duration: `${duration}ms`,
 		// 			result: res.rows,
 		// 		},
 		// 		false,

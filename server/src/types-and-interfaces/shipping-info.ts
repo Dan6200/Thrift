@@ -6,5 +6,5 @@ export default interface ShippingInfo {
 	state: string
 	postal_code: string
 	delivery_contact: string
-	delivery_instructions: string
+	delivery_instructions: { text: string[] }
 }

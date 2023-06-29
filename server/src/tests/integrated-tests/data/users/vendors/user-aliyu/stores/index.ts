@@ -1,3 +1,4 @@
+// cspell:disable
 import StoresData from '../../../../../../../types-and-interfaces/stores-data.js'
 
 export const stores: StoresData[] = [

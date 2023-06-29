@@ -1,4 +1,6 @@
-import { UserData } from '../../../../../../types-and-interfaces/user.js'
+// cspell:disable
+import { AccountData } from '../../../../../../types-and-interfaces/account.js'
+
 export { stores, updatedStores } from './stores/index.js'
 export {
 	products,
@@ -8,7 +10,7 @@ export {
 	updatedProductMedia,
 } from './stores/products/index.js'
 
-const userInfo: UserData = {
+const accountInfo: AccountData = {
 	first_name: 'Aliyu',
 	last_name: 'Mustapha',
 	email: 'aliyumustapha@gmail.com',
@@ -18,13 +20,13 @@ const userInfo: UserData = {
 	country: 'Nigeria',
 }
 
-const updatedUserInfo: UserData = {
+const updatedAccountInfo: AccountData = {
 	dob: new Date('2000-06-08'),
 }
 
-const updatedPassword: UserData = {
+const updatedPassword: AccountData = {
 	password: 'Aliyo99!',
 	new_password: 'AliMu99$',
 }
 
-export { userInfo, updatedUserInfo, updatedPassword }
+export { accountInfo, updatedAccountInfo, updatedPassword }

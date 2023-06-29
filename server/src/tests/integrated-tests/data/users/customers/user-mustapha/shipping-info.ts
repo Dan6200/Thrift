@@ -1,3 +1,4 @@
+//cspell:disable
 import ShippingInfo from '../../../../../../types-and-interfaces/shipping-info.js'
 
 const listOfShippingInfo: ShippingInfo[] = [
@@ -9,7 +10,9 @@ const listOfShippingInfo: ShippingInfo[] = [
 		state: 'Kano',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: 'Call me before you arrive, I may not be home',
+		delivery_instructions: {
+			text: ['Call me before you arrive, I may not be home'],
+		},
 	},
 	{
 		recipient_first_name: 'Mustapha',
@@ -19,7 +22,9 @@ const listOfShippingInfo: ShippingInfo[] = [
 		state: 'Kano',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: 'Call me before you arrive, I may not be home',
+		delivery_instructions: {
+			text: ['Call me before you arrive, I may not be home'],
+		},
 	},
 	{
 		recipient_first_name: 'Mustapha',
@@ -29,7 +34,9 @@ const listOfShippingInfo: ShippingInfo[] = [
 		state: 'Kano',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: 'Call me before you arrive, I may not be home',
+		delivery_instructions: {
+			text: ['Call me before you arrive, I may not be home'],
+		},
 	},
 ]
 
@@ -42,7 +49,9 @@ const listOfUpdatedShippingInfo = [
 		state: 'Kano',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: 'Call me before you arrive, I may not be home',
+		delivery_instructions: {
+			text: ['Call me before you arrive, I may not be home'],
+		},
 	},
 	{
 		recipient_first_name: 'Mustapha',
@@ -52,7 +61,9 @@ const listOfUpdatedShippingInfo = [
 		state: 'Kano',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: 'Call me before you arrive, I may not be home',
+		delivery_instructions: {
+			text: ['Call me before you arrive, I may not be home'],
+		},
 	},
 	{
 		recipient_first_name: 'Mustapha',
@@ -62,7 +73,9 @@ const listOfUpdatedShippingInfo = [
 		state: 'Kano',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: 'Call me before you arrive, I may not be home',
+		delivery_instructions: {
+			text: ['Call me before you arrive, I may not be home'],
+		},
 	},
 ]
 

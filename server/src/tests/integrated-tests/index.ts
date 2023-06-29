@@ -48,24 +48,24 @@ export default function (): void {
 
 	/** Vendor Account actions **/
 
-	for (let vendor of vendors) {
-		const name = vendor.accountInfo.first_name
-		describe(`Testing Vendor Account for ${name}`, () =>
-			testVendorAccount(vendor))
-	}
+	// for (let vendor of vendors) {
+	// 	const name = vendor.accountInfo.first_name
+	// 	describe(`Testing Vendor Account for ${name}`, () =>
+	// 		testVendorAccount(vendor))
+	// }
 
 	/** Stores related tests **/
 
-	for (let vendor of vendors) {
-		const name = vendor.accountInfo.first_name
-		describe(`Testing Stores owned by ${name}`, () => testVendorAccount(vendor))
-	}
+	// for (let vendor of vendors) {
+	// 	const name = vendor.accountInfo.first_name
+	// 	describe(`Testing Stores owned by ${name}`, () => testVendorAccount(vendor))
+	// }
 
 	/** Product related tests **/
 
-	// for (let vendor of vendors) {
-	// 	const name = vendor.accountInfo.first_name
-	// 	describe(`Testing Products listed by ${name}`, async () =>
-	// 		testProducts(vendor))
-	// }
+	for (let vendor of vendors) {
+		const name = vendor.accountInfo.first_name
+		describe(`Testing Products listed by ${name}`, async () =>
+			testProducts(vendor))
+	}
 }

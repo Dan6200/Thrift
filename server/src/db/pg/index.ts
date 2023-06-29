@@ -42,7 +42,7 @@ export default {
 		//
 		// allow a retry if DB fails to connect
 		let res: any
-		const retryCount = 2
+		const retryCount = 7
 		const delay = 500
 		// for prod
 		res = retryQuery(pool.query.bind(pool), [text, values], retryCount, delay)

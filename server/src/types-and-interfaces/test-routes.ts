@@ -11,11 +11,26 @@ type testRouteNoData = (
 	path: string
 ) => Promise<any>
 
+export type testRouteWithQParams = (
+	server: string,
+	token: string,
+	path: string,
+	query: { [k: string]: any } & { length?: never }
+) => Promise<any>
+
+export type testRouteWithQParamsAndData = (
+	server: string,
+	token: string,
+	path: string,
+	data: object & { length?: never },
+	query: { [k: string]: any } & { length?: never }
+) => Promise<any>
+
 type testRouteWithData = (
 	server: string,
 	token: string,
 	path: string,
-	data: Object & { length?: never }
+	data: object & { length?: never }
 ) => Promise<any>
 
 export { testRouteParams, testRouteNoData, testRouteWithData }

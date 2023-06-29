@@ -24,18 +24,21 @@ import {
 import { handleSortQuery } from '../../helpers/generate-sql-commands/query-params-handler.js'
 import processRoute from '../../helpers/process-route.js'
 
+/**
+ */
 const createQuery = async ({
 	body: productData,
 	params: { storeId },
 	user: { userId: vendorId },
 }: RequestWithPayload) => {
-	// makes sure the Store exists before accessing the /user/stores/products endpoint
 	const dbQuery = await db.query({
 		text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
 		values: [storeId],
 	})
 	if (!dbQuery.rows.length)
-		throw new BadRequestError('Store does not exist. Create a store')
+		throw new BadRequestError(
+			'No store found for this product. First create a store'
+		)
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
 
@@ -59,7 +62,9 @@ const readAllQuery = async ({
 		values: [storeId],
 	})
 	if (!dbQuery.rows.length)
-		throw new BadRequestError('Store does not exist. Create a store')
+		throw new BadRequestError(
+			'No store found for this product. First create a store'
+		)
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
 	let dbQueryString = `
@@ -91,7 +96,9 @@ const readQuery = async ({
 		values: [storeId],
 	})
 	if (!dbQuery.rows.length)
-		throw new BadRequestError('Store does not exist. Create a store')
+		throw new BadRequestError(
+			'No store found for this product. First create a store'
+		)
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
 	return db.query({
@@ -119,7 +126,9 @@ const updateQuery = async ({
 		values: [storeId],
 	})
 	if (!dbQuery.rows.length)
-		throw new BadRequestError('Store does not exist. Create a store')
+		throw new BadRequestError(
+			'No store found for this product. First create a store'
+		)
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
 	const paramList = [...Object.values(productData), productId, storeId]
@@ -146,7 +155,9 @@ const deleteQuery = async ({
 		values: [storeId],
 	})
 	if (!dbQuery.rows.length)
-		throw new BadRequestError('Store does not exist. Create a store')
+		throw new BadRequestError(
+			'No store found for this product. First create a store'
+		)
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
 	return db.query({

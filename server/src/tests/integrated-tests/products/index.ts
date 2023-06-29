@@ -20,19 +20,22 @@ import { testCreateVendor } from '../helper-functions/vendor/index.js'
 import db from '../../../db/pg/index.js'
 import { AccountData } from '../../../types-and-interfaces/account.js'
 
+// globals
 chai.use(chaiHttp).should()
 let server: string, token: string
-const vendorsRoute = '/v1/users/vendor-account'
-const storesRoute = vendorsRoute + '/stores'
+const vendorsRoute = '/v1/account/vendor/'
+const storesRoute = '/v1/stores'
+const productsRoute = '/v1/products'
+const mediaRoute = '/v1/media'
 
 export default function ({
-	userInfo,
+	accountInfo,
 	stores: vendorStores,
 	products,
 	productReplaced,
 	productMedia,
 }: {
-	userInfo: AccountData
+	accountInfo: AccountData
 	stores: StoresData[]
 	updatedStores?: StoresData[]
 	products: Product[]
@@ -42,7 +45,7 @@ export default function ({
 }) {
 	before(async function () {
 		//  Set the server url
-		server = process.env.DEV_APP_SERVER!
+		server = process.env.LOCAL_APP_SERVER!
 		// Delete all user accounts
 		await db.query({ text: 'delete from user_accounts' })
 		// Delete all vendors
@@ -50,9 +53,9 @@ export default function ({
 		// Register a new user
 		;({
 			body: { token },
-		} = await registration(server, userInfo))
+		} = await registration(server, accountInfo))
 		// Create a vendor account for the user
-		await testCreateVendor(server, token, '/v1/users/vendor-account/')
+		await testCreateVendor(server, token, vendorsRoute)
 	})
 	beforeEach(async () => {
 		if (!token) throw new Error('access token undefined')
@@ -75,27 +78,15 @@ export default function ({
 			}
 		})
 
-		describe('Product Creation', async () => {
-			for (const storeId of storeIds) {
-				testCreateProduct(
-					server,
-					token,
-					`${storesRoute}/${storeId}/products`,
-					products
-				)
-			}
-		})
-
 		describe('Products Operations', async () => {
 			before(async () => {
-				let count = 0
 				for (const [storeId] of storeIds.entries()) {
-					if (count++ >= products.length) break
 					for await (const { product_id } of testCreateProduct(
 						server,
 						token,
-						`${storesRoute}/${storeId}/products`,
-						products
+						productsRoute,
+						products,
+						{ store_id: storeId }
 					)) {
 						storeIds.set(storeId, product_id)
 					}
@@ -104,48 +95,36 @@ export default function ({
 
 			it('it should retrieve all the products from each store', async () => {
 				for (const [storeId] of storeIds) {
-					await testGetAllProducts(
-						server,
-						token,
-						`${storesRoute}/${storeId}/products`
-					)
+					await testGetAllProducts(server, token, productsRoute, {
+						store_id: storeId,
+					})
 				}
 			})
 
 			it('it should retrieve all products from each store, sorted by net price ascending', async () => {
 				for (const [storeId] of storeIds) {
-					await testGetAllProducts(
-						server,
-						token,
-						`${storesRoute}/${storeId}/products`,
-						{
-							sort: '-net_price',
-						}
-					)
+					await testGetAllProducts(server, token, productsRoute, {
+						store_id: storeId,
+						sort: '-net_price',
+					})
 				}
 			})
 
 			it('it should retrieve all products from each store, results offset by 2 and limited by 10', async () => {
 				for (const [storeId] of storeIds) {
-					await testGetAllProducts(
-						server,
-						token,
-						`${storesRoute}/${storeId}/products`,
-						{
-							offset: 1,
-							limit: 2,
-						}
-					)
+					await testGetAllProducts(server, token, productsRoute, {
+						store_id: storeId,
+						offset: 1,
+						limit: 2,
+					})
 				}
 			})
 
 			it('it should retrieve a specific product a vendor has for sale', async () => {
 				for (const [storeId, productId] of storeIds) {
-					await testGetProduct(
-						server,
-						token,
-						`${storesRoute}/${storeId}/products/${productId}`
-					)
+					await testGetProduct(server, token, `${productsRoute}/${productId}`, {
+						store_id: storeId,
+					})
 				}
 			})
 
@@ -154,8 +133,12 @@ export default function ({
 					await testUploadProductMedia(
 						server,
 						token,
-						`${storesRoute}/${storeId}/products/${productId}/media`,
-						productMedia
+						mediaRoute,
+						productMedia,
+						{
+							store_id: storeId,
+							product_id: productId,
+						}
 					)
 				}
 			})
@@ -166,8 +149,11 @@ export default function ({
 					await testUpdateProduct(
 						server,
 						token,
-						`${storesRoute}/${storeId}/products/${productId}`,
-						productReplaced[idx++]
+						`${productsRoute}/${productId}`,
+						productReplaced[idx++],
+						{
+							store_id: storeId,
+						}
 					)
 				}
 			})
@@ -177,7 +163,10 @@ export default function ({
 					await testDeleteProduct(
 						server,
 						token,
-						`${storesRoute}/${storeId}/products/${productId}`
+						`${productsRoute}/${productId}`,
+						{
+							store_id: storeId,
+						}
 					)
 				}
 			})
@@ -187,7 +176,10 @@ export default function ({
 					await testGetNonExistentProduct(
 						server,
 						token,
-						`${storesRoute}/${storeId}/products/${productId}`
+						`${productsRoute}/${productId}`,
+						{
+							store_id: storeId,
+						}
 					)
 				}
 			})

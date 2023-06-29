@@ -6,13 +6,15 @@ export default function ({ verb, statusCode, checks }: testRouteParams) {
 		server: string,
 		token: string,
 		path: string,
-		data?: object | null
+		data?: object | null,
+		query?: object
 	): Promise<any> {
 		const response = await chai
 			.request(server)
 			[verb](path)
 			.auth(token, { type: 'bearer' })
 			.send(data)
+			.query(query ?? {})
 		response.should.have.status(statusCode)
 		// Check the data in the body if accurate
 		checks && (await checks(response.body))

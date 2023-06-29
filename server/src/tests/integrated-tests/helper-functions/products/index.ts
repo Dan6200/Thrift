@@ -7,7 +7,9 @@ import path from 'node:path'
 import { ProductSchemaDB } from '../../../../app-schema/products.js'
 import {
 	testRouteNoData,
+	testRouteWithQParams,
 	testRouteWithData,
+	testRouteWithQParamsAndData,
 } from '../../../../types-and-interfaces/test-routes.js'
 import testRoute from '../test-route.js'
 
@@ -26,7 +28,7 @@ let validateResult = async (data: any) => {
 	Joi.assert(productInfo, ProductSchemaDB)
 }
 
-let validateResultList = (data: any) => {
+let validateResultList = async (data: any) => {
 	data.should.be.an('array')
 	validateResult(data[0])
 }
@@ -39,7 +41,8 @@ const testCreateProduct = async function* (
 	server: string,
 	token: string,
 	path: string,
-	dataList: object[]
+	dataList: object[],
+	query?: object
 ) {
 	const range = dataList.length
 	for (let idx = 0; idx < range; idx++) {
@@ -48,6 +51,7 @@ const testCreateProduct = async function* (
 			.post(path)
 			.send(dataList[idx])
 			.auth(token, { type: 'bearer' })
+			.query(query ?? {})
 		response.should.have.status(CREATED)
 		// Check that the response contains the product id
 		checkId(response.body)
@@ -55,41 +59,47 @@ const testCreateProduct = async function* (
 	}
 }
 
-const testGetAllProducts = async function (
-	server: string,
-	token: string,
-	path: string,
-	query?: object
-): Promise<any> {
-	const response = await chai
-		.request(server)
-		.get(path)
-		.query(query ?? {})
-		.auth(token, { type: 'bearer' })
-	response.should.have.status(OK)
-	// Check that the data in the body is accurate
-	validateResultList(response.body)
-	response.body
-}
+// const testGetAllProducts = async function (
+// 	server: string,
+// 	token: string,
+// 	path: string,
+// 	query?: object
+// ): Promise<any> {
+// 	const response = await chai
+// 		.request(server)
+// 		.get(path)
+// 		.query(query ?? {})
+// 		.auth(token, { type: 'bearer' })
+// 	response.should.have.status(OK)
+// 	// Check that the data in the body is accurate
+// 	validateResultList(response.body)
+// 	response.body
+// }
 
-const testGetProduct = <testRouteNoData>testRoute({
+const testGetAllProducts = <testRouteWithQParams>testRoute({
+	...routeParams,
+	verb: 'get',
+	checks: validateResultList,
+})
+
+const testGetProduct = <testRouteWithQParams>testRoute({
 	...routeParams,
 	verb: 'get',
 	checks: validateResult,
 })
 
-const testUpdateProduct = <testRouteWithData>testRoute({
+const testUpdateProduct = <testRouteWithQParamsAndData>testRoute({
 	...routeParams,
 	verb: 'patch',
 	checks: checkId,
 })
 
-const testDeleteProduct = <testRouteNoData>testRoute({
+const testDeleteProduct = <testRouteWithQParams>testRoute({
 	...routeParams,
 	verb: 'delete',
 })
 
-const testGetNonExistentProduct = <testRouteNoData>testRoute({
+const testGetNonExistentProduct = <testRouteWithQParams>testRoute({
 	...routeParams,
 	verb: 'get',
 	statusCode: NOT_FOUND,
@@ -99,13 +109,15 @@ const testUploadProductMedia = async function (
 	server: string,
 	token: string,
 	urlPath: string,
-	files: any[]
+	files: any[],
+	queryParams: { [k: string]: any }
 ): Promise<any> {
 	const fieldName = 'product-media'
 	const request = chai
 		.request(server)
 		.post(urlPath)
 		.auth(token, { type: 'bearer' })
+		.query(queryParams)
 	request.field('description', files[0].description)
 	await Promise.all(
 		files.map(async file => {
@@ -117,10 +129,7 @@ const testUploadProductMedia = async function (
 
 	response.should.have.status(CREATED)
 	// Check the data in the body if accurate
-	response.body.should.be.an('array')
-	response.body[0].should.be.an('object')
-	const responseObject = response.body[0]
-	responseObject.should.have.property('filename')
+	checkMedia(response.body)
 	return response.body
 }
 
@@ -132,4 +141,10 @@ export {
 	testDeleteProduct,
 	testGetNonExistentProduct,
 	testUploadProductMedia,
+}
+
+async function checkMedia(body: any) {
+	body.should.be.an('array')
+	body[0].should.be.an('object')
+	body[0].should.have.property('filename')
 }

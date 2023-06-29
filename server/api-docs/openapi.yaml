@@ -246,10 +246,10 @@ components:
 
     UnExpectedError:
       type: object
+      description: Default error response
       properties:
         message:
           type: string
-        description: Error message
 
     responses:
       default:
@@ -279,6 +279,13 @@ components:
           application/json:
             schema:
               $ref: '#/components/schemas/UnauthenticatedError'
+
+      ConflictError:
+        description: Resource already exists
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConflictError'
 
     parameters:
       limitParam:
@@ -319,8 +326,7 @@ components:
         unique token string used to authenticate the user
         expires within 30 minutes.
       example:
-        token: |
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMzYiLCJpYXQiOjE2ODYwMzg4MzIsImV4cCI6MTY4NjA0MDYzMn0.j8ep358FU8KRSG7ehPdFypoTua5Cr7dgBQdUks8Dkdc'
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMzYiLCJpYXQiOjE2ODYwMzg4MzIsImV4cCI6MTY4NjA0MDYzMn0.j8ep358FU8KRSG7ehPdFypoTua5Cr7dgBQdUks8Dkdc'
 
   securitySchemes:
     BearerAuth:
@@ -358,7 +364,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
   /auth/login:
     post:
@@ -402,7 +408,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
   /auth/logout:
     get:
@@ -413,6 +419,10 @@ paths:
       responses:
         '204':
           description: User Logged Out
+          content:
+            application/json:
+              schema:
+                object:
 
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
@@ -423,7 +433,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
   /account:
     get:
@@ -453,7 +463,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
     patch:
       summary: Update user
@@ -502,7 +512,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
     delete:
       summary: Delete user
@@ -528,7 +538,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
   /account/password:
     put:
@@ -550,7 +560,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
   /account/customer:
     post:
@@ -586,35 +596,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
-
-    get:
-      summary: Gets Customer
-      description: Retrieves the Customer Id
-      security: [BearerAuth: []]
-
-      responses:
-        '200':
-          description: Customer Account Retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomerId'
-
-        '400':
-          $ref: '#/components/schemas/responses/BadRequestError'
-
-        '401':
-          description: Unauthorized Access
-          $ref: '#/components/schemas/responses/UnauthenticatedError'
-
-        '404':
-          description: Customer Account not found
-          $ref: '#/components/schemas/responses/NotFound'
-
-        '500':
-          description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
     delete:
       summary: Deletes Customer Account
@@ -642,7 +624,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
   /shipping-info:
     post:
@@ -686,7 +668,7 @@ paths:
         '500':
           description: |
             Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
     get:
       summary: Retrieves all the shipping information
@@ -718,7 +700,7 @@ paths:
         '500':
           description: |
             Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
   /shipping-info/{shippingInfoId}:
     get:
@@ -754,7 +736,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
     put:
       summary: Replace shipping information.
@@ -794,7 +776,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
     delete:
       summary: Deletes shipping information.
@@ -828,7 +810,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
   /payment-info:
     post:
@@ -868,7 +850,7 @@ paths:
 
         '500':
           description: Internal Server Error
-          $ref: '#/components/schemas/responses/UnExpectedError'
+          $ref: '#/components/schemas/responses/default'
 
     get:
       summary: Retrieves all the payment information
@@ -1001,30 +983,6 @@ paths:
         '401':
           description: Unauthorized Access
           $ref: '#/components/schemas/responses/UnauthenticatedError'
-
-    get:
-      summary: Gets Vendor
-      description: Retrieves the Vendor Id
-      security: [BearerAuth: []]
-
-      responses:
-        '200':
-          description: Vendor Account Retrieved
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/VendorId'
-
-        '400':
-          $ref: '#/components/schemas/responses/BadRequestError'
-
-        '401':
-          description: Unauthorized Access
-          $ref: '#/components/schemas/responses/UnauthenticatedError'
-
-        '404':
-          description: Vendor Account not found
-          $ref: '#/components/schemas/responses/NotFound'
 
     delete:
       summary: Deletes Vendor Account

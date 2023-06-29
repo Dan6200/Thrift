@@ -10,42 +10,25 @@ import {
 	SelectFromTable,
 } from './helpers/generate-sql-commands/index.js'
 import { revokeToken } from './helpers/revoke-token.js'
-import { AccountDataSchemaRequest } from '../app-schema/account.js'
 import { AccountData } from '../types-and-interfaces/account.js'
+import { validateAccountData } from './helpers/validateAccountData.js'
 // TODO: IP address
 
-const register = async (request: Request, response: Response) => {
-	const schemaValidate = AccountDataSchemaRequest.validate(request.body)
-	if (schemaValidate.error)
-		throw new BadRequestError(
-			'Invalid User Data: ' + schemaValidate.error.message
-		)
-	const userData: AccountData = schemaValidate.value,
-		{ phone, email, password } = userData
-	if (!phone && !email) {
-		throw new BadRequestError(`please provide an email address or phone number`)
-	}
-	if (!password) {
-		throw new BadRequestError(`please provide a password`)
-	}
-	if (email) {
-		// TODO: const validEmail = validateEmail(email)
-		const validEmail = true
-		if (!validEmail)
-			throw new BadRequestError(`
-				please provide a valid email address
-			`)
-		// TODO: Email verification
-	}
-	if (phone) {
-		// TODO: const validPhoneNumber = validatePhoneNumber(phone)
-		const validPhoneNumber = true
-		if (!validPhoneNumber)
-			throw new BadRequestError(`
-				please provide a valid phone number
-			`)
-		// TODO: SMS verification
-	}
+/**
+ * @param {Request} request
+ * @param {Response} response
+ * @returns {Promise<void>}
+ * @description Create a new user account
+ * @todo: Validate email and phone number through Email and SMS
+ */
+const register = async (
+	request: Request,
+	response: Response
+): Promise<void> => {
+	const userData: AccountData = await validateAccountData(
+		request.body as AccountData
+	)
+	const { password } = userData
 	userData.password = await hashPassword(<string>password)
 	let dbQuery: QueryResult = await db.query({
 		text: InsertInTable('user_accounts', Object.keys(userData), 'user_id'),

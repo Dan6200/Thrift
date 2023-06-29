@@ -1,4 +1,3 @@
-import util from 'util'
 // cspell:disable
 import nodePostgres, { QueryResult } from 'pg'
 const { Pool } = nodePostgres
@@ -34,44 +33,44 @@ export default {
 		text: string
 		values?: Array<any>
 	}): Promise<QueryResult<any>> {
-		const start = Date.now()
+		// const start = Date.now()
 		setTimeout(function () {
 			this.lastQuery = arguments
 		})
 		//
-		console.log('\nexecuted query:\n', text, values)
+		// console.log('\nexecuted query:\n', text, values)
 		//
 		// allow a retry if DB fails to connect
 		let res: any
 		const retryCount = 7
 		const delay = 500
 		// for prod
-		// res = retryQuery(pool.query.bind(pool), [text, values], retryCount, delay)
+		res = retryQuery(pool.query.bind(pool), [text, values], retryCount, delay)
 
 		// for debugging
 
-		res = await retryQuery(
-			pool.query.bind(pool),
-			[text, values],
-			retryCount,
-			delay
-		)
+		// res = await retryQuery(
+		// 	pool.query.bind(pool),
+		// 	[text, values],
+		// 	retryCount,
+		// 	delay
+		// )
 
-		const duration = Date.now() - start
+		// const duration = Date.now() - start
 		// add await for this to work
 
-		console.log(
-			'\nquery result',
-			util.inspect(
-				{
-					duration: `${duration}ms`,
-					result: res.rows,
-				},
-				false,
-				null,
-				true
-			)
-		)
+		// console.log(
+		// 	'\nquery result',
+		// 	util.inspect(
+		// 		{
+		// 			duration: `${duration}ms`,
+		// 			result: res.rows,
+		// 		},
+		// 		false,
+		// 		null,
+		// 		true
+		// 	)
+		// )
 
 		return res
 	},

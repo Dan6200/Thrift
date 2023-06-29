@@ -81,7 +81,9 @@ export default function ({
 
 		it('should update all the stores with a loop', async () => {
 			assert(storeIds.length === listOfUpdatedStoresByVendor.length)
-			for (const [storeId, idx] of storeIds.entries()) {
+			// Bad bug never swap a & b in for (const [a, b] of ...) loop
+			let idx: number, storeId: string
+			for ([idx, storeId] of storeIds.entries()) {
 				await testUpdateStore(
 					server,
 					token,

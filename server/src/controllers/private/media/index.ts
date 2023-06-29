@@ -3,7 +3,7 @@ import { InsertInTable } from '../../helpers/generate-sql-commands/index.js'
 import db from '../../../db/pg/index.js'
 
 const uploadProductMedia = async (req: any, res: any) => {
-	const { productId } = req.params
+	const { product_id: productId } = req.query
 	const { description } = req.body
 	let files = <any>await Promise.all(
 		req.files.map(async (file: any) => {

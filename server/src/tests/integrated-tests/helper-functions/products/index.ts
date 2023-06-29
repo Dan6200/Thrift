@@ -126,7 +126,6 @@ const testUploadProductMedia = async function (
 		})
 	)
 	const response = await request
-
 	response.should.have.status(CREATED)
 	// Check the data in the body if accurate
 	checkMedia(response.body)

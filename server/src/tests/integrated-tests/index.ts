@@ -5,6 +5,7 @@ import testCustomerAccount from './accounts/customers/index.js'
 import testVendorAccount from './accounts/vendors/index.js'
 import testShipping from './shipping-info/index.js'
 import testProducts from './products/index.js'
+import testMedia from './media/index.js'
 import * as Ebuka from './data/users/customers/user-ebuka/index.js'
 import * as Aisha from './data/users/customers/user-aisha/index.js'
 import * as Mustapha from './data/users/customers/user-mustapha/index.js'
@@ -67,5 +68,12 @@ export default function (): void {
 		const name = vendor.accountInfo.first_name
 		describe(`Testing Products listed by ${name}`, async () =>
 			testProducts(vendor))
+	}
+
+	/** Media related tests **/
+
+	for (let vendor of vendors) {
+		describe(`Testing Media for Different Products`, async () =>
+			testMedia(vendor))
 	}
 }

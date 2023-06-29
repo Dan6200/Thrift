@@ -65,17 +65,6 @@ export default function ({
 		before(async () => {
 			// Delete all stores
 			await db.query({ text: 'delete from stores' })
-
-			for (const store of vendorStores) {
-				const { store_id } = await testCreateStore(
-					server,
-					token,
-					storesRoute,
-					null,
-					store
-				)
-				storeIds.set(store_id, null)
-			}
 		})
 
 		after(async () => {
@@ -87,102 +76,108 @@ export default function ({
 			await db.query({ text: 'delete from product_media' })
 		})
 
-		describe('Products Operations', async () => {
-			before(async () => {
-				for (const [storeId] of storeIds.entries()) {
-					for await (const { product_id } of testCreateProduct(
-						server,
-						token,
-						productsRoute,
-						{ store_id: storeId },
-						products
-					)) {
-						if (!storeIds.get(storeId)) storeIds.set(storeId, [product_id])
-						else
-							storeIds.set(storeId, storeIds.get(storeId)!.concat(product_id))
+		it('it should Add a couple products to each store', async () => {
+			let idx: number, store: StoresData
+			for ([idx, store] of vendorStores.entries()) {
+				console.log('index store', idx, store)
+				const { store_id } = await testCreateStore(
+					server,
+					token,
+					storesRoute,
+					null,
+					store
+				)
+				for await (const { product_id } of testCreateProduct(
+					server,
+					token,
+					productsRoute,
+					{ store_id },
+					products
+				)) {
+					if (storeIds.get(store_id)) {
+						storeIds.set(store_id, storeIds.get(store_id)!.concat(product_id))
+					} else {
+						storeIds.set(store_id, [product_id])
 					}
 				}
-			})
-
-			it('it should retrieve all the products from each store', async () => {
-				for (const [storeId] of storeIds.entries()) {
-					await testGetAllProducts(server, token, productsRoute, {
-						store_id: storeId,
-					})
-				}
-			})
-
-			it('it should retrieve all products from each store, sorted by net price ascending', async () => {
-				for (const [storeId] of storeIds.entries()) {
-					await testGetAllProducts(server, token, productsRoute, {
-						store_id: storeId,
-						sort: '-net_price',
-					})
-				}
-			})
-
-			it('it should retrieve all products from each store, results offset by 2 and limited by 10', async () => {
-				for (const [storeId] of storeIds.entries()) {
-					await testGetAllProducts(server, token, productsRoute, {
-						store_id: storeId,
-						offset: 1,
-						limit: 2,
-					})
-				}
-			})
-
-			it('it should retrieve a specific product a vendor has for sale', async () => {
-				for (const [storeId, productIds] of storeIds.entries()) {
-					for (const productId of productIds!)
-						await testGetProduct(
-							server,
-							token,
-							`${productsRoute}/${productId}`,
-							{ store_id: storeId }
-						)
-				}
-			})
-
-			it('it should update all the products a vendor has for sale', async () => {
-				for (const [storeId, productIds] of storeIds.entries()) {
-					assert(productIds?.length === productReplaced.length)
-					let idx = 0
-					for (const productId of productIds!)
-						await testUpdateProduct(
-							server,
-							token,
-							`${productsRoute}/${productId}`,
-							{ store_id: storeId },
-							productReplaced[idx++]
-						)
-				}
-			})
-
-			it('it should delete all the product a vendor has for sale', async () => {
-				for (const [storeId, productIds] of storeIds.entries()) {
-					for (const productId of productIds!)
-						await testDeleteProduct(
-							server,
-							token,
-							`${productsRoute}/${productId}`,
-							{ store_id: storeId }
-						)
-				}
-			})
-
-			it('it should fail to retrieve any of the deleted products', async () => {
-				for (const [storeId, productIds] of storeIds.entries()) {
-					for (const productId of productIds!)
-						await testGetNonExistentProduct(
-							server,
-							token,
-							`${productsRoute}/${productId}`,
-							{ store_id: storeId }
-						)
-				}
-			})
-
-			//end
+			}
 		})
+
+		it('it should retrieve all the products from each store', async () => {
+			for (const [storeId] of storeIds.entries()) {
+				await testGetAllProducts(server, token, productsRoute, {
+					store_id: storeId,
+				})
+			}
+		})
+
+		it('it should retrieve all products from each store, sorted by net price ascending', async () => {
+			for (const [storeId] of storeIds.entries()) {
+				await testGetAllProducts(server, token, productsRoute, {
+					store_id: storeId,
+					sort: '-net_price',
+				})
+			}
+		})
+
+		it('it should retrieve all products from each store, results offset by 2 and limited by 10', async () => {
+			for (const [storeId] of storeIds.entries()) {
+				await testGetAllProducts(server, token, productsRoute, {
+					store_id: storeId,
+					offset: 1,
+					limit: 2,
+				})
+			}
+		})
+
+		it('it should retrieve a specific product a vendor has for sale', async () => {
+			for (const [storeId, productIds] of storeIds.entries()) {
+				for (const productId of productIds!)
+					await testGetProduct(server, token, `${productsRoute}/${productId}`, {
+						store_id: storeId,
+					})
+			}
+		})
+
+		it('it should update all the products a vendor has for sale', async () => {
+			for (const [storeId, productIds] of storeIds.entries()) {
+				assert(productIds?.length === productReplaced.length)
+				let idx = 0
+				for (const productId of productIds!)
+					await testUpdateProduct(
+						server,
+						token,
+						`${productsRoute}/${productId}`,
+						{ store_id: storeId },
+						productReplaced[idx++]
+					)
+			}
+		})
+
+		it('it should delete all the product a vendor has for sale', async () => {
+			for (const [storeId, productIds] of storeIds.entries()) {
+				for (const productId of productIds!)
+					await testDeleteProduct(
+						server,
+						token,
+						`${productsRoute}/${productId}`,
+						{ store_id: storeId }
+					)
+			}
+		})
+
+		it('it should fail to retrieve any of the deleted products', async () => {
+			for (const [storeId, productIds] of storeIds.entries()) {
+				for (const productId of productIds!)
+					await testGetNonExistentProduct(
+						server,
+						token,
+						`${productsRoute}/${productId}`,
+						{ store_id: storeId }
+					)
+			}
+		})
+
+		//end
 	})
 }

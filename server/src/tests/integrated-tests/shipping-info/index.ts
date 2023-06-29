@@ -43,7 +43,7 @@ export default function ({
 
 	const shippingPath = '/v1/shipping-info'
 
-	const shippingIds: string[] = []
+	const shippingIds: number[] = []
 
 	it(`it should add multiple shipping addresses for the customer`, async () => {
 		for (const shippingInfo of listOfShippingInfo) {
@@ -66,7 +66,8 @@ export default function ({
 
 	it(`it should update all shipping addresses for the customer`, async () => {
 		assert(shippingIds.length === listOfUpdatedShippingInfo.length)
-		for (const [idx, shippingId] of shippingIds.entries()) {
+		let idx: number, shippingId: number
+		for ([idx, shippingId] of shippingIds.entries()) {
 			await testUpdateShipping(
 				server,
 				token,

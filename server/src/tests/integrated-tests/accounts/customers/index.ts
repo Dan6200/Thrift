@@ -1,4 +1,3 @@
-import ShippingInfo from '../../../../types-and-interfaces/shipping-info.js'
 import { registration } from '../../helper-functions/auth/index.js'
 import {
 	testCreateCustomer,
@@ -12,15 +11,7 @@ import { AccountData } from '../../../../types-and-interfaces/account.js'
 const server = process.env.LOCAL_APP_SERVER!
 let token: string
 
-export default function ({
-	accountInfo,
-	listOfShippingInfo,
-	listOfUpdatedShippingInfo,
-}: {
-	accountInfo: AccountData
-	listOfShippingInfo: ShippingInfo[]
-	listOfUpdatedShippingInfo: ShippingInfo[]
-}) {
+export default function ({ accountInfo }: { accountInfo: AccountData }) {
 	before(async () => {
 		await db.query({ text: 'delete from user_accounts' })
 		;({

@@ -1,3 +1,4 @@
+// cspell:disable
 import { AccountData } from '../../../../../../types-and-interfaces/account.js'
 
 export { stores, updatedStores } from './stores/index.js'

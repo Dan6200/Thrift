@@ -6,25 +6,23 @@ import testRoute from '../test-route.js'
 chai.use(chaiHttp).should()
 
 const routeParams = {
-	path: '/v1/user/vendor',
+	statusCode: StatusCodes.NO_CONTENT,
 }
 
 const testCreateVendor = testRoute({
 	verb: 'post',
-	statusCode: StatusCodes.CREATED,
 	...routeParams,
+	statusCode: StatusCodes.CREATED,
 }) as testRouteNoData
 
 const testGetVendor = testRoute({
 	...routeParams,
 	verb: 'get',
-	statusCode: StatusCodes.NO_CONTENT,
 }) as testRouteNoData
 
 const testDeleteVendor = testRoute({
 	...routeParams,
 	verb: 'delete',
-	statusCode: StatusCodes.NO_CONTENT,
 }) as testRouteNoData
 
 const testGetNonExistentVendor = <testRouteNoData>testRoute({

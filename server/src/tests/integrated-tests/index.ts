@@ -40,19 +40,26 @@ export default function (): void {
 
 	/** Shipping Info related tests **/
 
-	for (let customer of customers) {
-		const name = customer.accountInfo.first_name
-		describe(`Testing Shipping Information in ${name}'s account`, async () =>
-			testShipping(customer))
-	}
+	// for (let customer of customers) {
+	// 	const name = customer.accountInfo.first_name
+	// 	describe(`Testing the Shipping Information of ${name}'s account`, async () =>
+	// 		testShipping(customer))
+	// }
 
 	/** Vendor Account actions **/
 
-	// for (let vendor of vendors) {
-	// 	const name = vendor.accountInfo.first_name
-	// 	describe(`Testing Vendor Account for ${name}`, () =>
-	// 		testVendorAccount(vendor))
-	// }
+	for (let vendor of vendors) {
+		const name = vendor.accountInfo.first_name
+		describe(`Testing Vendor Account for ${name}`, () =>
+			testVendorAccount(vendor))
+	}
+
+	/** Stores related tests **/
+
+	for (let vendor of vendors) {
+		const name = vendor.accountInfo.first_name
+		describe(`Testing Stores owned by ${name}`, () => testVendorAccount(vendor))
+	}
 
 	/** Product related tests **/
 

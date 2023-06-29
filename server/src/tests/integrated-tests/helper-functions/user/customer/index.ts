@@ -16,12 +16,6 @@ const testCreateCustomer = testRoute({
 	statusCode: StatusCodes.CREATED,
 }) as testRouteNoData
 
-const testGetCustomer = testRoute({
-	...routeParams,
-	verb: 'get',
-	statusCode: StatusCodes.NO_CONTENT,
-}) as testRouteNoData
-
 const testUpdateCustomer = testRoute({
 	...routeParams,
 	verb: 'patch',
@@ -42,7 +36,6 @@ const testGetNonExistentCustomer = testRoute({
 
 export {
 	testCreateCustomer,
-	testGetCustomer,
 	testUpdateCustomer,
 	testDeleteCustomer,
 	testGetNonExistentCustomer,

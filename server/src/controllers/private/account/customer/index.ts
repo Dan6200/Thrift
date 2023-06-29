@@ -1,21 +1,16 @@
 import { StatusCodes } from 'http-status-codes'
 import { QueryResult, QueryResultRow } from 'pg'
-import {
-	CRUDQueryAuth,
-	ProcessRouteWithoutBody,
-	ProcessRouteWithoutBodyAndDBResult,
-} from '../../../../types-and-interfaces/process-routes.js'
+import { ProcessRouteWithoutBodyAndDBResult } from '../../../../types-and-interfaces/process-routes.js'
 import { ResponseData } from '../../../../types-and-interfaces/response.js'
 import {
 	InsertInTable,
-	SelectFromTable,
 	DeleteInTable,
 } from '../../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../../helpers/process-route.js'
 import db from '../../../../db/pg/index.js'
 import { RequestWithPayload } from '../../../../types-and-interfaces/request.js'
 
-const { CREATED, NOT_FOUND, OK } = StatusCodes
+const { CREATED, NOT_FOUND, NO_CONTENT } = StatusCodes
 
 /**
  * @param {QueryResult<QueryResultRow>} result
@@ -77,7 +72,7 @@ const createCustomerAccount = processPostRoute(
 const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
 const deleteCustomerAccount = processDeleteRoute(
 	deleteQuery,
-	OK,
+	NO_CONTENT,
 	undefined,
 	undefined
 )

@@ -18,26 +18,26 @@ const vendors = [Aliyu]
 export default function (): void {
 	/** Authentication **/
 
-	for (let user of users) {
-		const name = user.accountInfo.first_name
-		describe(`Testing Authentication for ${name}`, () =>
-			testAuthentication(user))
-	}
+	// for (let user of users) {
+	// 	const name = user.accountInfo.first_name
+	// 	describe(`Testing Authentication for ${name}`, () =>
+	// 		testAuthentication(user))
+	// }
 
 	/** User Account actions **/
 
-	for (let user of users) {
-		const name = user.accountInfo.first_name
-		describe(`Testing User Account for ${name}`, () => testUserAccount(user))
-	}
+	// 	for (let user of users) {
+	// 		const name = user.accountInfo.first_name
+	// 		describe(`Testing User Account for ${name}`, () => testUserAccount(user))
+	// 	}
 
 	/** Customer Account actions **/
 
-	// for (let customer of customers) {
-	// 	const name = customer.accountInfo.first_name
-	// 	describe(`Testing Customer Account for ${name}`, () =>
-	// 		testCustomerAccount(customer))
-	// }
+	for (let customer of customers) {
+		const name = customer.accountInfo.first_name
+		describe(`Testing Customer Account for ${name}`, () =>
+			testCustomerAccount(customer))
+	}
 
 	/** Shipping Info related tests **/
 

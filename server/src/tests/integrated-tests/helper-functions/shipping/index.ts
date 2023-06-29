@@ -7,7 +7,7 @@ import {
 } from '../../../../types-and-interfaces/test-routes.js'
 import testRoute from '../test-route.js'
 
-const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes
+const { CREATED, OK, NOT_FOUND } = StatusCodes
 
 let checkId = async (data: any) => {
 	data.should.have.property('shipping_info_id')
@@ -53,12 +53,13 @@ const testGetShipping = testRoute({
 const testUpdateShipping = testRoute({
 	...routeParams,
 	verb: 'put',
+	checks: checkId,
 }) as testRouteWithData
 
 const testDeleteShipping = testRoute({
 	...routeParams,
 	verb: 'delete',
-	statusCode: NO_CONTENT,
+	checks: checkId,
 }) as testRouteNoData
 
 const testGetNonExistentShipping = testRoute({

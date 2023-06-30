@@ -20,16 +20,15 @@ export function UpdateInTable(
 	table: string,
 	idName: string,
 	fields: string[],
+	startsFrom: number,
 	condition: string
 ): string {
 	let setFieldsToNewValues = 'set '
 	const last = fields.length - 1
-	// db query parameter list starts from 1, in case of a compound condition in the where clause.
-	// The ith condition corresponds to the number of fields(N) + i. i.e cond1=${N+1} OR cond2=${N+2}
 	for (let i = 0; i < last; i++) {
-		setFieldsToNewValues += `${fields[i]} = $${i + 1},\n`
+		setFieldsToNewValues += `${fields[i]} = $${i + startsFrom},\n`
 	}
-	setFieldsToNewValues += `${fields[last]} = $${last + 1}`
+	setFieldsToNewValues += `${fields[last]} = $${last + startsFrom}`
 	let output = `update ${table}\n${setFieldsToNewValues}\nwhere ${condition} returning ${idName}`
 	return output
 }

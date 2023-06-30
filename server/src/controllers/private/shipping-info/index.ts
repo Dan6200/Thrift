@@ -146,12 +146,16 @@ const updateQuery = async ({
 		)
 	let fields = Object.keys(shippingData),
 		data = Object.values(shippingData)
-	const paramList = [...data, shippingInfoId]
-	const pos: number = paramList.length
-	const condition = `shipping_info_id=$${pos}`
+	const condition = `shipping_info_id=$1`
 	const query = {
-		text: UpdateInTable('shipping_info', 'shipping_info_id', fields, condition),
-		values: paramList,
+		text: UpdateInTable(
+			'shipping_info',
+			'shipping_info_id',
+			fields,
+			2,
+			condition
+		),
+		values: [shippingInfoId, ...data],
 	}
 	return db.query(query)
 }

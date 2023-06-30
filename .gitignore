@@ -17,7 +17,7 @@ server-log.txt
 **/tests/product-media/*
 mochawesome-*
 ./regexp.txt
-./notes-and-todo-list.md
+notes-and-todo-list.md
 
 # Logs
 logs

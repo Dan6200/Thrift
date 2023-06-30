@@ -133,6 +133,20 @@ components:
           type: string
           format: password
 
+    PasswordUpdate:
+      type: object
+      required: [password, new_password]
+      properties:
+        password:
+          type: string
+          format: password
+        new_password:
+          type: string
+          format: password
+      example:
+        password: 'password'
+        new_password: 'new password'
+
     ShippingInfoId:
       type: object
       properties:
@@ -545,6 +559,13 @@ paths:
       summary: Change password
       description: Verifies and updates the users password.
       security: [BearerAuth: []]
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordUpdate'
 
       responses:
         '204':

@@ -28,6 +28,65 @@ servers:
 
 components:
   schemas:
+    ProductsRetrieved:
+      type: array
+      items:
+        $ref: '#/components/schemas/ProductRetrieved'
+
+    ProductProperties:
+      type: object
+      required:
+        - title
+        - category
+        - description
+        - list_price
+        - net_price
+        - quantity_available
+      properties:
+        title:
+          type: string
+        category:
+          type: string
+        description:
+          type: array
+          items:
+            type: string
+        list_price:
+          type: number
+          format: float
+        net_price:
+          type: number
+          format: float
+        quantity_available:
+          type: integer
+          format: int32
+      example:
+        title: 'Samsung Galaxy S21 Ultra'
+        category: 'Electronics'
+        description:
+          - '6.8" 1440x3200 pixels'
+          - '108MP 4320p'
+          - '12GB RAM Exynos 2100'
+        list_price: 100000
+        net_price: 95000
+        quantity_available: 10
+
+    ProductRequest:
+      $ref: '#/components/schemas/ProductProperties'
+
+    ProductRetrieved:
+      allOf:
+        - $ref: '#/components/schemas/ProductProperties'
+        - type: object
+          required:
+            - product_id
+          properties:
+            product_id:
+              type: integer
+              format: int32
+          example:
+            product_id: 17
+
     UserDataUpdated:
       type: object
       properties:
@@ -56,7 +115,7 @@ components:
       example:
         customer_id: 17
 
-    UserDataSent:
+    UserDataRequest:
       type: object
       properties:
         first_name:
@@ -120,6 +179,16 @@ components:
         dob: 2000-4-10
         country: Nigeria
 
+    ProductId:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int32
+      description: unique identifier for a product
+      example:
+        product_id: 17
+
     LoginInfo:
       type: object
       required: [email, phone, password]
@@ -154,7 +223,7 @@ components:
           type: integer
           format: int32
 
-    ShippingInfoSent:
+    ShippingInfoRequest:
       type: object
       required:
         - recipient_first_name
@@ -365,7 +434,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDataSent'
+              $ref: '#/components/schemas/UserDataRequest'
 
       responses:
         '201':
@@ -404,7 +473,7 @@ paths:
                 summary: You can login with your phone number
                 value:
                   phone: '+2341234567890'
-                  password: password
+                  password: my password
               Example 2:
                 summary: Or you can login with your email address
                 value:
@@ -667,7 +736,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ShippingInfoSent'
+              $ref: '#/components/schemas/ShippingInfoRequest'
 
       responses:
         '201':
@@ -731,6 +800,14 @@ paths:
           $ref: '#/components/schemas/responses/default'
 
   /shipping-info/{shippingInfoId}:
+    parameters:
+      - in: path
+        name: shippingInfoId
+        schema:
+          type: integer
+        required: true
+        description: Shipping information Id
+
     get:
       summary: Retrieves shipping information.
       description: |
@@ -778,7 +855,7 @@ paths:
           application/json:
             schema:
               $ref: |
-                '#/components/schemas/ShippingInfoUpdated'
+                '#/components/schemas/ShippingInfoRequest'
       responses:
         '200':
           description: |
@@ -853,7 +930,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PaymentInfoSent'
+            #   $ref: '#/components/schemas/PaymentInfoRequest'
 
       responses:
         '201':
@@ -862,8 +939,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: |
-                  '#/components/schemas/PaymentInfoId'
+                # $ref: |
+                #   '#/components/schemas/PaymentInfoId'
         '400':
           description: Failed to add payment information to Customer Account.
           $ref: '#/components/schemas/responses/BadRequestError'
@@ -1003,7 +1080,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schema/VendorId'
+              # $ref: '#/components/schema/VendorId'
 
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
@@ -1023,7 +1100,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VendorId'
+              # $ref: '#/components/schemas/VendorId'
 
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
@@ -1052,7 +1129,7 @@ paths:
             application/json:
               schema:
                 $ref: |
-                  '#/components/schemas/StoreId'
+                  # '#/components/schemas/StoreId'
         '400':
           $ref: '#/components/schemas/responses/BadRequestError'
         '401':
@@ -1073,7 +1150,7 @@ paths:
             application/json:
               schema:
                 $ref: |
-                  '#/components/schemas/Stores'
+                  # '#/components/schemas/Stores'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1101,7 +1178,7 @@ paths:
             application/json:
               schema:
                 $ref: |
-                  '#/components/schemas/Store'
+                  # '#/components/schemas/Store'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1129,7 +1206,7 @@ paths:
             application/json:
               schema:
                 $ref: |
-                  '#/components/schemas/StoreId'
+                  # '#/components/schemas/StoreId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'
@@ -1156,7 +1233,7 @@ paths:
             application/json:
               schema:
                 $ref: |
-                  '#/components/schemas/StoreId'
+                  # '#/components/schemas/StoreId'
         '400':
           $ref: |
             '#/components/schemas/responses/BadRequestError'

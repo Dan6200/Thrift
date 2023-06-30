@@ -10,9 +10,7 @@ const listOfShippingInfo: ShippingInfo[] = [
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Aisha',
@@ -22,9 +20,7 @@ const listOfShippingInfo: ShippingInfo[] = [
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Aisha',
@@ -34,9 +30,7 @@ const listOfShippingInfo: ShippingInfo[] = [
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 ]
 
@@ -49,9 +43,7 @@ const listOfUpdatedShippingInfo: ShippingInfo[] = [
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Aisha',
@@ -61,9 +53,7 @@ const listOfUpdatedShippingInfo: ShippingInfo[] = [
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Aisha',
@@ -73,9 +63,7 @@ const listOfUpdatedShippingInfo: ShippingInfo[] = [
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 ]
 

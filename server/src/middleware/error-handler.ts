@@ -8,7 +8,7 @@ const errorHandlerMiddleware = async (
 	_next: NextFunction // Must have these 4 params to work
 ) => {
 	// error logging, comment out for production
-	// error(err)
+	console.error(err)
 
 	let customError = {
 		// set default

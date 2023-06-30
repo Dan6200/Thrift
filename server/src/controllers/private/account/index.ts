@@ -69,7 +69,7 @@ let updateUserAccount = async (
 		data: any[] = Object.values(request.body)
 	let dbResult = await db.query({
 		text: UpdateInTable('user_accounts', 'user_id', fields, 2, `user_id=$1`),
-		values: [...data, userId],
+		values: [userId, ...data],
 	})
 	if (!dbResult.rows.length) throw new BadRequestError('Update unsuccessful')
 	response.status(StatusCodes.NO_CONTENT).end()

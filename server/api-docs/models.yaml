@@ -160,31 +160,6 @@ components:
       anyOf:
         - $ref: '#/components/schemas/ProductProperties'
 
-    UserDataProperties:
-      type: object
-      properties:
-        first_name:
-          type: string
-        last_name:
-          type: string
-        email:
-          type: string
-          format: email
-        phone:
-          type: string
-        dob:
-          type: string
-          format: date
-        country:
-          type: string
-      example:
-        first_name: Joe
-        last_name: Schmoe
-        email: joeschmoe@fake.email.com
-        phone: '+2341234567890'
-        dob: 2000-4-10
-        country: Nigeria
-
     AllProductsRetrieved:
       type: array
       items:
@@ -218,8 +193,33 @@ components:
       items:
         $ref: '#/components/schemas/Media'
 
+    UserDataProperties:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        dob:
+          type: string
+          format: date
+        country:
+          type: string
+      example:
+        first_name: Joe
+        last_name: Schmoe
+        email: joeschmoe@fake.email.com
+        phone: '+2341234567890'
+        dob: 2000-4-10
+        country: Nigeria
+
     UserDataRequest:
-      - $ref: '#/components/schemas/UserDataProperties'
+      $ref: '#/components/schemas/UserDataProperties'
 
     UserDataRetrieved:
       allOf:

@@ -15,7 +15,7 @@ const ShippingInfoSchemaReq = joi
 				/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
 			)
 			.required(),
-		delivery_instructions: joi.array().items(joi.string().required()),
+		delivery_instructions: joi.string().required(),
 	})
 	.required()
 

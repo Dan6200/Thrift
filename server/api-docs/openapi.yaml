@@ -180,6 +180,11 @@ components:
           type: string
         delivery_contact:
           type: string
+        delivery_instructions:
+          type: array
+          items:
+            type: string
+
       example:
         recipient_first_name: Ebuka
         recipient_last_name: Eze
@@ -190,8 +195,10 @@ components:
         postal_code: 123456
         country: Nigeria
         delivery_contact: '+234902354252'
-        delivery_instructions: |
-          Call me before you arrive, I may not be home
+        delivery_instructions:
+          - Call me before you arrive, I may not be home
+          - If I'm not home, drop it with my neighbour
+          - If my neighbour is not home, drop it at the gate
 
     ShippingInfoRetrieved:
       type: object

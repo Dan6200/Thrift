@@ -4,7 +4,7 @@ const ProductSchemaReq = joi
 	.object({
 		title: joi.string().required(),
 		category: joi.string().required(),
-		description: joi.string().required(),
+		description: joi.array().items(joi.string().required()),
 		list_price: joi.number().required(),
 		net_price: joi.number().required(),
 		quantity_available: joi.number().required(),

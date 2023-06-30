@@ -9,10 +9,9 @@ const listOfShippingInfo: ShippingInfo[] = [
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: JSON.stringify([
-			'Call me before you arrive, I may not be home',
-		]),
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Aisha',
@@ -21,10 +20,9 @@ const listOfShippingInfo: ShippingInfo[] = [
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: JSON.stringify([
-			'Call me before you arrive, I may not be home',
-		]),
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Aisha',
@@ -33,10 +31,9 @@ const listOfShippingInfo: ShippingInfo[] = [
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: JSON.stringify([
-			'Call me before you arrive, I may not be home',
-		]),
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 ]
 
@@ -48,10 +45,9 @@ const listOfUpdatedShippingInfo: ShippingInfo[] = [
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: JSON.stringify([
-			'Call me before you arrive, I may not be home',
-		]),
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Aisha',
@@ -60,10 +56,9 @@ const listOfUpdatedShippingInfo: ShippingInfo[] = [
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: JSON.stringify([
-			'Call me before you arrive, I may not be home',
-		]),
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Aisha',
@@ -72,10 +67,9 @@ const listOfUpdatedShippingInfo: ShippingInfo[] = [
 		city: 'Abuja',
 		state: 'Federal Capital Territory',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: JSON.stringify([
-			'Call me before you arrive, I may not be home',
-		]),
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 ]
 

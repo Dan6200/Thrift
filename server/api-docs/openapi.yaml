@@ -188,7 +188,6 @@ components:
       example:
         recipient_first_name: Ebuka
         recipient_last_name: Eze
-        phone: '+2341234567890'
         address: 53, Thomas Salako Street, Ogba,
         city: Ikeja
         state: Lagos

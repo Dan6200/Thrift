@@ -32,6 +32,7 @@ create table if not exists shipping_info (
   city                    varchar       not       null,
   state                   varchar       not       null,
   postal_code             varchar       not       null,
+  country									varchar       not       null,
   delivery_contact        varchar       not       null,
   delivery_instructions   jsonb
 );

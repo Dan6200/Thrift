@@ -957,6 +957,15 @@ paths:
         Adds a new product to the store with Id - productId
         for the vendor.
       security: [BearerAuth: []]
+      queries:
+        storeId:
+          description: |
+            The storeId of the store to which the product
+            is to be added.
+          required: true
+          schema:
+            type: integer
+            format: int32
       requestBody:
         required: true
         description: |

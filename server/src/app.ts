@@ -1,5 +1,5 @@
 // vim mark
-// cspell:ignore middlewares openapi
+// cspell:disable
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express, { Express, Router } from 'express'
@@ -37,7 +37,7 @@ dotenv.config()
 let app: Express = express()
 app.set('trust proxy', 1)
 app.use(cookieParser())
-/** Comment out below to run tests
+// /** Comment out below to run tests
 app.use(
 	rateLimiter({
 		windowMs: 15 * 60 * 1000,
@@ -46,12 +46,11 @@ app.use(
 		legacyHeaders: false,
 	})
 )
-**/
+// **/
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(<JSON>swaggerDocument))
 app.get('/api.json', (_, res) => res.json(swaggerDocument))
-console.log(swaggerDocument)
 
 app.use(helmet())
 app.use(cors())

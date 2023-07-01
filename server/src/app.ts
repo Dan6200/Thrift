@@ -51,7 +51,7 @@ app.use(
 // **/
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static(pathToSwaggerUi))
+app.use(express.static('swagger-ui-dist'))
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(<JSON>swaggerDocument))
 app.get('/api.json', (_, res) => res.json(swaggerDocument))
 

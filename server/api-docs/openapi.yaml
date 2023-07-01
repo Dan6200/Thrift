@@ -14,6 +14,11 @@ info:
     name: The Developer
     email: danielnyong66@gmail.com
 
+components:
+  securitySchemes:
+    BearerAuth:
+      $ref: 'models.yaml#/components/securitySchemes/BearerAuth'
+
 servers:
   - url: https://thrift-production.up.railway.app/{basePath}
     description: Production server
@@ -656,7 +661,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'models.yaml#/components/schema/VendorId'
+              $ref: 'models.yaml#/components/schemas/VendorId'
 
         '400':
           $ref: 'models.yaml#/components/schemas/responses/BadRequestError'

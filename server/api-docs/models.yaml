@@ -14,6 +14,12 @@ info:
     email: danielnyong66@gmail.com
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     StoreId:
       type: object
@@ -457,9 +463,3 @@ components:
         expires within 30 minutes.
       example:
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMzYiLCJpYXQiOjE2ODYwMzg4MzIsImV4cCI6MTY4NjA0MDYzMn0.j8ep358FU8KRSG7ehPdFypoTua5Cr7dgBQdUks8Dkdc'
-
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT

@@ -14,6 +14,7 @@ import {
 } from '../../../types-and-interfaces/process-routes.js'
 import { RequestWithPayload } from '../../../types-and-interfaces/request.js'
 import { ResponseData } from '../../../types-and-interfaces/response.js'
+import ShippingInfo from '../../../types-and-interfaces/shipping-info.js'
 import {
 	DeleteInTable,
 	InsertInTable,
@@ -31,7 +32,7 @@ import processRoute from '../../helpers/process-route.js'
  * 2. If the customer already has 5 shipping addresses
  **/
 const createQuery = async ({
-	body: shippingData,
+	body,
 	user: { userId: customerId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
 	if (!customerId) throw new UnauthenticatedError('Cannot access resource')
@@ -54,14 +55,20 @@ const createQuery = async ({
 	).rows.length
 	if (count > LIMIT)
 		throw new BadRequestError(`Cannot have more than ${LIMIT} stores`)
+
+	const shippingData: ShippingInfo = body
 	if (!shippingData) throw new BadRequestError('No data sent in request body')
+	const DBFriendlyData = {
+		...shippingData,
+		delivery_instructions: JSON.stringify(shippingData.delivery_instructions),
+	}
 	return db.query({
 		text: InsertInTable(
 			'shipping_info',
-			['customer_id', ...Object.keys(shippingData)],
+			['customer_id', ...Object.keys(DBFriendlyData)],
 			'shipping_info_id'
 		),
-		values: [customerId, ...Object.values(shippingData)],
+		values: [customerId, ...Object.values(DBFriendlyData)],
 	})
 }
 
@@ -130,10 +137,11 @@ const getQuery = async ({
  **/
 const updateQuery = async ({
 	params,
-	body: shippingData,
+	body,
 	user: { userId: customerId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
 	const { shippingInfoId } = params
+	const shippingData = body as ShippingInfo
 	if (!shippingInfoId) throw new BadRequestError('Need ID to update resource')
 	if (!customerId) throw new UnauthenticatedError('Cannot access resource')
 	const res = await db.query({
@@ -144,14 +152,22 @@ const updateQuery = async ({
 		throw new BadRequestError(
 			'No Customer account found. Please create a Customer account'
 		)
-	let fields = Object.keys(shippingData),
-		data = Object.values(shippingData)
-	const paramList = [...data, shippingInfoId]
-	const pos: number = paramList.length
-	const condition = `shipping_info_id=$${pos}`
+	const DBFriendlyData = {
+		...shippingData,
+		delivery_instructions: JSON.stringify(shippingData.delivery_instructions),
+	}
+	let fields = Object.keys(DBFriendlyData),
+		data = Object.values(DBFriendlyData)
+	const condition = `shipping_info_id=$1`
 	const query = {
-		text: UpdateInTable('shipping_info', 'shipping_info_id', fields, condition),
-		values: paramList,
+		text: UpdateInTable(
+			'shipping_info',
+			'shipping_info_id',
+			fields,
+			2,
+			condition
+		),
+		values: [shippingInfoId, ...data],
 	}
 	return db.query(query)
 }

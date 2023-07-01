@@ -1,0 +1,465 @@
+# cspell: disable
+openapi: 3.1.0
+info:
+  title: Thrift eCommerce API
+  description: |
+    This is the API for Thrift eCommerce Store.
+
+    An online eCommerce platform that offers a wide 
+    range of products including electronics, 
+    fashion, furniture, kitchen items, media and more.
+  version: 1.0.0
+  contact:
+    name: The Developer
+    email: danielnyong66@gmail.com
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    StoreId:
+      type: object
+      required:
+        - store_id
+      properties:
+        store_id:
+          type: integer
+          format: int32
+      description: unique identifier for a store
+      example:
+        store_id: 17
+
+    StoreProperties:
+      type: object
+      required:
+        - store_name
+      properties:
+        store_name:
+          type: string
+        store_page:
+          type: object
+          properties:
+            heading:
+              type: string
+            navigation:
+              type: array
+              items:
+                type: string
+            hero:
+              type: object
+              properties:
+                media:
+                  type: array
+                  items:
+                    type: string
+            body:
+              type: object
+              properties:
+                product_listings:
+                  type: object
+                  properties:
+                    product_ids:
+                      type: array
+                      items:
+                        type: string
+      example:
+        store_name: 'Inspire Denims'
+        store_page:
+          heading: 'Inspire Denims'
+          navigation:
+            - 'Home'
+            - 'New Arrivals'
+            - 'Promos'
+            - 'Contact'
+          hero:
+            media:
+              - 'https://promo_video.mov'
+              - 'https://inspire_denim_jacket.jpg'
+              - 'https://inspire_denim1.jpg'
+              - 'https://inspire_denim2.jpg'
+          body:
+            product_listings:
+              product_ids:
+                - '1'
+                - '2'
+                - '3'
+    StoreRequest:
+      $ref: '#/components/schemas/StoreProperties'
+
+    StoreRetrieved:
+      allOf:
+        - $ref: '#/components/schemas/StoreProperties'
+        - $ref: '#/components/schemas/StoreId'
+
+    StoreUpdated:
+      anyOf:
+        - $ref: '#/components/schemas/StoreProperties'
+
+    AllStoresRetrieved:
+      type: array
+      items:
+        $ref: '#/components/schemas/StoreRetrieved'
+
+    ProductProperties:
+      type: object
+      required:
+        - title
+        - category
+        - description
+        - list_price
+        - net_price
+        - quantity_available
+      properties:
+        title:
+          type: string
+        category:
+          type: string
+        description:
+          type: array
+          items:
+            type: string
+        list_price:
+          type: number
+          format: float
+        net_price:
+          type: number
+          format: float
+        quantity_available:
+          type: integer
+          format: int32
+      example:
+        title: 'Samsung Galaxy S21 Ultra'
+        category: 'Electronics'
+        description:
+          - '6.8" 1440x3200 pixels'
+          - '108MP 4320p'
+          - '12GB RAM Exynos 2100'
+        list_price: 100000
+        net_price: 95000
+        quantity_available: 10
+
+    ProductRequest:
+      $ref: '#/components/schemas/ProductProperties'
+
+    ProductId:
+      type: object
+      required:
+        - product_id
+      properties:
+        product_id:
+          type: integer
+          format: int32
+      description: unique identifier for a product
+      example:
+        product_id: 17
+
+    ProductRetrieved:
+      allOf:
+        - $ref: '#/components/schemas/ProductProperties'
+        - $ref: '#/components/schemas/ProductId'
+
+    ProductUpdated:
+      anyOf:
+        - $ref: '#/components/schemas/ProductProperties'
+
+    AllProductsRetrieved:
+      type: array
+      items:
+        $ref: '#/components/schemas/ProductRetrieved'
+
+    MediaProperties:
+      type: object
+      required:
+        - media_name
+        - media_type
+        - media_url
+        - description
+      properties:
+        media_type:
+          type: string
+        media_url:
+          type: string
+        description:
+          type: string
+      example:
+        media_name: 'Beautiful Image'
+        media_type: 'image'
+        media_url: 'https://thrift.com/image.jpg'
+        description: 'A beautiful image'
+
+    Media:
+      $ref: '#/components/schemas/MediaProperties'
+
+    AllMedia:
+      type: array
+      items:
+        $ref: '#/components/schemas/Media'
+
+    UserDataProperties:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        dob:
+          type: string
+          format: date
+        country:
+          type: string
+      example:
+        first_name: Joe
+        last_name: Schmoe
+        email: joeschmoe@fake.email.com
+        phone: '+2341234567890'
+        dob: 2000-4-10
+        country: Nigeria
+
+    UserDataRequest:
+      $ref: '#/components/schemas/UserDataProperties'
+
+    UserDataRetrieved:
+      allOf:
+        - $ref: '#/components/schemas/UserDataProperties'
+        - type: object
+          required:
+            - password
+          properties:
+            password:
+              type: string
+              format: password
+          example:
+            password: 'my password'
+
+    CustomerId:
+      type: object
+      required:
+        - customer_id
+      properties:
+        customer_id:
+          type: integer
+          format: int32
+      description: unique identifier for a customer
+      example:
+        customer_id: 17
+
+    VendorId:
+      type: object
+      required:
+        - vendor_id
+      properties:
+        vendor_id:
+          type: integer
+          format: int32
+      description: unique identifier for a vendor
+      example:
+        vendor_id: 17
+
+    LoginInfo:
+      type: object
+      required: [email, phone, password]
+      properties:
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        password:
+          type: string
+          format: password
+
+    PasswordUpdate:
+      type: object
+      required: [password, new_password]
+      properties:
+        password:
+          type: string
+          format: password
+        new_password:
+          type: string
+          format: password
+      example:
+        password: 'my password'
+        new_password: 'my new password'
+
+    ShippingInfoId:
+      type: object
+      properties:
+        shipping_info_id:
+          type: integer
+          format: int32
+
+    ShippingInfoProperties:
+      type: object
+      required:
+        - recipient_first_name
+        - recipient_last_name
+        - address
+        - city
+        - state
+        - postal_code
+        - delivery_contact
+        - delivery_instructions
+      properties:
+        recipient_first_name:
+          type: string
+        recipient_last_name:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postal_code:
+          type: string
+        delivery_contact:
+          type: string
+        delivery_instructions:
+          type: array
+          items:
+            type: string
+      example:
+        recipient_first_name: Ebuka
+        recipient_last_name: Eze
+        address: 53, Thomas Salako Street, Ogba,
+        city: Ikeja
+        state: Lagos
+        postal_code: '123456'
+        country: Nigeria
+        delivery_contact: '+234902354252'
+        delivery_instructions:
+          - Call me before you arrive, I may not be home
+          - If I'm not home, drop it with my neighbour
+          - If my neighbour is not home, drop it at the gate
+
+    ShippingInfoRequest:
+      $ref: '#/components/schemas/ShippingInfoProperties'
+
+    ShippingInfoRetrieved:
+      allOf:
+        - $ref: '#/components/schemas/ShippingInfoProperties'
+        - $ref: '#/components/schemas/ShippingInfoId'
+
+    AllShippingInfoRetrieved:
+      type: array
+      items:
+        $ref: '#/components/schemas/ShippingInfoRetrieved'
+
+    UnauthenticatedError:
+      type: object
+      properties:
+        message:
+          type: string
+
+    BadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+
+    ConflictError:
+      type: object
+      properties:
+        message:
+          type: string
+
+    NotFound:
+      type: object
+      properties:
+        message:
+          type: string
+
+    UnExpectedError:
+      type: object
+      description: Default error response
+      properties:
+        message:
+          type: string
+
+    responses:
+      default:
+        description: Unexpected error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnExpectedError'
+
+      NotFound:
+        description: Entity not found.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotFound'
+
+      BadRequestError:
+        description: Illegal operation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BadRequestError'
+
+      UnauthenticatedError:
+        description: Not authorized to access resource
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnauthenticatedError'
+
+      ConflictError:
+        description: Resource already exists
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConflictError'
+
+    parameters:
+      limitParam:
+        name: limit
+        in: query
+        description: max number of records to retrieve
+        required: false,
+        schema:
+          type: integer
+          format: int32
+
+      offsetParam:
+        name: offset
+        in: query
+        description: offsets records by the specified amount
+        required: false,
+        schema:
+          type: integer
+          format: int32
+
+      sortParam:
+        name: sort
+        in: query
+        description: >
+          sorts items ascending or descending 
+          based a list of fields.
+        required: false,
+        schema:
+          type: array
+          items:
+            type: string
+
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+      description: |
+        unique token string used to authenticate the user
+        expires within 30 minutes.
+      example:
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMzYiLCJpYXQiOjE2ODYwMzg4MzIsImV4cCI6MTY4NjA0MDYzMn0.j8ep358FU8KRSG7ehPdFypoTua5Cr7dgBQdUks8Dkdc'

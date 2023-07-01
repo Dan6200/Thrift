@@ -9,10 +9,9 @@ const listOfShippingInfo: ShippingInfo[] = [
 		city: 'Lagos',
 		state: 'Lagos',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Ebuka',
@@ -21,10 +20,9 @@ const listOfShippingInfo: ShippingInfo[] = [
 		city: 'Lagos',
 		state: 'Lagos',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Ebuka',
@@ -33,10 +31,9 @@ const listOfShippingInfo: ShippingInfo[] = [
 		city: 'Lagos',
 		state: 'Lagos',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 ]
 
@@ -48,10 +45,9 @@ const listOfUpdatedShippingInfo: ShippingInfo[] = [
 		city: 'Lagos',
 		state: 'Lagos',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Ebuka',
@@ -60,10 +56,9 @@ const listOfUpdatedShippingInfo: ShippingInfo[] = [
 		city: 'Lagos',
 		state: 'Lagos',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 	{
 		recipient_first_name: 'Ebuka',
@@ -72,10 +67,9 @@ const listOfUpdatedShippingInfo: ShippingInfo[] = [
 		city: 'Lagos',
 		state: 'Lagos',
 		postal_code: '290543',
+		country: 'Nigeria',
 		delivery_contact: '+234902354252',
-		delivery_instructions: {
-			text: ['Call me before you arrive, I may not be home'],
-		},
+		delivery_instructions: ['Call me before you arrive, I may not be home'],
 	},
 ]
 

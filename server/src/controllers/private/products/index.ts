@@ -13,6 +13,7 @@ import {
 	ProcessRouteWithBodyAndDBResult,
 	ProcessRouteWithoutBody,
 } from '../../../types-and-interfaces/process-routes.js'
+import { Product } from '../../../types-and-interfaces/products.js'
 import { RequestWithPayload } from '../../../types-and-interfaces/request.js'
 import { ResponseData } from '../../../types-and-interfaces/response.js'
 import {
@@ -31,7 +32,7 @@ import processRoute from '../../helpers/process-route.js'
  *
  */
 const createQuery = async ({
-	body: productData,
+	body,
 	query: { store_id: storeId },
 	user: { userId: vendorId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
@@ -46,13 +47,19 @@ const createQuery = async ({
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
 
+	const productData: Product = body
+	const DBFriendlyProductData = {
+		...productData,
+		description: JSON.stringify(productData.description),
+	}
+
 	return db.query({
 		text: InsertInTable(
 			'products',
-			Object.keys(productData).concat('store_id').concat('vendor_id'),
+			[...Object.keys(DBFriendlyProductData), 'store_id', 'vendor_id'],
 			'product_id'
 		),
-		values: Object.values(productData).concat(storeId).concat(vendorId),
+		values: [...Object.values(DBFriendlyProductData), storeId, vendorId],
 	})
 }
 
@@ -101,7 +108,7 @@ const readAllQuery = async ({
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieve a product
  **/
-const readQuery = async ({
+const getQuery = async ({
 	params: { productId },
 	query: { store_id: storeId },
 	user: { userId: vendorId },
@@ -139,7 +146,7 @@ const readQuery = async ({
 const updateQuery = async ({
 	params: { productId },
 	query: { store_id: storeId },
-	body: productData,
+	body,
 	user: { userId: vendorId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
 	const dbQuery = await db.query({
@@ -152,18 +159,22 @@ const updateQuery = async ({
 		)
 	if (dbQuery.rows[0].vendor_id !== vendorId)
 		throw new UnauthenticatedError('Cannot access store.')
-	const paramList = [...Object.values(productData), productId, storeId]
-	const pos: number = paramList.length
+	const productData: Product = body
+	const DBFriendlyProductData = {
+		...productData,
+		description: JSON.stringify(productData.description),
+	}
 	const updateCommand = UpdateInTable(
 		'products',
 		'product_id',
-		Object.keys(productData),
-		`product_id=$${pos - 1} and store_id=$${pos}`
+		Object.keys(DBFriendlyProductData),
+		3,
+		`product_id=$1 and store_id=$2`
 	)
 
 	return db.query({
 		text: updateCommand,
-		values: paramList,
+		values: [+productId, +storeId!, ...Object.values(DBFriendlyProductData)],
 	})
 }
 
@@ -193,7 +204,7 @@ const deleteQuery = async ({
 			'product_id',
 			'product_id=$1 and store_id=$2'
 		),
-		values: [productId, storeId],
+		values: [+productId, +storeId!],
 	})
 }
 
@@ -296,7 +307,7 @@ const getAllProducts = processGetAllRoute(
 	validateResultList
 )
 
-const getProduct = processGetIDRoute(readQuery, OK, undefined, validateResult)
+const getProduct = processGetIDRoute(getQuery, OK, undefined, validateResult)
 
 const updateProduct = processPutRoute(
 	updateQuery,

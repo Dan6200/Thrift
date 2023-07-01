@@ -1,5 +1,5 @@
 // vim mark
-// cspell:ignore middlewares openapi
+// cspell:disable
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express, { Express, Router } from 'express'
@@ -27,7 +27,7 @@ import { readFile } from 'fs/promises'
 import path from 'path'
 
 const swaggerDocument = await readFile(
-	path.resolve('./server/api-docs/openapi.yaml'),
+	path.resolve('./server/api-docs/dist.yaml'),
 	'utf8'
 ).then(doc => yaml.load(doc))
 
@@ -50,7 +50,7 @@ app.use(
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(<JSON>swaggerDocument))
-app.get('/swagger.json', (_req, res) => res.json(swaggerDocument))
+app.get('/api.json', (_, res) => res.json(swaggerDocument))
 
 app.use(helmet())
 app.use(cors())
@@ -58,7 +58,6 @@ app.use(xss())
 app.use(morgan('dev'))
 // application routes
 const v1Router = Router()
-v1Router.get('/', (_req, res) => res.send('Welcome to Thrift eCommerce API'))
 v1Router.use('/auth', authRouter)
 v1Router.use('/account', authenticateUser, accountRouter)
 v1Router.use('/shipping-info', authenticateUser, shippingRouter)

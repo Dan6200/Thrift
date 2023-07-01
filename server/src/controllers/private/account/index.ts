@@ -67,11 +67,9 @@ let updateUserAccount = async (
 		throw new BadRequestError('Cannot update password here')
 	let fields: string[] = Object.keys(request.body),
 		data: any[] = Object.values(request.body)
-	const paramList = [...data, userId]
-	const pos: number = paramList.length
 	let dbResult = await db.query({
-		text: UpdateInTable('user_accounts', 'user_id', fields, `user_id=$${pos}`),
-		values: paramList,
+		text: UpdateInTable('user_accounts', 'user_id', fields, 2, `user_id=$1`),
+		values: [userId, ...data],
 	})
 	if (!dbResult.rows.length) throw new BadRequestError('Update unsuccessful')
 	response.status(StatusCodes.NO_CONTENT).end()
@@ -100,16 +98,15 @@ let updateUserPassword = async (
 		throw new UnauthenticatedError(`Invalid Credentials,
 				cannot update password`)
 	const password = await hashPassword(newPassword)
-	const paramList = [password, userId]
-	const position: number = paramList.length
 	const dbResult = await db.query({
 		text: UpdateInTable(
 			'user_accounts',
 			'user_id',
 			['password'],
-			`user_id=$${position}`
+			2,
+			`user_id=$1`
 		),
-		values: paramList,
+		values: [userId, password],
 	})
 	if (!dbResult.rows.length)
 		throw new BadRequestError('Password update unsuccessful')

@@ -38,29 +38,25 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                first_name:
-                  type: string
-                last_name:
-                  type: string
-                email:
-                  type: string
-                  format: email
-                phone:
-                  type: string
-                dob:
-                  type: string
-                  format: date
-                country:
-                  type: string
-              example:
-                first_name: Joe
-                last_name: Schmoe
-                email: joeschmoe@fake.email.com
-                phone: '+2341234567890'
-                dob: 2000-4-10
-                country: Nigeria
+              allOf:
+                - $ref: '#/paths/~1account/get/responses/200/content/application~1json/schema'
+                - type: object
+                  required:
+                    - password
+                  properties:
+                    password:
+                      type: string
+                      format: password
+                  example:
+                    password: my password
+            example:
+              first_name: Ebuka
+              last_name: Eze
+              email: ebukaeze@fake.email.com
+              phone: '+2341234567890'
+              password: my password
+              dob: 2000-4-10
+              country: Nigeria
       responses:
         '201':
           description: User Account Created
@@ -175,17 +171,29 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/paths/~1auth~1register/post/requestBody/content/application~1json/schema'
-                  - type: object
-                    required:
-                      - password
-                    properties:
-                      password:
-                        type: string
-                        format: password
-                    example:
-                      password: my password
+                type: object
+                properties:
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  phone:
+                    type: string
+                  dob:
+                    type: string
+                    format: date
+                  country:
+                    type: string
+                example:
+                  first_name: Joe
+                  last_name: Schmoe
+                  email: joeschmoe@fake.email.com
+                  phone: '+2341234567890'
+                  dob: 2000-4-10
+                  country: Nigeria
         '400':
           $ref: '#/paths/~1media/get/responses/400'
         '401':
@@ -313,19 +321,6 @@ paths:
       responses:
         '201':
           description: Customer Account Created
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - customer_id
-                properties:
-                  customer_id:
-                    type: integer
-                    format: int32
-                description: unique identifier for a customer
-                example:
-                  customer_id: 17
         '400':
           description: Customer Account Not Created
           $ref: '#/paths/~1media/get/responses/400'
@@ -347,12 +342,8 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        '200':
+        '204':
           description: Customer Account Deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/paths/~1account~1customer/post/responses/201/content/application~1json/schema'
         '400':
           $ref: '#/paths/~1media/get/responses/400'
         '401':
@@ -432,6 +423,9 @@ paths:
                   shipping_info_id:
                     type: integer
                     format: int32
+                description: unique identifier for a shipping info
+                example:
+                  shipping_info_id: 17
         '400':
           description: |
             Shipping information not added to Customer Account.
@@ -736,26 +730,13 @@ paths:
         '401':
           description: Unauthorized Access
           $ref: '#/paths/~1media/get/responses/401'
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - vendor_id
-              properties:
-                vendor_id:
-                  type: integer
-                  format: int32
-              description: unique identifier for a vendor
-              example:
-                vendor_id: 17
     delete:
       summary: Deletes Vendor Account
       description: Deletes the Vendor Account
       security:
         - BearerAuth: []
       responses:
-        '200':
+        '204':
           description: Vendor Account Deleted
         '400':
           $ref: '#/paths/~1media/get/responses/400'
@@ -765,9 +746,6 @@ paths:
         '404':
           description: Vendor Account not found
           $ref: '#/paths/~1media/get/responses/404'
-        content:
-          application/json:
-            schema: null
   /stores:
     post:
       summary: Creates store's data

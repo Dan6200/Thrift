@@ -404,20 +404,19 @@ paths:
           $ref: 'models.yaml#/components/schemas/responses/default'
 
   /shipping-info/{shippingInfoId}:
-    parameters:
-      - in: path
-        name: shippingInfoId
-        schema:
-          type: integer
-        required: true
-        description: Shipping information Id
-
     get:
       summary: Retrieves shipping information.
       description: |
         Retrieves the shipping information with Id - shippingInfoId
         for the customer.
       security: [BearerAuth: []]
+      parameters:
+        - in: path
+          name: shippingInfoId
+          schema:
+            type: integer
+          required: true
+          description: Shipping information Id
       responses:
         '200':
           description: |
@@ -450,6 +449,13 @@ paths:
         Replaces the shipping information with Id - shippingInfoId
         for the customer.
       security: [BearerAuth: []]
+      parameters:
+        - in: path
+          name: shippingInfoId
+          schema:
+            type: integer
+          required: true
+          description: Shipping information Id
       requestBody:
         required: true
         content:
@@ -486,6 +492,13 @@ paths:
         Deletes the shipping information with Id - shippingInfoId
         for the customer.
       security: [BearerAuth: []]
+      parameters:
+        - in: path
+          name: shippingInfoId
+          schema:
+            type: integer
+          required: true
+          description: Shipping information Id
       responses:
         '200':
           description: |

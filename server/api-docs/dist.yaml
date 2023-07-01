@@ -479,13 +479,6 @@ paths:
             Internal Server Error
           $ref: '#/paths/~1account/get/responses/500'
   '/shipping-info/{shippingInfoId}':
-    parameters:
-      - in: path
-        name: shippingInfoId
-        schema:
-          type: integer
-        required: true
-        description: Shipping information Id
     get:
       summary: Retrieves shipping information.
       description: |
@@ -493,6 +486,13 @@ paths:
         for the customer.
       security:
         - BearerAuth: []
+      parameters:
+        - in: path
+          name: shippingInfoId
+          schema:
+            type: integer
+          required: true
+          description: Shipping information Id
       responses:
         '200':
           description: |
@@ -524,6 +524,13 @@ paths:
         for the customer.
       security:
         - BearerAuth: []
+      parameters:
+        - in: path
+          name: shippingInfoId
+          schema:
+            type: integer
+          required: true
+          description: Shipping information Id
       requestBody:
         required: true
         content:
@@ -559,6 +566,13 @@ paths:
         for the customer.
       security:
         - BearerAuth: []
+      parameters:
+        - in: path
+          name: shippingInfoId
+          schema:
+            type: integer
+          required: true
+          description: Shipping information Id
       responses:
         '200':
           description: |
@@ -963,6 +977,15 @@ paths:
         for the vendor.
       security:
         - BearerAuth: []
+      queries:
+        storeId:
+          description: |
+            The storeId of the store to which the product
+            is to be added.
+          required: true
+          schema:
+            type: integer
+            format: int32
       requestBody:
         required: true
         description: |

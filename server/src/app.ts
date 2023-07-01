@@ -25,8 +25,6 @@ import swaggerUi from 'swagger-ui-express'
 import yaml from 'js-yaml'
 import { readFile } from 'fs/promises'
 import path from 'path'
-import swaggerUI from 'swagger-ui-dist'
-const pathToSwaggerUi = swaggerUI.absolutePath()
 
 const swaggerDocument = await readFile(
 	path.resolve('./server/api-docs/dist.yaml'),
@@ -51,8 +49,7 @@ app.use(
 // **/
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static('swagger-ui-dist'))
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(<JSON>swaggerDocument))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(<JSON>swaggerDocument))
 app.get('/api.json', (_, res) => res.json(swaggerDocument))
 
 app.use(helmet())

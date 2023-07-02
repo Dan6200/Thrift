@@ -7,11 +7,11 @@ create table if not exists user_accounts (
 	check				(first_name ~* '^[a-zA-Z]+$'),
   last_name    varchar(30)               not        null,
 	check				(last_name ~* '^[a-zA-Z]+$'),
-  email        varchar(320)              unique
+  email        varchar(320)              unique,
   check        (email ~* '^(([^<> ()[\]\\.,;:\s@"]+(\.[^< > ()[\]\\.,;'
 							 ':\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1'
 							 ',3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'),  
-  phone        varchar(40)               unique
+  phone        varchar(40)               unique,
   check        (phone ~* '^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$'),  
 	check				 (email is null and phone is not null or email is not null and phone is null),
   password     bytea                     not        null,

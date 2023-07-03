@@ -14,6 +14,7 @@ import authRouter from './routes/auth.js'
 import accountRouter from './routes/private/account/index.js'
 import shippingRouter from './routes/private/shipping/index.js'
 import productsRouter from './routes/private/products/index.js'
+import productsPublicRouter from './routes/public/products/index.js'
 import storesRouter from './routes/private/stores/index.js'
 import mediaRouter from './routes/private/media/index.js'
 
@@ -37,7 +38,7 @@ dotenv.config()
 let app: Express = express()
 app.set('trust proxy', 1)
 app.use(cookieParser())
-// /** Comment out below to run tests
+/** Comment out below to run tests
 app.use(
 	rateLimiter({
 		windowMs: 15 * 60 * 1000,
@@ -46,7 +47,7 @@ app.use(
 		legacyHeaders: false,
 	})
 )
-// **/
+**/
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(<JSON>swaggerDocument))
@@ -63,6 +64,7 @@ v1Router.use('/account', authenticateUser, accountRouter)
 v1Router.use('/shipping-info', authenticateUser, shippingRouter)
 v1Router.use('/stores', authenticateUser, storesRouter)
 v1Router.use('/products', authenticateUser, productsRouter)
+v1Router.use('/public/products', productsPublicRouter)
 v1Router.use('/media', authenticateUser, mediaRouter)
 
 app.use('/v1', v1Router)

@@ -10,6 +10,8 @@ import {
 	testRouteWithQParams,
 	testRouteWithData,
 	testRouteWithQParamsAndData,
+	testPublicRouteNoData,
+	testPublicRouteWithQParams,
 } from '../../../../types-and-interfaces/test-routes.js'
 import testRoute from '../test-route.js'
 
@@ -59,24 +61,13 @@ const testCreateProduct = async function* (
 	}
 }
 
-// const testGetAllProducts = async function (
-// 	server: string,
-// 	token: string,
-// 	path: string,
-// 	query?: object
-// ): Promise<any> {
-// 	const response = await chai
-// 		.request(server)
-// 		.get(path)
-// 		.query(query ?? {})
-// 		.auth(token, { type: 'bearer' })
-// 	response.should.have.status(OK)
-// 	// Check that the data in the body is accurate
-// 	validateResultList(response.body)
-// 	response.body
-// }
-
 const testGetAllProducts = <testRouteWithQParams>testRoute({
+	...routeParams,
+	verb: 'get',
+	checks: validateResultList,
+})
+
+export const testGetAllProductsPublic = <testPublicRouteWithQParams>testRoute({
 	...routeParams,
 	verb: 'get',
 	checks: validateResultList,

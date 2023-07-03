@@ -12,13 +12,13 @@ const AccountDataSchemaRequest = joi
 			.pattern(
 				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 			)
-			.allow(''),
+			.allow(null),
 		phone: joi
 			.string()
 			.pattern(
 				/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
 			)
-			.allow(''),
+			.allow(null),
 		password: joi.string().required(),
 		dob: joi.date().required(),
 		country: joi.string().required(),

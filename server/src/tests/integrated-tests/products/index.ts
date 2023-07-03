@@ -1,9 +1,6 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
-import {
-	Product,
-	ProductMedia,
-} from '../../../types-and-interfaces/products.js'
+import { Product } from '../../../types-and-interfaces/products.js'
 import StoresData from '../../../types-and-interfaces/stores-data.js'
 import { registration } from '../helper-functions/auth/index.js'
 import {
@@ -32,15 +29,12 @@ export default function ({
 	stores: vendorStores,
 	products,
 	productReplaced,
-	productMedia,
 }: {
 	accountInfo: AccountData
 	stores: StoresData[]
 	updatedStores?: StoresData[]
 	products: Product[]
 	productReplaced: Product[]
-	productMedia: ProductMedia[]
-	updatedProductMedia: ProductMedia[]
 }) {
 	before(async function () {
 		//  Set the server url
@@ -72,8 +66,6 @@ export default function ({
 			await db.query({ text: 'delete from stores' })
 			// Delete all products
 			await db.query({ text: 'delete from products' })
-			// Delete all product media
-			await db.query({ text: 'delete from product_media' })
 		})
 
 		it('it should Add a couple products to each store', async () => {

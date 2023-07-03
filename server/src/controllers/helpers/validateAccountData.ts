@@ -21,7 +21,6 @@ export async function validateAccountData(userData: AccountData) {
 				})
 			).rows.length > 0
 		if (emailNotUniq) throw new BadRequestError(`email already exists`)
-		validData.phone = null
 	}
 
 	if (phone) {
@@ -33,7 +32,6 @@ export async function validateAccountData(userData: AccountData) {
 				})
 			).rows.length > 0
 		if (phoneNotUniq) throw new BadRequestError(`phone number already exists`)
-		validData.email = null
 	}
 	return validData
 }

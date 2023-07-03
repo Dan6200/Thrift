@@ -1,6 +1,5 @@
 import { Response } from 'express'
 import { QueryResult, QueryResultRow } from 'pg'
-import BadRequestError from '../../errors/bad-request.js'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import { ResponseData, Status } from '../../types-and-interfaces/response.js'
 
@@ -16,11 +15,7 @@ export default (
 ) => {
 	// return the route processor middleware
 	return async (request: RequestWithPayload, response: Response) => {
-		const { user, body } = request
-		if (!user)
-			throw new BadRequestError(
-				'Please create the appropriate account before performing this action'
-			)
+		const { body } = request
 		// set status code and response data
 		// Validate request data
 		if (

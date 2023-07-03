@@ -5,6 +5,7 @@ import testCustomerAccount from './accounts/customers/index.js'
 import testVendorAccount from './accounts/vendors/index.js'
 import testShipping from './shipping-info/index.js'
 import testProducts from './products/index.js'
+import testPublicProducts from './public/products/index.js'
 import testMedia from './media/index.js'
 import * as Ebuka from './data/users/customers/user-ebuka/index.js'
 import * as Aisha from './data/users/customers/user-aisha/index.js'
@@ -16,6 +17,16 @@ const customers = [Ebuka, Aisha, Mustapha]
 const vendors = [Aliyu]
 
 export default function (): void {
+	/** Public Routes **/
+
+	/** Products **/
+
+	for (let vendor of vendors) {
+		const name = vendor.accountInfo.first_name
+		describe(`Testing Public Routes for ${name}`, () =>
+			testPublicProducts(vendor))
+	}
+
 	/** Authentication **/
 
 	for (let user of users) {

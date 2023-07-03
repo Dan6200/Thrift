@@ -26,13 +26,11 @@ export default function ({
 	stores: vendorStores,
 	products,
 	productMedia,
-	updatedProductMedia,
 }: {
 	accountInfo: AccountData
 	stores: StoresData[]
 	products: Product[]
-	productMedia: ProductMedia[]
-	updatedProductMedia: ProductMedia[]
+	productMedia: ProductMedia[][]
 }) {
 	describe('Product media management', () => {
 		before(async function () {
@@ -78,12 +76,12 @@ export default function ({
 			let productIds: number[] | null
 			for ([, productIds] of storeIds.entries()) {
 				if (productIds)
-					for (const productId of productIds)
+					for (const [idx, productId] of productIds.entries())
 						await testUploadProductMedia(
 							server,
 							token,
 							mediaRoute,
-							productMedia,
+							productMedia[idx],
 							{
 								product_id: productId,
 							}

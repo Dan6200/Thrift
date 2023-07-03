@@ -1,5 +1,7 @@
 //cspell:ignore Aliyu
+import FormData from 'form-data'
 import dotenv from 'dotenv'
+import fs from 'fs/promises'
 import axios from 'axios'
 import { AccountData } from '../types-and-interfaces/account.js'
 import { Product, ProductMedia } from '../types-and-interfaces/products.js'
@@ -24,7 +26,7 @@ async function createProducts({
 	accountInfo: AccountData
 	stores: StoresData[]
 	products: Product[]
-	productMedia: ProductMedia[]
+	productMedia: ProductMedia[][]
 }) {
 	// Register a new user
 	const server = process.env.LOCAL_APP_SERVER!
@@ -40,20 +42,21 @@ async function createProducts({
 			null,
 			store
 		)
-		for (let product of products) {
+
+		for (const [idx, product] of products.entries()) {
 			const { product_id } = await createResource(
 				server + '/v1/products',
 				token,
 				{ store_id },
 				product
 			)
-			await createResource(
+			await uploadMedia(
 				server + '/v1/media',
 				token,
 				{
 					product_id,
 				},
-				productMedia
+				productMedia[idx]
 			)
 		}
 	}
@@ -77,6 +80,32 @@ async function createResource(
 	const headers = { Authorization: `Bearer ${token}` }
 	try {
 		const response = await axios.post(url, data, { headers, params: query })
+		return response.data
+	} catch (error) {
+		throw error
+	}
+}
+
+async function uploadMedia(
+	url: string,
+	token: string,
+	query: object | null,
+	files: { name: string; path: string; description: string }[]
+): Promise<any> {
+	const form = new FormData()
+	const fieldName = 'product-media'
+	form.append('description', files[0].description)
+	await Promise.all(
+		files.map(async file => {
+			form.append(fieldName, await fs.readFile(file.path), {
+				filename: file.name,
+			} as any)
+			// form.append('description', file.description)
+		})
+	)
+	const headers = { ...form.getHeaders(), Authorization: `Bearer ${token}` }
+	try {
+		const response = await axios.post(url, form, { headers, params: query })
 		return response.data
 	} catch (error) {
 		throw error

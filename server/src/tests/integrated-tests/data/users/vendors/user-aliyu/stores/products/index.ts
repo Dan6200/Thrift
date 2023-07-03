@@ -112,91 +112,181 @@ export const productPartialUpdate: ProductPartial[] = [
 ]
 
 export const productMedia = [
-	{
-		name: 'TOZO SmartWatch',
-		path:
-			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/61s3bP9rdOL._AC_SL1500_.jpg',
-		description: 'A smartwatch',
-	},
-	{
-		name: 'TOZO SmartWatch',
-		path:
-			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/71-QFdYVDjL._AC_SL1500_.jpg',
-		description: 'A smartwatch',
-	},
-	{
-		name: 'TOZO SmartWatch',
-		path:
-			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/716xePAwIxL._AC_SL1500_.jpg',
-		description: 'A smartwatch',
-	},
-	{
-		name: 'TOZO SmartWatch',
-		path:
-			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/71DWBxbq1NL._AC_SL1500_.jpg',
-		description: 'A smartwatch',
-	},
-	{
-		name: 'TOZO SmartWatch',
-		path:
-			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/71MNIstzDvL._AC_SL1500_.jpg',
-		description: 'A smartwatch',
-	},
-	{
-		name: 'TOZO SmartWatch',
-		path:
-			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/71UMkMp9d1L._AC_SL1500_.jpg',
-		description: 'A smartwatch',
-	},
+	[
+		{
+			name: 'tozo-smartwatch',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/tozo-smartwatch/61s3bP9rdOL._AC_SL1500_.jpg',
+			description: 'A fitness smartwatch',
+		},
+		{
+			name: 'tozo-smartwatch',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/tozo-smartwatch/71-QFdYVDjL._AC_SL1500_.jpg',
+			description: 'A fitness smartwatch',
+		},
+		{
+			name: 'tozo-smartwatch',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/tozo-smartwatch/716xePAwIxL._AC_SL1500_.jpg',
+			description: 'A fitness smartwatch',
+		},
+		{
+			name: 'tozo-smartwatch',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/tozo-smartwatch/71DWBxbq1NL._AC_SL1500_.jpg',
+			description: 'A fitness smartwatch',
+		},
+		{
+			name: 'tozo-smartwatch',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/tozo-smartwatch/71MNIstzDvL._AC_SL1500_.jpg',
+			description: 'A fitness smartwatch',
+		},
+		{
+			name: 'tozo-smartwatch',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/tozo-smartwatch/71UMkMp9d1L._AC_SL1500_.jpg',
+			description: 'A fitness smartwatch',
+		},
+	],
+	[
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'~/dev_work/thrift/product-media/lenovo-tab-m10-plus/410lti6ZAmL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'~/dev_work/thrift/product-media/lenovo-tab-m10-plus/410lti6ZAmL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'~/dev_work/thrift/product-media/lenovo-tab-m10-plus/410lti6ZAmL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'~/dev_work/thrift/product-media/lenovo-tab-m10-plus/61gjwA8ponL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'~/dev_work/thrift/product-media/lenovo-tab-m10-plus/61gjwA8ponL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'~/dev_work/thrift/product-media/lenovo-tab-m10-plus/61gjwA8ponL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+	],
+	[
+		{
+			name: 'echo-wireless-buds',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/echo-wireless-buds/61s3bP9rdOL._AC_SL1500_.jpg',
+			description: 'Echo Wireless Earbuds',
+		},
+		{
+			name: 'echo-wireless-buds',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/echo-wireless-buds/71-QFdYVDjL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+		{
+			name: 'echo-wireless-buds',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/echo-wireless-buds/716xePAwIxL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+		{
+			name: 'echo-wireless-buds',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/echo-wireless-buds/71DWBxbq1NL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+		{
+			name: 'echo-wireless-buds',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/echo-wireless-buds/71MNIstzDvL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+		{
+			name: 'echo-wireless-buds',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/echo-wireless-buds/71UMkMp9d1L._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+	],
 ]
 
 export const updatedProductMedia: ProductMedia[] = [
 	{
-		name: 'TOZO SmartWatch',
+		name: 'tozo-smartwatch',
 		path:
 			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/61s3bP9rdOL._AC_SL1500_.jpg',
-		description: 'A smartwatch',
+			'/dev_work/thrift/product-media/tozo-smartwatch/61s3bP9rdOL._AC_SL1500_.jpg',
+		description: 'A fitness smartwatch',
 	},
 	{
-		name: 'TOZO SmartWatch',
+		name: 'tozo-smartwatch',
 		path:
 			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/71-QFdYVDjL._AC_SL1500_.jpg',
-		description: 'A smartwatch',
+			'/dev_work/thrift/product-media/tozo-smartwatch/71-QFdYVDjL._AC_SL1500_.jpg',
+		description: 'A fitness smartwatch',
 	},
 	{
-		name: 'TOZO SmartWatch',
+		name: 'tozo-smartwatch',
 		path:
 			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/716xePAwIxL._AC_SL1500_.jpg',
-		description: 'A smartwatch',
+			'/dev_work/thrift/product-media/tozo-smartwatch/716xePAwIxL._AC_SL1500_.jpg',
+		description: 'A fitness smartwatch',
 	},
 	{
-		name: 'TOZO SmartWatch',
+		name: 'tozo-smartwatch',
 		path:
 			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/71DWBxbq1NL._AC_SL1500_.jpg',
-		description: 'A smartwatch',
+			'/dev_work/thrift/product-media/tozo-smartwatch/71DWBxbq1NL._AC_SL1500_.jpg',
+		description: 'A fitness smartwatch',
 	},
 	{
-		name: 'TOZO SmartWatch',
+		name: 'tozo-smartwatch',
 		path:
 			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/71MNIstzDvL._AC_SL1500_.jpg',
-		description: 'A smartwatch',
+			'/dev_work/thrift/product-media/tozo-smartwatch/71MNIstzDvL._AC_SL1500_.jpg',
+		description: 'A fitness smartwatch',
 	},
 	{
-		name: 'TOZO SmartWatch',
+		name: 'tozo-smartwatch',
 		path:
 			process.env.HOME +
-			'/dev_work/thrift/server/src/tests/product-media/TOZO smartwatch/71UMkMp9d1L._AC_SL1500_.jpg',
-		description: 'A smartwatch',
+			'/dev_work/thrift/product-media/tozo-smartwatch/71UMkMp9d1L._AC_SL1500_.jpg',
+		description: 'A fitness smartwatch',
 	},
 ]

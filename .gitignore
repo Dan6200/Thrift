@@ -4,6 +4,7 @@
 *node_modules
 */.env
 todo*
+*.jpg
 .prettierrc.json
 **/.vscode/*
 *built/

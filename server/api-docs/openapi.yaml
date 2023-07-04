@@ -43,6 +43,14 @@ paths:
           application/json:
             schema:
               $ref: 'models.yaml#/components/schemas/UserDataRequest'
+            example:
+              first_name: Ebuka
+              last_name: Eze
+              email: ebukaeze@fake.email.com
+              phone: '+2341234567890'
+              password: my password
+              dob: 2000-4-10
+              country: Nigeria
 
       responses:
         '201':
@@ -278,10 +286,6 @@ paths:
       responses:
         '201':
           description: Customer Account Created
-          content:
-            application/json:
-              schema:
-                $ref: 'models.yaml#/components/schemas/CustomerId'
 
         '400':
           description: Customer Account Not Created
@@ -309,12 +313,8 @@ paths:
       security: [BearerAuth: []]
 
       responses:
-        '200':
+        '204':
           description: Customer Account Deleted
-          content:
-            application/json:
-              schema:
-                $ref: 'models.yaml#/components/schemas/CustomerId'
 
         '400':
           $ref: 'models.yaml#/components/schemas/responses/BadRequestError'
@@ -404,20 +404,19 @@ paths:
           $ref: 'models.yaml#/components/schemas/responses/default'
 
   /shipping-info/{shippingInfoId}:
-    parameters:
-      - in: path
-        name: shippingInfoId
-        schema:
-          type: integer
-        required: true
-        description: Shipping information Id
-
     get:
       summary: Retrieves shipping information.
       description: |
         Retrieves the shipping information with Id - shippingInfoId
         for the customer.
       security: [BearerAuth: []]
+      parameters:
+        - in: path
+          name: shippingInfoId
+          schema:
+            type: integer
+          required: true
+          description: Shipping information Id
       responses:
         '200':
           description: |
@@ -450,6 +449,13 @@ paths:
         Replaces the shipping information with Id - shippingInfoId
         for the customer.
       security: [BearerAuth: []]
+      parameters:
+        - in: path
+          name: shippingInfoId
+          schema:
+            type: integer
+          required: true
+          description: Shipping information Id
       requestBody:
         required: true
         content:
@@ -486,6 +492,13 @@ paths:
         Deletes the shipping information with Id - shippingInfoId
         for the customer.
       security: [BearerAuth: []]
+      parameters:
+        - in: path
+          name: shippingInfoId
+          schema:
+            type: integer
+          required: true
+          description: Shipping information Id
       responses:
         '200':
           description: |
@@ -658,10 +671,6 @@ paths:
       responses:
         '201':
           description: Vendor Account Created
-        content:
-          application/json:
-            schema:
-              $ref: 'models.yaml#/components/schemas/VendorId'
 
         '400':
           $ref: 'models.yaml#/components/schemas/responses/BadRequestError'
@@ -676,12 +685,8 @@ paths:
       security: [BearerAuth: []]
 
       responses:
-        '200':
+        '204':
           description: Vendor Account Deleted
-        content:
-          application/json:
-            schema:
-              # $ref: 'models.yaml#/components/schemas/VendorId'
 
         '400':
           $ref: 'models.yaml#/components/schemas/responses/BadRequestError'
@@ -957,6 +962,15 @@ paths:
         Adds a new product to the store with Id - productId
         for the vendor.
       security: [BearerAuth: []]
+      queries:
+        storeId:
+          description: |
+            The storeId of the store to which the product
+            is to be added.
+          required: true
+          schema:
+            type: integer
+            format: int32
       requestBody:
         required: true
         description: |

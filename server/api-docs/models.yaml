@@ -224,10 +224,10 @@ components:
         dob: 2000-4-10
         country: Nigeria
 
-    UserDataRequest:
+    UserDataRetrieved:
       $ref: '#/components/schemas/UserDataProperties'
 
-    UserDataRetrieved:
+    UserDataRequest:
       allOf:
         - $ref: '#/components/schemas/UserDataProperties'
         - type: object
@@ -239,30 +239,6 @@ components:
               format: password
           example:
             password: 'my password'
-
-    CustomerId:
-      type: object
-      required:
-        - customer_id
-      properties:
-        customer_id:
-          type: integer
-          format: int32
-      description: unique identifier for a customer
-      example:
-        customer_id: 17
-
-    VendorId:
-      type: object
-      required:
-        - vendor_id
-      properties:
-        vendor_id:
-          type: integer
-          format: int32
-      description: unique identifier for a vendor
-      example:
-        vendor_id: 17
 
     LoginInfo:
       type: object
@@ -297,6 +273,9 @@ components:
         shipping_info_id:
           type: integer
           format: int32
+      description: unique identifier for a shipping info
+      example:
+        shipping_info_id: 17
 
     ShippingInfoProperties:
       type: object

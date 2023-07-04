@@ -5,15 +5,29 @@ interface testRouteParams {
 	statusCode: StatusCodes
 	checks?: (response: any) => Promise<void>
 }
+
 type testRouteNoData = (
 	server: string,
 	token: string,
 	path: string
 ) => Promise<any>
 
+export type testPublicRouteNoData = (
+	server: string,
+	token: null,
+	path: string
+) => Promise<any>
+
 export type testRouteWithQParams = (
 	server: string,
 	token: string,
+	path: string,
+	query: { [k: string]: any } & { length?: never }
+) => Promise<any>
+
+export type testPublicRouteWithQParams = (
+	server: string,
+	token: null,
 	path: string,
 	query: { [k: string]: any } & { length?: never }
 ) => Promise<any>

@@ -5,7 +5,7 @@ import { uploadProductMedia } from '../../../controllers/private/media/index.js'
 
 const router = express.Router()
 const upload = multer({ storage: mediaStorage })
-const uploadLimit = 6
+const uploadLimit = 12
 router
 	.route('/')
 	.post(upload.array('product-media', uploadLimit), uploadProductMedia)

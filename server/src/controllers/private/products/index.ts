@@ -69,7 +69,7 @@ const createQuery = async ({
  * @description Retrieve all products
  *
  **/
-const readAllQuery = async ({
+const getAllQuery = async ({
 	query: { store_id: storeId, sort, limit, offset },
 	user: { userId: vendorId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
@@ -301,7 +301,7 @@ const createProduct = processPostRoute(
 )
 
 const getAllProducts = processGetAllRoute(
-	readAllQuery,
+	getAllQuery,
 	OK,
 	undefined,
 	validateResultList

@@ -14,7 +14,7 @@ const uploadProductMedia = async (req: any, res: any) => {
 					text: InsertInTable(
 						'product_media',
 						['product_id', 'filename', 'filepath', 'description'],
-						'filename'
+						'filename, description'
 					),
 					values: [productId, filename, filepath, description],
 				})

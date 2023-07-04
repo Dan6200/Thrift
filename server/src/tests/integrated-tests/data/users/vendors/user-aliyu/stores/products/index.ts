@@ -125,13 +125,13 @@ export const productPartialUpdate: ProductPartial[] = [
 	},
 ]
 
-export const productMedia = [
+export const productMedia: ProductMedia[][] = [
 	[
 		{
 			name: 'tozo-smartwatch',
 			path:
 				process.env.HOME +
-				'/dev_work/thrift/product-media/tozo-smartwatch/61s3bP9rdOL._AC_SL1500_.jpg',
+				'/dev_work/thrift/product-media/tozo-smartwatch/display.jpg',
 			description: 'A fitness smartwatch',
 		},
 
@@ -178,60 +178,10 @@ export const productMedia = [
 
 	[
 		{
-			name: 'lenovo-tab',
-			path:
-				process.env.HOME +
-				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/410lti6ZAmL._AC_SL1500_.jpg',
-			description: 'Lenovo Tablet M10 Plus Gen 3',
-		},
-
-		{
-			name: 'lenovo-tab',
-			path:
-				process.env.HOME +
-				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/61gjwA8ponL._AC_SL1500_.jpg',
-			description: 'Lenovo Tablet M10 Plus Gen 3',
-		},
-
-		{
-			name: 'lenovo-tab',
-			path:
-				process.env.HOME +
-				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/61n2uja0sIL._AC_SL1500_.jpg',
-			description: 'Lenovo Tablet M10 Plus Gen 3',
-		},
-
-		{
-			name: 'lenovo-tab',
-			path:
-				process.env.HOME +
-				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/61siR9sOKDL._AC_SL1500_.jpg',
-			description: 'Lenovo Tablet M10 Plus Gen 3',
-		},
-
-		{
-			name: 'lenovo-tab',
-			path:
-				process.env.HOME +
-				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/71TOJXChXtL._AC_SL1500_.jpg',
-			description: 'Lenovo Tablet M10 Plus Gen 3',
-		},
-
-		{
-			name: 'lenovo-tab',
-			path:
-				process.env.HOME +
-				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/71bG32yslGL._AC_SL1500_.jpg',
-			description: 'Lenovo Tablet M10 Plus Gen 3',
-		},
-	],
-
-	[
-		{
 			name: 'echo-wireless-buds',
 			path:
 				process.env.HOME +
-				'/dev_work/thrift/product-media/echo-wireless-buds/411NxOSWI5L._AC_SL1000_.jpg',
+				'/dev_work/thrift/product-media/echo-wireless-buds/display.jpg',
 			description: 'Echo Wireless Earbuds',
 		},
 
@@ -239,7 +189,7 @@ export const productMedia = [
 			name: 'echo-wireless-buds',
 			path:
 				process.env.HOME +
-				'/dev_work/thrift/product-media/echo-wireless-buds/41rr6JeqLJL._AC_SL1000_.jpg',
+				'/dev_work/thrift/product-media/echo-wireless-buds/411NxOSWI5L._AC_SL1000_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
 		},
 
@@ -299,8 +249,58 @@ export const productMedia = [
 			description: 'Lenovo Tablet M10 Plus Gen 3',
 		},
 	],
+	[
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/display.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/410lti6ZAmL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/61n2uja0sIL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/61siR9sOKDL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/71TOJXChXtL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+
+		{
+			name: 'lenovo-tab',
+			path:
+				process.env.HOME +
+				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/71bG32yslGL._AC_SL1500_.jpg',
+			description: 'Lenovo Tablet M10 Plus Gen 3',
+		},
+	],
 ]
 
+// should be a matrix
 export const updatedProductMedia: ProductMedia[] = [
 	{
 		name: 'tozo-smartwatch',

@@ -8,7 +8,7 @@ export async function delay(time: number) {
 	return new Promise(resolve => setTimeout(resolve, time))
 }
 
-function removeResizing(str: string | null) {
+export function removeResizing(str: string | null) {
 	return str!.slice(0, str!.indexOf('._')) + '.jpg'
 }
 

@@ -54,7 +54,7 @@ create table if not exists vendors (
 
 create table if not exists stores (
   store_id       serial    primary   key,   
-  store_name     varchar   not       null    default      'My Store',
+  store_name     varchar   not       null,
   vendor_id      int       not       null    references   vendors        on   delete   cascade,
   store_page     jsonb,
   date_created   date      not       null    default      current_date

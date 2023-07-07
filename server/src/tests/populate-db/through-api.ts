@@ -3,11 +3,13 @@ import FormData from 'form-data'
 import dotenv from 'dotenv'
 import fs from 'fs/promises'
 import axios from 'axios'
-import { AccountData } from '../types-and-interfaces/account.js'
-import { Product, ProductMedia } from '../types-and-interfaces/products.js'
-import StoresData from '../types-and-interfaces/stores-data.js'
-import * as Aliyu from './integrated-tests/data/users/vendors/user-aliyu/index.js'
-import db from '../db/pg/index.js'
+import { Product } from '../../types-and-interfaces/products.js'
+import db from '../../db/pg/index.js'
+import { AccountData } from '../../types-and-interfaces/account.js'
+import { ProductMedia } from '../../types-and-interfaces/products.js'
+import StoresData from '../../types-and-interfaces/stores-data.js'
+import * as Aliyu from '../integrated-tests/data/users/vendors/user-aliyu/index.js'
+
 dotenv.config()
 const vendors = [Aliyu]
 

@@ -1,3 +1,4 @@
+import util from 'util'
 import { Response } from 'express'
 import { QueryResult, QueryResultRow } from 'pg'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
@@ -29,6 +30,8 @@ export default (
 		// Process the requestData
 		// Make a database query with the request data
 		const dbRes = await CRUDQuery(request)
+
+		console.log(util.inspect(dbRes.rows[36], false, null, true))
 
 		if (validateResult) {
 			// validateBody returns error status code and message if data is invalid

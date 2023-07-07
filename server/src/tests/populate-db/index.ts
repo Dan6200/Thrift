@@ -6,6 +6,7 @@ const { streamArray } = pkg
 import db from '../../db/pg/index.js'
 import fs from 'node:fs'
 import { removeResizing } from '../../web-scrape/supporting-funcs.js'
+import { assert } from 'chai'
 
 async function populateDB() {
 	const jsonStream = fs
@@ -83,11 +84,12 @@ async function populateDB() {
 		let productId: number = 0
 		try {
 			if (title && description) {
-				let priceVal = Number(price)
 				const upper = 10_000
 				const lower = 500_000
-				priceVal = priceVal ?? Math.random() * (upper - lower) + lower
+				let priceVal = Number(price ?? Math.random() * (upper - lower) + lower)
+				priceVal = priceVal
 				priceVal *= 750 // Converts USD to Naira
+				assert(!isNaN(priceVal))
 				productId = (
 					await db.query({
 						text: `INSERT INTO products (store_id, title, vendor_id, description, net_price, list_price, quantity_available) values ($1, $2, $3, $4, $5, $6, $7) RETURNING product_id`,

@@ -8,6 +8,7 @@ import { registration } from '../../helper-functions/auth/index.js'
 import {
 	testCreateProduct,
 	testGetAllProductsPublic,
+	testGetProductPublic,
 } from '../../helper-functions/products/index.js'
 import { testCreateStore } from '../../helper-functions/store/index.js'
 import { testCreateVendor } from '../../helper-functions/vendor/index.js'
@@ -46,7 +47,7 @@ export default function ({
 	beforeEach(async () => {
 		if (!token) throw new Error('access token undefined')
 	})
-
+	const productIds: number[] = []
 	describe('Testing Products In Each Store', async function () {
 		before(async () => {
 			// Delete all stores
@@ -70,13 +71,14 @@ export default function ({
 					null,
 					store
 				)
-				for await (let _ of testCreateProduct(
+				for await (let { product_id } of testCreateProduct(
 					server,
 					token,
 					productsRoute,
 					{ store_id },
 					products
-				));
+				))
+					productIds.push(product_id)
 			}
 		})
 
@@ -95,6 +97,15 @@ export default function ({
 				offset: 1,
 				limit: 2,
 			})
+		})
+
+		it('it should retrieve a specific product', async () => {
+			for (const productId of productIds)
+				await testGetProductPublic(
+					server,
+					null,
+					`${productsPublicRoute}/${productId}`
+				)
 		})
 
 		//end

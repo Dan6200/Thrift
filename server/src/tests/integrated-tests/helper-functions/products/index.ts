@@ -79,6 +79,12 @@ const testGetProduct = <testRouteWithQParams>testRoute({
 	checks: validateResult,
 })
 
+export const testGetProductPublic = <testPublicRouteNoData>testRoute({
+	...routeParams,
+	verb: 'get',
+	checks: validateResult,
+})
+
 const testUpdateProduct = <testRouteWithQParamsAndData>testRoute({
 	...routeParams,
 	verb: 'patch',

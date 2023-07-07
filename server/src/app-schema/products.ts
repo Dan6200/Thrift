@@ -21,7 +21,7 @@ const ProductSchemaDB = joi
 	.object({
 		product_id: joi.number().required(),
 		title: joi.string().required(),
-		category: joi.string().required(),
+		category: joi.string().allow(null),
 		description: joi.array().items(joi.string()).allow(null),
 		list_price: joi.number().required(),
 		net_price: joi.number().required(),

@@ -110,10 +110,15 @@ async function populateDB() {
 			if (productId && image) {
 				const imgUrl = removeResizing(image)
 				const basename = imgUrl.slice(imgUrl.lastIndexOf('/'))
-				const filename = basename.slice(1, basename.indexOf('.'))
+				const filename =
+					basename.slice(1, basename.indexOf('.')) + Math.random() * 1e7
 				await db.query({
 					text: `INSERT INTO product_media (product_id, filename, filepath) values ($1, $2, $3)`,
-					values: [productId, filename + Math.random() * 1e7, imgUrl],
+					values: [productId, filename, imgUrl],
+				})
+				await db.query({
+					text: `INSERT INTO product_display_image values ($1)`,
+					values: [filename],
 				})
 			}
 		} catch (e) {

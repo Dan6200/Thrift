@@ -30,17 +30,17 @@ const getAllQuery = async ({
 			   filepath, description FROM
 				  product_media pm
 					 LEFT JOIN product_display_image pdi
-					USING (filename)
-				 WHERE
-				pm.product_id=products.product_id)
+				   USING (filename)
+				  WHERE
+				 pm.product_id=products.product_id)
 				AS media)
 			 AS media
 			FROM products`
 	if (sort) {
 		dbQueryString += ` ${handleSortQuery(<string>sort)}`
 	}
-	if (offset) dbQueryString += ` offset ${offset}`
-	if (limit) dbQueryString += ` limit ${limit}`
+	if (offset) dbQueryString += ` OFFSET ${offset}`
+	if (limit) dbQueryString += ` LIMIT ${limit}`
 	return db.query({ text: dbQueryString })
 }
 

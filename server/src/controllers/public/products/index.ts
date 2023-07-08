@@ -22,16 +22,20 @@ const getAllQuery = async ({
 	query: { sort, limit, offset },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
 	let dbQueryString = `
-		select products.*, 
-			(select json_agg(media) from 
-				(select filename, 
-					filepath, description from 
-						product_media 
-							where 
-								product_id=products.product_id)
-							as media) 
-						as media 
-					from products`
+		SELECT products.*,
+		 (SELECT JSON_AGG(media) FROM
+		  (SELECT pm.filename,
+			 CASE WHEN pdi.filename IS NOT NULL 
+			  THEN TRUE ELSE FALSE END AS is_display_image,
+			   filepath, description FROM
+				  product_media pm
+					 LEFT JOIN product_display_image pdi
+					USING (filename)
+				 WHERE
+				pm.product_id=products.product_id)
+				AS media)
+			 AS media
+			FROM products`
 	if (sort) {
 		dbQueryString += ` ${handleSortQuery(<string>sort)}`
 	}
@@ -49,16 +53,21 @@ const getQuery = async ({
 	params: { productId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
 	return db.query({
-		text: `select products.*, 
-				(select json_agg(media) from 
-					(select filename, 
-						filepath, description from 
-							product_media 
-							where product_id=$1)
-						as media) 
-					as media 
-				from products 
-			where product_id=$1`,
+		text: `SELECT products.*, 
+				(SELECT JSON_AGG(media) FROM 
+					(SELECT pm.filename, 
+					 CASE WHEN pdi.filename IS NOT NULL 
+					  THEN true ELSE false END
+					   AS is_display_image,
+							filepath, description FROM 
+							 product_media pm
+							  LEFT JOIN product_display_image pdi
+							 USING (filename)
+							WHERE product_id=$1)
+						AS media) 
+					AS media 
+				FROM products 
+			WHERE product_id=$1`,
 		values: [productId],
 	})
 }

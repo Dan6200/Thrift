@@ -82,6 +82,10 @@ create table if not exists product_media (
   description   varchar
 );
 
+create table if not exists product_display_image (
+  filename      varchar   primary    key
+);
+
 
 create table if not exists shopping_cart (
   cart_id       serial        primary   key,

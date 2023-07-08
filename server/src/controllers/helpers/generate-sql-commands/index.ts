@@ -20,8 +20,8 @@ export function UpdateInTable(
 	table: string,
 	idName: string,
 	fields: string[],
-	startsFrom: number,
-	condition: string
+	startsFrom: number = 1,
+	condition?: string
 ): string {
 	let setFieldsToNewValues = 'set '
 	const last = fields.length - 1

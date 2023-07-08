@@ -133,6 +133,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/display.jpg',
 			description: 'A fitness smartwatch',
+			is_display_image: true,
 		},
 
 		{
@@ -141,6 +142,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/71-QFdYVDjL._AC_SL1500_.jpg',
 			description: 'A fitness smartwatch',
+			is_display_image: false,
 		},
 
 		{
@@ -149,6 +151,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/716xePAwIxL._AC_SL1500_.jpg',
 			description: 'A fitness smartwatch',
+			is_display_image: false,
 		},
 
 		{
@@ -157,6 +160,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/71DWBxbq1NL._AC_SL1500_.jpg',
 			description: 'A fitness smartwatch',
+			is_display_image: false,
 		},
 
 		{
@@ -165,6 +169,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/71MNIstzDvL._AC_SL1500_.jpg',
 			description: 'A fitness smartwatch',
+			is_display_image: false,
 		},
 
 		{
@@ -173,6 +178,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/71UMkMp9d1L._AC_SL1500_.jpg',
 			description: 'A fitness smartwatch',
+			is_display_image: false,
 		},
 	],
 
@@ -183,6 +189,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/display.jpg',
 			description: 'Echo Wireless Earbuds',
+			is_display_image: true,
 		},
 
 		{
@@ -191,6 +198,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/411NxOSWI5L._AC_SL1000_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 
 		{
@@ -199,6 +207,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/41yDQmJ4ZlL._AC_SL1000_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 
 		{
@@ -207,6 +216,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/511jS3UQbsL._AC_SL1000_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 
 		{
@@ -215,6 +225,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/51k0HSzPB5L._AC_SL1000_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 
 		{
@@ -223,6 +234,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/514OQnrNPmL._AC_SL1000_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 
 		{
@@ -231,6 +243,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/61H2DdgDuAL._AC_SL1000_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 
 		{
@@ -239,6 +252,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/61KDOi775cL._AC_SL1000_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 
 		{
@@ -247,6 +261,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/71ARULrls-L._AC_SL1000_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 	],
 	[
@@ -256,6 +271,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/display.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: true,
 		},
 
 		{
@@ -264,6 +280,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/410lti6ZAmL._AC_SL1500_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 
 		{
@@ -272,6 +289,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/61n2uja0sIL._AC_SL1500_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 
 		{
@@ -280,6 +298,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/61siR9sOKDL._AC_SL1500_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 
 		{
@@ -288,6 +307,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/71TOJXChXtL._AC_SL1500_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 
 		{
@@ -296,6 +316,7 @@ export const productMedia: ProductMedia[][] = [
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/71bG32yslGL._AC_SL1500_.jpg',
 			description: 'Lenovo Tablet M10 Plus Gen 3',
+			is_display_image: false,
 		},
 	],
 ]
@@ -308,6 +329,7 @@ export const updatedProductMedia: ProductMedia[] = [
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/61s3bP9rdOL._AC_SL1500_.jpg',
 		description: 'A fitness smartwatch',
+		is_display_image: false,
 	},
 
 	{
@@ -316,6 +338,7 @@ export const updatedProductMedia: ProductMedia[] = [
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/71-QFdYVDjL._AC_SL1500_.jpg',
 		description: 'A fitness smartwatch',
+		is_display_image: false,
 	},
 
 	{
@@ -324,6 +347,7 @@ export const updatedProductMedia: ProductMedia[] = [
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/716xePAwIxL._AC_SL1500_.jpg',
 		description: 'A fitness smartwatch',
+		is_display_image: false,
 	},
 
 	{
@@ -332,6 +356,7 @@ export const updatedProductMedia: ProductMedia[] = [
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/71DWBxbq1NL._AC_SL1500_.jpg',
 		description: 'A fitness smartwatch',
+		is_display_image: false,
 	},
 
 	{
@@ -340,6 +365,7 @@ export const updatedProductMedia: ProductMedia[] = [
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/71MNIstzDvL._AC_SL1500_.jpg',
 		description: 'A fitness smartwatch',
+		is_display_image: false,
 	},
 
 	{
@@ -348,5 +374,6 @@ export const updatedProductMedia: ProductMedia[] = [
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/71UMkMp9d1L._AC_SL1500_.jpg',
 		description: 'A fitness smartwatch',
+		is_display_image: false,
 	},
 ]

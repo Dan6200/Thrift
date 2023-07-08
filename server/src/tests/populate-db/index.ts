@@ -20,9 +20,6 @@ async function populateDB() {
 	email=$1`,
 			values: ['populatingdb@gmail.com'],
 		})
-		await db.query({
-			text: `DELETE FROM product_media`,
-		})
 	} catch (e) {
 		throw new Error(e.message)
 	}

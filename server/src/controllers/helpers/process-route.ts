@@ -31,8 +31,6 @@ export default (
 		// Make a database query with the request data
 		const dbRes = await CRUDQuery(request)
 
-		console.log(util.inspect(dbRes.rows[36], false, null, true))
-
 		if (validateResult) {
 			// validateBody returns error status code and message if data is invalid
 			// check for errors

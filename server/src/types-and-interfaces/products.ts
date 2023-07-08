@@ -21,4 +21,5 @@ export type ProductMedia = {
 	name: string
 	path: string
 	description: string
+	is_display_image: boolean
 }

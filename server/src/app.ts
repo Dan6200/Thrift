@@ -38,7 +38,7 @@ dotenv.config()
 let app: Express = express()
 app.set('trust proxy', 1)
 app.use(cookieParser())
-/** Comment out below to run tests
+// /** Comment out below to run tests
 app.use(
 	rateLimiter({
 		windowMs: 15 * 60 * 1000,
@@ -47,7 +47,7 @@ app.use(
 		legacyHeaders: false,
 	})
 )
-**/
+// **/
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(<JSON>swaggerDocument))
@@ -56,7 +56,8 @@ app.get('/api.json', (_, res) => res.json(swaggerDocument))
 app.use(helmet())
 app.use(cors())
 app.use(xss())
-app.use(morgan('dev'))
+// app.use(morgan('dev'))
+app.use(morgan('combined'))
 // application routes
 const v1Router = Router()
 v1Router.use('/auth', authRouter)

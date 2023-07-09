@@ -128,7 +128,7 @@ export const productPartialUpdate: ProductPartial[] = [
 export const productMedia: ProductMedia[][] = [
 	[
 		{
-			name: 'tozo-smartwatch',
+			name: 'tozo-smartwatch-1',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/display.jpg',
@@ -137,7 +137,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'tozo-smartwatch',
+			name: 'tozo-smartwatch-2',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/71-QFdYVDjL._AC_SL1500_.jpg',
@@ -146,7 +146,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'tozo-smartwatch',
+			name: 'tozo-smartwatch-3',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/716xePAwIxL._AC_SL1500_.jpg',
@@ -155,7 +155,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'tozo-smartwatch',
+			name: 'tozo-smartwatch-4',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/71DWBxbq1NL._AC_SL1500_.jpg',
@@ -164,7 +164,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'tozo-smartwatch',
+			name: 'tozo-smartwatch-5',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/71MNIstzDvL._AC_SL1500_.jpg',
@@ -173,7 +173,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'tozo-smartwatch',
+			name: 'tozo-smartwatch-6',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/tozo-smartwatch/71UMkMp9d1L._AC_SL1500_.jpg',
@@ -184,7 +184,7 @@ export const productMedia: ProductMedia[][] = [
 
 	[
 		{
-			name: 'echo-wireless-buds',
+			name: 'echo-wireless-buds-1',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/display.jpg',
@@ -193,7 +193,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'echo-wireless-buds',
+			name: 'echo-wireless-buds-2',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/411NxOSWI5L._AC_SL1000_.jpg',
@@ -202,7 +202,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'echo-wireless-buds',
+			name: 'echo-wireless-buds-3',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/41yDQmJ4ZlL._AC_SL1000_.jpg',
@@ -211,7 +211,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'echo-wireless-buds',
+			name: 'echo-wireless-buds-4',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/511jS3UQbsL._AC_SL1000_.jpg',
@@ -220,7 +220,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'echo-wireless-buds',
+			name: 'echo-wireless-buds-5',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/51k0HSzPB5L._AC_SL1000_.jpg',
@@ -229,7 +229,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'echo-wireless-buds',
+			name: 'echo-wireless-buds-6',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/514OQnrNPmL._AC_SL1000_.jpg',
@@ -238,7 +238,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'echo-wireless-buds',
+			name: 'echo-wireless-buds-7',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/61H2DdgDuAL._AC_SL1000_.jpg',
@@ -247,7 +247,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'echo-wireless-buds',
+			name: 'echo-wireless-buds-8',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/61KDOi775cL._AC_SL1000_.jpg',
@@ -256,7 +256,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'echo-wireless-buds',
+			name: 'echo-wireless-buds-9',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/echo-wireless-buds/71ARULrls-L._AC_SL1000_.jpg',
@@ -266,7 +266,7 @@ export const productMedia: ProductMedia[][] = [
 	],
 	[
 		{
-			name: 'lenovo-tab',
+			name: 'lenovo-tab-1',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/display.jpg',
@@ -275,7 +275,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'lenovo-tab',
+			name: 'lenovo-tab-2',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/410lti6ZAmL._AC_SL1500_.jpg',
@@ -284,7 +284,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'lenovo-tab',
+			name: 'lenovo-tab-3',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/61n2uja0sIL._AC_SL1500_.jpg',
@@ -293,7 +293,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'lenovo-tab',
+			name: 'lenovo-tab-4',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/61siR9sOKDL._AC_SL1500_.jpg',
@@ -302,7 +302,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'lenovo-tab',
+			name: 'lenovo-tab-5',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/71TOJXChXtL._AC_SL1500_.jpg',
@@ -311,7 +311,7 @@ export const productMedia: ProductMedia[][] = [
 		},
 
 		{
-			name: 'lenovo-tab',
+			name: 'lenovo-tab-6',
 			path:
 				process.env.HOME +
 				'/dev_work/thrift/product-media/lenovo-tab-m10-plus/71bG32yslGL._AC_SL1500_.jpg',
@@ -324,7 +324,7 @@ export const productMedia: ProductMedia[][] = [
 // should be a matrix
 export const updatedProductMedia: ProductMedia[] = [
 	{
-		name: 'tozo-smartwatch',
+		name: 'tozo-smartwatch-1',
 		path:
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/61s3bP9rdOL._AC_SL1500_.jpg',
@@ -333,7 +333,7 @@ export const updatedProductMedia: ProductMedia[] = [
 	},
 
 	{
-		name: 'tozo-smartwatch',
+		name: 'tozo-smartwatch-2',
 		path:
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/71-QFdYVDjL._AC_SL1500_.jpg',
@@ -342,7 +342,7 @@ export const updatedProductMedia: ProductMedia[] = [
 	},
 
 	{
-		name: 'tozo-smartwatch',
+		name: 'tozo-smartwatch-3',
 		path:
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/716xePAwIxL._AC_SL1500_.jpg',
@@ -351,7 +351,7 @@ export const updatedProductMedia: ProductMedia[] = [
 	},
 
 	{
-		name: 'tozo-smartwatch',
+		name: 'tozo-smartwatch-4',
 		path:
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/71DWBxbq1NL._AC_SL1500_.jpg',
@@ -360,7 +360,7 @@ export const updatedProductMedia: ProductMedia[] = [
 	},
 
 	{
-		name: 'tozo-smartwatch',
+		name: 'tozo-smartwatch-5',
 		path:
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/71MNIstzDvL._AC_SL1500_.jpg',
@@ -369,7 +369,7 @@ export const updatedProductMedia: ProductMedia[] = [
 	},
 
 	{
-		name: 'tozo-smartwatch',
+		name: 'tozo-smartwatch-6',
 		path:
 			process.env.HOME +
 			'/dev_work/thrift/product-media/tozo-smartwatch/71UMkMp9d1L._AC_SL1500_.jpg',

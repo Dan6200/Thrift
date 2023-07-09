@@ -115,13 +115,26 @@ const testUploadProductMedia = async function (
 		.post(urlPath)
 		.auth(token, { type: 'bearer' })
 		.query(queryParams)
-	request.field('description', files[0].description)
 	await Promise.all(
 		files.map(async file => {
 			const data = await readFile(file.path)
 			request.attach(fieldName, data, path.basename(file.path))
 		})
 	)
+
+	const descriptions = files.reduce((acc, file) => {
+		acc[file.name] = file.description
+		return acc
+	}, {})
+
+	const isDisplayImage = files.reduce((acc, file) => {
+		acc[file.name] = file.is_display_image
+		return acc
+	}, {})
+
+	request.field('descriptions', JSON.stringify(descriptions))
+	request.field('is_display_image', JSON.stringify(isDisplayImage))
+
 	const response = await request
 	response.should.have.status(CREATED)
 	// Check the data in the body if accurate

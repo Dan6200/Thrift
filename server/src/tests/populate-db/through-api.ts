@@ -92,24 +92,40 @@ async function uploadMedia(
 	url: string,
 	token: string,
 	query: object | null,
-	files: { name: string; path: string; description: string }[]
+	files: {
+		name: string
+		path: string
+		description: string
+		is_display_image: boolean
+	}[]
 ): Promise<any> {
 	const form = new FormData()
 	const fieldName = 'product-media'
-	form.append('description', files[0].description)
 	await Promise.all(
 		files.map(async file => {
 			form.append(fieldName, await fs.readFile(file.path), {
 				filename: file.name,
 			} as any)
-			// form.append('description', file.description)
 		})
 	)
+	const descriptions = files.reduce((acc, file) => {
+		acc[file.name] = file.description
+		return acc
+	}, {})
+
+	const isDisplayImage = files.reduce((acc, file) => {
+		acc[file.name] = file.is_display_image
+		return acc
+	}, {})
+
+	form.append('is_display_image', JSON.stringify(isDisplayImage))
+	form.append('descriptions', JSON.stringify(descriptions))
+
 	const headers = { ...form.getHeaders(), Authorization: `Bearer ${token}` }
 	try {
 		const response = await axios.post(url, form, { headers, params: query })
 		return response.data
 	} catch (error) {
-		throw error
+		console.error(error)
 	}
 }

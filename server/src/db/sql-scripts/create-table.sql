@@ -70,7 +70,7 @@ create table if not exists products (
   net_price            numeric(19,4),
   vendor_id            int              not       null,
   store_id             int              not       null    references   stores          on   delete   cascade,
-  list_date            date             not       null    default      current_date,
+  created_at           timestamptz      not       null    default      now(),
   quantity_available   int              not       null
 );
 

@@ -1,6 +1,5 @@
 //cspell:disable
-import { Browser } from 'puppeteer'
-import puppeteer from 'puppeteer-extra'
+import puppeteer  from 'puppeteer-extra'
 import stealth from 'puppeteer-extra-plugin-stealth'
 import { getSubLinks } from './supporting-funcs.js'
 import fs from 'node:fs'
@@ -12,7 +11,7 @@ chai.should()
 puppeteer.default.use(stealth())
 
 export async function scrape() {
-	let browser: Browser | undefined
+	let browser: any
 	let fileStream: fs.WriteStream | undefined
 	const baseUrl = 'https://www.amazon.com/s'
 
@@ -27,8 +26,7 @@ export async function scrape() {
 				'--window-size=1920,1080',
 			],
 			ignoreHTTPSErrors: true,
-			executablePath:
-				process.env.HOME + '/chrome/linux-114.0.5735.133/chrome-linux64/chrome',
+			executablePath: '/usr/bin/google-chrome-stable',
 		})
 
 		const page = await browser.newPage()

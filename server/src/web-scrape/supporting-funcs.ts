@@ -9,28 +9,28 @@ export async function delay(time: number) {
 }
 
 export function removeResizing(str: string | null) {
-	return str!.slice(0, str!.indexOf('._')) + '.jpg'
+	return {img: str!.slice(0, str!.indexOf('._')) + '.jpg', original: str}
 }
 
 export async function getData(page: Page) {
 	let title: string | undefined,
-		image: string | undefined,
+		imageData: {img: string, original: string|null} | undefined,
 		price: number | undefined,
 		description: string[] | undefined
 
 	try {
-		await page.waitForSelector('#productTitle')
-		title = await page.$eval('#productTitle', el => el.textContent!.trim())
+		await page.waitForSelector('#productTitle', { timeout: 10_000 })
+		title = await page.$eval('#productTitle', (el:any) => el.textContent!.trim())
 	} catch (e) {
 		console.error(e)
 	}
 
+	let image: string | null = null
 	try {
 		image = await page.$eval('#landingImage', el =>
 			el.getAttribute('src')!.trim()
 		)
-		image = removeResizing(image)
-		console.log(image)
+		imageData = removeResizing(image as string)!
 	} catch (e) {
 		console.error(e)
 	}
@@ -55,7 +55,7 @@ export async function getData(page: Page) {
 		console.error(e)
 	}
 
-	return { title, image, price, description }
+	return { title, imageData, price, description }
 }
 
 async function clickImage(page: Page, i: number, url: string) {

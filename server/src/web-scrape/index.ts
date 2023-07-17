@@ -1,5 +1,5 @@
 //cspell:disable
-import puppeteer  from 'puppeteer-extra'
+import puppeteer from 'puppeteer-extra'
 import stealth from 'puppeteer-extra-plugin-stealth'
 import { getSubLinks } from './supporting-funcs.js'
 import fs from 'node:fs'
@@ -8,64 +8,75 @@ import chai from 'chai'
 
 chai.should()
 
+// Use Stealth plugin to avoid Captcha
 puppeteer.default.use(stealth())
 
 export async function scrape() {
-	let browser: any
-	let fileStream: fs.WriteStream | undefined
-	const baseUrl = 'https://www.amazon.com/s'
+  let browser: any
+  let fileStream: fs.WriteStream | undefined
 
-	try {
-		browser = await puppeteer.default.launch({
-			headless: 'new',
-			// headless: false,
-			args: [
-				'--no-sandbox',
-				'--disable-setuid-sandbox',
-				// '--window-size=1366,768',
-				'--window-size=1920,1080',
-			],
-			ignoreHTTPSErrors: true,
-			executablePath: '/usr/bin/google-chrome-stable',
-		})
+  // Adding 's' to the end of the url somehow avoids Captcha
+  const baseUrl = 'https://www.amazon.com/s'
 
-		const page = await browser.newPage()
-		const subLinks = await getSubLinks(page, baseUrl)
-		delay(5000)
+  try {
+    browser = await puppeteer.default.launch({
+      headless: 'new',
+      // headless: false,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--window-size=1920,1080',
+      ],
+      ignoreHTTPSErrors: true,
+      executablePath: '/usr/bin/google-chrome-stable',
+    })
 
-		console.log(subLinks.length)
+    const page = await browser.newPage()
 
-		// Create a filestream to write data to a file
-		fileStream = fs.createWriteStream('data.json')
+    // Get sublink from hamburger menu
+    const subLinks = await getSubLinks(page, baseUrl)
 
-		fileStream.write('[\n')
+    // wait
+    delay(5000)
 
-		// Visits each sublink and scrapes data
-		for await (const data of visitSubLinks(
-			page,
-			baseUrl,
-			subLinks as string[]
-		)) {
-			console.log(data)
-			fileStream.write(JSON.stringify(data) + ',\n')
-		}
-	} catch (err) {
-		console.log('Operation failed', err)
-	} finally {
-		fileStream?.write(']\n')
-		fileStream?.end()
-		await browser?.close()
-	}
+    // prints the number of sublinks
+    console.log(subLinks.length)
+
+    // Create a filestream to write data to a file
+    fileStream = fs.createWriteStream('data.json')
+
+    // Store data in an array
+    fileStream.write('[\n')
+
+    // Visits each sublink and scrapes data
+    for await (const data of visitSubLinks(
+      page,
+      baseUrl,
+      subLinks as string[]
+    )) {
+      // print data to console
+      console.log(data)
+      // write data to file
+      fileStream.write(JSON.stringify(data) + ',\n')
+    }
+  } catch (err) {
+    console.log('Operation failed', err)
+  } finally {
+    // Clean up
+    fileStream?.write(']\n')
+    fileStream?.end()
+    await browser?.close()
+  }
 }
 
 async function callScrape() {
-	try {
-		await scrape()
-	} catch (error) {
-		console.log(error)
-		delay(10_000)
-		await scrape()
-	}
+  try {
+    await scrape()
+  } catch (error) {
+    console.log(error)
+    delay(10_000)
+    await scrape()
+  }
 }
 
 callScrape()

@@ -3,6 +3,7 @@ import testAuthentication from './authentication/index.js'
 import testUserAccount from './accounts/index.js'
 import testCustomerAccount from './accounts/customers/index.js'
 import testVendorAccount from './accounts/vendors/index.js'
+import testStores from './stores/index.js'
 import testShipping from './shipping-info/index.js'
 import testProducts from './products/index.js'
 import testPublicProducts from './public/products/index.js'
@@ -17,74 +18,74 @@ const customers = [Ebuka, Aisha, Mustapha]
 const vendors = [Aliyu]
 
 export default function (): void {
-	/** Public Routes **/
+  /** Public Routes **/
 
-	/** Products **/
+  /** Products **/
 
-	for (let vendor of vendors) {
-		const name = vendor.accountInfo.first_name
-		describe(`Testing Public Routes for ${name}`, () =>
-			testPublicProducts(vendor))
-	}
+  for (let vendor of vendors) {
+    const name = vendor.accountInfo.first_name
+    describe(`Testing Public Routes for ${name}`, () =>
+      testPublicProducts(vendor))
+  }
 
-	/** Authentication **/
+  /** Authentication **/
 
-	for (let user of users) {
-		const name = user.accountInfo.first_name
-		describe(`Testing Authentication for ${name}`, () =>
-			testAuthentication(user))
-	}
+  for (let user of users) {
+    const name = user.accountInfo.first_name
+    describe(`Testing Authentication for ${name}`, () =>
+      testAuthentication(user))
+  }
 
-	/** User Account actions **/
+  /** User Account actions **/
 
-	for (let user of users) {
-		const name = user.accountInfo.first_name
-		describe(`Testing User Account for ${name}`, () => testUserAccount(user))
-	}
+  for (let user of users) {
+    const name = user.accountInfo.first_name
+    describe(`Testing User Account for ${name}`, () => testUserAccount(user))
+  }
 
-	/** Customer Account actions **/
+  /** Customer Account actions **/
 
-	for (let customer of customers) {
-		const name = customer.accountInfo.first_name
-		describe(`Testing Customer Account for ${name}`, () =>
-			testCustomerAccount(customer))
-	}
+  for (let customer of customers) {
+    const name = customer.accountInfo.first_name
+    describe(`Testing Customer Account for ${name}`, () =>
+      testCustomerAccount(customer))
+  }
 
-	/** Shipping Info related tests **/
+  /** Shipping Info related tests **/
 
-	for (let customer of customers) {
-		const name = customer.accountInfo.first_name
-		describe(`Testing the Shipping Information of ${name}'s account`, async () =>
-			testShipping(customer))
-	}
+  for (let customer of customers) {
+    const name = customer.accountInfo.first_name
+    describe(`Testing the Shipping Information of ${name}'s account`, async () =>
+      testShipping(customer))
+  }
 
-	/** Vendor Account actions **/
+  /** Vendor Account actions **/
 
-	for (let vendor of vendors) {
-		const name = vendor.accountInfo.first_name
-		describe(`Testing Vendor Account for ${name}`, () =>
-			testVendorAccount(vendor))
-	}
+  for (let vendor of vendors) {
+    const name = vendor.accountInfo.first_name
+    describe(`Testing Vendor Account for ${name}`, () =>
+      testVendorAccount(vendor))
+  }
 
-	/** Stores related tests **/
+  /** Stores related tests **/
 
-	for (let vendor of vendors) {
-		const name = vendor.accountInfo.first_name
-		describe(`Testing Stores owned by ${name}`, () => testVendorAccount(vendor))
-	}
+  for (let vendor of vendors) {
+    const name = vendor.accountInfo.first_name
+    describe(`Testing Stores owned by ${name}`, () => testStores(vendor))
+  }
 
-	/** Product related tests **/
+  /** Product related tests **/
 
-	for (let vendor of vendors) {
-		const name = vendor.accountInfo.first_name
-		describe(`Testing Products listed by ${name}`, async () =>
-			testProducts(vendor))
-	}
+  for (let vendor of vendors) {
+    const name = vendor.accountInfo.first_name
+    describe(`Testing Products listed by ${name}`, async () =>
+      testProducts(vendor))
+  }
 
-	/** Media related tests **/
+  /** Media related tests **/
 
-	for (let vendor of vendors) {
-		describe(`Testing Media for Different Products`, async () =>
-			testMedia(vendor))
-	}
+  for (let vendor of vendors) {
+    describe(`Testing Media for Different Products`, async () =>
+      testMedia(vendor))
+  }
 }

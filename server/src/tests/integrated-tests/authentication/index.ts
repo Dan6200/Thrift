@@ -16,9 +16,12 @@ chai.use(chaiHttp).should()
 export default function ({ accountInfo }: { accountInfo: AccountData }) {
   describe('User Account Authentication', () => {
     let token: string
-    const server = process.env.PROD_APP_SERVER!
+    const server = process.env.LOCAL_APP_SERVER!
     before(async () => {
-      await db.query({ text: 'delete from user_accounts' })
+      await db.query({
+        text: 'delete from user_accounts where email=$1 or phone=$2',
+        values: [accountInfo.email, accountInfo.phone],
+      })
     })
 
     it('it should register the user', () => registration(server, accountInfo))

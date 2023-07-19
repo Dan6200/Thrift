@@ -31,7 +31,7 @@ async function createProducts({
   productMedia: ProductMedia[][]
 }) {
   // Register a new user
-  const server = process.env.PROD_APP_SERVER!
+  const server = process.env.LOCAL_APP_SERVER!
   const { token } = await register(server, accountInfo)
   // Create a vendor account for the user
   await createResource(server + '/v1/account/vendor', token, null, null)

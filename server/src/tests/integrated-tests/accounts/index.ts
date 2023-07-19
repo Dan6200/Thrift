@@ -20,7 +20,7 @@ import { AccountData } from '../../../types-and-interfaces/account.js'
 chai.use(chaiHttp).should()
 
 // Set server url
-const server = process.env.PROD_APP_SERVER!
+const server = process.env.LOCAL_APP_SERVER!
 
 export default function ({
   accountInfo,
@@ -36,7 +36,10 @@ export default function ({
   describe('User account management', () => {
     before(async () => {
       // Delete all user accounts
-      await db.query({ text: 'delete from user_accounts' })
+      await db.query({
+        text: 'delete from user_accounts where email=$1 or phone=$2',
+        values: [accountInfo.email, accountInfo.phone],
+      })
       // Create a new user for each tests
       const response = await registration(server, accountInfo)
       // Store the token returned

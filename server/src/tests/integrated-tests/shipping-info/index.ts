@@ -16,7 +16,7 @@ import { AccountData } from '../../../types-and-interfaces/account.js'
 import assert from 'assert'
 
 // Set server url
-const server = process.env.PROD_APP_SERVER!
+const server = process.env.LOCAL_APP_SERVER!
 let token: string
 
 export default function ({
@@ -29,7 +29,10 @@ export default function ({
   listOfUpdatedShippingInfo: ShippingInfo[]
 }) {
   before(async () => {
-    await db.query({ text: 'delete from user_accounts' })
+    await db.query({
+      text: 'delete from user_accounts where email=$1 or phone=$2',
+      values: [accountInfo.email, accountInfo.phone],
+    })
     ;({
       body: { token },
     } = await registration(server, accountInfo))
@@ -37,7 +40,10 @@ export default function ({
   })
 
   after(async function () {
-    await db.query({ text: 'delete from user_accounts' })
+    await db.query({
+      text: 'delete from user_accounts where email=$1 or phone=$2',
+      values: [accountInfo.email, accountInfo.phone],
+    })
     await testDeleteCustomer(server, token, '/v1/account/customer')
   })
 

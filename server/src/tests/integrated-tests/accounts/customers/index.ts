@@ -8,28 +8,34 @@ import db from '../../../../db/pg/index.js'
 import { AccountData } from '../../../../types-and-interfaces/account.js'
 
 // Set server url
-const server = process.env.PROD_APP_SERVER!
+const server = process.env.LOCAL_APP_SERVER!
 let token: string
 
 export default function ({ accountInfo }: { accountInfo: AccountData }) {
   before(async () => {
-    await db.query({ text: 'delete from user_accounts' })
+    await db.query({
+      text: 'delete from user_accounts where email=$1 or phone=$2',
+      values: [accountInfo.email, accountInfo.phone],
+    })
     ;({
       body: { token },
     } = await registration(server, accountInfo))
   })
   after(async function () {
-    await db.query({ text: 'delete from user_accounts' })
+    await db.query({
+      text: 'delete from user_accounts where email=$1 or phone=$2',
+      values: [accountInfo.email, accountInfo.phone],
+    })
   })
 
   const path = '/v1/account/customer'
 
   describe('Customer Account', () => {
-    before(async () => {
-      await db.query({ text: 'delete from customers' })
-    })
     after(async function () {
-      await db.query({ text: 'delete from customers' })
+      await db.query({
+        text: 'delete from user_accounts where email=$1 or phone=$2',
+        values: [accountInfo.email, accountInfo.phone],
+      })
     })
 
     it('it should create a customer account for the user', () =>

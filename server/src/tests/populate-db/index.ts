@@ -1,130 +1,131 @@
-// cspell:disable
-import _package from 'stream-json'
-const { parser } = _package
-import pkg from 'stream-json/streamers/StreamArray.js'
-const { streamArray } = pkg
+//cspell:ignore Aliyu
+import FormData from 'form-data'
+import dotenv from 'dotenv'
+import fs from 'fs/promises'
+import axios from 'axios'
+import { Product } from '../../types-and-interfaces/products.js'
 import db from '../../db/pg/index.js'
-import fs from 'node:fs'
-import { removeResizing } from '../../web-scrape/supporting-funcs.js'
-import { assert } from 'chai'
+import { AccountData } from '../../types-and-interfaces/account.js'
+import { ProductMedia } from '../../types-and-interfaces/products.js'
+import StoresData from '../../types-and-interfaces/stores-data.js'
+import * as Aliyu from '../integrated-tests/data/users/vendors/user-aliyu/index.js'
 
-async function populateDB() {
-	const jsonStream = fs
-		.createReadStream('server/src/data-bckup1.json')
-		.pipe(parser())
-		.pipe(streamArray())
+dotenv.config()
+const vendors = [Aliyu]
 
-	try {
-		await db.query({
-			text: `DELETE FROM user_accounts where 
-	email=$1`,
-			values: ['populatingdb@gmail.com'],
-		})
-	} catch (e) {
-		throw new Error(e.message)
-	}
+await db.query({ text: 'DELETE FROM user_accounts' })
 
-	let userId: number
-	try {
-		userId = (
-			await db.query({
-				text: `INSERT INTO user_accounts (
-			first_name,
-			last_name,
-			email,
-			password,
-			dob,
-			country
-			) values ($1, $2, $3, $4, $5, $6) RETURNING user_id`,
-				values: [
-					'Test',
-					'Vendor',
-					'populatingdb@gmail.com',
-					'password',
-					'1990-01-01',
-					'Nigeria',
-				],
-			})
-		).rows[0].user_id
-	} catch (e) {
-		throw new Error(e.message)
-	}
-
-	let vendorId: number
-	try {
-		vendorId = (
-			await db.query({
-				text: `INSERT INTO vendors values ($1) RETURNING vendor_id`,
-				values: [userId],
-			})
-		).rows[0].vendor_id
-	} catch (e) {
-		throw new Error(e.message)
-	}
-
-	let storeId: number
-	try {
-		storeId = (
-			await db.query({
-				text: `INSERT INTO stores (store_name, vendor_id) values ($1, $2) RETURNING store_id`,
-				values: ['Test Store', vendorId],
-			})
-		).rows[0].store_id
-	} catch (e) {
-		throw new Error(e.message)
-	}
-	let title: string, description: string, price: number, image: string
-
-	for await ({
-		value: { title, description, price, image },
-	} of jsonStream) {
-		let productId: number = 0
-		try {
-			if (title && description) {
-				const upper = 10_000
-				const lower = 500_000
-				let priceVal = Number(price ?? Math.random() * (upper - lower) + lower)
-				priceVal = priceVal
-				priceVal *= 750 // Converts USD to Naira
-				assert(!isNaN(priceVal))
-				productId = (
-					await db.query({
-						text: `INSERT INTO products (store_id, title, vendor_id, description, net_price, list_price, quantity_available) values ($1, $2, $3, $4, $5, $6, $7) RETURNING product_id`,
-						values: [
-							storeId,
-							title,
-							vendorId,
-							JSON.stringify(description),
-							priceVal,
-							priceVal + Math.random() * 1001,
-							Math.floor(Math.random() * 51),
-						],
-					})
-				).rows[0].product_id
-			}
-		} catch (e) {
-			throw new Error(e.message)
-		}
-
-		try {
-			if (productId && image) {
-				const imgUrl = removeResizing(image)
-				const basename = imgUrl.slice(imgUrl.lastIndexOf('/'))
-				const filename =
-					basename.slice(1, basename.indexOf('.')) + Math.random() * 1e7
-				await db.query({
-					text: `INSERT INTO product_media (product_id, filename, filepath) values ($1, $2, $3)`,
-					values: [productId, filename, imgUrl],
-				})
-				await db.query({
-					text: `INSERT INTO product_display_image values ($1)`,
-					values: [filename],
-				})
-			}
-		} catch (e) {
-			throw new Error(e.message)
-		}
-	}
+for (let vendor of vendors) {
+  await createProducts(vendor)
 }
 
-populateDB()
+async function createProducts({
+  accountInfo,
+  stores,
+  products,
+  productMedia,
+}: {
+  accountInfo: AccountData
+  stores: StoresData[]
+  products: Product[]
+  productMedia: ProductMedia[][]
+}) {
+  // Register a new user
+  const server = process.env.LOCAL_APP_SERVER!
+  const { token } = await register(server, accountInfo)
+  // Create a vendor account for the user
+  await createResource(server + '/v1/account/vendor', token, null, null)
+
+  let idx: number, store: StoresData
+  for ([idx, store] of stores.entries()) {
+    const { store_id } = await createResource(
+      server + '/v1/stores',
+      token,
+      null,
+      store
+    )
+
+    for (const [idx, product] of products.entries()) {
+      const { product_id } = await createResource(
+        server + '/v1/products',
+        token,
+        { store_id },
+        product
+      )
+      await uploadMedia(
+        server + '/v1/media',
+        token,
+        {
+          product_id,
+        },
+        productMedia[idx]
+      )
+    }
+  }
+}
+
+async function register(server: string, accountInfo: AccountData) {
+  try {
+    const response = await axios.post(`${server}/v1/auth/register`, accountInfo)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+async function createResource(
+  url: string,
+  token: string,
+  query: object | null,
+  data: object | null
+): Promise<any> {
+  const headers = { Authorization: `Bearer ${token}` }
+  try {
+    const response = await axios.post(url, data, { headers, params: query })
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+async function uploadMedia(
+  url: string,
+  token: string,
+  query: object | null,
+  files: {
+    name: string
+    path: string
+    description: string
+    is_display_image: boolean
+  }[]
+): Promise<any> {
+  const form = new FormData()
+  const fieldName = 'product-media'
+  await Promise.all(
+    files.map(async (file) => {
+      form.append(fieldName, await fs.readFile(file.path), {
+        filename: file.name,
+      } as any)
+    })
+  )
+  const descriptions = files.reduce((acc, file) => {
+    acc[file.name] = file.description
+    return acc
+  }, {})
+
+  const isDisplayImage = files.reduce((acc, file) => {
+    acc[file.name] = file.is_display_image
+    return acc
+  }, {})
+
+  form.append('is_display_image', JSON.stringify(isDisplayImage))
+  form.append('descriptions', JSON.stringify(descriptions))
+
+  const headers = { ...form.getHeaders(), Authorization: `Bearer ${token}` }
+  try {
+    const response = await axios.post(url, form, { headers, params: query })
+    return response.data
+  } catch (error) {
+    console.error(error)
+  }
+}

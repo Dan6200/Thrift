@@ -42,16 +42,16 @@ export default {
     const retryCount = 7
     const delay = 500
     // for prod
-    res = retryQuery(pool.query.bind(pool), [text, values], retryCount, delay)
+    // res = retryQuery(pool.query.bind(pool), [text, values], retryCount, delay)
 
     // for debugging
 
-    // res = await retryQuery(
-    // 	pool.query.bind(pool),
-    // 	[text, values],
-    // 	retryCount,
-    // 	delay
-    // )
+    res = await retryQuery(
+      pool.query.bind(pool),
+      [text, values],
+      retryCount,
+      delay
+    )
 
     // const duration = Date.now() - start
     // add await for this to work

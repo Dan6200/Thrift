@@ -1,9 +1,8 @@
 {
-	"timeout": 1000000,
-	"recursive": true,
-	"extension": ["ts", "js", "tsx"],
-	"exit": true,
-	"enable-source-maps": true,
-	"node-option": ["loader=ts-node/esm"],
-	"reporter": "mochawesome"
+  "timeout": 1000000,
+  "recursive": true,
+  "extension": ["ts", "js", "tsx"],
+  "exit": true,
+  "enable-source-maps": true,
+  "reporter": "mochawesome"
 }

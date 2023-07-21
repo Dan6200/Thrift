@@ -71,6 +71,12 @@ export default function ({
         }
       }
     })
+    after(async () => {
+      await db.query({
+        text: 'delete from user_accounts where email=$1 or phone=$2',
+        values: [accountInfo.email, accountInfo.phone],
+      })
+    })
 
     // Create a product for the store
     it("it should add the product's media to an existing product", async () => {

@@ -135,7 +135,7 @@ export const productPartialUpdate: ProductPartial[] = [
 export const productMedia: ProductMedia[][] = [
   [
     {
-      name: 'echo-wireless-buds-1',
+      name: 'airpods-1',
       path:
         process.env.HOME +
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
@@ -144,10 +144,10 @@ export const productMedia: ProductMedia[][] = [
     },
 
     {
-      name: 'echo-wireless-buds-2',
+      name: 'airpods-2',
       path:
         process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+        '/dev-projects/thrift/testing-image-upload/airpods/517i7g9q7zL._AC_SX466_.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
     },

@@ -7,8 +7,8 @@
   "private": true,
   "scripts": {
     "start": "node server/built/server.js",
-    "test": "ts-mocha --esm -r dotenv/config --config server/src/tests/.mocharc.json -p server/src/tsconfig.json server/src/tests/*.ts",
-    "dev": "nodemon --esm server/src/server.ts",
+    "test": "mocha -r dotenv/config --config server/src/tests/.mocharc.json server/built/tests/*.js",
+    "dev": "nodemon -x 'node --loader /usr/bin/ts-node-esm server/src/server.ts'",
     "build": "tsc -p server/src/tsconfig.json"
   },
   "license": "ISC",
@@ -37,7 +37,6 @@
     "random-useragent": "^0.5.0",
     "swagger-cli": "^4.0.4",
     "ts-mocha": "^10.0.0",
-    "ts-node": "^10.9.1",
     "typescript-eslint-parser": "^22.0.0",
     "user-agents": "^1.0.1431"
   },

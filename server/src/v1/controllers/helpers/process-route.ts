@@ -4,6 +4,7 @@ import { QueryResult, QueryResultRow } from 'pg'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import { ResponseData, Status } from '../../types-and-interfaces/response.js'
 
+/** TODO refactor this in v2 **/
 export default (
   CRUDQuery: (
     queryData: RequestWithPayload

@@ -11,12 +11,12 @@ import rateLimiter from 'express-rate-limit'
 import cookieParser from 'cookie-parser'
 // routers
 import authRouter from './routes/auth.js'
-import accountRouter from './routes/private/account/index.js'
-import shippingRouter from './routes/private/shipping/index.js'
-import productsRouter from './routes/private/products/index.js'
-import productsPublicRouter from './routes/public/products/index.js'
-import storesRouter from './routes/private/stores/index.js'
-import mediaRouter from './routes/private/media/index.js'
+import accountRouter from './routes/account/index.js'
+import shippingRouter from './routes/shipping/index.js'
+import productsRouterProtected from './routes/products/index.js'
+import productsRouter from './routes/products/index.js'
+import storesRouter from './routes/stores/index.js'
+import mediaRouter from './routes/media/index.js'
 
 // middlewares
 import errorHandlerMiddleware from './middleware/error-handler.js'
@@ -56,19 +56,19 @@ app.get('/api.json', (_, res) => res.json(swaggerDocument))
 app.use(helmet())
 app.use(cors())
 app.use(xss())
-// app.use(morgan('dev'))
-app.use(morgan('combined'))
+app.use(morgan('dev'))
+// app.use(morgan('combined'))
 // application routes
-const v1Router = Router()
-v1Router.use('/auth', authRouter)
-v1Router.use('/account', authenticateUser, accountRouter)
-v1Router.use('/shipping-info', authenticateUser, shippingRouter)
-v1Router.use('/stores', authenticateUser, storesRouter)
-v1Router.use('/products', authenticateUser, productsRouter)
-v1Router.use('/public/products', productsPublicRouter)
-v1Router.use('/media', authenticateUser, mediaRouter)
+const v2Router = Router()
+v2Router.use('/auth', authRouter)
+v2Router.use('/account', authenticateUser, accountRouter)
+v2Router.use('/shipping-info', authenticateUser, shippingRouter)
+v2Router.use('/stores', authenticateUser, storesRouter)
+v2Router.use('/products', authenticateUser, productsRouter)
+v2Router.use('/private/products', productsRouterProtected)
+v2Router.use('/media', authenticateUser, mediaRouter)
 
-app.use('/v1', v1Router)
+app.use('/v2', v2Router)
 // helper middlewares
 app.use(notFound)
 app.use(errorHandlerMiddleware)

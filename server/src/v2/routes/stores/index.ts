@@ -1,11 +1,12 @@
 import express from 'express'
 import {
-	createStore,
-	getAllStores,
-	getStore,
-	updateStore,
-	deleteStore,
-} from '../../../controllers/private/stores/index.js'
+  createStore,
+  getAllStores,
+  getStore,
+  updateStore,
+  deleteStore,
+} from '../../controllers/stores/authenticated/index.js'
+
 const router = express.Router()
 
 router.route('/').post(createStore).get(getAllStores)

@@ -8,8 +8,8 @@
   "scripts": {
     "start": "node server/built/server.js",
     "test": "mocha -r dotenv/config --config server/src/tests/.mocharc.json server/built/tests/*.js",
-    "dev": "nodemon -x 'node --loader /usr/bin/ts-node-esm server/src/server.ts'",
-    "build": "tsc -p server/src/tsconfig.json"
+    "dev": "nodemon -x 'node --loader /usr/bin/ts-node-esm server/src/v1/server.ts'",
+    "build": "tsc -p server/src/v1/tsconfig.json"
   },
   "license": "ISC",
   "author": "daniel <danielnyong66@gmail.com>",

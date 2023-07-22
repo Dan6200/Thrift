@@ -55,7 +55,6 @@ const getQuery = async ({
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
   return db.query({
     text: `SELECT products.*, 
-			 (SELECT COUNT(*) FROM products) AS total_products,
 				(SELECT JSON_AGG(media) FROM 
 					(SELECT pm.filename, 
 					 CASE WHEN pdi.filename IS NOT NULL 

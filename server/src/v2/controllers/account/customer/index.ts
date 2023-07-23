@@ -13,7 +13,7 @@ import { RequestWithPayload } from '../../../types-and-interfaces/request.js'
 const { CREATED, NOT_FOUND, NO_CONTENT } = StatusCodes
 
 /**
- * @param {QueryResult<QueryResultRow>} result
+ * @param {Record<string, T>} result
  * @returns {Promise<ResponseData>}
  * @description Validate the result of the query
  * If the result is empty, return a 404 status code
@@ -32,18 +32,21 @@ const validateResult = async (
   }
 }
 /**
- * @param {RequestWithPayload} req
- * @returns {Promise<void>}
+ * @param {{userId: string}} {userId}
+ * @returns {Promise<Record<string, T>>}
  * @description Add a customer account to the database
  **/
-const createQuery = async ({
-  user: { userId: customerId },
-}: RequestWithPayload): Promise<void> => {
-  let result = await db.query({
-    text: InsertInTable('customers', ['customer_id'], 'customer_id'),
-    values: [customerId],
-  })
-  await validateResult(result)
+const createQuery = async <T>({
+  userId: customerId,
+}: {
+  userId: string
+}): Promise<Record<string, T>> => {
+  return (
+    await db.query({
+      text: InsertInTable('customers', ['customer_id'], 'customer_id'),
+      values: [customerId],
+    })
+  ).rows[0]
 }
 
 /**

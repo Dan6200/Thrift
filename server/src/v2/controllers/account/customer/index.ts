@@ -1,5 +1,4 @@
 import { StatusCodes } from 'http-status-codes'
-import { QueryResult, QueryResultRow } from 'pg'
 import { ProcessRouteWithoutBodyAndDBResult } from '../../../types-and-interfaces/process-routes.js'
 import { ResponseData } from '../../../types-and-interfaces/response.js'
 import {
@@ -19,10 +18,10 @@ const { CREATED, NOT_FOUND, NO_CONTENT } = StatusCodes
  * If the result is empty, return a 404 status code
  * Otherwise, return an empty object
  * */
-const validateResult = async (
-  result: QueryResult<QueryResultRow>
+const validateResult = async <T>(
+  result: Record<string, T>
 ): Promise<ResponseData> => {
-  if (result.rows.length === 0)
+  if (result === undefined || Object.keys(result).length === 0)
     return {
       status: NOT_FOUND,
       data: 'Route does not exit',
@@ -50,18 +49,21 @@ const createQuery = async <T>({
 }
 
 /**
- * @param {RequestWithPayload} req
- * @returns {Promise<void>}
+ * @param {{userId: string}} {userId}
+ * @returns {Promise<Record<string, T>>}
  * @description Delete the customer account from the database
  **/
-const deleteQuery = async ({
-  user: { userId: customerId },
-}: RequestWithPayload): Promise<void> => {
-  let result = await db.query({
-    text: DeleteInTable('customers', 'customer_id', 'customer_id=$1'),
-    values: [customerId],
-  })
-  await validateResult(result)
+const deleteQuery = async <T>({
+  userId: customerId,
+}: {
+  userId: string
+}): Promise<Record<string, T>> => {
+  return (
+    await db.query({
+      text: DeleteInTable('customers', 'customer_id', 'customer_id=$1'),
+      values: [customerId],
+    })
+  ).rows[0]
 }
 
 const processPostRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute

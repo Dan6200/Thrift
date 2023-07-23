@@ -4,18 +4,22 @@ import { ParsedQs } from 'qs'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import { ResponseData, Status } from '../../types-and-interfaces/response.js'
 
-/** TODO refactor this in v2 **/
-export default <T>(
-  CRUDQuery: (queryData: {
+export default <T>({
+  Query,
+  status,
+  validateBody,
+  validateResult,
+}: {
+  Query: (queryData: {
     userId?: string
     body?: Record<string, T>
     params?: Record<string, string>
     query?: ParsedQs
-  }) => Promise<Record<string, T>>,
-  status: Status,
-  validateBody?: <T>(body: T) => Promise<void>,
+  }) => Promise<Record<string, T>>
+  status: Status
+  validateBody?: <T>(body: T) => Promise<void>
   validateResult?: (result: Record<string, T>) => Promise<ResponseData>
-) => {
+}) => {
   // return the route processor middleware
   return async (request: RequestWithPayload, response: Response) => {
     const { body } = request
@@ -37,15 +41,13 @@ export default <T>(
       params,
       query,
     } = request
-    const dbRes = await CRUDQuery({ userId, body, params, query })
+    const dbRes = await Query({ userId, body, params, query })
 
     if (validateResult) {
       // validateBody returns error status code and message if data is invalid
       // check for errors
-      const { status: errStatus, data } = await validateResult(dbRes)
-      return response
-        .status(errStatus ?? status)
-        .json({ data, rowCount: dbRes.rowCount })
+      const { data } = await validateResult(dbRes)
+      return response.status(status).json({ data, rowCount: dbRes.rowCount })
     }
     response.status(status).end()
   }

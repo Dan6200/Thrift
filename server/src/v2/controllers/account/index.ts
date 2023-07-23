@@ -3,7 +3,7 @@ import joi from 'joi'
 import db from '../../db/pg/index.js'
 import { StatusCodes } from 'http-status-codes'
 import BadRequestError from '../../errors/bad-request.js'
-import UnauthenticatedError from '../../errors/unauthenticated.js'
+import UnauthorizedError from '../../errors/unauthorized.js'
 import { hashPassword } from '../../security/password.js'
 import {
   RequestWithPayload,
@@ -16,6 +16,9 @@ import {
 import validateUserPassword from '../helpers/validate-user-password.js'
 import { AccountDataSchemaDB } from '../../app-schema/account.js'
 import { AccountData } from '../../types-and-interfaces/account.js'
+import { ProcessRouteWithoutBody } from '../../types-and-interfaces/process-routes.js'
+import processRoute from '../helpers/process-route.js'
+import { ResponseData } from '../../types-and-interfaces/response.js'
 
 const accountDataFields = [
   'first_name',
@@ -95,7 +98,7 @@ let updateUserPassword = async (
   } = request.body
   let pwdIsValid = await validateUserPassword(userId, oldPassword)
   if (!pwdIsValid)
-    throw new UnauthenticatedError(`Invalid Credentials,
+    throw new UnauthorizedError(`Invalid Credentials,
 				cannot update password`)
   const password = await hashPassword(newPassword)
   const dbResult = await db.query({
@@ -113,18 +116,50 @@ let updateUserPassword = async (
   response.status(StatusCodes.NO_CONTENT).end()
 }
 
-let deleteUserAccount = async (
-  request: RequestWithPayload,
-  response: Response
-) => {
-  let { userId }: RequestUserPayload = request.user
-  const dbResult = await db.query({
-    text: DeleteInTable('user_accounts', 'user_id', 'user_id=$1'),
-    values: [userId],
-  })
-  if (!dbResult.rows.length) throw new BadRequestError('Delete unsuccessful')
-  response.status(StatusCodes.NO_CONTENT).end()
+/**
+ * @param {{userId: string}} {userId}
+ * @returns {Promise<Record<string, T>>}
+ * @description Delete the users account from the database
+ **/
+const deleteQuery = async <T>({
+  userId,
+}: {
+  userId: string
+}): Promise<Record<string, T>> => {
+  return (
+    await db.query({
+      text: DeleteInTable('user_accounts', 'user_id', 'user_id=$1'),
+      values: [userId],
+    })
+  ).rows[0]
 }
+
+const { CREATED, NOT_FOUND, BAD_REQUEST, NO_CONTENT } = StatusCodes
+
+/**
+ * @param {Record<string, T>} result
+ * @returns {Promise<ResponseData>}
+ * @description Checks to see if query was successful
+ * If the result is empty, throw an error
+ * Otherwise, return an empty object
+ * */
+const isSuccessful = async <T>(
+  result: Record<string, T>
+): Promise<ResponseData> => {
+  if (result === undefined || Object.keys(result).length === 0)
+    throw new BadRequestError('Operation unsuccessful')
+  return {
+    data: {},
+  }
+}
+
+const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
+const deleteUserAccount = processDeleteRoute({
+  Query: deleteQuery,
+  status: NO_CONTENT,
+  validateBody: undefined,
+  validateResult: isSuccessful,
+})
 
 export {
   getUserAccount,

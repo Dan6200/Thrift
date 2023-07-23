@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import { ProcessRouteWithoutBodyAndDBResult } from '../../../types-and-interfaces/process-routes.js'
+import { ProcessRouteWithoutBody } from '../../../types-and-interfaces/process-routes.js'
 import { ResponseData } from '../../../types-and-interfaces/response.js'
 import {
   InsertInTable,
@@ -7,29 +7,27 @@ import {
 } from '../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../helpers/process-route.js'
 import db from '../../../db/pg/index.js'
-import { RequestWithPayload } from '../../../types-and-interfaces/request.js'
+import BadRequestError from '../../../errors/bad-request.js'
 
-const { CREATED, NOT_FOUND, NO_CONTENT } = StatusCodes
+const { CREATED, NO_CONTENT } = StatusCodes
 
 /**
  * @param {Record<string, T>} result
  * @returns {Promise<ResponseData>}
- * @description Validate the result of the query
- * If the result is empty, return a 404 status code
+ * @description Checks to see if query was successful
+ * If the result is empty, throw an error
  * Otherwise, return an empty object
  * */
-const validateResult = async <T>(
+const isSuccessful = async <T>(
   result: Record<string, T>
 ): Promise<ResponseData> => {
   if (result === undefined || Object.keys(result).length === 0)
-    return {
-      status: NOT_FOUND,
-      data: 'Route does not exit',
-    }
+    throw new BadRequestError('Operation unsuccessful')
   return {
     data: {},
   }
 }
+
 /**
  * @param {{userId: string}} {userId}
  * @returns {Promise<Record<string, T>>}
@@ -66,20 +64,20 @@ const deleteQuery = async <T>({
   ).rows[0]
 }
 
-const processPostRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
+const processPostRoute = <ProcessRouteWithoutBody>processRoute
 const createCustomerAccount = processPostRoute(
   createQuery,
   CREATED,
   undefined,
-  undefined
+  isSuccessful
 )
 
-const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
+const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
 const deleteCustomerAccount = processDeleteRoute(
   deleteQuery,
   NO_CONTENT,
   undefined,
-  undefined
+  isSuccessful
 )
 
 export { createCustomerAccount, deleteCustomerAccount }

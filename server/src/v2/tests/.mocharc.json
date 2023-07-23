@@ -1,8 +1,0 @@
-{
-  "timeout": 1000000,
-  "recursive": true,
-  "extension": ["ts", "js", "tsx"],
-  "exit": true,
-  "enable-source-maps": true,
-  "reporter": "mochawesome"
-}

@@ -1,5 +1,5 @@
 // cspell:disable
-import nodePostgres, { QueryResult } from 'pg'
+import nodePostgres, { QueryResult, QueryResultRow } from 'pg'
 const { Pool } = nodePostgres
 import retryQuery from '../../controllers/helpers/retryQuery.js'
 import dotenv from 'dotenv'
@@ -15,7 +15,7 @@ const pool = new Pool({
   },
 })
 
-export default {
+export const db = {
   async end(): Promise<void> {
     await pool.end()
   },
@@ -29,7 +29,7 @@ export default {
   }: {
     text: string
     values?: Array<any>
-  }): Promise<QueryResult<any>> {
+  }): Promise<QueryResult<QueryResultRow | QueryResultRow[]>> {
     // const start = Date.now()
     setTimeout(function () {
       this.lastQuery = arguments
@@ -38,7 +38,7 @@ export default {
     // console.log('\nexecuted query:\n', text, values)
     //
     // allow a retry if DB fails to connect
-    let res: any
+    let res: unknown
     const retryCount = 7
     const delay = 500
     // for prod
@@ -69,7 +69,7 @@ export default {
     // 	)
     // )
 
-    return res
+    return res as QueryResult<QueryResultRow | QueryResultRow[]>
   },
 
   async getClient(): Promise<any> {

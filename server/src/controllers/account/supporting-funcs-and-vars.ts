@@ -2,7 +2,26 @@ import BadRequestError from '../../errors/bad-request.js'
 import UnauthorizedError from '../../errors/unauthorized.js'
 import { QueryParams } from '../../types-and-interfaces/process-routes.js'
 import validateUserPassword from '../helpers/validate-user-password.js'
-import Joi from 'joi'
+
+const accountDataFields = [
+  'first_name',
+  'last_name',
+  'email',
+  'phone',
+  'country',
+  'dob',
+]
+
+export const getUserQueryString = `
+SELECT ${accountDataFields.map((field) => `ua.${field}`).join(', ')},
+			 CASE WHEN c.customer_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_customer,
+			 CASE WHEN v.vendor_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_vendor
+FROM user_accounts ua
+LEFT JOIN customers c
+ON ua.user_id = c.customer_id
+LEFT JOIN vendors v
+ON ua.user_id = v.vendor_id
+WHERE ua.user_id = $1`
 
 /**
  * @description Checks to see if password is valid

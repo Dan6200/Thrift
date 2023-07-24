@@ -1,53 +1,61 @@
-import util from 'util'
 import { Response } from 'express'
-import { ParsedQs } from 'qs'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
-import { ResponseData, Status } from '../../types-and-interfaces/response.js'
+import {
+  isValidDBResponse,
+  Status,
+} from '../../types-and-interfaces/response.js'
+import {
+  QueryDB,
+  QueryParams,
+} from '../../types-and-interfaces/process-routes.js'
+import BadRequestError from '../../errors/bad-request.js'
+import { QueryResult, QueryResultRow } from 'pg'
 
-export default <T>({
+export default ({
   Query,
   status,
   validateBody,
   validateResult,
 }: {
-  Query: (queryData: {
-    userId?: string
-    body?: Record<string, T>
-    params?: Record<string, string>
-    query?: ParsedQs
-  }) => Promise<Record<string, T>>
+  Query: QueryDB
   status: Status
-  validateBody?: <T>(body: T) => Promise<void>
-  validateResult?: (result: Record<string, T>) => Promise<void>
+  validateBody?: <T>(qp: QueryParams<T>) => Promise<void>
+  validateResult?: (
+    result: QueryResult<QueryResultRow | QueryResultRow[]>
+  ) => Promise<void>
 }) => {
   // return the route processor middleware
   return async (request: RequestWithPayload, response: Response) => {
-    const { body } = request
-    // set status code and response data
+    const {
+      user: { userId },
+      params,
+      query,
+      body,
+    } = request
+
     // Validate request data
     if (
-      typeof body === 'object' &&
-      Object.values(body).length &&
+      typeof body != 'undefined' &&
+      Object.values(body).length !== 0 &&
       validateBody
     ) {
       // validateBody throws error if body is invalid
       await validateBody(body)
     }
-    // Process the requestData
-    // Make a database query with the request data
-    //
-    const {
-      user: { userId },
-      params,
-      query,
-    } = request
-    const dbRes = await Query({ userId, body, params, query })
+
+    const dbResponse: unknown = await Query({ userId, body, params, query })
+    if (!isValidDBResponse(dbResponse))
+      throw new BadRequestError(`The Database operation could not be completed`)
 
     if (validateResult) {
-      // validateBody returns error status code and message if data is invalid
+      // validateBody throws error if data is invalid
       // check for errors
-      await validateResult(dbRes)
-      return response.status(status).json({ dbRes, rowCount: dbRes.rowCount })
+      await validateResult(dbResponse)
+      if (dbResponse.rowCount === 1)
+        return response.status(status).json({ data: dbResponse.rows[0] })
+      return response
+        .status(status)
+        .json({ data: dbResponse.rows, count: dbResponse.rowCount })
     }
     response.status(status).end()
   }

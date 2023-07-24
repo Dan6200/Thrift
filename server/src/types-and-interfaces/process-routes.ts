@@ -1,8 +1,8 @@
 import { Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
+import { QueryResult, QueryResultRow } from 'pg'
 import { ParsedQs } from 'qs'
 import { RequestWithPayload } from './request.js'
-import { ResponseData } from './response.js'
 const { CREATED, OK, NO_CONTENT, NOT_FOUND } = StatusCodes
 
 export type Status =
@@ -11,20 +11,30 @@ export type Status =
   | typeof NO_CONTENT
   | typeof NOT_FOUND
 
+export type QueryParams<T> = {
+  userId?: string
+  body?: { [key: string]: T }
+  params?: { [key: string]: string }
+  query?: ParsedQs
+}
+
+export type QueryDB = <T>(
+  queryParams: QueryParams<T>
+) => Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
+
 export type ProcessRouteWithoutBody = <T>({
   Query,
   status,
   validateResult,
 }: {
-  Query: (queryData: {
-    userId?: string
-    body?: Record<string, T>
-    params?: Record<string, string>
-    query?: ParsedQs
-  }) => Promise<Record<string, T>>
+  Query<T>(
+    queryParams: QueryParams<T>
+  ): Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
   status: Status
   validateBody: undefined
-  validateResult: (result: Record<string, T>) => Promise<void>
+  validateResult: (
+    result: QueryResult<QueryResultRow | QueryResultRow[]>
+  ) => Promise<void>
 }) => (
   request: RequestWithPayload,
   response: Response
@@ -43,7 +53,7 @@ export type ProcessRouteWithNoDBResult = <T>({
   }) => Promise<Record<string, T>>
   status: Status
   validateResult: undefined
-  validateBody: <T>(reqBody: T) => Promise<void>
+  validateBody?: <T>(qp: QueryParams<T>) => Promise<void>
 }) => (
   request: RequestWithPayload,
   response: Response
@@ -53,12 +63,7 @@ export type ProcessRouteWithoutBodyAndDBResult = <T>({
   Query,
   status,
 }: {
-  Query: (queryData: {
-    userId?: string
-    body?: Record<string, T>
-    params?: Record<string, string>
-    query?: ParsedQs
-  }) => Promise<Record<string, T>>
+  Query: QueryDB
   status: Status
   validateResult: undefined
   validateBody: undefined
@@ -67,21 +72,20 @@ export type ProcessRouteWithoutBodyAndDBResult = <T>({
   response: Response
 ) => Promise<Response<T, Record<string, T>>>
 
-export type ProcessRouteWithBodyAndDBResult = <T>({
+export type ProcessRoute = <T>({
   Query,
   status,
   validateBody,
   validateResult,
 }: {
-  Query: (queryData: {
-    userId?: string
-    body?: Record<string, T>
-    params?: Record<string, string>
-    query?: ParsedQs
-  }) => Promise<Record<string, T>>
+  Query<T>(
+    queryParams: QueryParams<T>
+  ): Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
   status: Status
-  validateBody: <T>(reqBody: T) => Promise<void>
-  validateResult: (result: Record<string, T>) => Promise<void>
+  validateBody?: <T>(qp: QueryParams<T>) => Promise<void>
+  validateResult: (
+    result: QueryResult<QueryResultRow | QueryResultRow[]>
+  ) => Promise<void>
 }) => (
   request: RequestWithPayload,
   response: Response

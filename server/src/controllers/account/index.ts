@@ -10,15 +10,30 @@ import {
   RequestUserPayload,
 } from '../../types-and-interfaces/request.js'
 import {
-  UpdateInTable,
-  DeleteInTable,
+  UpdateRecord,
+  DeleteRecord,
 } from '../helpers/generate-sql-commands/index.js'
-import validateUserPassword from '../helpers/validate-user-password.js'
-import { AccountDataSchemaDB } from '../../app-schema/account.js'
+import {
+  AccountDataSchemaDB,
+  UpdateAccountDataSchema,
+} from '../../app-schema/account.js'
 import { AccountData } from '../../types-and-interfaces/account.js'
-import { ProcessRouteWithoutBody } from '../../types-and-interfaces/process-routes.js'
+import {
+  ProcessRoute,
+  ProcessRouteWithoutBody,
+  QueryParams,
+} from '../../types-and-interfaces/process-routes.js'
 import processRoute from '../helpers/process-route.js'
-import { isSuccessful } from './supporting-funcs.js'
+import {
+  isSuccessful,
+  validateReqData,
+  validateResData,
+} from '../helpers/query-validation.js'
+import {
+  passwdDataIsValid,
+  userIdIsNotNull,
+  validatePasswordData,
+} from './supporting-funcs.js'
 import { QueryResult, QueryResultRow } from 'pg'
 
 const accountDataFields = [
@@ -30,7 +45,7 @@ const accountDataFields = [
   'dob',
 ]
 
-const getUserInfoQuery = `
+const getUserQueryString = `
 SELECT ${accountDataFields.map((field) => `ua.${field}`).join(', ')},
 			 CASE WHEN c.customer_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_customer,
 			 CASE WHEN v.vendor_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_vendor
@@ -41,103 +56,85 @@ LEFT JOIN vendors v
 ON ua.user_id = v.vendor_id
 WHERE ua.user_id = $1`
 
-let getUserAccount = async (
-  request: RequestWithPayload,
-  response: Response
-) => {
-  let { userId }: RequestUserPayload = request.user
-  let dbResult = await db.query({
-    text: getUserInfoQuery,
+const getQuery = async <T>({
+  userId,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow[]>> => {
+  return db.query({
+    text: getUserQueryString,
     values: [userId],
   })
-  if (dbResult.rows.length === 0)
-    return response
-      .status(StatusCodes.NOT_FOUND)
-      .json({ msg: 'User cannot be found' })
-  let accountData = dbResult.rows[0]
-  joi.assert(accountData, AccountDataSchemaDB)
-  let account: AccountData = accountData
-  response.status(StatusCodes.OK).json(account)
 }
 
-let updateUserAccount = async (
-  request: RequestWithPayload,
-  response: Response
-) => {
-  let { userId }: RequestUserPayload = request.user
-  if (Object.keys(request.body).length === 0)
-    throw new BadRequestError('request data cannot be empty')
-  if (Object.hasOwn(request.body, 'password'))
+const updateQuery = <T>({ userId, body }: QueryParams<T>) => {
+  if (body == null) throw new BadRequestError('request data cannot be empty')
+  if (Object.hasOwn(body, 'password'))
     throw new BadRequestError('Cannot update password here')
-  let fields: string[] = Object.keys(request.body),
-    data: any[] = Object.values(request.body)
-  let dbResult = await db.query({
-    text: UpdateInTable('user_accounts', 'user_id', fields, 2, `user_id=$1`),
+  let fields: string[] = Object.keys(body),
+    data: any[] = Object.values(body)
+  return db.query({
+    text: UpdateRecord('user_accounts', 'user_id', fields, 2, `user_id=$1`),
     values: [userId, ...data],
   })
-  if (!dbResult.rows.length) throw new BadRequestError('Update unsuccessful')
-  response.status(StatusCodes.NO_CONTENT).end()
 }
 
-let updateUserPassword = async (
-  request: RequestWithPayload,
-  response: Response
-) => {
-  let { userId }: RequestUserPayload = request.user
-  if (Object.keys(request.body).length === 0)
-    throw new BadRequestError('request data cannot be empty')
-  // check if password exists in request body
-  // throw a bad request error if it does not
-  if (!Object.hasOwn(request.body, 'password'))
-    throw new BadRequestError('Provide current password')
-  let {
-    password: oldPassword,
-    new_password: newPassword,
-  }: {
-    password: string
-    new_password: string
-  } = request.body
-  let pwdIsValid = await validateUserPassword(userId, oldPassword)
-  if (!pwdIsValid)
-    throw new UnauthorizedError(`Invalid Credentials,
-				cannot update password`)
-  const password = await hashPassword(newPassword)
-  const dbResult = await db.query({
-    text: UpdateInTable(
+const updatePasswordQuery = async <T>({
+  userId,
+  body,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow | QueryResultRow[]>> => {
+  // type guards
+  if (!userIdIsNotNull(userId))
+    throw new UnauthorizedError('Must be logged in to update password')
+  if (!passwdDataIsValid(body))
+    throw new BadRequestError('Provide current password and new password')
+
+  const { new_password: newPassword } = body
+  const hashedPassword = await hashPassword(newPassword)
+  return db.query({
+    text: UpdateRecord(
       'user_accounts',
       'user_id',
       ['password'],
       2,
       `user_id=$1`
     ),
-    values: [userId, password],
+    values: [userId, hashedPassword],
   })
-  if (!dbResult.rows.length)
-    throw new BadRequestError('Password update unsuccessful')
-  response.status(StatusCodes.NO_CONTENT).end()
 }
 
-/**
- * @param {{userId: string}} {userId}
- * @returns {Promise<Record<string, T>>}
- * @description Delete the users account from the database
- **/
-const deleteQuery = async <T>({
-  userId,
-}: {
-  userId: string
-}): Promise<Record<string, T>> => {
-  const dbResponse: unknown = await db.query({
-    text: DeleteInTable('user_accounts', 'user_id', 'user_id=$1'),
+const deleteQuery = <T>({ userId }: QueryParams<T>) =>
+  db.query({
+    text: DeleteRecord('user_accounts', ['user_id'], `user_id=$1`),
     values: [userId],
   })
-  if (!isValidDBResponse(dbResponse))
-    throw new BadRequestError('Error while connecting to database')
-}
 
-const { CREATED, NOT_FOUND, BAD_REQUEST, NO_CONTENT } = StatusCodes
+const { OK, NO_CONTENT } = StatusCodes
 
+// Type assertions
+const processGetRoute = <ProcessRouteWithoutBody>processRoute
+const processUpdateRoute = <ProcessRoute>processRoute
 const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
+
+const getUserAccount = processGetRoute({
+  Query: getQuery,
+  status: OK,
+  validateBody: undefined,
+  validateResult: validateResData(AccountDataSchemaDB),
+})
+
+const updateUserPassword = processUpdateRoute({
+  Query: updatePasswordQuery,
+  status: NO_CONTENT,
+  validateBody: validatePasswordData,
+  validateResult: isSuccessful,
+})
+
+const updateUserAccount = processUpdateRoute({
+  Query: updateQuery,
+  status: OK,
+  validateBody: validateReqData(UpdateAccountDataSchema),
+  validateResult: isSuccessful,
+})
+
 const deleteUserAccount = processDeleteRoute({
   Query: deleteQuery,
   status: NO_CONTENT,

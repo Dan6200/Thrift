@@ -1,27 +1,31 @@
 import { StatusCodes } from 'http-status-codes'
 import { QueryResult, QueryResultRow } from 'pg'
 import {
-	ShippingInfoSchemaReq,
-	ShippingInfoSchemaDBList,
-	ShippingInfoSchemaID,
-	ShippingInfoSchemaDB,
+  ShippingInfoSchemaReq,
+  ShippingInfoSchemaDBList,
+  ShippingInfoSchemaID,
+  ShippingInfoSchemaDB,
 } from '../../../app-schema/shipping.js'
-import db from '../../../db/pg/index.js'
-import { BadRequestError, UnauthenticatedError } from '../../../errors/index.js'
+import db from '../../../db/index.js'
+import BadRequestError from '../../../errors/bad-request.js'
+import UnauthorizedError from '../../../errors/unauthorized.js'
 import {
-	ProcessRouteWithBodyAndDBResult,
-	ProcessRouteWithoutBody,
+  ProcessRoute,
+  ProcessRouteWithoutBody,
 } from '../../../types-and-interfaces/process-routes.js'
 import { RequestWithPayload } from '../../../types-and-interfaces/request.js'
-import { ResponseData } from '../../../types-and-interfaces/response.js'
 import ShippingInfo from '../../../types-and-interfaces/shipping-info.js'
 import {
-	DeleteInTable,
-	InsertInTable,
-	SelectFromTable,
-	UpdateInTable,
+  DeleteRecord,
+  InsertRecord,
+  SelectRecord,
+  UpdateRecord,
 } from '../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../helpers/process-route.js'
+import {
+  validateReqData,
+  validateResData,
+} from '../../helpers/query-validation.js'
 
 /**
  * @param {RequestWithPayload} req
@@ -32,44 +36,44 @@ import processRoute from '../../helpers/process-route.js'
  * 2. If the customer already has 5 shipping addresses
  **/
 const createQuery = async ({
-	body,
-	user: { userId: customerId },
+  body,
+  user: { userId: customerId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
-	if (!customerId) throw new UnauthenticatedError('Cannot access resource')
-	// check if customer account exists
-	const dbRes = await db.query({
-		text: SelectFromTable('customers', ['1'], 'customer_id=$1'),
-		values: [customerId],
-	})
-	if (dbRes.rows.length === 0)
-		throw new BadRequestError(
-			'No Customer account found. Please create a Customer account'
-		)
-	// Limit the amount of shipping addresses a user can have:
-	const LIMIT = 5
-	const count: number = (
-		await db.query({
-			text: SelectFromTable('shipping_info', ['1'], 'customer_id=$1'),
-			values: [customerId],
-		})
-	).rows.length
-	if (count > LIMIT)
-		throw new BadRequestError(`Cannot have more than ${LIMIT} stores`)
+  if (!customerId) throw new UnauthorizedError('Cannot access resource')
+  // check if customer account exists
+  const dbRes = await db.query({
+    text: SelectRecord('customers', ['1'], 'customer_id=$1'),
+    values: [customerId],
+  })
+  if (dbRes.rows.length === 0)
+    throw new BadRequestError(
+      'No Customer account found. Please create a Customer account'
+    )
+  // Limit the amount of shipping addresses a user can have:
+  const LIMIT = 5
+  const count: number = (
+    await db.query({
+      text: SelectRecord('shipping_info', ['1'], 'customer_id=$1'),
+      values: [customerId],
+    })
+  ).rows.length
+  if (count > LIMIT)
+    throw new BadRequestError(`Cannot have more than ${LIMIT} stores`)
 
-	const shippingData: ShippingInfo = body
-	if (!shippingData) throw new BadRequestError('No data sent in request body')
-	const DBFriendlyData = {
-		...shippingData,
-		delivery_instructions: JSON.stringify(shippingData.delivery_instructions),
-	}
-	return db.query({
-		text: InsertInTable(
-			'shipping_info',
-			['customer_id', ...Object.keys(DBFriendlyData)],
-			'shipping_info_id'
-		),
-		values: [customerId, ...Object.values(DBFriendlyData)],
-	})
+  const shippingData: ShippingInfo = body
+  if (!shippingData) throw new BadRequestError('No data sent in request body')
+  const DBFriendlyData = {
+    ...shippingData,
+    delivery_instructions: JSON.stringify(shippingData.delivery_instructions),
+  }
+  return db.query({
+    text: InsertRecord(
+      'shipping_info',
+      ['customer_id', ...Object.keys(DBFriendlyData)],
+      'shipping_info_id'
+    ),
+    values: [customerId, ...Object.values(DBFriendlyData)],
+  })
 }
 
 /**
@@ -81,21 +85,21 @@ const createQuery = async ({
  **/
 
 const getAllQuery = async ({
-	user: { userId: customerId },
+  user: { userId: customerId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
-	if (!customerId) throw new UnauthenticatedError('Cannot access resource')
-	const res = await db.query({
-		text: SelectFromTable('customers', ['1'], 'customer_id=$1'),
-		values: [customerId],
-	})
-	if (res.rows.length === 0)
-		throw new BadRequestError(
-			'No Customer account found. Please create a Customer account'
-		)
-	return db.query({
-		text: SelectFromTable('shipping_info', ['*'], 'customer_id=$1'),
-		values: [customerId],
-	})
+  if (!customerId) throw new UnauthorizedError('Cannot access resource')
+  const res = await db.query({
+    text: SelectRecord('customers', ['1'], 'customer_id=$1'),
+    values: [customerId],
+  })
+  if (res.rows.length === 0)
+    throw new BadRequestError(
+      'No Customer account found. Please create a Customer account'
+    )
+  return db.query({
+    text: SelectRecord('shipping_info', ['*'], 'customer_id=$1'),
+    values: [customerId],
+  })
 }
 
 /**
@@ -107,23 +111,23 @@ const getAllQuery = async ({
  **/
 
 const getQuery = async ({
-	params,
-	user: { userId: customerId },
+  params,
+  user: { userId: customerId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
-	const { shippingInfoId } = params
-	if (!customerId) throw new UnauthenticatedError('Cannot access resource')
-	const res = await db.query({
-		text: SelectFromTable('customers', ['1'], 'customer_id=$1'),
-		values: [customerId],
-	})
-	if (res.rows.length === 0)
-		throw new BadRequestError(
-			'No Customer account found. Please create a Customer account'
-		)
-	return db.query({
-		text: SelectFromTable('shipping_info', ['*'], `shipping_info_id=$1`),
-		values: [shippingInfoId],
-	})
+  const { shippingInfoId } = params
+  if (!customerId) throw new UnauthorizedError('Cannot access resource')
+  const res = await db.query({
+    text: SelectRecord('customers', ['1'], 'customer_id=$1'),
+    values: [customerId],
+  })
+  if (res.rows.length === 0)
+    throw new BadRequestError(
+      'No Customer account found. Please create a Customer account'
+    )
+  return db.query({
+    text: SelectRecord('shipping_info', ['*'], `shipping_info_id=$1`),
+    values: [shippingInfoId],
+  })
 }
 
 /**
@@ -136,40 +140,40 @@ const getQuery = async ({
  * 3. If the customer exists
  **/
 const updateQuery = async ({
-	params,
-	body,
-	user: { userId: customerId },
+  params,
+  body,
+  user: { userId: customerId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
-	const { shippingInfoId } = params
-	const shippingData = body as ShippingInfo
-	if (!shippingInfoId) throw new BadRequestError('Need ID to update resource')
-	if (!customerId) throw new UnauthenticatedError('Cannot access resource')
-	const res = await db.query({
-		text: SelectFromTable('customers', ['1'], 'customer_id=$1'),
-		values: [customerId],
-	})
-	if (res.rows.length === 0)
-		throw new BadRequestError(
-			'No Customer account found. Please create a Customer account'
-		)
-	const DBFriendlyData = {
-		...shippingData,
-		delivery_instructions: JSON.stringify(shippingData.delivery_instructions),
-	}
-	let fields = Object.keys(DBFriendlyData),
-		data = Object.values(DBFriendlyData)
-	const condition = `shipping_info_id=$1`
-	const query = {
-		text: UpdateInTable(
-			'shipping_info',
-			'shipping_info_id',
-			fields,
-			2,
-			condition
-		),
-		values: [shippingInfoId, ...data],
-	}
-	return db.query(query)
+  const { shippingInfoId } = params
+  const shippingData = body as ShippingInfo
+  if (!shippingInfoId) throw new BadRequestError('Need ID to update resource')
+  if (!customerId) throw new UnauthorizedError('Cannot access resource')
+  const res = await db.query({
+    text: SelectRecord('customers', ['1'], 'customer_id=$1'),
+    values: [customerId],
+  })
+  if (res.rows.length === 0)
+    throw new BadRequestError(
+      'No Customer account found. Please create a Customer account'
+    )
+  const DBFriendlyData = {
+    ...shippingData,
+    delivery_instructions: JSON.stringify(shippingData.delivery_instructions),
+  }
+  let fields = Object.keys(DBFriendlyData),
+    data = Object.values(DBFriendlyData)
+  const condition = `shipping_info_id=$1`
+  const query = {
+    text: UpdateRecord(
+      'shipping_info',
+      'shipping_info_id',
+      fields,
+      2,
+      condition
+    ),
+    values: [shippingInfoId, ...data],
+  }
+  return db.query(query)
 }
 
 /**
@@ -182,152 +186,77 @@ const updateQuery = async ({
  * 3. If Customer owns the shipping info
  */
 const deleteQuery = async ({
-	params,
-	user: { userId: customerId },
+  params,
+  user: { userId: customerId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
-	const { shippingInfoId } = params
-	if (!shippingInfoId)
-		throw new BadRequestError('Need Id param to delete resource')
-	if (!customerId) throw new UnauthenticatedError('Cannot access resource')
-	const res = await db.query({
-		text: SelectFromTable('customers', ['1'], 'customer_id=$1'),
-		values: [customerId],
-	})
-	if (res.rows.length === 0)
-		throw new BadRequestError(
-			'No Customer account found. Please create a Customer account'
-		)
-	return db.query({
-		text: DeleteInTable(
-			'shipping_info',
-			'shipping_info_id',
-			'shipping_info_id=$1'
-		),
-		values: [shippingInfoId],
-	})
+  const { shippingInfoId } = params
+  if (!shippingInfoId)
+    throw new BadRequestError('Need Id param to delete resource')
+  if (!customerId) throw new UnauthorizedError('Cannot access resource')
+  const res = await db.query({
+    text: SelectRecord('customers', ['1'], 'customer_id=$1'),
+    values: [customerId],
+  })
+  if (res.rows.length === 0)
+    throw new BadRequestError(
+      'No Customer account found. Please create a Customer account'
+    )
+  return db.query({
+    text: DeleteRecord(
+      'shipping_info',
+      ['shipping_info_id'],
+      'shipping_info_id=$1'
+    ),
+    values: [shippingInfoId],
+  })
 }
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
-/**
- * @param {T} data
- * @returns {Promise<void>}
- * @description Validates the request body
- **/
-
-const validateBody = async <T>(data: T): Promise<void> => {
-	const validData = ShippingInfoSchemaReq.validate(data)
-	if (validData.error)
-		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
-}
-
-/**
- * @param {QueryResult<QueryResultRow>} result
- * @returns {Promise<ResponseData>}
- * @description Validates the result of the query returned as a list of shipping info
- * Checks:
- * 1. If the result is empty
- * 2. If the result is valid
- **/
-const validateResultList = async (
-	result: QueryResult<QueryResultRow>
-): Promise<ResponseData> => {
-	if (result.rows.length === 0)
-		return {
-			status: NOT_FOUND,
-			data: 'No stores found. Please add a store',
-		}
-	const validData = ShippingInfoSchemaDBList.validate(result.rows)
-	if (validData.error)
-		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
-	return {
-		data: validData.value,
-	}
-}
-
-/**
- * @param {QueryResult<QueryResultRow>} result
- * @returns {Promise<ResponseData>}
- * @description Validates the result of the query returned as a single shipping info
- * Checks:
- * 1. If the result is empty
- * 2. If the result is valid
- **/
-const validateResult = async (
-	result: QueryResult<QueryResultRow>
-): Promise<ResponseData> => {
-	if (result.rows.length === 0)
-		return {
-			status: NOT_FOUND,
-			data: 'ShippingInfo not found',
-		}
-	const validData = ShippingInfoSchemaDB.validate(result.rows[0])
-	if (validData.error)
-		throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
-	return {
-		data: validData.value,
-	}
-}
-
-/**
- * @param {QueryResult<QueryResultRow>} result
- * @returns {Promise<ResponseData>}
- * @description Checks to see if Id is returned and operation is successful
- **/
-const validateResultHasId = async (
-	result: QueryResult<QueryResultRow>
-): Promise<ResponseData> => {
-	const { error, value } = ShippingInfoSchemaID.validate(result.rows[0])
-	if (error) throw new BadRequestError('The operation was Unsuccessful')
-	return {
-		data: value,
-	}
-}
-
-const processPostRoute = <ProcessRouteWithBodyAndDBResult>processRoute
-const createShippingInfo = processPostRoute(
-	createQuery,
-	CREATED,
-	validateBody,
-	validateResultHasId
-)
+const processPostRoute = <ProcessRoute>processRoute
+const createShippingInfo = processPostRoute({
+  Query: createQuery,
+  status: CREATED,
+  validateBody: validateReqData(ShippingInfoSchemaReq),
+  validateResult: validateResData(ShippingInfoSchemaID),
+})
 
 const processGetAllRoute = <ProcessRouteWithoutBody>processRoute
-const getAllShippingInfo = processGetAllRoute(
-	getAllQuery,
-	OK,
-	undefined,
-	validateResultList
-)
+const getAllShippingInfo = processGetAllRoute({
+  Query: getAllQuery,
+  status: OK,
+  validateBody: undefined,
+  validateResult: validateResData(ShippingInfoSchemaDBList),
+})
 
 const processGetIDRoute = <ProcessRouteWithoutBody>processRoute
-const getShippingInfo = processGetIDRoute(
-	getQuery,
-	OK,
-	undefined,
-	validateResult
-)
+const getShippingInfo = processGetIDRoute({
+  Query: getQuery,
+  status: OK,
+  validateBody: undefined,
+  validateResult: validateResData(ShippingInfoSchemaDB),
+})
 
-const processPutRoute = <ProcessRouteWithBodyAndDBResult>processRoute
-const updateShippingInfo = processPutRoute(
-	updateQuery,
-	OK,
-	validateBody,
-	validateResultHasId
-)
+const processPutRoute = <ProcessRoute>processRoute
+const updateShippingInfo = processPutRoute({
+  Query: updateQuery,
+  status: OK,
+  validateBody: validateReqData(ShippingInfoSchemaReq),
+  validateResult: validateResData(ShippingInfoSchemaID),
+})
 
 const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
-const deleteShippingInfo = processDeleteRoute(
-	deleteQuery,
-	OK,
-	undefined,
-	validateResultHasId
-)
+const deleteShippingInfo = processDeleteRoute({
+  Query: deleteQuery,
+  status: OK,
+  validateBody: undefined,
+  validateResult: validateResData(ShippingInfoSchemaID),
+})
 
 export {
-	createShippingInfo,
-	getShippingInfo,
-	getAllShippingInfo,
-	updateShippingInfo,
-	deleteShippingInfo,
+  createShippingInfo,
+  getShippingInfo,
+  getAllShippingInfo,
+  updateShippingInfo,
+  deleteShippingInfo,
 }

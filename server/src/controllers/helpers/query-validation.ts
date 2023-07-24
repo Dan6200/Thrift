@@ -1,4 +1,4 @@
-import Joi from 'joi'
+import Joi, { ArraySchema, ObjectSchema } from 'joi'
 import { QueryResult, QueryResultRow } from 'pg'
 import BadRequestError from '../../errors/bad-request.js'
 import NotFoundError from '../../errors/not-found.js'
@@ -8,7 +8,7 @@ import { QueryParams } from '../../types-and-interfaces/process-routes.js'
  * @description Validates data against schema
  */
 export const validateReqData =
-  <T>(schema: Joi.ObjectSchema<T>) =>
+  <T>(schema: ObjectSchema<T>) =>
   async <T>({ body }: QueryParams<T>) => {
     if (typeof body == 'undefined' || Object.keys(body).length === 0)
       throw new BadRequestError('request data cannot be empty')
@@ -19,9 +19,14 @@ export const validateReqData =
 /**
  * @description Validates DB response against schema
  * */
-export const validateResData =
-  <T>(schema: Joi.ObjectSchema<T>) =>
-  async (response: QueryResult<QueryResultRow | QueryResultRow[]>) => {
+export function validateResData<T>(
+  schema: ArraySchema<T>
+): (response: QueryResult<QueryResultRow | QueryResultRow[]>) => Promise<void>
+export function validateResData<T>(
+  schema: ObjectSchema<T>
+): (response: QueryResult<QueryResultRow | QueryResultRow[]>) => Promise<void>
+export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
+  return async (response: QueryResult<QueryResultRow | QueryResultRow[]>) => {
     if (response.rows.length === 0) {
       if (response.command === 'SELECT')
         throw new NotFoundError('Requested resource was not found')
@@ -30,6 +35,7 @@ export const validateResData =
     const { error } = Joi.object(schema).validate(response.rows)
     if (error) throw new BadRequestError(error.message)
   }
+}
 
 /**
  * @description Checks to see if query was successful

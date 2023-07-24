@@ -1,16 +1,15 @@
 import { QueryResult, QueryResultRow } from 'pg'
-import BadRequestError from '../../errors/bad-request.js'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import { handleSortQuery } from '../helpers/generate-sql-commands/query-params-handler.js'
-import db from '../../db/pg/index.js'
 import { ProcessRouteWithoutBody } from '../../types-and-interfaces/process-routes.js'
 import processRoute from '../helpers/process-route.js'
 import { StatusCodes } from 'http-status-codes'
-import { ResponseData } from '../../types-and-interfaces/response.js'
 import {
   ProductSchemaDB,
   ProductSchemaDBList,
 } from '../../app-schema/products.js'
+import db from '../../db/index.js'
+import { validateResData } from '../helpers/query-validation.js'
 
 /**
  * @param {RequestWithPayload} req
@@ -22,26 +21,33 @@ const getAllQuery = async ({
   query: { sort, limit, offset },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
   let dbQueryString = `
-		SELECT products.*,
-		 (SELECT JSON_AGG(media) FROM
-		  (SELECT pm.filename,
-			 CASE WHEN pdi.filename IS NOT NULL 
-			  THEN TRUE ELSE FALSE END AS is_display_image,
-			   filepath, description FROM
-				  product_media pm
-					 LEFT JOIN product_display_image pdi
-				   USING (filename)
-				  WHERE
-				 pm.product_id=products.product_id)
-				AS media)
-			 AS media
-			FROM products`
+		SELECT JSON_AGG(product_data) AS products,
+		 COUNT(product_data) AS total_products FROM
+			(SELECT p.*, 
+				(SELECT JSON_AGG(media_data) FROM
+					(SELECT pm.filename,
+						 CASE WHEN pdi.filename IS NOT NULL
+							THEN TRUE ELSE FALSE END AS is_display_image,
+							 filepath, description FROM
+								product_media pm
+								LEFT JOIN product_display_image pdi
+								USING (filename)
+								WHERE
+								pm.product_id=p.product_id)
+							AS media_data) 
+						AS media FROM products p)
+					AS product_data;`
   if (sort) {
     dbQueryString += ` ${handleSortQuery(<string>sort)}`
   }
   if (offset) dbQueryString += ` OFFSET ${offset}`
   if (limit) dbQueryString += ` LIMIT ${limit}`
-  return db.query({ text: dbQueryString })
+  return db.query({
+    name: `fetch products${limit && `, limit: ${limit}`}${
+      offset && `, offset: ${offset}`
+    }`,
+    text: dbQueryString,
+  })
 }
 
 /**
@@ -53,7 +59,7 @@ const getQuery = async ({
   params: { productId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
   return db.query({
-    text: `SELECT products.*, 
+    text: `SELECT p.*, 
 				(SELECT JSON_AGG(media) FROM 
 					(SELECT pm.filename, 
 					 CASE WHEN pdi.filename IS NOT NULL 
@@ -63,71 +69,28 @@ const getQuery = async ({
 							 product_media pm
 							  LEFT JOIN product_display_image pdi
 							 USING (filename)
-							WHERE product_id=$1)
+							WHERE pm.product_id=p.product_id)
 						AS media) 
 					AS media 
-				FROM products 
-			WHERE product_id=$1`,
+				FROM products p
+			WHERE p.product_id=173;`,
     values: [productId],
+    name: `fetch product ${productId}`,
   })
 }
 
 const processGetRoute = <ProcessRouteWithoutBody>processRoute
-export const getProduct = processGetRoute(
-  getQuery,
-  StatusCodes.OK,
-  undefined,
-  validateResult
-)
+export const getProduct = processGetRoute({
+  Query: getQuery,
+  status: StatusCodes.OK,
+  validateBody: undefined,
+  validateResult: validateResData(ProductSchemaDB),
+})
 
 const processGetAllRoute = <ProcessRouteWithoutBody>processRoute
-export const getAllProducts = processGetAllRoute(
-  getAllQuery,
-  StatusCodes.OK,
-  undefined,
-  validateResultList
-)
-
-/**
- * @param {QueryResult<any>} result
- * @returns {Promise<ResponseData>}
- * @description Validate a list of products
- * */
-async function validateResultList(
-  result: QueryResult<any>
-): Promise<ResponseData> {
-  if (!result.rows.length)
-    return {
-      status: StatusCodes.NOT_FOUND,
-      data: 'No Product found. Please create a product.',
-    }
-  const validateDbResult = ProductSchemaDBList.validate(result.rows)
-  if (validateDbResult.error)
-    throw new BadRequestError(
-      'Invalid Data from DB: ' + validateDbResult.error.message
-    )
-  return {
-    data: validateDbResult.value,
-  }
-}
-
-/**
- * @param {QueryResult<any>} result
- * @returns {Promise<ResponseData>}
- * @description Validate the retrieved product.
- * */
-async function validateResult(result: QueryResult<any>): Promise<ResponseData> {
-  if (!result.rows.length)
-    return {
-      status: StatusCodes.NOT_FOUND,
-      data: 'Product not found',
-    }
-  const validateDbResult = ProductSchemaDB.validate(result.rows[0])
-  if (validateDbResult.error)
-    throw new BadRequestError(
-      'Invalid Data from DB: ' + validateDbResult.error.message
-    )
-  return {
-    data: validateDbResult.value,
-  }
-}
+export const getAllProducts = processGetAllRoute({
+  Query: getAllQuery,
+  status: StatusCodes.OK,
+  validateBody: undefined,
+  validateResult: validateResData(ProductSchemaDBList),
+})

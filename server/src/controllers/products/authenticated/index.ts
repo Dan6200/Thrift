@@ -6,21 +6,24 @@ import {
   ProductSchemaDBList,
   ProductSchemaReq,
 } from '../../../app-schema/products.js'
-import db from '../../../db/pg/index.js'
+import db from '../../../db/index.js'
 import BadRequestError from '../../../errors/bad-request.js'
-import UnauthenticatedError from '../../../errors/unauthenticated.js'
+import UnauthorizedError from '../../../errors/unauthorized.js'
 import {
   ProcessRouteWithBodyAndDBResult,
   ProcessRouteWithoutBody,
 } from '../../../types-and-interfaces/process-routes.js'
 import { Product } from '../../../types-and-interfaces/products.js'
 import { RequestWithPayload } from '../../../types-and-interfaces/request.js'
-import { ResponseData } from '../../../types-and-interfaces/response.js'
 import {
-  DeleteInTable,
-  InsertInTable,
-  SelectFromTable,
-  UpdateInTable,
+  isValidDBResponse,
+  ResponseData,
+} from '../../../types-and-interfaces/response.js'
+import {
+  DeleteRecord,
+  InsertRecord,
+  SelectRecord,
+  UpdateRecord,
 } from '../../helpers/generate-sql-commands/index.js'
 import { handleSortQuery } from '../../helpers/generate-sql-commands/query-params-handler.js'
 import processRoute from '../../helpers/process-route.js'
@@ -37,7 +40,7 @@ const createQuery = async ({
   user: { userId: vendorId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
   const dbQuery = await db.query({
-    text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
+    text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
   if (!dbQuery.rows.length)
@@ -45,7 +48,7 @@ const createQuery = async ({
       'No store found for this product. First create a store'
     )
   if (dbQuery.rows[0].vendor_id !== vendorId)
-    throw new UnauthenticatedError('Cannot access store.')
+    throw new UnauthorizedError('Cannot access store.')
 
   const productData: Product = body
   const DBFriendlyProductData = {
@@ -54,7 +57,7 @@ const createQuery = async ({
   }
 
   return db.query({
-    text: InsertInTable(
+    text: InsertRecord(
       'products',
       [...Object.keys(DBFriendlyProductData), 'store_id', 'vendor_id'],
       'product_id'
@@ -74,7 +77,7 @@ const getAllQuery = async ({
   user: { userId: vendorId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
   const dbQuery = await db.query({
-    text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
+    text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
   if (!dbQuery.rows.length)
@@ -82,7 +85,7 @@ const getAllQuery = async ({
       'No store found for this product. First create a store'
     )
   if (dbQuery.rows[0].vendor_id !== vendorId)
-    throw new UnauthenticatedError('Cannot access store.')
+    throw new UnauthorizedError('Cannot access store.')
   let dbQueryString = `
 		select products.*, 
 			(select json_agg(media) from 
@@ -114,7 +117,7 @@ const getQuery = async ({
   user: { userId: vendorId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
   const dbQuery = await db.query({
-    text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
+    text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
   if (!dbQuery.rows.length)
@@ -122,7 +125,7 @@ const getQuery = async ({
       'No store found for this product. First create a store'
     )
   if (dbQuery.rows[0].vendor_id !== vendorId)
-    throw new UnauthenticatedError('Cannot access store.')
+    throw new UnauthorizedError('Cannot access store.')
   return db.query({
     text: `select products.*, 
 				(select json_agg(media) from 
@@ -150,7 +153,7 @@ const updateQuery = async ({
   user: { userId: vendorId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
   const dbQuery = await db.query({
-    text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
+    text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
   if (!dbQuery.rows.length)
@@ -158,13 +161,13 @@ const updateQuery = async ({
       'No store found for this product. First create a store'
     )
   if (dbQuery.rows[0].vendor_id !== vendorId)
-    throw new UnauthenticatedError('Cannot access store.')
+    throw new UnauthorizedError('Cannot access store.')
   const productData: Product = body
   const DBFriendlyProductData = {
     ...productData,
     description: JSON.stringify(productData.description),
   }
-  const updateCommand = UpdateInTable(
+  const updateCommand = UpdateRecord(
     'products',
     'product_id',
     Object.keys(DBFriendlyProductData),
@@ -188,18 +191,20 @@ const deleteQuery = async ({
   query: { store_id: storeId },
   user: { userId: vendorId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
-  const dbQuery = await db.query({
-    text: SelectFromTable('stores', ['vendor_id'], 'store_id=$1'),
+  const dbQuery: unknown = await db.query({
+    text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
+  if (!isValidDBResponse(dbQuery))
+    throw new BadRequestError('Error while deleting product. Please try again')
   if (!dbQuery.rows.length)
     throw new BadRequestError(
       'No store found for this product. First create a store'
     )
   if (dbQuery.rows[0].vendor_id !== vendorId)
-    throw new UnauthenticatedError('Cannot access store.')
+    throw new UnauthorizedError('Cannot access store.')
   return db.query({
-    text: DeleteInTable(
+    text: DeleteRecord(
       'products',
       'product_id',
       'product_id=$1 and store_id=$2'

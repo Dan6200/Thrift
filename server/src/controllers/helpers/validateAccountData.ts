@@ -1,5 +1,5 @@
 import { AccountDataSchemaRequest } from '../../app-schema/account.js'
-import { db } from '../../db/pg/index.js'
+import db from '../../db/index.js'
 import BadRequestError from '../../errors/bad-request.js'
 import { AccountData } from '../../types-and-interfaces/account.js'
 import { SelectRecord } from './generate-sql-commands/index.js'

@@ -1,16 +1,14 @@
-import { validateReqData } from '../helpers/query-validation.js'
 import { Request, Response } from 'express'
-import { AccountDataSchemaRequest } from '../../app-schema/account.js'
 import { StatusCodes } from 'http-status-codes'
 import { hashPassword } from '../../security/password.js'
 import { QueryResult, QueryResultRow } from 'pg'
 import { InsertRecord } from '../helpers/generate-sql-commands/index.js'
 import { isValidDBResponse } from '../../types-and-interfaces/response.js'
 import { createToken } from '../../security/create-token.js'
-import { db } from '../../db/pg/index.js'
 import { AccountData } from '../../types-and-interfaces/account.js'
 import { validateAccountData } from '../helpers/validateAccountData.js'
 import BadRequestError from '../../errors/bad-request.js'
+import db from '../../db/index.js'
 const { CREATED } = StatusCodes
 
 /**

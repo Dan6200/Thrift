@@ -1,28 +1,15 @@
 import { StatusCodes } from 'http-status-codes'
-import { QueryResult } from 'pg'
-import db from '../../../db/index.js'
-import { ProcessRouteWithoutBodyAndDBResult } from '../../../types-and-interfaces/process-routes.js'
-import { ResponseData } from '../../../types-and-interfaces/response.js'
+import db from '../../../../db/index.js'
+import { ProcessRouteWithoutBody } from '../../../../types-and-interfaces/process-routes.js'
 import {
   InsertRecord,
   SelectRecord,
   DeleteRecord,
-} from '../../helpers/generate-sql-commands/index.js'
-import processRoute from '../../helpers/process-route.js'
+} from '../../../helpers/generate-sql-commands/index.js'
+import processRoute from '../../../helpers/process-route.js'
+import { isSuccessful } from '../../../helpers/query-validation.js'
 
-const { CREATED, NO_CONTENT, NOT_FOUND } = StatusCodes
-
-const validateResult = async (result: QueryResult): Promise<ResponseData> => {
-  if (!result.rows.length) {
-    return {
-      status: NOT_FOUND,
-      data: 'Vendor account does not exist. Please create a vendor account',
-    }
-  }
-  return {
-    data: {},
-  }
-}
+const { CREATED, NO_CONTENT } = StatusCodes
 
 const createQuery = async ({ userId: vendorId }) => {
   return db.query({
@@ -45,28 +32,28 @@ const deleteQuery = async ({ userId: vendorId }) => {
   })
 }
 
-const processPostRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
+const processPostRoute = <ProcessRouteWithoutBody>processRoute
 const createVendorAccount = processPostRoute({
   Query: createQuery,
   status: CREATED,
   validateBody: undefined,
-  validateResult: undefined,
+  validateResult: isSuccessful,
 })
 
-const processGetRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
+const processGetRoute = <ProcessRouteWithoutBody>processRoute
 const getVendorAccount = processGetRoute({
   Query: readQuery,
   status: NO_CONTENT,
   validateBody: undefined,
-  validateResult: undefined,
+  validateResult: isSuccessful,
 })
 
-const processDeleteRoute = <ProcessRouteWithoutBodyAndDBResult>processRoute
+const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
 const deleteVendorAccount = processDeleteRoute({
   Query: deleteQuery,
   status: NO_CONTENT,
   validateBody: undefined,
-  validateResult: undefined,
+  validateResult: isSuccessful,
 })
 
 export { createVendorAccount, getVendorAccount, deleteVendorAccount }

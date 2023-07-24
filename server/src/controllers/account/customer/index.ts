@@ -3,13 +3,11 @@ import {
   ProcessRouteWithoutBody,
   QueryParams,
 } from '../../../types-and-interfaces/process-routes.js'
-import { ResponseData } from '../../../types-and-interfaces/response.js'
 import {
   InsertRecord,
   DeleteRecord,
 } from '../../helpers/generate-sql-commands/index.js'
 import processRoute from '../../helpers/process-route.js'
-import BadRequestError from '../../../errors/bad-request.js'
 import db from '../../../db/index.js'
 import { QueryResult, QueryResultRow } from 'pg'
 import { isSuccessful } from '../../helpers/query-validation.js'

@@ -11,7 +11,7 @@ type ResponseData = {
 
 export function isValidDBResponse(
   dbResponse: unknown
-): dbResponse is QueryResult<QueryResultRow | QueryResultRow[]> {
+): dbResponse is QueryResult<QueryResultRow> {
   return (
     dbResponse != undefined &&
     typeof dbResponse === 'object' &&

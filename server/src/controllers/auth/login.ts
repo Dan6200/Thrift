@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { db } from '../../db/pg/index.js'
+import db from '../../db/index.js'
 import BadRequestError from '../../errors/bad-request.js'
 import UnauthorizedError from '../../errors/unauthorized.js'
 import { createToken } from '../../security/create-token.js'

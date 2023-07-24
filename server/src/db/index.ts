@@ -26,9 +26,11 @@ export default {
   async query({
     text,
     values,
+    name,
   }: {
     text: string
     values?: Array<any>
+    name?: string
   }): Promise<QueryResult<QueryResultRow | QueryResultRow[]>> {
     // const start = Date.now()
     setTimeout(function () {
@@ -42,13 +44,13 @@ export default {
     const retryCount = 7
     const delay = 500
     // for prod
-    // res = retryQuery(pool.query.bind(pool), [text, values], retryCount, delay)
+    // res = retryQuery(pool.query.bind(pool), [text, values, name], retryCount, delay)
 
     // for debugging
 
     res = await retryQuery(
       pool.query.bind(pool),
-      [text, values],
+      [text, values, name],
       retryCount,
       delay
     )

@@ -1,11 +1,11 @@
 //cspell:ignore originalname
 import { StatusCodes } from 'http-status-codes'
 import {
-  InsertInTable,
-  UpdateInTable,
+  InsertRecord,
+  UpdateRecord,
 } from '../../helpers/generate-sql-commands/index.js'
-import db from '../../../db/pg/index.js'
 import BadRequestError from '../../../errors/bad-request.js'
+import db from '../../../db/index.js'
 
 const uploadProductMedia = async (req: any, res: any) => {
   const { product_id: productId } = req.query
@@ -25,7 +25,7 @@ const uploadProductMedia = async (req: any, res: any) => {
       // Returns filename as Id instead of product_id
       const res = (
         await db.query({
-          text: InsertInTable(
+          text: InsertRecord(
             'product_media',
             ['product_id', 'filename', 'filepath', 'description'],
             'filename'
@@ -34,6 +34,7 @@ const uploadProductMedia = async (req: any, res: any) => {
         })
       ).rows[0]
 
+      // Add or update the display image table
       if (isDisplayImage[originalname]) {
         const exists = (
           await db.query({
@@ -41,9 +42,9 @@ const uploadProductMedia = async (req: any, res: any) => {
             values: [filename],
           })
         ).rows[0]
-        if (!exists) {
+        if (exists == null) {
           await db.query({
-            text: InsertInTable(
+            text: InsertRecord(
               'product_display_image',
               ['filename'],
               'filename'
@@ -52,18 +53,16 @@ const uploadProductMedia = async (req: any, res: any) => {
           })
         } else {
           await db.query({
-            text: UpdateInTable('product_display_image', 'filename', [
+            text: UpdateRecord('product_display_image', 'filename', [
               'filename',
             ]),
             values: [filename],
           })
         }
       }
-
       return res
     })
   )
-
   res.status(StatusCodes.CREATED).send(files)
 }
 

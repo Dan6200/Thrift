@@ -1,4 +1,3 @@
-import db from '../../db/pg/index.js'
 import { StatusCodes } from 'http-status-codes'
 import BadRequestError from '../../errors/bad-request.js'
 import UnauthorizedError from '../../errors/unauthorized.js'
@@ -29,10 +28,11 @@ import {
   validatePasswordData,
 } from './supporting-funcs-and-vars.js'
 import { QueryResult, QueryResultRow } from 'pg'
+import db from '../../db/index.js'
 
 const getQuery = async <T>({
   userId,
-}: QueryParams<T>): Promise<QueryResult<QueryResultRow[]>> => {
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   return db.query({
     text: getUserQueryString,
     values: [userId],

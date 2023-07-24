@@ -1,7 +1,7 @@
 // cspell:disable
 import nodePostgres, { QueryResult, QueryResultRow } from 'pg'
 const { Pool } = nodePostgres
-import retryQuery from '../../controllers/helpers/retryQuery.js'
+import retryQuery from '../controllers/helpers/retryQuery.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -15,7 +15,7 @@ const pool = new Pool({
   },
 })
 
-export const db = {
+export default {
   async end(): Promise<void> {
     await pool.end()
   },

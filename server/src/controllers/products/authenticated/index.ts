@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import { QueryResult, QueryResultRow } from 'pg'
 import {
   ProductSchemaDB,
-  ProductSchemaDBLean,
+  ProductSchemaDBID,
   ProductSchemaDBList,
   ProductSchemaReq,
 } from '../../../app-schema/products.js'
@@ -10,15 +10,12 @@ import db from '../../../db/index.js'
 import BadRequestError from '../../../errors/bad-request.js'
 import UnauthorizedError from '../../../errors/unauthorized.js'
 import {
-  ProcessRouteWithBodyAndDBResult,
+  ProcessRoute,
   ProcessRouteWithoutBody,
 } from '../../../types-and-interfaces/process-routes.js'
 import { Product } from '../../../types-and-interfaces/products.js'
 import { RequestWithPayload } from '../../../types-and-interfaces/request.js'
-import {
-  isValidDBResponse,
-  ResponseData,
-} from '../../../types-and-interfaces/response.js'
+import { isValidDBResponse } from '../../../types-and-interfaces/response.js'
 import {
   DeleteRecord,
   InsertRecord,
@@ -27,6 +24,10 @@ import {
 } from '../../helpers/generate-sql-commands/index.js'
 import { handleSortQuery } from '../../helpers/generate-sql-commands/query-params-handler.js'
 import processRoute from '../../helpers/process-route.js'
+import {
+  validateReqData,
+  validateResData,
+} from '../../helpers/query-validation.js'
 
 /**
  * @param {RequestWithPayload} req
@@ -43,6 +44,8 @@ const createQuery = async ({
     text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
+  if (!isValidDBResponse(dbQuery))
+    throw new BadRequestError('Invalid response from database')
   if (!dbQuery.rows.length)
     throw new BadRequestError(
       'No store found for this product. First create a store'
@@ -80,6 +83,8 @@ const getAllQuery = async ({
     text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
+  if (!isValidDBResponse(dbQuery))
+    throw new BadRequestError('Invalid response from database')
   if (!dbQuery.rows.length)
     throw new BadRequestError(
       'No store found for this product. First create a store'
@@ -87,17 +92,23 @@ const getAllQuery = async ({
   if (dbQuery.rows[0].vendor_id !== vendorId)
     throw new UnauthorizedError('Cannot access store.')
   let dbQueryString = `
-		select products.*, 
-			(select json_agg(media) from 
-				(select filename, 
-					filepath, description from 
-						product_media 
-							where 
-								product_id=products.product_id)
-							as media) 
-						as media 
-					from products 
-				where store_id=$1`
+		SELECT JSON_AGG(product_data) AS products,
+		 COUNT(product_data) AS total_products FROM
+			(SELECT p.*, 
+				(SELECT JSON_AGG(media_data) FROM
+					(SELECT pm.filename,
+						 CASE WHEN pdi.filename IS NOT NULL
+							THEN TRUE ELSE FALSE END AS is_display_image,
+							 filepath, description FROM
+								product_media pm
+								LEFT JOIN product_display_image pdi
+								USING (filename)
+								WHERE
+								pm.product_id=p.product_id)
+							AS media_data) 
+						AS media FROM products p)
+					AS product_data
+				WHERE store_id=$1;`
   if (sort) {
     dbQueryString += ` ${handleSortQuery(<string>sort)}`
   }
@@ -120,6 +131,8 @@ const getQuery = async ({
     text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
+  if (!isValidDBResponse(dbQuery))
+    throw new BadRequestError('Invalid response from database')
   if (!dbQuery.rows.length)
     throw new BadRequestError(
       'No store found for this product. First create a store'
@@ -127,16 +140,21 @@ const getQuery = async ({
   if (dbQuery.rows[0].vendor_id !== vendorId)
     throw new UnauthorizedError('Cannot access store.')
   return db.query({
-    text: `select products.*, 
-				(select json_agg(media) from 
-					(select filename, 
-						filepath, description from 
-							product_media 
-							where product_id=$1)
-						as media) 
-					as media 
-				from products 
-			where product_id=$1 and store_id=$2`,
+    text: `SELECT p.*, 
+				(SELECT JSON_AGG(media) FROM 
+					(SELECT pm.filename, 
+					 CASE WHEN pdi.filename IS NOT NULL 
+					  THEN true ELSE false END
+					   AS is_display_image,
+							filepath, description FROM 
+							 product_media pm
+							  LEFT JOIN product_display_image pdi
+							 USING (filename)
+							WHERE pm.product_id=p.product_id)
+						AS media) 
+					AS media 
+				FROM products p
+			WHERE p.product_id=$1 AND store_id=$2`,
     values: [productId, storeId],
   })
 }
@@ -152,10 +170,12 @@ const updateQuery = async ({
   body,
   user: { userId: vendorId },
 }: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
-  const dbQuery = await db.query({
+  const dbQuery: unknown = await db.query({
     text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
+  if (!isValidDBResponse(dbQuery))
+    throw new BadRequestError('Invalid response from database')
   if (!dbQuery.rows.length)
     throw new BadRequestError(
       'No store found for this product. First create a store'
@@ -206,127 +226,56 @@ const deleteQuery = async ({
   return db.query({
     text: DeleteRecord(
       'products',
-      'product_id',
+      ['product_id'],
       'product_id=$1 and store_id=$2'
     ),
     values: [+productId, +storeId!],
   })
 }
 
-/**
- * @param {T} data
- * @returns {Promise<any>}
- * @description Validate the request body
- * */
-const validateBody = async <T>(data: T): Promise<any> => {
-  const validData = ProductSchemaReq.validate(data)
-  if (validData.error)
-    throw new BadRequestError('Invalid Data Schema: ' + validData.error.message)
-  return validData.value
-}
+const { CREATED, OK } = StatusCodes
 
-const { CREATED, OK, NOT_FOUND } = StatusCodes
-
-/**
- * @param {QueryResult<any>} result
- * @returns {Promise<ResponseData>}
- * @description Validate a list of products
- * */
-const validateResultList = async (
-  result: QueryResult<any>
-): Promise<ResponseData> => {
-  if (!result.rows.length)
-    return {
-      status: NOT_FOUND,
-      data: 'No Product found. Please create a product.',
-    }
-  const validateDbResult = ProductSchemaDBList.validate(result.rows)
-  if (validateDbResult.error)
-    throw new BadRequestError(
-      'Invalid Data from DB: ' + validateDbResult.error.message
-    )
-  return {
-    data: validateDbResult.value,
-  }
-}
-
-/**
- * @param {QueryResult<any>} result
- * @returns {Promise<ResponseData>}
- * @description Checks if the query was successful, and Id is returned
- * */
-const checkSuccess = async (
-  result: QueryResult<any>
-): Promise<ResponseData> => {
-  if (!result.rows.length) throw new BadRequestError('Operation unsuccessful')
-  const validateDbResult = ProductSchemaDBLean.validate(result.rows[0])
-  if (validateDbResult.error)
-    throw new BadRequestError(
-      'Operation unsuccessful: ' + validateDbResult.error.message
-    )
-  return {
-    data: validateDbResult.value,
-  }
-}
-
-/**
- * @param {QueryResult<any>} result
- * @returns {Promise<ResponseData>}
- * @description Validate the retrieved product.
- * */
-const validateResult = async (
-  result: QueryResult<any>
-): Promise<ResponseData> => {
-  if (!result.rows.length)
-    return {
-      status: NOT_FOUND,
-      data: 'Product not found',
-    }
-  const validateDbResult = ProductSchemaDB.validate(result.rows[0])
-  if (validateDbResult.error)
-    throw new BadRequestError(
-      'Invalid Data from DB: ' + validateDbResult.error.message
-    )
-  return {
-    data: validateDbResult.value,
-  }
-}
-
-const processPostRoute = <ProcessRouteWithBodyAndDBResult>processRoute
+const processPostRoute = <ProcessRoute>processRoute
 const processGetAllRoute = <ProcessRouteWithoutBody>processRoute
-const processGetIDRoute = <ProcessRouteWithoutBody>processRoute
-const processPutRoute = <ProcessRouteWithBodyAndDBResult>processRoute
+const processGetRoute = <ProcessRouteWithoutBody>processRoute
+const processPutRoute = <ProcessRoute>processRoute
 const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
 
-const createProduct = processPostRoute(
-  createQuery,
-  CREATED,
-  validateBody,
-  checkSuccess
-)
+//cspell:ignore DBID
+const createProduct = processPostRoute({
+  Query: createQuery,
+  status: CREATED,
+  validateBody: validateReqData(ProductSchemaReq),
+  validateResult: validateResData(ProductSchemaDBID),
+})
 
-const getAllProducts = processGetAllRoute(
-  getAllQuery,
-  OK,
-  undefined,
-  validateResultList
-)
+const getAllProducts = processGetAllRoute({
+  Query: getAllQuery,
+  status: OK,
+  validateBody: undefined,
+  validateResult: validateResData(ProductSchemaDBList),
+})
 
-const getProduct = processGetIDRoute(getQuery, OK, undefined, validateResult)
+const getProduct = processGetRoute({
+  Query: getQuery,
+  status: OK,
+  validateBody: undefined,
+  validateResult: validateResData(ProductSchemaDB),
+})
 
-const updateProduct = processPutRoute(
-  updateQuery,
-  OK,
-  validateBody,
-  checkSuccess
-)
+const updateProduct = processPutRoute({
+  Query: updateQuery,
+  status: OK,
+  validateBody: validateReqData(ProductSchemaReq),
+  validateResult: validateResData(ProductSchemaDBID),
+})
 
-const deleteProduct = processDeleteRoute(
-  deleteQuery,
-  OK,
-  undefined,
-  checkSuccess
-)
+const deleteProduct = processDeleteRoute({
+  Query: deleteQuery,
+  status: OK,
+  validateBody: undefined,
+  validateResult: validateResData(ProductSchemaDBID),
+})
 
 export {
   createProduct,

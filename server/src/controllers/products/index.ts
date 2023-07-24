@@ -73,7 +73,7 @@ const getQuery = async ({
 						AS media) 
 					AS media 
 				FROM products p
-			WHERE p.product_id=173;`,
+			WHERE p.product_id=$1;`,
     values: [productId],
     name: `fetch product ${productId}`,
   })

@@ -11,7 +11,7 @@ const ProductSchemaReq = joi
   })
   .required()
 
-const ProductSchemaDBLean = joi
+const ProductSchemaDBID = joi
   .object({
     product_id: joi.number().required(),
   })
@@ -59,5 +59,5 @@ export {
   ProductSchemaReq,
   ProductSchemaDB,
   ProductSchemaDBList,
-  ProductSchemaDBLean,
+  ProductSchemaDBID,
 }

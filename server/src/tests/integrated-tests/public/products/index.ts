@@ -18,8 +18,7 @@ chai.use(chaiHttp).should()
 let server: string, token: string
 const vendorsRoute = '/v1/account/vendor/'
 const storesRoute = '/v1/stores'
-const productsRoute = '/v1/private/products'
-const productsPublicRoute = '/v1/products'
+const productsRoute = '/v1/products'
 
 export default function ({
   accountInfo,
@@ -84,19 +83,23 @@ export default function ({
     })
 
     it('it should retrieve all the products from each store', async () => {
-      await testGetAllProductsPublic(server, null, productsPublicRoute, {})
+      await testGetAllProductsPublic(server, null, productsRoute, {
+        public: true,
+      })
     })
 
     it('it should retrieve all products from each store, sorted by net price ascending', async () => {
-      await testGetAllProductsPublic(server, null, productsPublicRoute, {
+      await testGetAllProductsPublic(server, null, productsRoute, {
         sort: '-net_price',
+        public: true,
       })
     })
 
     it('it should retrieve all products from each store, results offset by 2 and limited by 10', async () => {
-      await testGetAllProductsPublic(server, null, productsPublicRoute, {
+      await testGetAllProductsPublic(server, null, productsRoute, {
         offset: 1,
         limit: 2,
+        public: true,
       })
     })
 
@@ -105,7 +108,8 @@ export default function ({
         await testGetProductPublic(
           server,
           null,
-          `${productsPublicRoute}/${productId}`
+          `${productsRoute}/${productId}`,
+          { public: true }
         )
     })
 

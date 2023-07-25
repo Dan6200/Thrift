@@ -5,30 +5,30 @@ import {
   StoreSchemaDBResult,
   StoreSchemaDBResultID,
   StoreSchemaDBResultList,
-} from '../../../app-schema/stores.js'
-import db from '../../../db/index.js'
-import BadRequestError from '../../../errors/bad-request.js'
-import UnauthorizedError from '../../../errors/unauthorized.js'
+} from '../../app-schema/stores.js'
+import db from '../../db/index.js'
+import BadRequestError from '../../errors/bad-request.js'
+import UnauthorizedError from '../../errors/unauthorized.js'
 import {
   ProcessRoute,
   ProcessRouteWithoutBody,
   QueryParams,
-} from '../../../types-and-interfaces/process-routes.js'
+} from '../../types-and-interfaces/process-routes.js'
 import {
   isValidStoresData,
   StoresData,
-} from '../../../types-and-interfaces/stores-data.js'
+} from '../../types-and-interfaces/stores-data.js'
 import {
   SelectRecord,
   InsertRecord,
   UpdateRecord,
   DeleteRecord,
-} from '../../helpers/generate-sql-commands/index.js'
-import processRoute from '../../helpers/process-route.js'
+} from '../helpers/generate-sql-commands/index.js'
+import processRoute from '../helpers/process-route.js'
 import {
   validateReqData,
   validateResData,
-} from '../../helpers/query-validation.js'
+} from '../helpers/query-validation.js'
 
 const createQuery = async <T>({ body, userId: vendorId }: QueryParams<T>) => {
   if (!vendorId) throw new UnauthorizedError('Cannot access resource')

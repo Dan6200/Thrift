@@ -13,7 +13,6 @@ import cookieParser from 'cookie-parser'
 import authRouter from './routes/auth.js'
 import accountRouter from './routes/account/index.js'
 import shippingRouter from './routes/shipping/index.js'
-import productsRouterProtected from './routes/products/authenticated/index.js'
 import productsRouter from './routes/products/index.js'
 import storesRouter from './routes/stores/index.js'
 import mediaRouter from './routes/media/index.js'
@@ -64,8 +63,7 @@ v1Router.use('/auth', authRouter)
 v1Router.use('/account', authenticateUser, accountRouter)
 v1Router.use('/shipping-info', authenticateUser, shippingRouter)
 v1Router.use('/stores', authenticateUser, storesRouter)
-v1Router.use('/private/products', authenticateUser, productsRouterProtected)
-v1Router.use('/products', productsRouter)
+v1Router.use('/products', authenticateUser, productsRouter)
 v1Router.use('/media', authenticateUser, mediaRouter)
 
 app.use('/v1', v1Router)

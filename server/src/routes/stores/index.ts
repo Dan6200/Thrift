@@ -5,7 +5,7 @@ import {
   getStore,
   updateStore,
   deleteStore,
-} from '../../controllers/stores/authenticated/index.js'
+} from '../../controllers/stores/index.js'
 
 const router = express.Router()
 

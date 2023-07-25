@@ -1,13 +1,13 @@
 import { StatusCodes } from 'http-status-codes'
-import db from '../../../../db/index.js'
-import { ProcessRouteWithoutBody } from '../../../../types-and-interfaces/process-routes.js'
+import db from '../../../db/index.js'
+import { ProcessRouteWithoutBody } from '../../../types-and-interfaces/process-routes.js'
 import {
   InsertRecord,
   SelectRecord,
   DeleteRecord,
-} from '../../../helpers/generate-sql-commands/index.js'
-import processRoute from '../../../helpers/process-route.js'
-import { isSuccessful } from '../../../helpers/query-validation.js'
+} from '../../helpers/generate-sql-commands/index.js'
+import processRoute from '../../helpers/process-route.js'
+import { isSuccessful } from '../../helpers/query-validation.js'
 
 const { CREATED, NO_CONTENT } = StatusCodes
 

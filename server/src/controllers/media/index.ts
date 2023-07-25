@@ -3,9 +3,9 @@ import { StatusCodes } from 'http-status-codes'
 import {
   InsertRecord,
   UpdateRecord,
-} from '../../helpers/generate-sql-commands/index.js'
-import BadRequestError from '../../../errors/bad-request.js'
-import db from '../../../db/index.js'
+} from '../helpers/generate-sql-commands/index.js'
+import BadRequestError from '../../errors/bad-request.js'
+import db from '../../db/index.js'
 
 const uploadProductMedia = async (req: any, res: any) => {
   const { productId } = req.query

@@ -73,7 +73,7 @@ const testGetProduct = <testRouteWithQParams>testRoute({
   checks: validateResult(ProductSchemaDB),
 })
 
-export const testGetProductPublic = <testPublicRouteNoData>testRoute({
+export const testGetProductPublic = <testPublicRouteWithQParams>testRoute({
   ...routeParams,
   verb: 'get',
   checks: validateResult(ProductSchemaDB),

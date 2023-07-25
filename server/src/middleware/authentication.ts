@@ -14,8 +14,10 @@ export default async (
   _response: Response,
   next: NextFunction
 ) => {
-  // check header
-  // if (request.query.private) {
+  // if route is public, skip authentication
+  if (request.query.public) next()
+
+  // check header for token
   const authHeader = request.headers.authorization
   if (!authHeader || !authHeader?.startsWith('Bearer '))
     throw new UnauthorizedError('Unauthorized Operation')

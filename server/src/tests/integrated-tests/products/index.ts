@@ -22,7 +22,7 @@ chai.use(chaiHttp).should()
 let server: string, token: string
 const vendorsRoute = '/v1/account/vendor/'
 const storesRoute = '/v1/stores'
-const productsRoute = '/v1/private/products'
+const productsRoute = '/v1/products'
 
 export default function ({
   accountInfo,

@@ -5,29 +5,29 @@ import {
   ShippingInfoSchemaDBList,
   ShippingInfoSchemaID,
   ShippingInfoSchemaDB,
-} from '../../../app-schema/shipping.js'
-import db from '../../../db/index.js'
-import BadRequestError from '../../../errors/bad-request.js'
-import UnauthorizedError from '../../../errors/unauthorized.js'
+} from '../../app-schema/shipping.js'
+import db from '../../db/index.js'
+import BadRequestError from '../../errors/bad-request.js'
+import UnauthorizedError from '../../errors/unauthorized.js'
 import {
   ProcessRoute,
   ProcessRouteWithoutBody,
   QueryParams,
-} from '../../../types-and-interfaces/process-routes.js'
+} from '../../types-and-interfaces/process-routes.js'
 import ShippingInfo, {
   isValidShippingInfo,
-} from '../../../types-and-interfaces/shipping-info.js'
+} from '../../types-and-interfaces/shipping-info.js'
 import {
   DeleteRecord,
   InsertRecord,
   SelectRecord,
   UpdateRecord,
-} from '../../helpers/generate-sql-commands/index.js'
-import processRoute from '../../helpers/process-route.js'
+} from '../helpers/generate-sql-commands/index.js'
+import processRoute from '../helpers/process-route.js'
 import {
   validateReqData,
   validateResData,
-} from '../../helpers/query-validation.js'
+} from '../helpers/query-validation.js'
 
 /**
  * @param {QueryParams} qp

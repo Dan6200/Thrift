@@ -1,5 +1,4 @@
 import { QueryResult, QueryResultRow } from 'pg'
-import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import { handleSortQuery } from '../helpers/generate-sql-commands/query-params-handler.js'
 import {
   ProcessRouteWithoutBody,
@@ -48,9 +47,10 @@ const getAllQuery = async <T>({
 					AS product_data
 				WHERE store_id=$1`
   return db.query({
-    name: `fetch products${limit ? `, limit: ${limit}` : ''}${
-      offset ? `, offset: ${offset}` : ''
-    }`,
+    // Make a prepared statement to cache the query
+    name: `fetch-products${limit ? `-limit:${limit}` : ''}${
+      offset ? `-offset:${offset}` : ''
+    }${sort ? `-sort:${sort.toString()}` : ''}`,
     text: dbQueryString,
     values: [storeId],
   })
@@ -61,9 +61,9 @@ const getAllQuery = async <T>({
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieve a product
  **/
-const getQuery = async ({
+const getQuery = async <T>({
   params,
-}: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   if (params == null) throw new BadRequestError('Must provide a product id')
   const { productId } = params
   return db.query({

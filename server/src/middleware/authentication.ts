@@ -15,6 +15,7 @@ export default async (
   next: NextFunction
 ) => {
   // check header
+  // if (request.query.private) {
   const authHeader = request.headers.authorization
   if (!authHeader || !authHeader?.startsWith('Bearer '))
     throw new UnauthorizedError('Unauthorized Operation')

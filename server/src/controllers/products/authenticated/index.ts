@@ -76,7 +76,7 @@ const createQuery = async <T>({
 }
 
 /**
- * @param {RequestWithPayload} req
+ * @param {QueryParams} {query, userId}
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieve all products
  *
@@ -120,22 +120,14 @@ const getAllQuery = async <T>({
 					${offset ? `OFFSET ${offset}` : ''})
 					AS product_data
 				WHERE store_id=$1`
-  // if (sort) {
-  //   dbQueryString += ` ${handleSortQuery(<string>sort)}`
-  // }
-  // if (offset) dbQueryString += ` OFFSET ${offset}`
-  // if (limit) dbQueryString += ` LIMIT ${limit}`
   return db.query({
-    // name: `fetch products${limit ? `, limit: ${limit}` : ''}${
-    //   offset ? `, offset: ${offset}` : ''
-    // }`,
     text: dbQueryString,
     values: [storeId],
   })
 }
 
 /**
- * @param {RequestWithPayload} req
+ * @param {QueryParams} {params, query, userId}
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieve a product
  **/
@@ -181,7 +173,7 @@ const getQuery = async <T>({
 }
 
 /**
- * @param {RequestWithPayload} req
+ * @param {QueryParams} {params, query, body, userId}
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Update a product
  * */

@@ -1,4 +1,3 @@
-import db from '../../../db/pg/index.js'
 import ShippingInfo from '../../../types-and-interfaces/shipping-info.js'
 import { registration } from '../helper-functions/auth/index.js'
 import {
@@ -14,6 +13,7 @@ import {
 } from '../helper-functions/shipping/index.js'
 import { AccountData } from '../../../types-and-interfaces/account.js'
 import assert from 'assert'
+import db from '../../../db/index.js'
 
 // Set server url
 const server = process.env.LOCAL_APP_SERVER!
@@ -44,7 +44,6 @@ export default function ({
       text: 'delete from user_accounts where email=$1 or phone=$2',
       values: [accountInfo.email, accountInfo.phone],
     })
-    await testDeleteCustomer(server, token, '/v1/account/customer')
   })
 
   const shippingPath = '/v1/shipping-info'

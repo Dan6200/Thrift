@@ -14,8 +14,8 @@ import {
   testDeleteAccount,
   testGetNonExistentAccount,
 } from '../helper-functions/user/index.js'
-import db from '../../../db/pg/index.js'
 import { AccountData } from '../../../types-and-interfaces/account.js'
+import db from '../../../db/index.js'
 
 chai.use(chaiHttp).should()
 

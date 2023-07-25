@@ -1,7 +1,7 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
-import db from '../../../db/pg/index.js'
+import db from '../../../db/index.js'
 import { AccountData } from '../../../types-and-interfaces/account.js'
 import {
   registration,

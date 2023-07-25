@@ -1,9 +1,10 @@
+import db from '../../../db/index.js'
 import { AccountData } from '../../../types-and-interfaces/account.js'
 import {
   Product,
   ProductMedia,
 } from '../../../types-and-interfaces/products.js'
-import StoresData from '../../../types-and-interfaces/stores-data.js'
+import { StoresData } from '../../../types-and-interfaces/stores-data.js'
 import { registration } from '../helper-functions/auth/index.js'
 import {
   testCreateProduct,
@@ -11,7 +12,6 @@ import {
 } from '../helper-functions/products/index.js'
 import { testCreateStore } from '../helper-functions/store/index.js'
 import { testCreateVendor } from '../helper-functions/vendor/index.js'
-import db from '../../../db/pg/index.js'
 
 // globals
 const mediaRoute = '/v1/media'

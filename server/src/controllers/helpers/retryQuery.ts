@@ -1,6 +1,6 @@
 import { log } from 'console'
 
-enum networkErrors {
+const networkErrors = new Set([
   'ENOENT',
   'ETIMEDOUT',
   'ECONNRESET',
@@ -8,7 +8,8 @@ enum networkErrors {
   'ECONNREFUSED',
   'ECONNABORTED',
   'EAI_AGAIN',
-}
+])
+
 let runOnce: boolean = true
 export default async function retryQuery(
   query: (...rest: any[]) => Promise<any>,
@@ -22,12 +23,12 @@ export default async function retryQuery(
       log(`db connection failed...quitting`)
       return
     }
-    // needs await to catch errors!
     res = await query(...args)
     runOnce = true
     return res
   } catch (err) {
-    if (err.code in networkErrors)
+    console.log('caught error', err, err.code)
+    if (networkErrors.has(err.code))
       return new Promise((resolve) => {
         setTimeout(resolve, ms)
       }).then(() => {

@@ -4,11 +4,11 @@ import dotenv from 'dotenv'
 import fs from 'fs/promises'
 import axios from 'axios'
 import { Product } from '../../types-and-interfaces/products.js'
-import db from '../../db/pg/index.js'
 import { AccountData } from '../../types-and-interfaces/account.js'
 import { ProductMedia } from '../../types-and-interfaces/products.js'
-import StoresData from '../../types-and-interfaces/stores-data.js'
+import { StoresData } from '../../types-and-interfaces/stores-data.js'
 import * as Aliyu from '../integrated-tests/data/users/vendors/user-aliyu/index.js'
+import db from '../../db/index.js'
 
 dotenv.config()
 const vendors = [Aliyu]

@@ -40,7 +40,7 @@ export default ({
       validateBody
     ) {
       // validateBody throws error if body is invalid
-      await validateBody(body)
+      await validateBody({ userId, body, params, query })
     }
 
     const dbResponse: unknown = await Query({ userId, body, params, query })
@@ -52,10 +52,8 @@ export default ({
       // check for errors
       await validateResult(dbResponse)
       if (dbResponse.rowCount === 1)
-        return response.status(status).json({ data: dbResponse.rows[0] })
-      return response
-        .status(status)
-        .json({ data: dbResponse.rows, count: dbResponse.rowCount })
+        return response.status(status).json(dbResponse.rows[0])
+      return response.status(status).json(dbResponse.rows)
     }
     response.status(status).end()
   }

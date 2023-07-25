@@ -12,7 +12,7 @@ export const validateReqData =
   async <T>({ body }: QueryParams<T>) => {
     if (typeof body == 'undefined' || Object.keys(body).length === 0)
       throw new BadRequestError('request data cannot be empty')
-    const { error } = Joi.object(schema).validate(body)
+    const { error } = schema.validate(body)
     if (error) throw new BadRequestError(error.message)
   }
 
@@ -32,7 +32,12 @@ export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
         throw new NotFoundError('Requested resource was not found')
       throw new BadRequestError(`${response.command} Operation unsuccessful`)
     }
-    const { error } = Joi.object(schema).validate(response.rows)
+    let error: Error | undefined
+    if (response.rowCount > 1) {
+      ;({ error } = schema.validate(response.rows))
+    } else {
+      ;({ error } = schema.validate(response.rows[0]))
+    }
     if (error) throw new BadRequestError(error.message)
   }
 }

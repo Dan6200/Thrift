@@ -13,6 +13,8 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false,
   },
+  idleTimeoutMillis: 0,
+  connectionTimeoutMillis: 0,
 })
 
 export default {

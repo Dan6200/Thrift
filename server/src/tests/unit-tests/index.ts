@@ -1,9 +1,9 @@
 // cspell:disable
 import chai from 'chai'
 import {
-	InsertInTable,
-	SelectFromTable,
-	UpdateInTable,
+  InsertRecord,
+  SelectRecord,
+  UpdateRecord,
 } from '../../controllers/helpers/generate-sql-commands/index.js'
 import { handleSortQuery } from '../../controllers/helpers/generate-sql-commands/query-params-handler.js'
 
@@ -43,47 +43,47 @@ set address = $2
 where my_id=$1 returning my_id`
 
 export default () => {
-	it('it should generate the correct sql INSERT statement given its inputs', () =>
-		InsertInTable(
-			'my_table',
-			['first_name', 'last_name', 'address', 'age', 'dob', 'sex'],
-			'my_id'
-		).should.equal(SQLINSERT))
+  it('it should generate the correct sql INSERT statement given its inputs', () =>
+    InsertRecord(
+      'my_table',
+      ['first_name', 'last_name', 'address', 'age', 'dob', 'sex'],
+      'my_id'
+    ).should.equal(SQLINSERT))
 
-	it('it should generate the correct sql INSERT statement given its inputs', () =>
-		InsertInTable('my_table', ['first_name'], 'my_id').should.equal(SQLINSERT2))
+  it('it should generate the correct sql INSERT statement given its inputs', () =>
+    InsertRecord('my_table', ['first_name'], 'my_id').should.equal(SQLINSERT2))
 
-	it('it should generate the correct sql UPDATE statement given its inputs', () =>
-		UpdateInTable(
-			'my_table',
-			'my_id',
-			['first_name', 'address', 'age', 'sex'],
-			2,
-			'my_id=$1'
-		).should.equal(SQLUPDATE))
+  it('it should generate the correct sql UPDATE statement given its inputs', () =>
+    UpdateRecord(
+      'my_table',
+      'my_id',
+      ['first_name', 'address', 'age', 'sex'],
+      2,
+      'my_id=$1'
+    ).should.equal(SQLUPDATE))
 
-	it('it should generate the correct sql UPDATE statement given its inputs', () =>
-		UpdateInTable('my_table', 'my_id', ['address'], 2, 'my_id=$1').should.equal(
-			SQLUPDATE2
-		))
+  it('it should generate the correct sql UPDATE statement given its inputs', () =>
+    UpdateRecord('my_table', 'my_id', ['address'], 2, 'my_id=$1').should.equal(
+      SQLUPDATE2
+    ))
 
-	it('it should create a database query from a query parameter input', () =>
-		handleSortQuery('-list_price,-net_price,product_id').should.equal(
-			`order by list_price desc, net_price desc, product_id asc`
-		))
+  it('it should create a database query from a query parameter input', () =>
+    handleSortQuery('-list_price,-net_price,product_id').should.equal(
+      `order by list_price desc, net_price desc, product_id asc`
+    ))
 
-	it('it should create a database query from a query parameter input', () =>
-		handleSortQuery('product_id,list_price,-net_price').should.equal(
-			`order by product_id asc, list_price asc, net_price desc`
-		))
+  it('it should create a database query from a query parameter input', () =>
+    handleSortQuery('product_id,list_price,-net_price').should.equal(
+      `order by product_id asc, list_price asc, net_price desc`
+    ))
 
-	it('it should generate the correct sql SELECT statement given its inputs', () =>
-		SelectFromTable('my_table', ['*'], 'my_id=$1').should.equal(SQLSELECT2))
+  it('it should generate the correct sql SELECT statement given its inputs', () =>
+    SelectRecord('my_table', ['*'], 'my_id=$1').should.equal(SQLSELECT2))
 
-	it('it should generate the correct sql SELECT statement given its inputs', () =>
-		SelectFromTable(
-			'my_table',
-			['first_name', 'last_name', 'address', 'age', 'dob', 'sex'],
-			'my_id=$1'
-		).should.equal(SQLSELECT1))
+  it('it should generate the correct sql SELECT statement given its inputs', () =>
+    SelectRecord(
+      'my_table',
+      ['first_name', 'last_name', 'address', 'age', 'dob', 'sex'],
+      'my_id=$1'
+    ).should.equal(SQLSELECT1))
 }

@@ -1,7 +1,7 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { Product } from '../../../types-and-interfaces/products.js'
-import StoresData from '../../../types-and-interfaces/stores-data.js'
+import { StoresData } from '../../../types-and-interfaces/stores-data.js'
 import { registration } from '../helper-functions/auth/index.js'
 import {
   testCreateProduct,
@@ -13,16 +13,16 @@ import {
 } from '../helper-functions/products/index.js'
 import { testCreateStore } from '../helper-functions/store/index.js'
 import { testCreateVendor } from '../helper-functions/vendor/index.js'
-import db from '../../../db/pg/index.js'
 import { AccountData } from '../../../types-and-interfaces/account.js'
 import assert from 'assert'
+import db from '../../../db/index.js'
 
 // globals
 chai.use(chaiHttp).should()
 let server: string, token: string
 const vendorsRoute = '/v1/account/vendor/'
 const storesRoute = '/v1/stores'
-const productsRoute = '/v1/products'
+const productsRoute = '/v1/private/products'
 
 export default function ({
   accountInfo,

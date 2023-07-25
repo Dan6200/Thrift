@@ -12,9 +12,11 @@ import UnauthorizedError from '../../../errors/unauthorized.js'
 import {
   ProcessRoute,
   ProcessRouteWithoutBody,
+  QueryParams,
 } from '../../../types-and-interfaces/process-routes.js'
-import { RequestWithPayload } from '../../../types-and-interfaces/request.js'
-import ShippingInfo from '../../../types-and-interfaces/shipping-info.js'
+import ShippingInfo, {
+  isValidShippingInfo,
+} from '../../../types-and-interfaces/shipping-info.js'
 import {
   DeleteRecord,
   InsertRecord,
@@ -28,17 +30,17 @@ import {
 } from '../../helpers/query-validation.js'
 
 /**
- * @param {RequestWithPayload} req
+ * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Create a new shipping info for a customer
  * Checks:
  * 1. If the customer exists
  * 2. If the customer already has 5 shipping addresses
  **/
-const createQuery = async ({
+const createQuery = async <T>({
   body,
-  user: { userId: customerId },
-}: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
+  userId: customerId,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   if (!customerId) throw new UnauthorizedError('Cannot access resource')
   // check if customer account exists
   const dbRes = await db.query({
@@ -60,6 +62,8 @@ const createQuery = async ({
   if (count > LIMIT)
     throw new BadRequestError(`Cannot have more than ${LIMIT} stores`)
 
+  if (!isValidShippingInfo(body))
+    throw new BadRequestError('Invalid shipping info')
   const shippingData: ShippingInfo = body
   if (!shippingData) throw new BadRequestError('No data sent in request body')
   const DBFriendlyData = {
@@ -77,16 +81,16 @@ const createQuery = async ({
 }
 
 /**
- * @param {RequestWithPayload} req
+ * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieves all the shipping info for a customer
  * Checks:
  * 1. If the customer account exists
  **/
 
-const getAllQuery = async ({
-  user: { userId: customerId },
-}: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
+const getAllQuery = async <T>({
+  userId: customerId,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   if (!customerId) throw new UnauthorizedError('Cannot access resource')
   const res = await db.query({
     text: SelectRecord('customers', ['1'], 'customer_id=$1'),
@@ -103,17 +107,18 @@ const getAllQuery = async ({
 }
 
 /**
- * @param {RequestWithPayload} req
+ * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieves a single shipping info for a customer
  * Checks:
  * 1. If the customer account exists
  **/
 
-const getQuery = async ({
+const getQuery = async <T>({
   params,
-  user: { userId: customerId },
-}: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
+  userId: customerId,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
+  if (params == null) throw new BadRequestError('No route parameters provided')
   const { shippingInfoId } = params
   if (!customerId) throw new UnauthorizedError('Cannot access resource')
   const res = await db.query({
@@ -131,7 +136,7 @@ const getQuery = async ({
 }
 
 /**
- * @param {RequestWithPayload} req
+ * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Updates shipping info for the customer
  * Checks:
@@ -139,13 +144,15 @@ const getQuery = async ({
  * 2. If the shipping info ID is provided
  * 3. If the customer exists
  **/
-const updateQuery = async ({
+const updateQuery = async <T>({
   params,
   body,
-  user: { userId: customerId },
-}: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
+  userId: customerId,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
+  if (params == null) throw new BadRequestError('No route parameters provided')
   const { shippingInfoId } = params
-  const shippingData = body as ShippingInfo
+  if (!isValidShippingInfo(body)) throw new BadRequestError('Invalid data')
+  const shippingData = body
   if (!shippingInfoId) throw new BadRequestError('Need ID to update resource')
   if (!customerId) throw new UnauthorizedError('Cannot access resource')
   const res = await db.query({
@@ -177,7 +184,7 @@ const updateQuery = async ({
 }
 
 /**
- * @param {RequestWithPayload} req
+ * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Deletes a shipping info for the customer
  * Checks:
@@ -185,10 +192,11 @@ const updateQuery = async ({
  * 2. If Customer account exists
  * 3. If Customer owns the shipping info
  */
-const deleteQuery = async ({
+const deleteQuery = async <T>({
   params,
-  user: { userId: customerId },
-}: RequestWithPayload): Promise<QueryResult<QueryResultRow>> => {
+  userId: customerId,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
+  if (params == null) throw new BadRequestError('No route parameters provided')
   const { shippingInfoId } = params
   if (!shippingInfoId)
     throw new BadRequestError('Need Id param to delete resource')
@@ -211,7 +219,7 @@ const deleteQuery = async ({
   })
 }
 
-const { CREATED, OK, NOT_FOUND } = StatusCodes
+const { CREATED, OK } = StatusCodes
 
 const processPostRoute = <ProcessRoute>processRoute
 const createShippingInfo = processPostRoute({

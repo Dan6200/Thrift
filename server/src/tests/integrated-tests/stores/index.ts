@@ -1,9 +1,9 @@
 import chai from 'chai'
 import { assert } from 'chai'
 import chaiHttp from 'chai-http'
-import db from '../../../db/pg/index.js'
+import db from '../../../db/index.js'
 import { AccountData } from '../../../types-and-interfaces/account.js'
-import StoresData from '../../../types-and-interfaces/stores-data.js'
+import { StoresData } from '../../../types-and-interfaces/stores-data.js'
 import { registration } from '../helper-functions/auth/index.js'
 import {
   testCreateStore,

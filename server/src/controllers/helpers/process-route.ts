@@ -26,12 +26,12 @@ export default ({
 }) => {
   // return the route processor middleware
   return async (request: RequestWithPayload, response: Response) => {
-    const {
-      user: { userId },
-      params,
-      query,
-      body,
-    } = request
+    const { params, query, body } = request
+    let userId: string | undefined
+    if (request.user != null)
+      ({
+        user: { userId },
+      } = request)
 
     // Validate request data
     if (

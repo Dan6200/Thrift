@@ -33,29 +33,29 @@ import {
 } from '../../helpers/query-validation.js'
 
 /**
- * @param {RequestWithPayload} req
- * @returns {Promise<QueryResult<QueryResultRow>>}
+ * @param {QueryParams} {body, query, userId}
+ * @returns {Promise<QueryResult<QueryResultRow>>} - The database response
  * @description Create a new product
  *
  */
 const createQuery = async <T>({
   body,
-  query, //: { store_id: storeId },
+  query,
   userId: vendorId,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   if (query == null) throw new BadRequestError('Must provide a store id')
-  const { store_id: storeId } = query
-  const dbQuery = await db.query({
+  const { storeId } = query
+  const dbResponse = await db.query({
     text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
-  if (!isValidDBResponse(dbQuery))
+  if (!isValidDBResponse(dbResponse))
     throw new BadRequestError('Invalid response from database')
-  if (!dbQuery.rows.length)
+  if (!dbResponse.rows.length)
     throw new BadRequestError(
       'No store found for this product. First create a store'
     )
-  if (dbQuery.rows[0].vendor_id !== vendorId)
+  if (dbResponse.rows[0].vendor_id !== vendorId)
     throw new UnauthorizedError('Cannot access store.')
   if (!isValidProductData(body))
     throw new BadRequestError('Invalid product data')
@@ -82,22 +82,22 @@ const createQuery = async <T>({
  *
  **/
 const getAllQuery = async <T>({
-  query, //: { store_id: storeId, sort, limit, offset },
+  query,
   userId: vendorId,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   if (query == null) throw new BadRequestError('Must provide a store id')
   const { storeId, sort, limit, offset } = query
-  const dbQuery = await db.query({
+  const dbResponse = await db.query({
     text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
-  if (!isValidDBResponse(dbQuery))
+  if (!isValidDBResponse(dbResponse))
     throw new BadRequestError('Invalid response from database')
-  if (!dbQuery.rows.length)
+  if (!dbResponse.rows.length)
     throw new BadRequestError(
       'No store found for this product. First create a store'
     )
-  if (dbQuery.rows[0].vendor_id !== vendorId)
+  if (dbResponse.rows[0].vendor_id !== vendorId)
     throw new UnauthorizedError('Cannot access store.')
   let dbQueryString = `
 		SELECT JSON_AGG(product_data) AS products,
@@ -109,20 +109,29 @@ const getAllQuery = async <T>({
 							THEN TRUE ELSE FALSE END AS is_display_image,
 							 filepath, description FROM
 								product_media pm
-								LEFT JOIN product_display_image pdi
-								USING (filename)
-								WHERE
+								 LEFT JOIN product_display_image pdi
+									USING (filename)
+								 WHERE
 								pm.product_id=p.product_id)
 							AS media_data) 
-						AS media FROM products p)
+						AS media FROM products p
+					${sort ? `${handleSortQuery(<string>sort)}` : ''}
+					${limit ? `LIMIT ${limit}` : ''}
+					${offset ? `OFFSET ${offset}` : ''})
 					AS product_data
-				WHERE store_id=$1;`
-  if (sort) {
-    dbQueryString += ` ${handleSortQuery(<string>sort)}`
-  }
-  if (offset) dbQueryString += ` offset ${offset}`
-  if (limit) dbQueryString += ` limit ${limit}`
-  return db.query({ text: dbQueryString, values: [storeId] })
+				WHERE store_id=$1`
+  // if (sort) {
+  //   dbQueryString += ` ${handleSortQuery(<string>sort)}`
+  // }
+  // if (offset) dbQueryString += ` OFFSET ${offset}`
+  // if (limit) dbQueryString += ` LIMIT ${limit}`
+  return db.query({
+    // name: `fetch products${limit ? `, limit: ${limit}` : ''}${
+    //   offset ? `, offset: ${offset}` : ''
+    // }`,
+    text: dbQueryString,
+    values: [storeId],
+  })
 }
 
 /**
@@ -131,25 +140,25 @@ const getAllQuery = async <T>({
  * @description Retrieve a product
  **/
 const getQuery = async <T>({
-  params, //: { productId },
-  query, //: { store_id: storeId },
+  params,
+  query,
   userId: vendorId,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   if (params == null) throw new BadRequestError('Must provide a product id')
   if (query == null) throw new BadRequestError('Must provide a store id')
   const { productId } = params
   const { storeId } = query
-  const dbQuery = await db.query({
+  const dbResponse = await db.query({
     text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
-  if (!isValidDBResponse(dbQuery))
+  if (!isValidDBResponse(dbResponse))
     throw new BadRequestError('Invalid response from database')
-  if (!dbQuery.rows.length)
+  if (!dbResponse.rows.length)
     throw new BadRequestError(
       'No store found for this product. First create a store'
     )
-  if (dbQuery.rows[0].vendor_id !== vendorId)
+  if (dbResponse.rows[0].vendor_id !== vendorId)
     throw new UnauthorizedError('Cannot access store.')
   return db.query({
     text: `SELECT p.*, 
@@ -177,8 +186,8 @@ const getQuery = async <T>({
  * @description Update a product
  * */
 const updateQuery = async <T>({
-  params, //: { productId },
-  query, //: { store_id: storeId },
+  params,
+  query,
   body,
   userId: vendorId,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
@@ -186,17 +195,17 @@ const updateQuery = async <T>({
   if (query == null) throw new BadRequestError('Must provide a store id')
   const { productId } = params
   const { storeId } = query
-  const dbQuery: unknown = await db.query({
+  const dbResponse: unknown = await db.query({
     text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
-  if (!isValidDBResponse(dbQuery))
+  if (!isValidDBResponse(dbResponse))
     throw new BadRequestError('Invalid response from database')
-  if (!dbQuery.rows.length)
+  if (!dbResponse.rows.length)
     throw new BadRequestError(
       'No store found for this product. First create a store'
     )
-  if (dbQuery.rows[0].vendor_id !== vendorId)
+  if (dbResponse.rows[0].vendor_id !== vendorId)
     throw new UnauthorizedError('Cannot access store.')
   if (!isValidProductData(body))
     throw new BadRequestError('Invalid product data')
@@ -220,30 +229,30 @@ const updateQuery = async <T>({
 }
 
 /**
- * @param {RequestWithPayload} req
+ * @param {QueryParams} { params, query, userId }
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Delete a product
  * */
 const deleteQuery = async <T>({
-  params, //: { productId },
-  query, //: { store_id: storeId },
+  params,
+  query,
   userId: vendorId,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   if (params == null) throw new BadRequestError('Must provide product id')
   const { productId } = params
   if (query == null) throw new BadRequestError('Must provide store id')
-  const { store_id: storeId } = query
-  const dbQuery: unknown = await db.query({
+  const { storeId } = query
+  const dbResponse: unknown = await db.query({
     text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
   })
-  if (!isValidDBResponse(dbQuery))
+  if (!isValidDBResponse(dbResponse))
     throw new BadRequestError('Error while deleting product. Please try again')
-  if (!dbQuery.rows.length)
+  if (!dbResponse.rows.length)
     throw new BadRequestError(
       'No store found for this product. First create a store'
     )
-  if (dbQuery.rows[0].vendor_id !== vendorId)
+  if (dbResponse.rows[0].vendor_id !== vendorId)
     throw new UnauthorizedError('Cannot access store.')
   return db.query({
     text: DeleteRecord(

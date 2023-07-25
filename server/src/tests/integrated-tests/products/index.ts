@@ -83,7 +83,7 @@ export default function ({
           server,
           token,
           productsRoute,
-          { store_id },
+          { storeId: store_id },
           products
         )) {
           if (storeIds.get(store_id)) {
@@ -98,7 +98,7 @@ export default function ({
     it('it should retrieve all the products from each store', async () => {
       for (const [storeId] of storeIds.entries()) {
         await testGetAllProducts(server, token, productsRoute, {
-          store_id: storeId,
+          storeId,
         })
       }
     })
@@ -106,7 +106,7 @@ export default function ({
     it('it should retrieve all products from each store, sorted by net price ascending', async () => {
       for (const [storeId] of storeIds.entries()) {
         await testGetAllProducts(server, token, productsRoute, {
-          store_id: storeId,
+          storeId,
           sort: '-net_price',
         })
       }
@@ -115,7 +115,7 @@ export default function ({
     it('it should retrieve all products from each store, results offset by 2 and limited by 10', async () => {
       for (const [storeId] of storeIds.entries()) {
         await testGetAllProducts(server, token, productsRoute, {
-          store_id: storeId,
+          storeId,
           offset: 1,
           limit: 2,
         })
@@ -126,7 +126,7 @@ export default function ({
       for (const [storeId, productIds] of storeIds.entries()) {
         for (const productId of productIds!)
           await testGetProduct(server, token, `${productsRoute}/${productId}`, {
-            store_id: storeId,
+            storeId,
           })
       }
     })
@@ -140,7 +140,7 @@ export default function ({
             server,
             token,
             `${productsRoute}/${productId}`,
-            { store_id: storeId },
+            { storeId },
             productReplaced[idx++]
           )
       }
@@ -153,7 +153,7 @@ export default function ({
             server,
             token,
             `${productsRoute}/${productId}`,
-            { store_id: storeId }
+            { storeId }
           )
       }
     })
@@ -165,7 +165,7 @@ export default function ({
             server,
             token,
             `${productsRoute}/${productId}`,
-            { store_id: storeId }
+            { storeId }
           )
       }
     })

@@ -56,7 +56,7 @@ const ProductSchemaDBList = joi
             .try(joi.date().required(), joi.string().required()),
         })
       )
-      .required(),
+      .allow(null),
     total_products: joi.number().required(),
   })
   .required()

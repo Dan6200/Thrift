@@ -18,8 +18,8 @@ chai.use(chaiHttp).should()
 let server: string, token: string
 const vendorsRoute = '/v1/account/vendor/'
 const storesRoute = '/v1/stores'
-const productsRoute = '/v1/products'
-const productsPublicRoute = '/v1/public/products'
+const productsRoute = '/v1/private/products'
+const productsPublicRoute = '/v1/products'
 
 export default function ({
   accountInfo,
@@ -76,7 +76,7 @@ export default function ({
           server,
           token,
           productsRoute,
-          { store_id },
+          { storeId: store_id },
           products
         ))
           productIds.push(product_id)

@@ -39,7 +39,7 @@ export default {
       this.lastQuery = arguments
     })
     //
-    // console.log('\nexecuted query:\n', text, values)
+    console.log('\nexecuted query:\n', text, values, name)
     //
     // allow a retry if DB fails to connect
     let res: unknown
@@ -52,7 +52,7 @@ export default {
 
     res = await retryQuery(
       pool.query.bind(pool),
-      [text, values, name],
+      { text, values, name },
       retryCount,
       delay
     )

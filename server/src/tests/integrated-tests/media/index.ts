@@ -17,7 +17,7 @@ import { testCreateVendor } from '../helper-functions/vendor/index.js'
 const mediaRoute = '/v1/media'
 const vendorsRoute = '/v1/account/vendor/'
 const storesRoute = '/v1/stores'
-const productsRoute = '/v1/products'
+const productsRoute = '/v1/private/products'
 let token: string, server: string
 let storeIds = new Map<number, number[] | null>()
 
@@ -60,7 +60,7 @@ export default function ({
           server,
           token,
           productsRoute,
-          { store_id },
+          { storeId: store_id },
           products
         )) {
           if (storeIds.get(store_id)) {
@@ -90,7 +90,7 @@ export default function ({
               mediaRoute,
               productMedia[idx],
               {
-                product_id: productId,
+                productId,
               }
             )
       }

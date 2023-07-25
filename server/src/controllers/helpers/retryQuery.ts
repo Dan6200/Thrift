@@ -12,8 +12,8 @@ const networkErrors = new Set([
 
 let runOnce: boolean = true
 export default async function retryQuery(
-  query: (...rest: any[]) => Promise<any>,
-  args: any[],
+  query: (params: object) => Promise<any>,
+  params: object,
   retries: number,
   ms: number
 ): Promise<any> {
@@ -23,7 +23,8 @@ export default async function retryQuery(
       log(`db connection failed...quitting`)
       return
     }
-    res = await query(...args)
+    console.log(params)
+    res = await query(params)
     runOnce = true
     return res
   } catch (err) {
@@ -36,7 +37,7 @@ export default async function retryQuery(
           if (runOnce) runOnce = false
           else ms <<= 1
           log(`db connection failed...retrying after ${ms}ms`)
-          res = retryQuery(query, args, retries - 1, ms)
+          res = retryQuery(query, params, retries - 1, ms)
         }
         return res
       })

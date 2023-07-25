@@ -69,12 +69,12 @@ export default () => {
 
   it('it should create a database query from a query parameter input', () =>
     handleSortQuery('-list_price,-net_price,product_id').should.equal(
-      `order by list_price desc, net_price desc, product_id asc`
+      `ORDER BY list_price DESC, net_price DESC, product_id ASC`
     ))
 
   it('it should create a database query from a query parameter input', () =>
     handleSortQuery('product_id,list_price,-net_price').should.equal(
-      `order by product_id asc, list_price asc, net_price desc`
+      `ORDER BY product_id ASC, list_price ASC, net_price DESC`
     ))
 
   it('it should generate the correct sql SELECT statement given its inputs', () =>

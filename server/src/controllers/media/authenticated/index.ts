@@ -8,7 +8,7 @@ import BadRequestError from '../../../errors/bad-request.js'
 import db from '../../../db/index.js'
 
 const uploadProductMedia = async (req: any, res: any) => {
-  const { product_id: productId } = req.query
+  const { productId } = req.query
   let { descriptions, is_display_image } = req.body
 
   if (!is_display_image)

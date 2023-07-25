@@ -3,12 +3,12 @@ import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
 import { readFile } from 'node:fs/promises'
-import path from 'node:path'
-import { ProductSchemaDB } from '../../../../app-schema/products.js'
 import {
-  testRouteNoData,
+  ProductSchemaDB,
+  ProductSchemaDBList,
+} from '../../../../app-schema/products.js'
+import {
   testRouteWithQParams,
-  testRouteWithData,
   testRouteWithQParamsAndData,
   testPublicRouteNoData,
   testPublicRouteWithQParams,
@@ -24,15 +24,9 @@ let checkId = async (data: any) => {
   data.product_id.should.be.a('number')
 }
 
-let validateResult = async (data: any) => {
+let validateResult = (schema: Joi.ObjectSchema<any>) => async (data: any) => {
   let productInfo = data
-  productInfo.should.be.an('object')
-  Joi.assert(productInfo, ProductSchemaDB)
-}
-
-let validateResultList = async (data: any) => {
-  data.should.be.an('array')
-  validateResult(data[0])
+  Joi.assert(productInfo, schema)
 }
 
 const routeParams = {
@@ -64,25 +58,25 @@ const testCreateProduct = async function* (
 const testGetAllProducts = <testRouteWithQParams>testRoute({
   ...routeParams,
   verb: 'get',
-  checks: validateResultList,
+  checks: validateResult(ProductSchemaDBList),
 })
 
 export const testGetAllProductsPublic = <testPublicRouteWithQParams>testRoute({
   ...routeParams,
   verb: 'get',
-  checks: validateResultList,
+  checks: validateResult(ProductSchemaDBList),
 })
 
 const testGetProduct = <testRouteWithQParams>testRoute({
   ...routeParams,
   verb: 'get',
-  checks: validateResult,
+  checks: validateResult(ProductSchemaDB),
 })
 
 export const testGetProductPublic = <testPublicRouteNoData>testRoute({
   ...routeParams,
   verb: 'get',
-  checks: validateResult,
+  checks: validateResult(ProductSchemaDB),
 })
 
 const testUpdateProduct = <testRouteWithQParamsAndData>testRoute({

@@ -1,3 +1,4 @@
+import util from 'node:util'
 import Joi, { ArraySchema, ObjectSchema } from 'joi'
 import { QueryResult, QueryResultRow } from 'pg'
 import BadRequestError from '../../errors/bad-request.js'

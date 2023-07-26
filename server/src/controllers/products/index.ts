@@ -270,7 +270,7 @@ const getAllQuery = async <T>(
   }
   const { query } = qp
   if (query == null) throw new BadRequestError('Must provide a store id')
-  const { storeId, sort, limit, offset } = query
+  const { sort, limit, offset } = query
   let dbQueryString = `
 		SELECT JSON_AGG(product_data) AS products,
 		 COUNT(product_data) AS total_products FROM
@@ -290,15 +290,13 @@ const getAllQuery = async <T>(
 					${sort ? `${handleSortQuery(<string>sort)}` : ''}
 					${limit ? `LIMIT ${limit}` : ''}
 					${offset ? `OFFSET ${offset}` : ''})
-					AS product_data
-				WHERE store_id=$1`
+					AS product_data`
   return db.query({
     // Make a prepared statement to cache the query
     name: `fetch-products${limit ? `-limit:${limit}` : ''}${
       offset ? `-offset:${offset}` : ''
     }${sort ? `-sort:${sort.toString()}` : ''}`,
     text: dbQueryString,
-    values: [storeId],
   })
 }
 

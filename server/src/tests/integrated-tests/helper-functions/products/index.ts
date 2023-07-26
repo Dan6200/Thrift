@@ -10,7 +10,6 @@ import {
 import {
   testRouteWithQParams,
   testRouteWithQParamsAndData,
-  testPublicRouteNoData,
   testPublicRouteWithQParams,
 } from '../../../../types-and-interfaces/test-routes.js'
 import testRoute from '../test-route.js'

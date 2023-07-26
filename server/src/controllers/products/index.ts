@@ -101,26 +101,27 @@ const getAllQueryProtected = async <T>({
   if (dbResponse.rows[0].vendor_id !== vendorId)
     throw new UnauthorizedError('Cannot access store.')
   let dbQueryString = `
-		SELECT JSON_AGG(product_data) AS products,
-		 COUNT(product_data) AS total_products FROM
-			(SELECT p.*, 
-				(SELECT JSON_AGG(media_data) FROM
-					(SELECT pm.filename,
-						 CASE WHEN pdi.filename IS NOT NULL
-							THEN TRUE ELSE FALSE END AS is_display_image,
-							 filepath, description FROM
-								product_media pm
-								 LEFT JOIN product_display_image pdi
-									USING (filename)
-								 WHERE
-								pm.product_id=p.product_id)
-							AS media_data) 
-						AS media FROM products p
-					${sort ? `${handleSortQuery(<string>sort)}` : ''}
-					${limit ? `LIMIT ${limit}` : ''}
-					${offset ? `OFFSET ${offset}` : ''})
-					AS product_data
-				WHERE store_id=$1`
+	WITH product_data AS (
+	 SELECT p.*, 
+		(SELECT JSON_AGG(media_data) FROM
+			(SELECT pm.filename,
+				 CASE WHEN pdi.filename IS NOT NULL
+					THEN TRUE ELSE FALSE END AS is_display_image,
+					 filepath, description FROM
+						product_media pm
+						 LEFT JOIN product_display_image pdi
+							USING (filename)
+						 WHERE
+						pm.product_id=p.product_id)
+					AS media_data) 
+				AS media FROM products p WHERE p.store_id=$1
+			${sort ? `${handleSortQuery(<string>sort)}` : ''}
+			${limit ? `LIMIT ${limit}` : ''}
+			${offset ? `OFFSET ${offset}` : ''})
+
+SELECT JSON_AGG(product_data) AS products, 
+	(SELECT COUNT(*) FROM products 
+				WHERE store_id=$1) AS total_products FROM product_data;`
   return db.query({
     text: dbQueryString,
     values: [storeId],
@@ -272,25 +273,26 @@ const getAllQuery = async <T>(
   if (query == null) throw new BadRequestError('Must provide a store id')
   const { sort, limit, offset } = query
   let dbQueryString = `
-		SELECT JSON_AGG(product_data) AS products,
-		 COUNT(product_data) AS total_products FROM
-			(SELECT p.*, 
-				(SELECT JSON_AGG(media_data) FROM
-					(SELECT pm.filename,
-						 CASE WHEN pdi.filename IS NOT NULL
-							THEN TRUE ELSE FALSE END AS is_display_image,
-							 filepath, description FROM
-								product_media pm
-								 LEFT JOIN product_display_image pdi
-									USING (filename)
-								 WHERE
-								pm.product_id=p.product_id)
-							AS media_data) 
-						AS media FROM products p
-					${sort ? `${handleSortQuery(<string>sort)}` : ''}
-					${limit ? `LIMIT ${limit}` : ''}
-					${offset ? `OFFSET ${offset}` : ''})
-					AS product_data`
+	WITH product_data AS (
+	 SELECT p.*, 
+		(SELECT JSON_AGG(media_data) FROM
+			(SELECT pm.filename,
+				 CASE WHEN pdi.filename IS NOT NULL
+					THEN TRUE ELSE FALSE END AS is_display_image,
+					 filepath, description FROM
+						product_media pm
+						 LEFT JOIN product_display_image pdi
+							USING (filename)
+						 WHERE
+						pm.product_id=p.product_id)
+					AS media_data) 
+				AS media FROM products p
+			${sort ? `${handleSortQuery(<string>sort)}` : ''}
+			${limit ? `LIMIT ${limit}` : ''}
+			${offset ? `OFFSET ${offset}` : ''})
+
+SELECT JSON_AGG(product_data) AS products, 
+(SELECT COUNT(*) FROM products) AS total_products FROM product_data;`
   return db.query({
     // Make a prepared statement to cache the query
     name: `fetch-products${limit ? `-limit:${limit}` : ''}${

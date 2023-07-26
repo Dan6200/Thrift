@@ -1,6 +1,6 @@
-import { Response } from "express";
-const notFound = (_req, res: Response) => {
-  res.status(404).send("Resource not found");
-};
+import { Response } from 'express'
+const notFound = (_, res: Response) => {
+  res.status(404).json({ msg: 'Resource not found' })
+}
 
-export default notFound;
+export default notFound

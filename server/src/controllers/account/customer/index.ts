@@ -42,14 +42,12 @@ const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
 const createCustomerAccount = processPostRoute({
   Query: createQuery,
   status: CREATED,
-  validateBody: undefined,
   validateResult: isSuccessful,
 })
 
 const deleteCustomerAccount = processDeleteRoute({
   Query: deleteQuery,
   status: NO_CONTENT,
-  validateBody: undefined,
   validateResult: isSuccessful,
 })
 

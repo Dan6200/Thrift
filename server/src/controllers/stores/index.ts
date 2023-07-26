@@ -168,7 +168,6 @@ const processGetAllRoute = <ProcessRouteWithoutBody>processRoute
 const getAllStores = processGetAllRoute({
   Query: readAllQuery,
   status: StatusCodes.OK,
-  validateBody: undefined,
   validateResult: validateResData(StoreSchemaDBResultList),
 })
 
@@ -176,7 +175,6 @@ const processGetRoute = <ProcessRouteWithoutBody>processRoute
 const getStore = processGetRoute({
   Query: readQuery,
   status: StatusCodes.OK,
-  validateBody: undefined,
   validateResult: validateResData(StoreSchemaDBResult),
 })
 
@@ -192,7 +190,6 @@ const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
 const deleteStore = processDeleteRoute({
   Query: deleteQuery,
   status: StatusCodes.OK,
-  validateBody: undefined,
   validateResult: validateResData(StoreSchemaDBResultID),
 })
 

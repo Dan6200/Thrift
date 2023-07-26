@@ -11,6 +11,7 @@ import BadRequestError from '../../errors/bad-request.js'
 import UnauthorizedError from '../../errors/unauthorized.js'
 import {
   ProcessRoute,
+  ProcessRouteWithForwarder,
   ProcessRouteWithoutBody,
   QueryParams,
 } from '../../types-and-interfaces/process-routes.js'
@@ -301,6 +302,24 @@ const getAllQuery = async <T>(
   })
 }
 
+const getAllQueryForwarder = <T>(
+  routeIsPublic: string | undefined
+): ((qp: QueryParams<T>) => Promise<QueryResult<QueryResultRow>>) => {
+  if (routeIsPublic === 'true') {
+    return getAllQuery
+  }
+  return getAllQueryProtected
+}
+
+const getQueryForwarder = <T>(
+  routeIsPublic: string | undefined
+): ((qp: QueryParams<T>) => Promise<QueryResult<QueryResultRow>>) => {
+  if (routeIsPublic === 'true') {
+    return getQuery
+  }
+  return getQueryProtected
+}
+
 /**
  * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
@@ -339,8 +358,8 @@ const getQuery = async <T>(
 const { CREATED, OK } = StatusCodes
 
 const processPostRoute = <ProcessRoute>processRoute
-const processGetAllRoute = <ProcessRouteWithoutBody>processRoute
-const processGetRoute = <ProcessRouteWithoutBody>processRoute
+const processGetAllRoute = <ProcessRouteWithForwarder>processRoute
+const processGetRoute = <ProcessRouteWithForwarder>processRoute
 const processPutRoute = <ProcessRoute>processRoute
 const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
 
@@ -353,16 +372,14 @@ const createProduct = processPostRoute({
 })
 
 const getAllProducts = processGetAllRoute({
-  Query: getAllQuery,
+  QueryForwarder: getAllQueryForwarder,
   status: OK,
-  validateBody: undefined,
   validateResult: validateResData(ProductSchemaDBList),
 })
 
 const getProduct = processGetRoute({
-  Query: getQuery,
+  QueryForwarder: getQueryForwarder,
   status: OK,
-  validateBody: undefined,
   validateResult: validateResData(ProductSchemaDB),
 })
 
@@ -376,7 +393,6 @@ const updateProduct = processPutRoute({
 const deleteProduct = processDeleteRoute({
   Query: deleteQuery,
   status: OK,
-  validateBody: undefined,
   validateResult: validateResData(ProductSchemaDBID),
 })
 

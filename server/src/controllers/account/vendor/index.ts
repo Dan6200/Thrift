@@ -36,7 +36,6 @@ const processPostRoute = <ProcessRouteWithoutBody>processRoute
 const createVendorAccount = processPostRoute({
   Query: createQuery,
   status: CREATED,
-  validateBody: undefined,
   validateResult: isSuccessful,
 })
 
@@ -44,7 +43,6 @@ const processGetRoute = <ProcessRouteWithoutBody>processRoute
 const getVendorAccount = processGetRoute({
   Query: readQuery,
   status: NO_CONTENT,
-  validateBody: undefined,
   validateResult: isSuccessful,
 })
 
@@ -52,7 +50,6 @@ const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
 const deleteVendorAccount = processDeleteRoute({
   Query: deleteQuery,
   status: NO_CONTENT,
-  validateBody: undefined,
   validateResult: isSuccessful,
 })
 

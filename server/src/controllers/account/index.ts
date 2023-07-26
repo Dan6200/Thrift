@@ -91,7 +91,6 @@ const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
 const getUserAccount = processGetRoute({
   Query: getQuery,
   status: OK,
-  validateBody: undefined,
   validateResult: validateResData(AccountDataSchemaDB),
 })
 
@@ -112,7 +111,6 @@ const updateUserAccount = processUpdateRoute({
 const deleteUserAccount = processDeleteRoute({
   Query: deleteQuery,
   status: NO_CONTENT,
-  validateBody: undefined,
   validateResult: isSuccessful,
 })
 

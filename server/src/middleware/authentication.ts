@@ -15,7 +15,9 @@ export default async (
   next: NextFunction
 ) => {
   // if route is public, skip authentication
-  if (request.query.public) next()
+  if (request.query.public === 'true') {
+    return next()
+  }
 
   // check header for token
   const authHeader = request.headers.authorization

@@ -23,12 +23,11 @@ export default async function retryQuery(
       log(`db connection failed...quitting`)
       return
     }
-    console.log(params)
     res = await query(params)
     runOnce = true
     return res
   } catch (err) {
-    console.log('caught error', err, err.code)
+    log('caught error', err, err.code)
     if (networkErrors.has(err.code))
       return new Promise((resolve) => {
         setTimeout(resolve, ms)

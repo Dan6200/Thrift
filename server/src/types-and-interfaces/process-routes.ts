@@ -31,7 +31,6 @@ export type ProcessRouteWithoutBody = <T>({
     queryParams: QueryParams<T>
   ): Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
   status: Status
-  validateBody: undefined
   validateResult: (
     result: QueryResult<QueryResultRow | QueryResultRow[]>
   ) => Promise<void>
@@ -52,7 +51,6 @@ export type ProcessRouteWithNoDBResult = <T>({
     query?: ParsedQs
   }) => Promise<Record<string, T>>
   status: Status
-  validateResult: undefined
   validateBody?: <T>(qp: QueryParams<T>) => Promise<void>
 }) => (
   request: RequestWithPayload,
@@ -65,8 +63,6 @@ export type ProcessRouteWithoutBodyAndDBResult = <T>({
 }: {
   Query: QueryDB
   status: Status
-  validateResult: undefined
-  validateBody: undefined
 }) => (
   request: RequestWithPayload,
   response: Response
@@ -84,6 +80,23 @@ export type ProcessRoute = <T>({
   status: Status
   validateBody?: <T>(qp: QueryParams<T>) => Promise<void>
   validateResult: (
+    result: QueryResult<QueryResultRow | QueryResultRow[]>
+  ) => Promise<void>
+}) => (
+  request: RequestWithPayload,
+  response: Response
+) => Promise<Response<T, Record<string, T>>>
+
+export type ProcessRouteWithForwarder = <T>({
+  QueryForwarder,
+  status,
+  validateBody,
+  validateResult,
+}: {
+  QueryForwarder: (s: string) => QueryDB
+  status: Status
+  validateBody?: <T>(qp: QueryParams<T>) => Promise<void>
+  validateResult?: (
     result: QueryResult<QueryResultRow | QueryResultRow[]>
   ) => Promise<void>
 }) => (

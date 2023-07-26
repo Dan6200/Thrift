@@ -233,7 +233,6 @@ const processGetAllRoute = <ProcessRouteWithoutBody>processRoute
 const getAllShippingInfo = processGetAllRoute({
   Query: getAllQuery,
   status: OK,
-  validateBody: undefined,
   validateResult: validateResData(ShippingInfoSchemaDBList),
 })
 
@@ -241,7 +240,6 @@ const processGetIDRoute = <ProcessRouteWithoutBody>processRoute
 const getShippingInfo = processGetIDRoute({
   Query: getQuery,
   status: OK,
-  validateBody: undefined,
   validateResult: validateResData(ShippingInfoSchemaDB),
 })
 
@@ -257,7 +255,6 @@ const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
 const deleteShippingInfo = processDeleteRoute({
   Query: deleteQuery,
   status: OK,
-  validateBody: undefined,
   validateResult: validateResData(ShippingInfoSchemaID),
 })
 

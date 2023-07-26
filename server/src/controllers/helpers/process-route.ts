@@ -13,11 +13,13 @@ import { QueryResult, QueryResultRow } from 'pg'
 
 export default ({
   Query,
+  QueryForwarder,
   status,
   validateBody,
   validateResult,
 }: {
   Query: QueryDB
+  QueryForwarder?: (s: string) => QueryDB
   status: Status
   validateBody?: <T>(qp: QueryParams<T>) => Promise<void>
   validateResult?: (
@@ -43,7 +45,19 @@ export default ({
       await validateBody({ userId, body, params, query })
     }
 
-    const dbResponse: unknown = await Query({ userId, body, params, query })
+    let dbResponse: unknown
+    if (QueryForwarder) {
+      // Call the correct query handler based on route is public or not
+      const publicQuery = <string>query!.public
+      dbResponse = await QueryForwarder(publicQuery)({
+        userId,
+        body,
+        params,
+        query,
+      })
+    } else {
+      dbResponse = await Query({ userId, body, params, query })
+    }
     if (!isValidDBResponse(dbResponse))
       throw new BadRequestError(`The Database operation could not be completed`)
 

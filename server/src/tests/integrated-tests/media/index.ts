@@ -17,7 +17,7 @@ import { testCreateVendor } from '../helper-functions/vendor/index.js'
 const mediaRoute = '/v1/media'
 const vendorsRoute = '/v1/account/vendor/'
 const storesRoute = '/v1/stores'
-const productsRoute = '/v1/private/products'
+const productsRoute = '/v1/products'
 let token: string, server: string
 let storeIds = new Map<number, number[] | null>()
 

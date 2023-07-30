@@ -19,7 +19,11 @@ const AccountDataSchemaRequest = joi
         /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
       )
       .allow(null),
-    password: joi.string().required(),
+    password: joi
+      .string()
+      .pattern(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,}$/
+      ),
     dob: joi.date().required(),
     country: joi.string().required(),
   })

@@ -11,7 +11,10 @@ import {
   testDeleteProduct,
   testGetNonExistentProduct,
 } from '../helper-functions/products/index.js'
-import { testCreateStore } from '../helper-functions/store/index.js'
+import {
+  testCreateStore,
+  testDeleteStore,
+} from '../helper-functions/store/index.js'
 import { testCreateVendor } from '../helper-functions/vendor/index.js'
 import { AccountData } from '../../../types-and-interfaces/account.js'
 import assert from 'assert'
@@ -57,18 +60,6 @@ export default function ({
 
   let storeIds: Map<number, number[] | null> = new Map()
   describe('Testing Products In Each Store', async function () {
-    before(async () => {
-      // Delete all stores
-      await db.query({ text: 'delete from stores' })
-    })
-
-    after(async () => {
-      // Delete all stores
-      await db.query({ text: 'delete from stores' })
-      // Delete all products
-      await db.query({ text: 'delete from products' })
-    })
-
     it('it should Add a couple products to each store', async () => {
       let idx: number, store: StoresData
       for ([idx, store] of vendorStores.entries()) {

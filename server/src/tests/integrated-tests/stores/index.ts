@@ -48,8 +48,8 @@ export default function ({
 
   describe('Store management', () => {
     before(async () => {
-      // Delete all vendors
-      await db.query({ text: 'delete from vendors' })
+      // Delete vendor
+      await testDeleteVendor(server, token, vendorsPath)
       // Create a vendor account before each test
       await testCreateVendor(server, token, vendorsPath)
     })

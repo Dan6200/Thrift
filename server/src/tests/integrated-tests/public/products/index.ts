@@ -49,18 +49,6 @@ export default function ({
   })
   const productIds: number[] = []
   describe('Testing Products In Each Store', async function () {
-    before(async () => {
-      // Delete all stores
-      await db.query({ text: 'delete from stores' })
-    })
-
-    after(async () => {
-      // Delete all stores
-      await db.query({ text: 'delete from stores' })
-      // Delete all products
-      await db.query({ text: 'delete from products' })
-    })
-
     it('it should Add a couple products to each store', async () => {
       let idx: number, store: StoresData
       for ([idx, store] of vendorStores.entries()) {

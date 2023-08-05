@@ -26,7 +26,7 @@ import {
   passwdDataIsValid,
   userIdIsNotNull,
   validatePasswordData,
-} from './supporting-funcs-and-vars.js'
+} from './utils.js'
 import { QueryResult, QueryResultRow } from 'pg'
 import db from '../../db/index.js'
 

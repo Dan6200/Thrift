@@ -7,7 +7,6 @@ import {
 import { AccountData } from '../../../../types-and-interfaces/account.js'
 import db from '../../../../db/index.js'
 import {
-  testGetAccount,
   testHasCustomerAccount,
   testHasNoCustomerAccount,
 } from '../../helper-functions/user/index.js'

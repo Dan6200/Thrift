@@ -25,7 +25,7 @@ const AccountDataSchemaRequest = joi
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,}$/
       ),
     dob: joi.date().required(),
-    country: joi.string().required(),
+    country: joi.string(),
   })
   .or('email', 'phone')
   .required()
@@ -48,7 +48,7 @@ const AccountDataSchemaDB = joi
       )
       .allow(null),
     dob: joi.alternatives().try(joi.date().required(), joi.string().required()),
-    country: joi.string().required(),
+    country: joi.string(),
     is_customer: joi.boolean().required(),
     is_vendor: joi.boolean().required(),
   })

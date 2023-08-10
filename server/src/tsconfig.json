@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "../built",
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "moduleResolution": "nodenext",
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "noEmitOnError": false,
+    "sourceMap": true,
+    "module": "ESNext"
+  },
+  "ts-node": { "esm": true, "experimentalSpecifierResolution": "node" },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "built"]
+}

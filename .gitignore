@@ -1,4 +1,6 @@
 *~
+sql-query.sql
+sql-data.html
 .env
 *.sw*
 *node_modules

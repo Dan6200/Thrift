@@ -3,6 +3,7 @@ import nodePostgres, { QueryResult, QueryResultRow } from 'pg'
 const { Pool } = nodePostgres
 import retryQuery from '../controllers/helpers/retryQuery.js'
 import dotenv from 'dotenv'
+import { retryConnection } from '../controllers/helpers/retry-connection.js'
 dotenv.config()
 
 const pool = new Pool({
@@ -17,6 +18,9 @@ const pool = new Pool({
   idleTimeoutMillis: 0,
   connectionTimeoutMillis: 0,
 })
+
+// handle error...
+pool.on('error', retryConnection(pool))
 
 export default {
   async end(): Promise<void> {

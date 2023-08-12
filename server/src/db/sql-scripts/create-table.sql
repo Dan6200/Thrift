@@ -48,7 +48,7 @@ create table if not exists payment_info (
 
 
 create table if not exists vendors (
-  vendor_id   serial   primary key   references   user_accounts   on   delete   cascade
+  vendor_id   int   primary key   references   user_accounts   on   delete   cascade
 );
 
 

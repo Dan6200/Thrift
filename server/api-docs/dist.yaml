@@ -140,7 +140,7 @@ paths:
           description: Internal Server Error
           $ref: '#/paths/~1account/get/responses/500'
   /auth/logout:
-    get:
+    delete:
       summary: Logs Out User
       security:
         - BearerAuth: []
@@ -409,7 +409,7 @@ paths:
                 delivery_contact: '+234902354252'
                 delivery_instructions:
                   - 'Call me before you arrive, I may not be home'
-                  - 'If I''m not home, drop it with my neighbour'
+                  - "If I'm not home, drop it with my neighbour"
                   - 'If my neighbour is not home, drop it at the gate'
       responses:
         '201':

@@ -7,6 +7,6 @@ const handleAuth = Router()
 
 handleAuth.post('/login', login)
 handleAuth.post('/register', register)
-handleAuth.get('/logout', authentication, logout)
+handleAuth.delete('/logout', authentication, logout)
 
 export default handleAuth

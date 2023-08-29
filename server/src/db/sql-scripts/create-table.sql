@@ -64,7 +64,6 @@ create table if not exists stores (
 create table if not exists products (
   product_id           serial           primary   key,
   title                varchar,
-  category             varchar,
   description          jsonb,
   list_price           numeric(19,4),
   net_price            numeric(19,4),
@@ -74,6 +73,16 @@ create table if not exists products (
   quantity_available   int              not       null
 );
 
+create table if not exists categories (
+	category_id					serial					primary 	key,
+	category_name 			varchar,
+	subcategories				jsonb
+);
+
+create table if not exists product_categories (
+	category_id				int				 references				categories				on 			delete			restrict,
+	product_id				int				 references				products					on 			delete			restrict
+);
 
 create table if not exists product_media (
   product_id    int       not null   references   products   on   delete   restrict,

@@ -97,7 +97,11 @@ export const getAllQueryProtected = async <T>({
 						 WHERE
 						pm.product_id=p.product_id)
 					AS media_data) 
-				AS media FROM products p WHERE p.store_id=$1
+				AS media, c.category_name AS category
+				FROM products p 
+				JOIN product_categories pc ON p.product_id=pc.product_id
+				JOIN categories c ON pc.category_id=c.category_id
+				WHERE p.store_id=$1
 			${sort ? `${handleSortQuery(<string>sort)}` : ''}
 			${limit ? `LIMIT ${limit}` : ''}
 			${offset ? `OFFSET ${offset}` : ''})
@@ -150,8 +154,10 @@ export const getQueryProtected = async <T>({
 							 USING (filename)
 							WHERE pm.product_id=p.product_id)
 						AS media) 
-					AS media 
+					AS media, c.category_name  AS category
 				FROM products p
+			JOIN product_categories pc ON p.product_id=pc.product_id
+			JOIN categories c ON pc.category_id=c.category_id
 			WHERE p.product_id=$1 AND store_id=$2`,
     values: [productId, storeId],
   })
@@ -269,7 +275,10 @@ export const getAllQuery = async <T>(
 						 WHERE
 						pm.product_id=p.product_id)
 					AS media_data) 
-				AS media FROM products p
+					AS media, c.category_name AS category
+				FROM products p
+			JOIN product_categories pc ON p.product_id=pc.product_id
+			JOIN categories c ON pc.category_id = c.category_id
 			${sort ? `${handleSortQuery(<string>sort)}` : ''}
 			${limit ? `LIMIT ${limit}` : ''}
 			${offset ? `OFFSET ${offset}` : ''})
@@ -277,10 +286,6 @@ export const getAllQuery = async <T>(
 SELECT JSON_AGG(product_data) AS products, 
 (SELECT COUNT(*) FROM products) AS total_products FROM product_data;`
   return db.query({
-    // Make a prepared statement to cache the query
-    name: `fetch-products${limit ? `-limit:${limit}` : ''}${
-      offset ? `-offset:${offset}` : ''
-    }${sort ? `-sort:${sort.toString()}` : ''}`,
     text: dbQueryString,
   })
 }
@@ -318,6 +323,7 @@ export const getQuery = async <T>(
   const { params } = qp
   if (params == null) throw new BadRequestError('Must provide a product id')
   const { productId } = params
+  console.log('runs')
   return db.query({
     text: `SELECT p.*, 
 				(SELECT JSON_AGG(media) FROM 
@@ -331,8 +337,10 @@ export const getQuery = async <T>(
 							 USING (filename)
 							WHERE pm.product_id=p.product_id)
 						AS media) 
-					AS media 
+					AS media, c.category_name AS category
 				FROM products p
+			JOIN product_categories pc ON p.product_id=pc.product_id
+			JOIN categories c ON pc.category_id = c.category_id
 			WHERE p.product_id=$1;`,
     values: [productId],
   })

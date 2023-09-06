@@ -27,7 +27,7 @@ export default async <T>(
 					 FROM product_media pm 
 					 WHERE pm.product_id=p.product_id)
 					AS media_data) 
-					AS media, c.category_name AS category, s.subcategory_name AS subcategory
+					AS media, c.category_name, s.subcategory_name
 				FROM products p 
 				JOIN categories c USING (category_id)
 				JOIN subcategories s USING (subcategory_id)

@@ -8,8 +8,8 @@ dotenv.config()
 
 const pool = new Pool({
   // Testing
-  // connectionString: process.env.TEST_PG_URL,
-  connectionString: process.env.PG_URL,
+  connectionString: process.env.TEST_PG_URL,
+  // connectionString: process.env.PG_URL,
   ssl: {
     rejectUnauthorized: false,
   },

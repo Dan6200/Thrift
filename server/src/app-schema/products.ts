@@ -3,8 +3,8 @@ import joi from 'joi'
 const ProductSchemaReq = joi
   .object({
     title: joi.string().required(),
-    category_id: joi.string().required(),
-    subcategory_id: joi.string().required(),
+    category_id: joi.number().required(),
+    subcategory_id: joi.number().required(),
     description: joi.array().items(joi.string().required()),
     list_price: joi.number().required(),
     net_price: joi.number().required(),
@@ -22,8 +22,10 @@ const ProductSchemaDB = joi
   .object({
     product_id: joi.number().required(),
     title: joi.string().required(),
-    category_id: joi.string().required(),
-    subcategory_id: joi.string().required(),
+    category_id: joi.number().required(),
+    category_name: joi.string().required(),
+    subcategory_id: joi.number().required(),
+    subcategory_name: joi.string().required(),
     description: joi.array().items(joi.string()).allow(null),
     list_price: joi.number().required(),
     net_price: joi.number().required(),
@@ -45,8 +47,10 @@ const ProductSchemaDBList = joi
         joi.object({
           product_id: joi.number().required(),
           title: joi.string().required(),
-          category_id: joi.string().required(),
-          subcategory_id: joi.string().required(),
+          category_id: joi.number().required(),
+          category_name: joi.string().required(),
+          subcategory_id: joi.number().required(),
+          subcategory_name: joi.string().required(),
           description: joi.array().items(joi.string()).allow(null),
           list_price: joi.number().required(),
           net_price: joi.number().required(),

@@ -21,7 +21,7 @@ export default async <T>({
   query,
   body,
   userId: vendorId,
-}: QueryParams<T>): Promise<QueryResult<QueryResultRow> | null> => {
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   if (params == null) throw new BadRequestError('Must provide a product id')
 
   if (query == null) throw new BadRequestError('Must provide a store id')
@@ -68,36 +68,8 @@ export default async <T>({
     ['product_id']
   )
 
-  db.query({
+  return db.query({
     text: updateCommand,
     values: [+productId, +storeId!, ...Object.values(DBFriendlyProductData)],
   })
-
-  let res: Promise<QueryResult<QueryResultRow>> | null = null
-  if (categoryId && typeof categoryId === 'number') {
-    if (!subcategoryId) throw new Error('Must provide subcategory ID')
-    updateCommand = UpdateRecord(
-      'product_categories',
-      ['category_id'],
-      2,
-      'product_id=$1',
-      ['category_id']
-    )
-    db.query({
-      text: updateCommand,
-      values: [+productId, +categoryId],
-    })
-    updateCommand = UpdateRecord(
-      'product_subcategories',
-      ['subcategory_id'],
-      2,
-      'product_id=$1',
-      ['subcategory_id']
-    )
-    res = db.query({
-      text: updateCommand,
-      values: [+productId, +subcategoryId],
-    })
-  }
-  return res
 }

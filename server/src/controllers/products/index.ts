@@ -53,12 +53,8 @@ const getProduct = processGetRoute({
   validateResult: validateResData(ProductSchemaDB),
 })
 
-type QueryType = <T>(
-  queryParams: QueryParams<T>
-) => Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
-
 const updateProduct = processPutRoute({
-  Query: updateQuery as QueryType,
+  Query: updateQuery,
   status: OK,
   validateBody: validateReqData(ProductSchemaReq),
   validateResult: validateResData(ProductSchemaDBID),

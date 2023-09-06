@@ -171,13 +171,9 @@ const updateQuery = async <T>({
     data = Object.values(DBFriendlyData)
   const condition = `shipping_info_id=$1`
   const query = {
-    text: UpdateRecord(
-      'shipping_info',
+    text: UpdateRecord('shipping_info', fields, 2, condition, [
       'shipping_info_id',
-      fields,
-      2,
-      condition
-    ),
+    ]),
     values: [shippingInfoId, ...data],
   }
   return db.query(query)

@@ -16,12 +16,12 @@ import {
   validateResData,
 } from '../helpers/query-validation.js'
 import {
-  createQuery,
-  deleteQuery,
   getAllQueryForwarder,
   getQueryForwarder,
-  updateQuery,
-} from './utils.js'
+} from './utils/retrieve-query.js'
+import createQuery from './utils/create-query.js'
+import updateQuery from './utils/update-query.js'
+import deleteQuery from './utils/delete-query.js'
 
 const { CREATED, OK } = StatusCodes
 

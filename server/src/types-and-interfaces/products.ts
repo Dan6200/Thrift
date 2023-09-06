@@ -1,7 +1,8 @@
 //
 export type Product = {
   title: string
-  category: string
+  category_id: string
+  subcategory_id: string
   description: string[]
   list_price: number
   net_price: number
@@ -10,7 +11,8 @@ export type Product = {
 
 export type ProductPartial = {
   title?: string
-  category?: string
+  category_id?: string
+  subcategory_id?: string
   description?: string[]
   list_price?: number
   net_price?: number
@@ -31,7 +33,8 @@ export function isValidProductData(
     typeof productData === 'object' &&
     productData != null &&
     'title' in productData &&
-    'category' in productData &&
+    'category_id' in productData &&
+    'subcategory_id' in productData &&
     'description' in productData &&
     'list_price' in productData &&
     'net_price' in productData &&

@@ -30,10 +30,10 @@ export function InsertRecord(
  * */
 export function UpdateRecord(
   table: string,
-  idName: string,
   fields: string[],
   startsFrom: number = 1,
-  condition?: string
+  condition?: string,
+  returning?: string[]
 ): string {
   let setFieldsToNewValues = 'set '
   const last = fields.length - 1
@@ -41,7 +41,9 @@ export function UpdateRecord(
     setFieldsToNewValues += `${fields[i]} = $${i + startsFrom},\n`
   }
   setFieldsToNewValues += `${fields[last]} = $${last + startsFrom}`
-  let output = `update ${table}\n${setFieldsToNewValues}\nwhere ${condition} returning ${idName}`
+  let output = `update ${table}\n${setFieldsToNewValues}\nwhere ${condition} returning ${returning?.join(
+    ''
+  )}`
   return output
 }
 

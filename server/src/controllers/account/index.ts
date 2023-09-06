@@ -46,7 +46,7 @@ const updateQuery = <T>({ userId, body }: QueryParams<T>) => {
   let fields: string[] = Object.keys(body),
     data: any[] = Object.values(body)
   return db.query({
-    text: UpdateRecord('user_accounts', 'user_id', fields, 2, `user_id=$1`),
+    text: UpdateRecord('user_accounts', fields, 2, `user_id=$1`, ['user_id']),
     values: [userId, ...data],
   })
 }
@@ -64,13 +64,9 @@ const updatePasswordQuery = async <T>({
   const { new_password: newPassword } = body
   const hashedPassword = await hashPassword(newPassword)
   return db.query({
-    text: UpdateRecord(
-      'user_accounts',
+    text: UpdateRecord('user_accounts', ['password'], 2, `user_id=$1`, [
       'user_id',
-      ['password'],
-      2,
-      `user_id=$1`
-    ),
+    ]),
     values: [userId, hashedPassword],
   })
 }

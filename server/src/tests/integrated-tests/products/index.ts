@@ -11,10 +11,7 @@ import {
   testDeleteProduct,
   testGetNonExistentProduct,
 } from '../helper-functions/products/index.js'
-import {
-  testCreateStore,
-  testDeleteStore,
-} from '../helper-functions/store/index.js'
+import { testCreateStore } from '../helper-functions/store/index.js'
 import { testCreateVendor } from '../helper-functions/vendor/index.js'
 import { AccountData } from '../../../types-and-interfaces/account.js'
 import assert from 'assert'

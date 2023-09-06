@@ -130,7 +130,7 @@ const updateQuery = async <T>({
   const paramList = [storeId, ...data]
   const condition = `store_id=$1`
   const query = {
-    text: UpdateRecord('stores', 'store_id', fields, 2, condition),
+    text: UpdateRecord('stores', fields, 2, condition, ['store_id']),
     values: paramList,
   }
   return db.query(query)

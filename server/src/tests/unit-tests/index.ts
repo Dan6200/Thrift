@@ -56,16 +56,16 @@ export default () => {
   it('it should generate the correct sql UPDATE statement given its inputs', () =>
     UpdateRecord(
       'my_table',
-      'my_id',
       ['first_name', 'address', 'age', 'sex'],
       2,
-      'my_id=$1'
+      'my_id=$1',
+      ['my_id']
     ).should.equal(SQLUPDATE))
 
   it('it should generate the correct sql UPDATE statement given its inputs', () =>
-    UpdateRecord('my_table', 'my_id', ['address'], 2, 'my_id=$1').should.equal(
-      SQLUPDATE2
-    ))
+    UpdateRecord('my_table', ['address'], 2, 'my_id=$1', [
+      'my_id',
+    ]).should.equal(SQLUPDATE2))
 
   it('it should create a database query from a query parameter input', () =>
     handleSortQuery('-list_price,-net_price,product_id').should.equal(

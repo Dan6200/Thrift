@@ -53,9 +53,13 @@ const uploadProductMedia = async (req: any, res: any) => {
           })
         } else {
           await db.query({
-            text: UpdateRecord('product_display_image', 'filename', [
-              'filename',
-            ]),
+            text: UpdateRecord(
+              'product_display_image',
+              ['filename'],
+              1,
+              undefined,
+              ['filename']
+            ),
             values: [filename],
           })
         }

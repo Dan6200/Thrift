@@ -79,22 +79,26 @@ create table if not exists categories (
 	subcategories				jsonb
 );
 
+create table if not exists subcategories (
+	subcategory_id			serial				primary 		key,
+	category_id 				int						not 				null		references		categories			on 		delete	restrict,
+	subcategory_name		varchar
+);
+
 create table if not exists product_categories (
 	category_id				int				 references				categories				on 			delete			restrict,
 	product_id				int				 references				products					on 			delete			restrict
 );
 
 create table if not exists product_media (
-  product_id    int       not null   references   products   on   delete   restrict,
-  filename      varchar   primary    key,
-  filepath      varchar   not        null,
-  description   varchar
+  product_id					int					not null   references   products   on   delete   restrict,
+  filename						varchar			primary    key,
+  filepath						varchar			not        null,
+  description					varchar,
+	is_display_image		boolean			default		 false,
+	is_landing_image		boolean			default		 false,
+	is_video 						boolean			default		 false
 );
-
-create table if not exists product_display_image (
-  filename      varchar   primary    key
-);
-
 
 create table if not exists shopping_cart (
   cart_id       serial        primary   key,
@@ -103,14 +107,12 @@ create table if not exists shopping_cart (
   updated       timestamptz   not       null   default      now()
 );
 
-
 create table if not exists shopping_cart_item (
   item_id      serial   primary   key,
   cart_id      int      not       null   references   shopping_cart   on   delete   restrict,
   product_id   int      not       null   references   products        on   delete   restrict,
   quantity     int      not       null   check        (quantity > 0)
 );
-
 
 create table if not exists transaction_details (
   transaction_id   serial           primary      key,
@@ -122,7 +124,6 @@ create table if not exists transaction_details (
   check            (customer_id <>  vendor_id)
 );
 
-
 create table if not exists purchases (
   item_id          serial        primary   key,
   product_id       int           not       null   references   products              on        delete   restrict,
@@ -132,7 +133,6 @@ create table if not exists purchases (
   quantity         int           not       null   check        (quantity > 0)
 );
 
-
 create table if not exists product_reviews (
   product_id        int            primary   key     references   products              on   delete   restrict,
   transaction_id    int            not       null    references   transaction_details   on   delete   restrict,
@@ -141,7 +141,6 @@ create table if not exists product_reviews (
   customer_remark   varchar
 );
 
-
 create table if not exists vendor_reviews (
   vendor_id         int            primary   key     references   vendors               on   delete   restrict,
   customer_id       int            not       null    references   customers             on   delete   restrict,
@@ -149,7 +148,6 @@ create table if not exists vendor_reviews (
   rating            numeric(3,2)   not       null,
   customer_remark   varchar
 );
-
 
 create table if not exists customer_reviews (
   customer_id      int            primary   key     references   customers             on   delete   restrict,

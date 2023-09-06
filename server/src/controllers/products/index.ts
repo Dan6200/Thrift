@@ -9,6 +9,7 @@ import {
   ProcessRoute,
   ProcessRouteWithForwarder,
   ProcessRouteWithoutBody,
+  QueryParams,
 } from '../../types-and-interfaces/process-routes.js'
 import processRoute from '../helpers/process-route.js'
 import {
@@ -22,6 +23,7 @@ import {
 import createQuery from './utils/create-query.js'
 import updateQuery from './utils/update-query.js'
 import deleteQuery from './utils/delete-query.js'
+import { QueryResult, QueryResultRow } from 'pg'
 
 const { CREATED, OK } = StatusCodes
 
@@ -51,8 +53,12 @@ const getProduct = processGetRoute({
   validateResult: validateResData(ProductSchemaDB),
 })
 
+type QueryType = <T>(
+  queryParams: QueryParams<T>
+) => Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
+
 const updateProduct = processPutRoute({
-  Query: updateQuery,
+  Query: updateQuery as QueryType,
   status: OK,
   validateBody: validateReqData(ProductSchemaReq),
   validateResult: validateResData(ProductSchemaDBID),

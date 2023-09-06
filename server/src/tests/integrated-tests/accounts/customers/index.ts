@@ -12,7 +12,7 @@ import {
 } from '../../helper-functions/user/index.js'
 
 // Set server url
-const server = process.env.LOCAL_APP_SERVER!
+const server = process.env.DEV_APP_SERVER!
 let token: string
 
 export default function ({ accountInfo }: { accountInfo: AccountData }) {

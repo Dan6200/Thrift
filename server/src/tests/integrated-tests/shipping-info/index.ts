@@ -16,7 +16,7 @@ import assert from 'assert'
 import db from '../../../db/index.js'
 
 // Set server url
-const server = process.env.LOCAL_APP_SERVER!
+const server = process.env.DEV_APP_SERVER!
 let token: string
 
 export default function ({

@@ -24,15 +24,16 @@ export default function ({ accountInfo }: { accountInfo: AccountData }) {
       })
     })
 
-    it('it should register the user', () => registration(server, accountInfo))
+    it('it should register the user', () =>
+      registration(server, accountInfo).then(
+        ({ body: { token: resToken } }) => (token = resToken)
+      ))
 
     it('it should login the user with email', () =>
       emailLogin(server, accountInfo, StatusCodes.OK))
 
     it('it should login the user with phone', () =>
-      phoneLogin(server, accountInfo, StatusCodes.OK).then(
-        ({ body: { token: resToken } }) => (token = resToken)
-      ))
+      phoneLogin(server, accountInfo, StatusCodes.OK))
 
     describe('Testing logout', () => {
       before(() => {

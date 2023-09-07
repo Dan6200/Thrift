@@ -96,6 +96,31 @@ create table if not exists product_media (
 	is_video 						boolean			default		 false
 );
 
+CREATE OR REPLACE FUNCTION product_media_display_landing_trigger () 
+RETURNS TRIGGER AS $$
+DECLARE
+    r RECORD;
+BEGIN 
+    IF (TG_OP='INSERT' OR TG_OP='UPDATE') THEN
+        IF NEW.is_display_image=true THEN
+            FOR r IN (SELECT * FROM product_media WHERE is_display_image=true AND filename != NEW.filename) LOOP
+                r.is_display_image := false;
+            END LOOP;
+        END IF;
+        IF NEW.is_landing_image=true THEN
+            FOR r IN (SELECT * FROM product_media WHERE is_landing_image=true AND filename != NEW.filename) LOOP
+                r.is_landing_image := false;
+            END LOOP;
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER product_media_display_landing
+BEFORE INSERT OR UPDATE ON product_media
+FOR EACH ROW EXECUTE FUNCTION product_media_display_landing_trigger();
+
 create table if not exists shopping_cart (
   cart_id       serial        primary   key,
   customer_id   int           not       null   references   customers   on   delete   cascade,

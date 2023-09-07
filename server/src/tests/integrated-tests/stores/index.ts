@@ -48,8 +48,6 @@ export default function ({
 
   describe('Store management', () => {
     before(async () => {
-      // Delete vendor
-      await testDeleteVendor(server, token, vendorsPath)
       // Create a vendor account before each test
       await testCreateVendor(server, token, vendorsPath)
     })

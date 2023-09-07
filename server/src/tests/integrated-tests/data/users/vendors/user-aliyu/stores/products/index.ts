@@ -147,6 +147,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Echo Wireless Earbuds',
       is_display_image: true,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -156,6 +158,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/517i7g9q7zL._AC_SX466_.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -165,6 +169,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -174,6 +180,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -183,6 +191,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -192,6 +202,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -201,6 +213,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -210,6 +224,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -219,6 +235,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
   ],
   [
@@ -229,6 +247,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: true,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -238,6 +258,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -247,6 +269,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -256,6 +280,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -265,6 +291,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -274,6 +302,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
   ],
 
@@ -285,6 +315,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Echo Wireless Earbuds',
       is_display_image: true,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -294,6 +326,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -303,6 +337,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -312,6 +348,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -321,6 +359,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -330,6 +370,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -339,6 +381,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -348,6 +392,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
   ],
   [
@@ -358,6 +404,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: true,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -367,6 +415,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -376,6 +426,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -385,6 +437,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -394,6 +448,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
 
     {
@@ -403,6 +459,8 @@ export const productMedia: ProductMedia[][] = [
         '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
+      is_landing_image: false,
+      is_video: false,
     },
   ],
 ]
@@ -416,6 +474,8 @@ export const updatedProductMedia: ProductMedia[] = [
       '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
     description: 'A fitness smartwatch',
     is_display_image: false,
+    is_landing_image: false,
+    is_video: false,
   },
 
   {
@@ -425,6 +485,8 @@ export const updatedProductMedia: ProductMedia[] = [
       '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
     description: 'A fitness smartwatch',
     is_display_image: false,
+    is_landing_image: false,
+    is_video: false,
   },
 
   {
@@ -434,6 +496,8 @@ export const updatedProductMedia: ProductMedia[] = [
       '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
     description: 'A fitness smartwatch',
     is_display_image: false,
+    is_landing_image: false,
+    is_video: false,
   },
 
   {
@@ -443,6 +507,8 @@ export const updatedProductMedia: ProductMedia[] = [
       '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
     description: 'A fitness smartwatch',
     is_display_image: false,
+    is_landing_image: false,
+    is_video: false,
   },
 
   {
@@ -452,6 +518,8 @@ export const updatedProductMedia: ProductMedia[] = [
       '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
     description: 'A fitness smartwatch',
     is_display_image: false,
+    is_landing_image: false,
+    is_video: false,
   },
 
   {
@@ -461,5 +529,7 @@ export const updatedProductMedia: ProductMedia[] = [
       '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
     description: 'A fitness smartwatch',
     is_display_image: false,
+    is_landing_image: false,
+    is_video: false,
   },
 ]

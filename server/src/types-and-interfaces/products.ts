@@ -24,6 +24,8 @@ export type ProductMedia = {
   path: string
   description: string
   is_display_image: boolean
+  is_landing_image: boolean
+  is_video: boolean
 }
 
 export function isValidProductData(

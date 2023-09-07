@@ -19,7 +19,6 @@ export default async <T>(
   const { params } = qp
   if (params == null) throw new BadRequestError('Must provide a product id')
   const { productId } = params
-  console.log('runs')
   return db.query({
     text: `SELECT p.*, 
 		(SELECT JSON_AGG(media_data) FROM

@@ -7,6 +7,7 @@ import {
   ProductSchemaDB,
   ProductSchemaDBList,
 } from '../../../../app-schema/products.js'
+import { ProductMedia } from '../../../../types-and-interfaces/products.js'
 import {
   testRouteWithQParams,
   testRouteWithQParamsAndData,
@@ -99,7 +100,7 @@ const testUploadProductMedia = async function (
   server: string,
   token: string,
   urlPath: string,
-  files: any[],
+  files: ProductMedia[],
   queryParams: { [k: string]: any }
 ): Promise<any> {
   const fieldName = 'product-media'

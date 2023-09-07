@@ -1,9 +1,6 @@
 //cspell:ignore originalname
 import { StatusCodes } from 'http-status-codes'
-import {
-  InsertRecord,
-  UpdateRecord,
-} from '../helpers/generate-sql-commands/index.js'
+import { InsertRecord } from '../helpers/generate-sql-commands/index.js'
 import BadRequestError from '../../errors/bad-request.js'
 import db from '../../db/index.js'
 
@@ -12,6 +9,9 @@ const uploadProductMedia = async (req: any, res: any) => {
   let { descriptions, is_display_image, is_landing_image, is_video } = req.body
 
   if (descriptions) descriptions = JSON.parse(descriptions)
+  if (is_display_image) is_display_image = JSON.parse(is_display_image)
+  if (is_landing_image) is_landing_image = JSON.parse(is_landing_image)
+  if (is_video) is_video = JSON.parse(is_video)
   else throw new BadRequestError('No descriptions provided')
 
   let files = <any>await Promise.all(
@@ -38,9 +38,9 @@ const uploadProductMedia = async (req: any, res: any) => {
             filename,
             filepath,
             descriptions[originalname],
-            !!is_display_image,
-            !!is_landing_image,
-            !!is_video,
+            is_display_image[originalname],
+            is_landing_image[originalname],
+            is_video[originalname],
           ],
         })
       ).rows[0]

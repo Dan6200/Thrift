@@ -16,15 +16,10 @@
   "repository": "https://github.com/Dan6200/Thrift.git",
   "devDependencies": {
     "@types/chai": "^4.3.4",
-    "@types/cheerio": "^0.22.31",
     "@types/mocha": "^10.0.1",
-    "@types/stream-json": "^1.7.3",
-    "@types/swagger-jsdoc": "^6.0.1",
-    "@types/user-agents": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "axios": "^1.4.0",
     "chai": "^4.3.7",
-    "cheerio": "^1.0.0-rc.12",
     "eslint": "^8.0.1",
     "eslint-config-standard-with-typescript": "^35.0.0",
     "eslint-plugin-import": "^2.25.2",
@@ -37,8 +32,7 @@
     "random-useragent": "^0.5.0",
     "swagger-cli": "^4.0.4",
     "ts-mocha": "^10.0.0",
-    "typescript-eslint-parser": "^22.0.0",
-    "user-agents": "^1.0.1431"
+    "typescript-eslint-parser": "^22.0.0"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",

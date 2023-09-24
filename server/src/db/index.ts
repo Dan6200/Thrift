@@ -41,9 +41,9 @@ export default {
     setTimeout(function () {
       this.lastQuery = arguments
     })
-    //
-    console.log('\nexecuted query:\n', text, values, name)
-    //
+
+    // console.log('\nexecuted query:\n', text, values, name)
+
     // allow a retry if DB fails to connect
     let res: unknown
     const retryCount = 7

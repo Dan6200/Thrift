@@ -46,3 +46,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+db_backup.sql

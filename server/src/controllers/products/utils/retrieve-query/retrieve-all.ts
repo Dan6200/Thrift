@@ -30,7 +30,7 @@ export const getAllQuery = async <T>(
 					AS media, c.category_name, s.subcategory_name
 				FROM products p 
 				JOIN categories c USING (category_id)
-				JOIN subcategories s USING (subcategory_id)
+				JOIN subcategories s USING (category_id)
 			${sort ? `${handleSortQuery(<string>sort)}` : ''}
 			${limit ? `LIMIT ${limit}` : ''}
 			${offset ? `OFFSET ${offset}` : ''})

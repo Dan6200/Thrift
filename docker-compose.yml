@@ -1,0 +1,47 @@
+# cspell:disable
+version: '3'
+
+services:
+  thrift-app:
+    image: danielnyong/thrift_app
+    container_name: thrift-app
+    restart: unless-stopped
+    networks: [app-network]
+    ports: ['1024:1024']
+
+  webserver:
+    image: nginx:mainline-alpine
+    container_name: webserver
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - web-root:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    depends_on: [thrift-app]
+    networks: [app-network]
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on: [webserver]
+    command: certonly --webroot --webroot-path=/var/www/html --email danielnyong66@gmail.com --agree-tos --no-eff-email --noninteractive --renew -d api.thrift-search.com.ng
+    tty: true
+    stdin_open: true
+
+volumes:
+  certbot-etc:
+  certbot-var:
+  web-root:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

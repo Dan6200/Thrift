@@ -47,5 +47,5 @@ jobs:
           CLOUDINARY_CLOUD_NAME: dk6dujsds
           TEST_JWT_LIFETIME: 30m
           JWT_SECRET: MzUzWYYklY9EBRhbTbbzBTZYV211QrB5w//JxdNK3m+SYjVOKCQhH16BESOY5+x6C1kaJAaT2oTz9zuMNfZkiQ==
-          TEST_PG_URL: 'postgres://postgres:postgres@postgres:5432/test'
-          TEST_REDIS_URL: rediss://redis:6379
+          TEST_PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
+          TEST_REDIS_URL: rediss://localhost:6379

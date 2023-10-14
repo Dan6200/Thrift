@@ -7,7 +7,7 @@ import { retryConnection } from '../controllers/helpers/retry-connection.js'
 dotenv.config()
 
 // const connectionString = process.env.PROD_PG_URL
-const connectionString = process.env.DEV_PG_URL
+const connectionString = process.env.TEST_PG_URL
 
 const pool = new Pool({
   connectionString,

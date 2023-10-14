@@ -1,4 +1,4 @@
-# cspell:ignore pnpm
+# cspell:disable
 name: Node.js CI
 
 on:
@@ -11,9 +11,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     strategy:
       matrix:
         node-version: [18.x]
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
 
     steps:
       - uses: actions/checkout@v2
@@ -27,3 +42,10 @@ jobs:
       - run: pnpm test
         env:
           CI: true
+          CLOUDINARY_API_KEY: 351181634279959
+          CLOUDINARY_API_SECRET: RAweXTe1mYE8xbqAWFUVbbACry4
+          CLOUDINARY_CLOUD_NAME: dk6dujsds
+          TEST_JWT_LIFETIME: 30m
+          JWT_SECRET: MzUzWYYklY9EBRhbTbbzBTZYV211QrB5w//JxdNK3m+SYjVOKCQhH16BESOY5+x6C1kaJAaT2oTz9zuMNfZkiQ==
+          TEST_PG_URL: 'postgres://postgres:postgres@postgres/test'
+          TEST_REDIS_URL: rediss://redis:6379

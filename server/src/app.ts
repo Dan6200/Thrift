@@ -26,6 +26,7 @@ import yaml from 'js-yaml'
 import { readFile } from 'fs/promises'
 import path from 'path'
 
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 const swaggerDocument = await readFile(
   path.resolve('./server/api-docs/dist.yaml'),
   'utf8'

@@ -2,6 +2,7 @@
 sql-query.sql
 sql-data.html
 .env
+.env.*
 *.sw*
 *node_modules
 */.env

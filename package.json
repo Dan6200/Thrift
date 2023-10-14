@@ -6,9 +6,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "node server/built/server.js",
-    "test": "mocha -r dotenv/config --config server/src/tests/.mocharc.json server/built/tests/*.js",
-    "dev": "nodemon server/src/server.ts",
+    "start": "NODE_ENV=production node server/built/server.js",
+    "test": "NODE_ENV=testing mocha -r dotenv/config --config server/src/tests/.mocharc.json server/built/tests/*.js",
+    "dev": "NODE_ENV=dev nodemon server/src/server.ts",
     "build": "tsc -p server/src/tsconfig.json"
   },
   "license": "ISC",

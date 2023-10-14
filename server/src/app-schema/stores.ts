@@ -37,7 +37,7 @@ export const StoreSchemaReqDataPartial = joi.object({
 })
 
 export const StoreSchemaDBResultID = joi.object({
-  store_id: joi.number().required(),
+  store_id: joi.string().required(),
 })
 
 export const StoreSchemaDBResultList = joi
@@ -45,9 +45,9 @@ export const StoreSchemaDBResultList = joi
   .items(
     joi
       .object({
-        store_id: joi.number().required(),
+        store_id: joi.string().required(),
         store_name: joi.string().min(3).max(50).required(),
-        vendor_id: joi.number().required(),
+        vendor_id: joi.string().required(),
         store_page: joi
           .object({
             heading: joi.string().required(),
@@ -72,9 +72,9 @@ export const StoreSchemaDBResultList = joi
 
 export const StoreSchemaDBResult = joi
   .object({
-    store_id: joi.number().required(),
+    store_id: joi.string().required(),
     store_name: joi.string().min(3).max(50).required(),
-    vendor_id: joi.number().required(),
+    vendor_id: joi.string().required(),
     store_page: joi
       .object({
         heading: joi.string().required(),

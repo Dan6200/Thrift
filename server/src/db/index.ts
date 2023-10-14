@@ -8,6 +8,7 @@ dotenv.config()
 
 // const connectionString = process.env.PROD_PG_URL
 const connectionString = process.env.TEST_PG_URL
+console.log(connectionString)
 
 const pool = new Pool({
   connectionString,

@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run SQL script
         run: |
-          docker run -e PGPASSWORD=postgres -v ${{ github.workspace }}:/scripts/ --network host postgres psql -h localhost -U postgres -d test -f /server/src/db/sql-scripts/create-table.sql
+          docker run -e PGPASSWORD=postgres -v ${{ github.workspace }}:/scripts/ --network host postgres psql -h localhost -U postgres -d test -f /scripts/server/src/db/sql-scripts/create-table.sql
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2

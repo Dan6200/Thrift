@@ -20,7 +20,12 @@ jobs:
           POSTGRES_DB: test
         ports:
           - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        options: >-
+          --health-cmd pg_isready 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+
       redis:
         image: redis
         ports:
@@ -32,6 +37,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Run SQL script
+        run: |
+          docker run -v ${{ github.workspace }}:/scripts/ --network host -it postgres psql -h localhost -U postgres -d test -f /server/src/db/sql-scripts/create-table.sql
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
@@ -47,5 +56,5 @@ jobs:
           CLOUDINARY_CLOUD_NAME: dk6dujsds
           TEST_JWT_LIFETIME: 30m
           JWT_SECRET: MzUzWYYklY9EBRhbTbbzBTZYV211QrB5w//JxdNK3m+SYjVOKCQhH16BESOY5+x6C1kaJAaT2oTz9zuMNfZkiQ==
-          TEST_PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
-          TEST_REDIS_URL: rediss://localhost:6379
+          PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
+          REDIS_URL: rediss://localhost:6379

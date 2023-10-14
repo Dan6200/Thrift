@@ -4,12 +4,8 @@ const { Pool } = nodePostgres
 import retryQuery from '../controllers/helpers/retryQuery.js'
 import { retryConnection } from '../controllers/helpers/retry-connection.js'
 
-// const connectionString = process.env.PROD_PG_URL
-const connectionString = process.env.TEST_PG_URL
-console.log(connectionString)
-
 const pool = new Pool({
-  connectionString,
+  connectionString: process.env.PG_URL,
   ssl:
     process.env.NODE_ENV === 'production'
       ? {

@@ -1,5 +1,5 @@
 // cspell:disable
-import nodePostgres, { types, QueryResult, QueryResultRow } from 'pg'
+import nodePostgres, { QueryResult, QueryResultRow } from 'pg'
 const { Pool } = nodePostgres
 import retryQuery from '../controllers/helpers/retryQuery.js'
 import dotenv from 'dotenv'
@@ -21,6 +21,7 @@ const pool = new Pool({
 // handle error...
 pool.on('error', retryConnection(pool))
 
+const { types } = nodePostgres
 types.setTypeParser(23, function (val) {
   return parseInt(val, 10)
 })

@@ -12,7 +12,7 @@ export const StoreSchemaReqData = joi
         }),
         body: joi.object({
           product_listings: joi.object({
-            product_ids: joi.array().items(joi.string()),
+            product_ids: joi.array().items(joi.number()),
           }),
         }),
       })
@@ -30,14 +30,14 @@ export const StoreSchemaReqDataPartial = joi.object({
     }),
     body: joi.object({
       product_listings: joi.object({
-        product_ids: joi.array().items(joi.string()),
+        product_ids: joi.array().items(joi.number()),
       }),
     }),
   }),
 })
 
 export const StoreSchemaDBResultID = joi.object({
-  store_id: joi.string().required(),
+  store_id: joi.number().required(),
 })
 
 export const StoreSchemaDBResultList = joi
@@ -45,9 +45,9 @@ export const StoreSchemaDBResultList = joi
   .items(
     joi
       .object({
-        store_id: joi.string().required(),
+        store_id: joi.number().required(),
         store_name: joi.string().min(3).max(50).required(),
-        vendor_id: joi.string().required(),
+        vendor_id: joi.number().required(),
         store_page: joi
           .object({
             heading: joi.string().required(),
@@ -57,7 +57,7 @@ export const StoreSchemaDBResultList = joi
             }),
             body: joi.object({
               product_listings: joi.object({
-                product_ids: joi.array().items(joi.string()),
+                product_ids: joi.array().items(joi.number()),
               }),
             }),
           })
@@ -72,9 +72,9 @@ export const StoreSchemaDBResultList = joi
 
 export const StoreSchemaDBResult = joi
   .object({
-    store_id: joi.string().required(),
+    store_id: joi.number().required(),
     store_name: joi.string().min(3).max(50).required(),
-    vendor_id: joi.string().required(),
+    vendor_id: joi.number().required(),
     store_page: joi
       .object({
         heading: joi.string().required(),
@@ -84,7 +84,7 @@ export const StoreSchemaDBResult = joi
         }),
         body: joi.object({
           product_listings: joi.object({
-            product_ids: joi.array().items(joi.string()),
+            product_ids: joi.array().items(joi.number()),
           }),
         }),
       })

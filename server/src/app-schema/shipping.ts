@@ -22,14 +22,14 @@ const ShippingInfoSchemaReq = joi
 
 const ShippingInfoSchemaID = joi
   .object({
-    shipping_info_id: joi.string().required(),
+    shipping_info_id: joi.number().required(),
   })
   .required()
 
 const ShippingInfoSchemaDB = joi
   .object({
-    shipping_info_id: joi.string().required(),
-    customer_id: joi.string().required(),
+    shipping_info_id: joi.number().required(),
+    customer_id: joi.number().required(),
     recipient_first_name: joi.string().alphanum().min(3).max(30).required(),
     recipient_last_name: joi.string().alphanum().min(3).max(30).required(),
     address: joi.string().required(),
@@ -50,8 +50,8 @@ const ShippingInfoSchemaDB = joi
 const ShippingInfoSchemaDBList = joi.array().items(
   joi
     .object({
-      shipping_info_id: joi.string().required(),
-      customer_id: joi.string().required(),
+      shipping_info_id: joi.number().required(),
+      customer_id: joi.number().required(),
       recipient_first_name: joi.string().alphanum().min(3).max(30).required(),
       recipient_last_name: joi.string().alphanum().min(3).max(30).required(),
       address: joi.string().required(),

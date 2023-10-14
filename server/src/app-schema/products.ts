@@ -3,8 +3,8 @@ import joi from 'joi'
 const ProductSchemaReq = joi
   .object({
     title: joi.string().required(),
-    category_id: joi.string().required(),
-    subcategory_id: joi.string().required(),
+    category_id: joi.number().required(),
+    subcategory_id: joi.number().required(),
     description: joi.array().items(joi.string().required()),
     list_price: joi.number().required(),
     net_price: joi.number().required(),
@@ -14,24 +14,24 @@ const ProductSchemaReq = joi
 
 const ProductSchemaDBID = joi
   .object({
-    product_id: joi.string().required(),
+    product_id: joi.number().required(),
   })
   .required()
 
 const ProductSchemaDB = joi
   .object({
-    product_id: joi.string().required(),
+    product_id: joi.number().required(),
     title: joi.string().required(),
-    category_id: joi.string().required(),
+    category_id: joi.number().required(),
     category_name: joi.string().required(),
-    subcategory_id: joi.string().required(),
+    subcategory_id: joi.number().required(),
     subcategory_name: joi.string().required(),
     description: joi.array().items(joi.string()).allow(null),
     list_price: joi.number().required(),
     net_price: joi.number().required(),
     quantity_available: joi.number().required(),
-    store_id: joi.string().required(),
-    vendor_id: joi.string().required(),
+    store_id: joi.number().required(),
+    vendor_id: joi.number().required(),
     media: joi.array().allow(null),
     created_at: joi
       .alternatives()
@@ -45,18 +45,18 @@ const ProductSchemaDBList = joi
       .array()
       .items(
         joi.object({
-          product_id: joi.string().required(),
+          product_id: joi.number().required(),
           title: joi.string().required(),
-          category_id: joi.string().required(),
+          category_id: joi.number().required(),
           category_name: joi.string().required(),
-          subcategory_id: joi.string().required(),
+          subcategory_id: joi.number().required(),
           subcategory_name: joi.string().required(),
           description: joi.array().items(joi.string()).allow(null),
           list_price: joi.number().required(),
           net_price: joi.number().required(),
           quantity_available: joi.number().required(),
-          store_id: joi.string().required(),
-          vendor_id: joi.string().required(),
+          store_id: joi.number().required(),
+          vendor_id: joi.number().required(),
           media: joi.array().allow(null),
           created_at: joi
             .alternatives()

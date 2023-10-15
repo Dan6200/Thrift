@@ -53,8 +53,6 @@ jobs:
           pnpm start &> start.log &
           START_PID=$!
           pnpm test || TEST_STATUS=$?
-          sleep 20
-          kill $START_PID
           cat start.log
           exit $TEST_STATUS
         env:

@@ -52,6 +52,7 @@ jobs:
         run: |
           pnpm start &> start.log &
           START_PID=$!
+          sleep 10
           pnpm test || TEST_STATUS=$?
           cat start.log
           exit $TEST_STATUS

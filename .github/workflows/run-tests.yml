@@ -48,6 +48,7 @@ jobs:
       - run: npm install -g pnpm
       - run: pnpm install
       - run: pnpm build
+      - run: pnpm start
       - run: pnpm test
         env:
           CI: true
@@ -58,3 +59,4 @@ jobs:
           JWT_SECRET: MzUzWYYklY9EBRhbTbbzBTZYV211QrB5w//JxdNK3m+SYjVOKCQhH16BESOY5+x6C1kaJAaT2oTz9zuMNfZkiQ==
           PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
           REDIS_URL: rediss://localhost:6379
+          SERVER: localhost:1024

@@ -16,6 +16,7 @@ const pgOptions = {
   connectionTimeoutMillis: 0,
 }
 console.log(pgOptions)
+console.log(process.env.PG_URL)
 const pool = new Pool(pgOptions)
 
 // handle error...

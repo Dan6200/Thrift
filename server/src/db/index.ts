@@ -4,9 +4,7 @@ const { Pool } = nodePostgres
 import retryQuery from '../controllers/helpers/retryQuery.js'
 import { retryConnection } from '../controllers/helpers/retry-connection.js'
 
-console.log(process.env.NODE_ENV)
-
-const pool = new Pool({
+const pgOptions = {
   connectionString: process.env.PG_URL,
   ssl:
     process.env.NODE_ENV === 'production'
@@ -16,7 +14,9 @@ const pool = new Pool({
       : false,
   idleTimeoutMillis: 0,
   connectionTimeoutMillis: 0,
-})
+}
+console.log(pgOptions)
+const pool = new Pool(pgOptions)
 
 // handle error...
 pool.on('error', retryConnection(pool))

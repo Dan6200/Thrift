@@ -48,7 +48,7 @@ jobs:
       - run: npm install -g pnpm
       - run: pnpm install
       - run: pnpm build
-      - run: pnpm start
+      - run: pnpm start &
       - run: pnpm test
         env:
           CI: true

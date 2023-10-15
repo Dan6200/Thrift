@@ -48,9 +48,14 @@ jobs:
       - run: npm install -g pnpm
       - run: pnpm install
       - run: pnpm build
-      - run: pnpm start &> start.log &
-      - run: pnpm test
-      - run: tail -f start.log &
+      - name: Start server and run tests
+        run: |
+          pnpm start &> start.log &
+          START_PID=$!
+          pnpm test || TEST_STATUS=$?
+          kill $START_PID
+          cat start.log
+          exit $TEST_STATUS
         env:
           CI: true
           CLOUDINARY_API_KEY: 351181634279959

@@ -65,6 +65,12 @@ create table if not exists categories (
 	category_name 			varchar
 );
 
+create table if not exists subcategories (
+	subcategory_id			serial				primary 		key,
+	category_id 				int						not 				null		references		categories			on 		delete	cascade,
+	subcategory_name		varchar
+);
+
 create table if not exists products (
   product_id           serial           primary   key,
   title                varchar,
@@ -77,12 +83,6 @@ create table if not exists products (
   subcategory_id       int           		not    		null    references   		subcategories   on   delete   set null,
   created_at           timestamptz      not       null    default      		now(),
   quantity_available   int              not       null
-);
-
-create table if not exists subcategories (
-	subcategory_id			serial				primary 		key,
-	category_id 				int						not 				null		references		categories			on 		delete	cascade,
-	subcategory_name		varchar
 );
 
 create table if not exists product_media (

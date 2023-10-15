@@ -14,7 +14,7 @@ import {
 
 chai.use(chaiHttp).should()
 
-const server = process.env.LOCAL_APP_SERVER!
+const server = process.env.SERVER!
 let token: string
 
 export default function ({ accountInfo }: { accountInfo: AccountData }) {

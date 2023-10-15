@@ -31,7 +31,7 @@ export default function ({
 }) {
   before(async function () {
     //  Set the server url
-    server = process.env.LOCAL_APP_SERVER!
+    server = process.env.SERVER!
     // Delete user accounts
     await db.query({
       text: 'delete from user_accounts where email=$1 or phone=$2',

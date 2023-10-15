@@ -60,6 +60,10 @@ create table if not exists stores (
   date_created   date      not       null    default      current_date
 );
 
+create table if not exists categories (
+	category_id					serial					primary 	key,
+	category_name 			varchar
+);
 
 create table if not exists products (
   product_id           serial           primary   key,
@@ -73,11 +77,6 @@ create table if not exists products (
   subcategory_id       int           		not    		null    references   		subcategories   on   delete   set null,
   created_at           timestamptz      not       null    default      		now(),
   quantity_available   int              not       null
-);
-
-create table if not exists categories (
-	category_id					serial					primary 	key,
-	category_name 			varchar
 );
 
 create table if not exists subcategories (

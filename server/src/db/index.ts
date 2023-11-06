@@ -8,10 +8,12 @@ dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 
 const pgOptions = {
   connectionString: process.env.PG_URL,
-  ssl: false,
-  // ssl: {
-  //   rejectUnauthorized: false,
-  // },
+  ssl:
+    process.env.NODE_ENV === 'production'
+      ? {
+          rejectUnauthorized: false,
+        }
+      : false,
   idleTimeoutMillis: 0,
   connectionTimeoutMillis: 0,
 }

@@ -1,6 +1,5 @@
 //cspell:ignore Aliyu
 import FormData from 'form-data'
-import dotenv from 'dotenv'
 import fs from 'fs/promises'
 import axios from 'axios'
 import { Product } from '../../types-and-interfaces/products.js'
@@ -9,7 +8,6 @@ import { ProductMedia } from '../../types-and-interfaces/products.js'
 import { StoresData } from '../../types-and-interfaces/stores-data.js'
 import * as Aliyu from '../integrated-tests/data/users/vendors/user-aliyu/index.js'
 
-dotenv.config()
 const vendors = [Aliyu]
 
 for (let vendor of vendors) {

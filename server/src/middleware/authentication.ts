@@ -5,9 +5,7 @@ import {
   RequestWithPayload,
   RequestUserPayload,
 } from '../types-and-interfaces/request.js'
-import dotenv from 'dotenv'
 import { isTokenRevoked } from '../controllers/helpers/revoke-token.js'
-dotenv.config()
 
 export default async (
   request: RequestWithPayload,

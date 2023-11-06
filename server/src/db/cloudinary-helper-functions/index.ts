@@ -1,20 +1,18 @@
 //cspell:disable
-import dotenv from "dotenv";
 import {
   AdminAndResourceOptions,
   UploadApiOptions,
   UploadApiResponse,
   v2 as cloudinary,
-} from "cloudinary";
-import retryQuery from "../../controllers/helpers/retryQuery.js";
-dotenv.config();
+} from 'cloudinary'
+import retryQuery from '../../controllers/helpers/retryQuery.js'
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
   secure: true,
-});
+})
 
 export default {
   /////////////////////////////////////
@@ -24,7 +22,7 @@ export default {
     // Return colors in the response
     const options: AdminAndResourceOptions = {
       colors: true,
-    };
+    }
 
     try {
       // Get details about the asset
@@ -33,11 +31,11 @@ export default {
         [publicId, options],
         3,
         500
-      );
-      console.log(result);
-      return result.colors;
+      )
+      console.log(result)
+      return result.colors
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   },
   //////////////////////////////////////////////////////////////
@@ -60,4 +58,4 @@ export default {
     // });
     // return imageTag;
   },
-};
+}

@@ -1,7 +1,6 @@
 // vim mark
 // cspell:disable
 import cors from 'cors'
-import dotenv from 'dotenv'
 import express, { Express, Router } from 'express'
 import 'express-async-errors'
 import helmet from 'helmet'
@@ -25,7 +24,6 @@ import swaggerUi from 'swagger-ui-express'
 import yaml from 'js-yaml'
 import { readFile } from 'fs/promises'
 import path from 'path'
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 
 const swaggerDocument = await readFile(
   path.resolve('./server/api-docs/dist.yaml'),

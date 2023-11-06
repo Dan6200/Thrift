@@ -3,20 +3,17 @@ import nodePostgres, { QueryResult, QueryResultRow } from 'pg'
 const { Pool } = nodePostgres
 import retryQuery from '../controllers/helpers/retryQuery.js'
 import { retryConnection } from '../controllers/helpers/retry-connection.js'
+import dotenv from 'dotenv'
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 
 const pgOptions = {
   connectionString: process.env.PG_URL,
-  ssl:
-    process.env.NODE_ENV === 'production'
-      ? {
-          rejectUnauthorized: false,
-        }
-      : false,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   idleTimeoutMillis: 0,
   connectionTimeoutMillis: 0,
 }
-console.log(pgOptions)
-console.log(process.env.PG_URL)
 const pool = new Pool(pgOptions)
 
 // handle error...

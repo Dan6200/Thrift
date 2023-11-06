@@ -50,7 +50,7 @@ jobs:
       - run: pnpm build
       - name: Start server and run tests
         run: |
-          pnpm start &> start.log &
+          pnpm start-test &> start.log &
           START_PID=$!
           sleep 10
           pnpm test || TEST_STATUS=$?

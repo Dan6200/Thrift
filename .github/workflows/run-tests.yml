@@ -1,4 +1,21 @@
 # cspell:disable
+# View results on github.com
+# gh CLI commands to view results
+# [list workflows]:
+# gh run list
+# [show the latest results of a specific workflow]
+# gh run list --workflow=<name_of_test_file>.yml -L 1
+# [watch a workflow run]:
+# gh run watch <run_id>
+# [view details of a run]:
+# gh run view <run_id>
+# [Download artifacts of a run]:
+# gh run download <run_id>
+# [Rerun a workflow run]:
+# gh run rerun <run_id>
+# [Extract the run id]:
+# run_id=$(gh run list --workflow=<name_of_test_file>.yml -L 1|awk -F'\t' '{print $7}') && echo $run_id
+
 name: Thrift-app Testing
 
 on:
@@ -64,6 +81,8 @@ jobs:
           CLOUDINARY_CLOUD_NAME: dk6dujsds
           JWT_LIFETIME: 30m
           JWT_SECRET: MzUzWYYklY9EBRhbTbbzBTZYV211QrB5w//JxdNK3m+SYjVOKCQhH16BESOY5+x6C1kaJAaT2oTz9zuMNfZkiQ==
+          PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
+          REDIS_URL: rediss://localhost:6379
           SERVER: localhost:1024
       - name: View results
         if: failure()

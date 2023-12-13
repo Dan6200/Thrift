@@ -9,7 +9,7 @@ dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 const connectionString = process.env.PG_URL
 
 // print url
-console.log(connectionString)
+console.log('connection string', connectionString)
 
 const pgOptions = {
   connectionString,

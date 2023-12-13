@@ -5,6 +5,7 @@ import retryQuery from '../controllers/helpers/retryQuery.js'
 import { retryConnection } from '../controllers/helpers/retry-connection.js'
 import dotenv from 'dotenv'
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
+import util from 'node:util'
 
 const connectionString = process.env.PG_URL
 
@@ -53,12 +54,12 @@ export default {
     values?: Array<any>
     name?: string
   }): Promise<QueryResult<QueryResultRow | QueryResultRow[]>> {
-    // const start = Date.now()
+    const start = Date.now()
     setTimeout(function () {
       this.lastQuery = arguments
     })
 
-    // console.log('\nexecuted query:\n', text, values, name)
+    console.log('\nexecuted query:\n', text, values, name)
 
     // allow a retry if DB fails to connect
     let res: unknown
@@ -76,21 +77,21 @@ export default {
       delay
     )
 
-    // const duration = Date.now() - start
+    const duration = Date.now() - start
     // add await for this to work
 
-    // console.log(
-    // 	'\nquery result',
-    // 	util.inspect(
-    // 		{
-    // 			duration: `${duration}ms`,
-    // 			result: res.rows,
-    // 		},
-    // 		false,
-    // 		null,
-    // 		true
-    // 	)
-    // )
+    console.log(
+      '\nquery result',
+      util.inspect(
+        {
+          duration: `${duration}ms`,
+          result: (res as any).rows,
+        },
+        false,
+        null,
+        true
+      )
+    )
 
     return res as QueryResult<QueryResultRow | QueryResultRow[]>
   },

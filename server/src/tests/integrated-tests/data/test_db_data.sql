@@ -17,16 +17,16 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: public; Type: SCHEMA; Schema: -; Owner: dan
+-- -- Name: public; Type: SCHEMA; Schema: -; Owner: dan
 --
 
 -- *not* creating schema, since initdb creates it
 
 
-ALTER SCHEMA public OWNER TO dan;
+-- -- ALTER SCHEMA public OWNER TO dan;
 
 --
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: dan
+-- -- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: dan
 --
 
 COMMENT ON SCHEMA public IS '';
@@ -37,7 +37,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: categories; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: categories; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.categories (
@@ -46,10 +46,10 @@ CREATE TABLE public.categories (
 );
 
 
-ALTER TABLE public.categories OWNER TO dan;
+-- ALTER TABLE public.categories OWNER TO dan;
 
 --
--- Name: categories_category_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
+-- -- Name: categories_category_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
 --
 
 CREATE SEQUENCE public.categories_category_id_seq
@@ -61,17 +61,17 @@ CREATE SEQUENCE public.categories_category_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.categories_category_id_seq OWNER TO dan;
+-- ALTER TABLE public.categories_category_id_seq OWNER TO dan;
 
 --
--- Name: categories_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
+-- -- Name: categories_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
 --
 
 ALTER SEQUENCE public.categories_category_id_seq OWNED BY public.categories.category_id;
 
 
 --
--- Name: customer_reviews; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: customer_reviews; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.customer_reviews (
@@ -83,10 +83,10 @@ CREATE TABLE public.customer_reviews (
 );
 
 
-ALTER TABLE public.customer_reviews OWNER TO dan;
+-- ALTER TABLE public.customer_reviews OWNER TO dan;
 
 --
--- Name: customers; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: customers; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.customers (
@@ -94,20 +94,20 @@ CREATE TABLE public.customers (
 );
 
 
-ALTER TABLE public.customers OWNER TO dan;
+-- ALTER TABLE public.customers OWNER TO dan;
 
 --
--- Name: payment_info; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: payment_info; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.payment_info (
 );
 
 
-ALTER TABLE public.payment_info OWNER TO dan;
+-- ALTER TABLE public.payment_info OWNER TO dan;
 
 --
--- Name: product_media; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: product_media; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.product_media (
@@ -121,10 +121,10 @@ CREATE TABLE public.product_media (
 );
 
 
-ALTER TABLE public.product_media OWNER TO dan;
+-- ALTER TABLE public.product_media OWNER TO dan;
 
 --
--- Name: product_reviews; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: product_reviews; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.product_reviews (
@@ -136,10 +136,10 @@ CREATE TABLE public.product_reviews (
 );
 
 
-ALTER TABLE public.product_reviews OWNER TO dan;
+-- ALTER TABLE public.product_reviews OWNER TO dan;
 
 --
--- Name: products; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: products; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.products (
@@ -157,10 +157,10 @@ CREATE TABLE public.products (
 );
 
 
-ALTER TABLE public.products OWNER TO dan;
+-- ALTER TABLE public.products OWNER TO dan;
 
 --
--- Name: products_product_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
+-- -- Name: products_product_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
 --
 
 CREATE SEQUENCE public.products_product_id_seq
@@ -172,17 +172,17 @@ CREATE SEQUENCE public.products_product_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.products_product_id_seq OWNER TO dan;
+-- ALTER TABLE public.products_product_id_seq OWNER TO dan;
 
 --
--- Name: products_product_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
+-- -- Name: products_product_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
 --
 
 ALTER SEQUENCE public.products_product_id_seq OWNED BY public.products.product_id;
 
 
 --
--- Name: purchases; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: purchases; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.purchases (
@@ -196,10 +196,10 @@ CREATE TABLE public.purchases (
 );
 
 
-ALTER TABLE public.purchases OWNER TO dan;
+-- ALTER TABLE public.purchases OWNER TO dan;
 
 --
--- Name: purchases_item_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
+-- -- Name: purchases_item_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
 --
 
 CREATE SEQUENCE public.purchases_item_id_seq
@@ -211,17 +211,17 @@ CREATE SEQUENCE public.purchases_item_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.purchases_item_id_seq OWNER TO dan;
+-- ALTER TABLE public.purchases_item_id_seq OWNER TO dan;
 
 --
--- Name: purchases_item_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
+-- -- Name: purchases_item_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
 --
 
 ALTER SEQUENCE public.purchases_item_id_seq OWNED BY public.purchases.item_id;
 
 
 --
--- Name: shipping_info; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: shipping_info; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.shipping_info (
@@ -239,10 +239,10 @@ CREATE TABLE public.shipping_info (
 );
 
 
-ALTER TABLE public.shipping_info OWNER TO dan;
+-- ALTER TABLE public.shipping_info OWNER TO dan;
 
 --
--- Name: shipping_info_shipping_info_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
+-- -- Name: shipping_info_shipping_info_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
 --
 
 CREATE SEQUENCE public.shipping_info_shipping_info_id_seq
@@ -254,17 +254,17 @@ CREATE SEQUENCE public.shipping_info_shipping_info_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.shipping_info_shipping_info_id_seq OWNER TO dan;
+-- ALTER TABLE public.shipping_info_shipping_info_id_seq OWNER TO dan;
 
 --
--- Name: shipping_info_shipping_info_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
+-- -- Name: shipping_info_shipping_info_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
 --
 
 ALTER SEQUENCE public.shipping_info_shipping_info_id_seq OWNED BY public.shipping_info.shipping_info_id;
 
 
 --
--- Name: shopping_cart; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: shopping_cart; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.shopping_cart (
@@ -275,10 +275,10 @@ CREATE TABLE public.shopping_cart (
 );
 
 
-ALTER TABLE public.shopping_cart OWNER TO dan;
+-- ALTER TABLE public.shopping_cart OWNER TO dan;
 
 --
--- Name: shopping_cart_cart_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
+-- -- Name: shopping_cart_cart_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
 --
 
 CREATE SEQUENCE public.shopping_cart_cart_id_seq
@@ -290,17 +290,17 @@ CREATE SEQUENCE public.shopping_cart_cart_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.shopping_cart_cart_id_seq OWNER TO dan;
+-- ALTER TABLE public.shopping_cart_cart_id_seq OWNER TO dan;
 
 --
--- Name: shopping_cart_cart_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
+-- -- Name: shopping_cart_cart_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
 --
 
 ALTER SEQUENCE public.shopping_cart_cart_id_seq OWNED BY public.shopping_cart.cart_id;
 
 
 --
--- Name: shopping_cart_item; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: shopping_cart_item; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.shopping_cart_item (
@@ -312,10 +312,10 @@ CREATE TABLE public.shopping_cart_item (
 );
 
 
-ALTER TABLE public.shopping_cart_item OWNER TO dan;
+-- ALTER TABLE public.shopping_cart_item OWNER TO dan;
 
 --
--- Name: shopping_cart_item_item_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
+-- -- Name: shopping_cart_item_item_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
 --
 
 CREATE SEQUENCE public.shopping_cart_item_item_id_seq
@@ -327,17 +327,17 @@ CREATE SEQUENCE public.shopping_cart_item_item_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.shopping_cart_item_item_id_seq OWNER TO dan;
+-- ALTER TABLE public.shopping_cart_item_item_id_seq OWNER TO dan;
 
 --
--- Name: shopping_cart_item_item_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
+-- -- Name: shopping_cart_item_item_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
 --
 
 ALTER SEQUENCE public.shopping_cart_item_item_id_seq OWNED BY public.shopping_cart_item.item_id;
 
 
 --
--- Name: stores; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: stores; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.stores (
@@ -349,10 +349,10 @@ CREATE TABLE public.stores (
 );
 
 
-ALTER TABLE public.stores OWNER TO dan;
+-- ALTER TABLE public.stores OWNER TO dan;
 
 --
--- Name: stores_store_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
+-- -- Name: stores_store_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
 --
 
 CREATE SEQUENCE public.stores_store_id_seq
@@ -364,17 +364,17 @@ CREATE SEQUENCE public.stores_store_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.stores_store_id_seq OWNER TO dan;
+-- ALTER TABLE public.stores_store_id_seq OWNER TO dan;
 
 --
--- Name: stores_store_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
+-- -- Name: stores_store_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
 --
 
 ALTER SEQUENCE public.stores_store_id_seq OWNED BY public.stores.store_id;
 
 
 --
--- Name: subcategories; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: subcategories; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.subcategories (
@@ -384,10 +384,10 @@ CREATE TABLE public.subcategories (
 );
 
 
-ALTER TABLE public.subcategories OWNER TO dan;
+-- ALTER TABLE public.subcategories OWNER TO dan;
 
 --
--- Name: subcategories_subcategory_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
+-- -- Name: subcategories_subcategory_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
 --
 
 CREATE SEQUENCE public.subcategories_subcategory_id_seq
@@ -399,17 +399,17 @@ CREATE SEQUENCE public.subcategories_subcategory_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.subcategories_subcategory_id_seq OWNER TO dan;
+-- ALTER TABLE public.subcategories_subcategory_id_seq OWNER TO dan;
 
 --
--- Name: subcategories_subcategory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
+-- -- Name: subcategories_subcategory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
 --
 
 ALTER SEQUENCE public.subcategories_subcategory_id_seq OWNED BY public.subcategories.subcategory_id;
 
 
 --
--- Name: transaction_details; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: transaction_details; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.transaction_details (
@@ -423,10 +423,10 @@ CREATE TABLE public.transaction_details (
 );
 
 
-ALTER TABLE public.transaction_details OWNER TO dan;
+-- ALTER TABLE public.transaction_details OWNER TO dan;
 
 --
--- Name: transaction_details_transaction_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
+-- -- Name: transaction_details_transaction_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
 --
 
 CREATE SEQUENCE public.transaction_details_transaction_id_seq
@@ -438,17 +438,17 @@ CREATE SEQUENCE public.transaction_details_transaction_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.transaction_details_transaction_id_seq OWNER TO dan;
+-- ALTER TABLE public.transaction_details_transaction_id_seq OWNER TO dan;
 
 --
--- Name: transaction_details_transaction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
+-- -- Name: transaction_details_transaction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
 --
 
 ALTER SEQUENCE public.transaction_details_transaction_id_seq OWNED BY public.transaction_details.transaction_id;
 
 
 --
--- Name: user_accounts; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: user_accounts; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.user_accounts (
@@ -469,10 +469,10 @@ CREATE TABLE public.user_accounts (
 );
 
 
-ALTER TABLE public.user_accounts OWNER TO dan;
+-- ALTER TABLE public.user_accounts OWNER TO dan;
 
 --
--- Name: user_accounts_user_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
+-- -- Name: user_accounts_user_id_seq; Type: SEQUENCE; Schema: public; Owner: dan
 --
 
 CREATE SEQUENCE public.user_accounts_user_id_seq
@@ -484,17 +484,17 @@ CREATE SEQUENCE public.user_accounts_user_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.user_accounts_user_id_seq OWNER TO dan;
+-- ALTER TABLE public.user_accounts_user_id_seq OWNER TO dan;
 
 --
--- Name: user_accounts_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
+-- -- Name: user_accounts_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dan
 --
 
 ALTER SEQUENCE public.user_accounts_user_id_seq OWNED BY public.user_accounts.user_id;
 
 
 --
--- Name: vendor_reviews; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: vendor_reviews; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.vendor_reviews (
@@ -506,10 +506,10 @@ CREATE TABLE public.vendor_reviews (
 );
 
 
-ALTER TABLE public.vendor_reviews OWNER TO dan;
+-- ALTER TABLE public.vendor_reviews OWNER TO dan;
 
 --
--- Name: vendors; Type: TABLE; Schema: public; Owner: dan
+-- -- Name: vendors; Type: TABLE; Schema: public; Owner: dan
 --
 
 CREATE TABLE public.vendors (
@@ -517,80 +517,80 @@ CREATE TABLE public.vendors (
 );
 
 
-ALTER TABLE public.vendors OWNER TO dan;
+-- ALTER TABLE public.vendors OWNER TO dan;
 
 --
--- Name: categories category_id; Type: DEFAULT; Schema: public; Owner: dan
+-- -- Name: categories category_id; Type: DEFAULT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.categories ALTER COLUMN category_id SET DEFAULT nextval('public.categories_category_id_seq'::regclass);
 
 
 --
--- Name: products product_id; Type: DEFAULT; Schema: public; Owner: dan
+-- -- Name: products product_id; Type: DEFAULT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.products ALTER COLUMN product_id SET DEFAULT nextval('public.products_product_id_seq'::regclass);
 
 
 --
--- Name: purchases item_id; Type: DEFAULT; Schema: public; Owner: dan
+-- -- Name: purchases item_id; Type: DEFAULT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.purchases ALTER COLUMN item_id SET DEFAULT nextval('public.purchases_item_id_seq'::regclass);
 
 
 --
--- Name: shipping_info shipping_info_id; Type: DEFAULT; Schema: public; Owner: dan
+-- -- Name: shipping_info shipping_info_id; Type: DEFAULT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.shipping_info ALTER COLUMN shipping_info_id SET DEFAULT nextval('public.shipping_info_shipping_info_id_seq'::regclass);
 
 
 --
--- Name: shopping_cart cart_id; Type: DEFAULT; Schema: public; Owner: dan
+-- -- Name: shopping_cart cart_id; Type: DEFAULT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.shopping_cart ALTER COLUMN cart_id SET DEFAULT nextval('public.shopping_cart_cart_id_seq'::regclass);
 
 
 --
--- Name: shopping_cart_item item_id; Type: DEFAULT; Schema: public; Owner: dan
+-- -- Name: shopping_cart_item item_id; Type: DEFAULT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.shopping_cart_item ALTER COLUMN item_id SET DEFAULT nextval('public.shopping_cart_item_item_id_seq'::regclass);
 
 
 --
--- Name: stores store_id; Type: DEFAULT; Schema: public; Owner: dan
+-- -- Name: stores store_id; Type: DEFAULT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.stores ALTER COLUMN store_id SET DEFAULT nextval('public.stores_store_id_seq'::regclass);
 
 
 --
--- Name: subcategories subcategory_id; Type: DEFAULT; Schema: public; Owner: dan
+-- -- Name: subcategories subcategory_id; Type: DEFAULT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.subcategories ALTER COLUMN subcategory_id SET DEFAULT nextval('public.subcategories_subcategory_id_seq'::regclass);
 
 
 --
--- Name: transaction_details transaction_id; Type: DEFAULT; Schema: public; Owner: dan
+-- -- Name: transaction_details transaction_id; Type: DEFAULT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.transaction_details ALTER COLUMN transaction_id SET DEFAULT nextval('public.transaction_details_transaction_id_seq'::regclass);
 
 
 --
--- Name: user_accounts user_id; Type: DEFAULT; Schema: public; Owner: dan
+-- -- Name: user_accounts user_id; Type: DEFAULT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.user_accounts ALTER COLUMN user_id SET DEFAULT nextval('public.user_accounts_user_id_seq'::regclass);
 
 
 --
--- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.categories (category_id, category_name) FROM stdin;
@@ -600,7 +600,7 @@ COPY public.categories (category_id, category_name) FROM stdin;
 
 
 --
--- Data for Name: customer_reviews; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: customer_reviews; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.customer_reviews (customer_id, vendor_id, transaction_id, rating, vendor_remark) FROM stdin;
@@ -608,7 +608,7 @@ COPY public.customer_reviews (customer_id, vendor_id, transaction_id, rating, ve
 
 
 --
--- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.customers (customer_id) FROM stdin;
@@ -617,7 +617,7 @@ COPY public.customers (customer_id) FROM stdin;
 
 
 --
--- Data for Name: payment_info; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: payment_info; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.payment_info  FROM stdin;
@@ -625,7 +625,7 @@ COPY public.payment_info  FROM stdin;
 
 
 --
--- Data for Name: product_media; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: product_media; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.product_media (product_id, filename, filepath, description, is_display_image, is_landing_image, is_video) FROM stdin;
@@ -1080,7 +1080,7 @@ COPY public.product_media (product_id, filename, filepath, description, is_displ
 
 
 --
--- Data for Name: product_reviews; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: product_reviews; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.product_reviews (product_id, transaction_id, rating, customer_id, customer_remark) FROM stdin;
@@ -1088,7 +1088,7 @@ COPY public.product_reviews (product_id, transaction_id, rating, customer_id, cu
 
 
 --
--- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.products (product_id, title, description, list_price, net_price, vendor_id, store_id, created_at, quantity_available, category_id, subcategory_id) FROM stdin;
@@ -1283,7 +1283,7 @@ COPY public.products (product_id, title, description, list_price, net_price, ven
 1491	OQQ Women's 3 Piece High Waist Workout Shorts Butt Lifting Tummy Control Ruched Booty Smile Yoga Short Pants	["70% Nylon, 25% Polyester, 5% Spandex", "进口", "Pull On closure", "Hand Wash Only", "Gusseted Crotch: Gusseted crotch for greater freedom of movement, Flatlock seams reduce irritation caused by chafing", "Butt Lifting Designed: With crescent shading in the butt and ruched booty builder, easy to create peach hips", "Comfortable High Waist: Wide-waist elastic waistband to cover navel which provide tummy control", "Ultra-Stretch Fit: - Enough thickness with breathability, no See through, Featuring the soft and skin friendly material, the workout shorts are moisture wicking with four-way stretch material that promotes both compression and support.", "For Daily Wear: 60% Nylon, 35% Polyester, 5% Spandex fabrics have a more natural feeling than polyester ones which makes it perfect for everyday wear,shopping, go out, badminton, running, jogging, cycling, gym fitness, marathon, game competiton or any casual exercise activities."]	15117.4873	14910.0000	463	199	2023-07-26 12:04:44.072+00	15	2	\N
 1505	AISEW Womens Button Down Shirts Casual V Neck Long Sleeve Loose Fit Collared Plain Blouses Tops with Pocket	["100% Cotton", "Imported", "Button closure", "Hand Wash Only", "Classic shirt collar for women, oversize boyfriend style, fashion button shirts, drop shoulder, ladies solid color blouses, front pockets design. Womens dressy blouses tops can wear alone or as cardigan, roll up as 3/4 sleeves or long sleeve", "The Womens button up shirts is made of 100% cotton, relaxed, comfortable and loose fit. The basic long button down shirts is a must-have item in the wardrobe of fashionable women and girls", "Casual and elegant womens tops for work, travel, office, street, party, college or dating while giving you a stylish and trendy look. As beach cover up or wear it open over a tank top to outdoor camping, holiday, going out", "You can pick your style to dress the cotton long sleeve shirts up or down. Great pair with jeans, shorts, skinny leggings, boots in summer, spring, fall, winter, an all year round shirt, charming and super cute", "Note: 1. Please refer to our brand size chart (Not Amazon Size Chart) and select your fit size before ordering this button down blouse. 2. Some color may occur differences due to the different PC phone display"]	23659.3527	23242.5000	463	199	2023-07-26 12:04:50.856+00	35	2	\N
 1531	The Drop Women's Blake Long Blazer	["92% Polyester, 8% Spandex", "Imported", "Machine Wash", "Staples by The Drop", "Models are 5'10\\"/178 cm and wearing a size S and XXL", "This power blazer elevates any look in an instant. Notched collar, long silhouette"]	45071.8843	44940.0000	463	199	2023-07-26 12:05:03.872+00	14	2	\N
-1532	Busties Boob Tape Kit, Breast Tape Breathable Boobtape Bra Tape Body Tape for Large Breasts 1 Pack / 2 Pack	["97% Cotton, 3% Spandex", "Made in the USA and Imported", "Pull On closure", "Hand Wash Only", "Instant Breast Lift Tape Kit: Our boob tape will take you from saggy to perky in seconds! The satin bra tape protects your nipples while the adhesive breast tape eliminates the need for a bra. You can rock any backless, frontless dress with the Busties body tape for breast lift.", "Fits All Sizes: It's so versatile, our bob tape for large breasts plus size is a boob lifter bob tape for small breast lift too. Our boobytape for breast lift plus size is 5% spandex and can stretch up to 180% of it's own length, making this the most comfortable boob tape for breast lift you'll ever own. Our nipple tape women and bob tape for strapless dress has you covered.", "Superior Quality, 13pcs: Use the breast tape lift with any outfit! The breast tape lifting large breast will stay undetected under any low-cut shirt or dress you're wearing! The Busties breast tape kit includes 1 roll of breast tape, 4 satin boob petals and 1 pair of silicone boob pasties for women - everything you need, and more!", "Sweatproof & Waterproof: Other bob tape for breast lift don't stick well to skin and will leave you hanging. However, our boob tape for large breasts are waterproof and won't let you down. The Busties boobytape for big breast is the ultimate boob lift. It will stick and hold you up and in place all night long! Worry less about slippage and more about dancing the night away in our breast lifter.", "24/7 USA Customer Support - Our body tape for breast kit will give you the lift you need. We believe in the quality of our breast lifters tape and breast pasties. However, if you are not satisfied for any reason, our USA-based customer support will send you a replacement breast tape kit at no charge. We want you to love your new bra tape lift as much as we do. Great products, better service... we exist to serve you!"]	7692.4895	7477.5000	463	199	2023-07-26 12:05:04.472+00	29	2	\N
+-- 1532	Busties Boob Tape Kit, Breast Tape Breathable Boobtape Bra Tape Body Tape for Large Breasts 1 Pack / 2 Pack	["97% Cotton, 3% Spandex", "Made in the USA and Imported", "Pull On closure", "Hand Wash Only", "Instant Breast Lift Tape Kit: Our boob tape will take you from saggy to perky in seconds! The satin bra tape protects your nipples while the adhesive breast tape eliminates the need for a bra. You can rock any backless, frontless dress with the Busties body tape for breast lift.", "Fits All Sizes: It's so versatile, our bob tape for large breasts plus size is a boob lifter bob tape for small breast lift too. Our boobytape for breast lift plus size is 5% spandex and can stretch up to 180% of it's own length, making this the most comfortable boob tape for breast lift you'll ever own. Our nipple tape women and bob tape for strapless dress has you covered.", "Superior Quality, 13pcs: Use the breast tape lift with any outfit! The breast tape lifting large breast will stay undetected under any low-cut shirt or dress you're wearing! The Busties breast tape kit includes 1 roll of breast tape, 4 satin boob petals and 1 pair of silicone boob pasties for women - everything you need, and more!", "Sweatproof & Waterproof: Other bob tape for breast lift don't stick well to skin and will leave you hanging. However, our boob tape for large breasts are waterproof and won't let you down. The Busties boobytape for big breast is the ultimate boob lift. It will stick and hold you up and in place all night long! Worry less about slippage and more about dancing the night away in our breast lifter.", "24/7 USA Customer Support - Our body tape for breast kit will give you the lift you need. We believe in the quality of our breast lifters tape and breast pasties. However, if you are not satisfied for any reason, our USA-based customer support will send you a replacement breast tape kit at no charge. We want you to love your new bra tape lift as much as we do. Great products, better service... we exist to serve you!"]	7692.4895	7477.5000	463	199	2023-07-26 12:05:04.472+00	29	2	\N
 1528	Sunzel Women's Biker Shorts in High Waist Tummy Control with Deep Pockets	["70% Nylon, 30% Spandex", "Imported", "Elastic closure", "Hand Wash Only", "[The New Upgraded Sunzel Blossomy Collection]: Made of a flexible material that improves mobility when working out. Extra support is provided by the high waist, and muscle control is made possible by the smooth, silky fabric.", "[No Front Seam Biker Shorts with Pockets]: Breathable, buttery soft, four way stretch fabric, provide lasting comfort and sweat-wicking coverage. Sunzel has options with a 3- or 5-inch short inseam and a 8- or 10-inch knee length long inseam, depending on the style you’re looking for.", "[Must-Have Features]: They don’t ride up, naked feeling, non see-through, side pockets, squat proof, tummy control, high waisted, seamless waistband, compression and super stretchy.", "[Designed With Luxury And Functionality In Mind]: Pair these bike shorts with an oversized hoodie, sports bra or a cute cropped tank top to add polish to your workout outfit! These comfy bike shorts give you endless opportunities for styling and workouts.", "[Womens Gym Shorts Made For]: Running, workout, athletic, yoga, fitness, excerise, walking, biking, hiking, cycling, playing volleyball, lounge or everyday casual summer wear."]	15344.5047	14992.5000	463	199	2023-07-26 12:05:02.236+00	24	2	\N
 1278	Tablet 10.1 inch Android 11 Tablet 2023 Latest Update Octa-Core Processor with 64GB Storage, Dual 13MP+5MP Camera, WiFi, Bluetooth, GPS, 128GB Expand Support, IPS Full HD Display (Black)	["【SUPERIOR WATCHING EXPERIENCE】FEONAL Tablet is powered by Octa-Core Processor. 2023 newest Android 11 tablet provides + 40% faster processing speed than regular Quad-Core. 10.1-inch Tablet screen size with 1920x1200 resolution support, perfect for home entertainment and office.", "【BIGGER THAN BIGGER】The tablet has 4GB RAM, 64GB internal storage and expandable storage up to 128 GB. The GMS Certified latest Android Tablet, with basic Google apps already on and without bloatware. Get rid of unexpected ads and download apps from Google Play, such as SKYGO, NetFlix, YouTube and more.", "【LONG LASTING BATTERY】Equipped with a long-lasting and environmentally compliant 6000 mAh battery, this 10-inch tablet will effortlessly provide you with up to 8 hours of support for reading, browsing, watching movies and playing games. The long-lasting battery life and lightweight design allow you to enjoy your tablet anywhere, anytime.", "【DUAL CAMERAS AND SPEAKERS】With front 5 MP & Rear 13 MP dual cameras, which would bring your excellent photos and clear video chats. Dual speakers are designed to provide high-quality and powerful sound for your favorite music, games and videos.", "【IDEAL CHOICE FOR GIFT】FEONAL 10'' Android Tablet is definitely the best choice for Christmas or Valentine's Day. We provide professional tablet for 5 years with considerate service, please feel free to contact our customer service if you have any problems."]	113379.0854	112492.5000	463	199	2023-07-26 12:02:56.586+00	48	1	\N
 1148	FESABOLE Tablet 2 in 1 Newest, 10.1 inch Android Tablet, 128GB Storage+1TB Expand, Octa-Core Android Tablet, 2.4G/5G WiFi, 8MP+13MP Camera, with Keyboard, Case, Stylus, 7000mAh Battery	["💻【Tablet with Keyboard 】 FESABOLE Tablet 2 in 1 Android Tablet comes with bluetooth keyboard, foldable protective case, it can flexibly turn tablet into a laptop mode or computer mode. Enables you to work and learn efficiently and quickly handle daily tasks, offers you limitless features and capabilities.", "💻【2.4G/5G Wifi + 8 Core CPU, 4GB+128GB Tablet】 Android OS tablet is equipped with 4GB RAM +ROM 128GB large capacity, expandable storage up to 1TB. You can download and store your favorite books, songs, photos, movies, games and anything you want. You can fully enjoy without worrying about running out of space. Tablet is powered by Octa-Core Processor. 2023 newest Android OS tablet provides + 40% faster processing speed than regular Quad-Core. Now you can enjoy programs and high-load games more comfortably.", "💻【The Latest Android OS Tablet & GMS Certification】 Andorid tablet 10 inch is equipped with a new system \\"Android OS\\", providing a more personalized, safe and easy-to-operate system experience.The GMS Certified latest Android Tablet, with basic Google apps already on and without bloatware. Get rid of unexpected ads and download apps from Google Play, such as SKYGO, NetFlix, YouTube and more.", "💻【Long Lasting Battery】 Equipped with a long-lasting and environmentally compliant 7000 mAh battery, this 10-inch tablet will effortlessly provide you with up to 8 hours of support for reading, browsing, watching movies and playing games. The long-lasting battery life and lightweight design allow you to enjoy your tablet anywhere, anytime, so you can work or play throughout the day while you're on the move. Easily charge via the Type-C port and rest assured the battery will last.", "💻【HD Lens, Capture Your Wonderful Moments And Speakers】 With front 8 MP & Rear 13 MP dual cameras, which would bring your excellent photos and clear video chats. 3D stereo surround effect, bringing clear, full, and detailed sensations. Intelligent switching of sound effects in multiple scenes such as music, movies, games, and calls, make your immerse yourself in entertainment.", "💻【ANDROID OS TABLET & PARENTAL CONTROL】 This tablet can effectively manage tablet usage time, application selection, achieve a better control between learning and entertainment. Newest android OS system - ideal for family entertainment, learning, working, etc."]	142962.9878	142485.0000	463	199	2023-07-26 12:01:50.685+00	50	1	\N
@@ -1337,11 +1337,11 @@ COPY public.products (product_id, title, description, list_price, net_price, ven
 1401	Aloodor Sweatsuit for Women 2 Piece Outfits for Womens Crewneck Sweatshirts Pullover	["✦ Material：95% polyester + 5% spandex,These womens 2 piece loungewear sweatsuit sets are made with superior quality and skin-friendly material to provide you more comfy and soft wearing experience.", "Imported", "Drawstring Waist closure", "Machine Wash", "✦ Features:Classic loungewear set design,long sleeve pullover tops with color block crewneck and striped sleeves,drawstring elastic waistband sweatpants with functional pocket and long stripes on both sides.These are the highlights of this 2 piece outfits and bring a fashion and casual look,which are easier to catch his eyes.", "✦ Multi-functional wear：Simple colors and styles are suitable for all occasions.Perfect for daily wear,outdoors,sports,exercise and home.It is suitable whether it is at home or going out,comfortable enough to be worn the whole day.Best for spring,fall and winter.", "✦ Reason for selection：Comfort is always the primary consideration when choosing clothes,and this sweatsuit set is your best choice.It uses smooth,stretchy and high-quality fabrics to ensure that you can feel comfortable while you are relaxing or exercising.When you sweat it does not become sticky and non itchy.It's a perfect gift for your wife,girlfriend,mom,daughter or friends.", "✦ Tips:Machine or Hand Wash with Cold Water/Hang or Line Dry/No Bleach/No Dry Clean.Try not to wear brightly colored underwear inside the white Sets,which will not see through!", "✦Please Refer to the Aloodor Size Chart before Ordering. Anyother questions, please contact us freely!"]	27865.4234	26992.5000	463	199	2023-07-26 12:03:58.506+00	24	2	\N
 1502	Aoliks 6 Pairs Compression Socks for Women and Men 15-20 mmHg, Best Support for Nurses,Athletic,Flying	["85% Nylon; 15% Polyester", "Imported", "🆕ENERGIZE YOUR LEGS-- Compression socks have been shown to help decrease swelling and pain in the legs and ankles. Graduated compressions' whole purpose is to increase circulation, thus improving energy levels in the body. Another benefit of improving circulation is decreasing swelling and fluid retention. Increased circulation decreases swelling and increases blood flow, this reduces the feeling of heavy and achy legs.", "🆕BETTER FITTING --The material of our compression socks is upgraded with nylon percentage from 40% to 85%. Delivers 360-degree stretch for greater flexibility and durability. We carefully designed and manufactured our compression socks to provide premium support, comfort, and relief without compromising your mobility. Form-fitting, lightweight, and breathable fabric features maintain joint stability regardless of activity.", "🆕IMPROVED ATHLETIC PERFORMANCE -- Many athletes are no strangers to compression, in the “RICE” recovery method used by many coaches, the C is for compression! Compression socks reduce the stress on your muscles during a workout or exercise and help your legs recover quicker, which is why they’re increasingly popular on a race’s starting line. Compression socks help to prevent injury from happening, allowing for better quality training.", "🆕GREAT GIFT IDEA-- Great gift to runners, basketball players, joggers, athletes, field sports, cross-training, gym workouts, hiking, tennis, cycling, office workers, airplane travelers, and those on their feet all day.", "🆕SHOP WITH CONFIDENCE -- It is our aim to provide customers with good service. If you have any questions during the purchase process, please contact us in time. We are willing to solve the problem. We hope that every customer can buy it with confidence and use it comfortably."]	14330.8150	14242.5000	463	199	2023-07-26 12:04:49.425+00	6	2	\N
 1402	chouyatou Women's Quilted Pullover Puffer Jacket Packable Hooded Oversize Winter Coat Tops	["Fabric: 100% Polyamide", "Imported", "Machine Wash", "Machine wash gently. Do not bleach.", "Warm hooded puffer jacket for women, featuring unique and convenience pullover design, quilted with warm and soft cotton filling, bring you extra warmth in fall and winter. Solid colors: red/orange/black/white available.", "Long batwing sleeves with buttoned cuffs and decorative strap. Funnel collar with button up closure. A zippered front pocket and 2 slant hand pockets. Side split, high low hem.", "Easy to match with your sweater, t-shirt, jeans, leggings for a casual but not bulky style. Suitable for daily wear, work, school, gym workout, street wear, outdoor activities like hiking, camping, mountain climbing etc.", "SIZE: Please refer to the Last Picture -\\"Size Chart\\" before ordering. If you are not sure about the size, please contact us without hesitation"]	47245.4830	47017.5000	463	199	2023-07-26 12:03:58.987+00	42	2	\N
-1406	AUTOMET Womens Sexy Unitard Bodysuit Workout Rompers One Piece Summer Outfits Shorts Jumpsuits Gym Yoga Fashion Clothes 2023	["80% Polyester, 20% Spandex", "Imported", "Pull On closure", "Machine Wash", "Fabric: Spandex and polyester. This romper jumpsuit is made of very breathable materials. It absorbs sweat, super stretch to wear ,soft and lightweight.", "Design: Round neck, spaghetti strap, sleeveless, tight fitting, shorts, one piece basic rompers, hip lifting, comfy fabric, adjustable spaghetti straps. This is a very cute bodysuit for women and teen girls.", "Occasion: You can wear this bodycon jumpsuit at home, leisure, vacation, outdoor, beach, vacation, exercise, yoga, sports, cycling, dance, party, gym exercise suitably. It can also be given to teenage girls or as a great gift.", "Match: This tight bodysuit is a fashionable item for women or teen girls. Its fabric is very comfy, which is not only suitable for summer, but also suitable for other seasons. It can be worn alone or with sports coats, flannel, shckets, sneakers, boots, etc.", "Suggestion: It is recommended to wash it by hand or put it into a laundry bag instead of bleaching. If you have any needs or questions, please contact us, and we will solve the problem for you as soon as possible."]	15767.7930	14992.5000	463	199	2023-07-26 12:04:00.905+00	2	2	\N
-1407	AUTOMET Jumpsuits for Women Casual Summer Rompers Sleeveless Loose Spaghetti Strap Baggy Overalls Jumpers with Pockets 2023	["94% Cotton, 6% Spandex", "Imported", "Pull On closure", "Machine Wash", "Material: Spaghetti strap summer jumpsuit made of 94% cotton and 6% spandex. The fabric is soft and comfortable, stretchy, lightweight and breathable.", "Design: Loose fit overalls for women, fashionable pants,baggy style, v-neck design, spaghetti strap jumpsuits,sleeveless rompers ,casual summer outfits, with two sides pockets,solid color,standard size,suit for summer vacation, makes you look very chic.", "Occasion: Baggy overalls jumpers with pockets is suitable for casual, daily life,travelling,vacation,beach, outdoor activity, shopping, office, party, school, dinner, lounge, holiday, vacation, beach, cocktail, wedding, outdoor etc.It's also a great gift to your friend or family.", "Matching: This 2023 spring fashion clothes sleeveless Jumpsuit is perfect for matching with tank tops, tube tops， tshirts, coats, pendants, necklaces, jackets, sneakers, sandals, high heels and beach hats to creating a fashion and pretty looking in spring, fall ,summer and winter.", "Tips: Please refer to the AUTOMET Size Chart before ordering(NOT AMAZON SIZE). Any other questions, please contact us."]	28136.5551	27742.5000	463	199	2023-07-26 12:04:01.385+00	48	2	\N
+-- 1406	AUTOMET Womens Sexy Unitard Bodysuit Workout Rompers One Piece Summer Outfits Shorts Jumpsuits Gym Yoga Fashion Clothes 2023	["80% Polyester, 20% Spandex", "Imported", "Pull On closure", "Machine Wash", "Fabric: Spandex and polyester. This romper jumpsuit is made of very breathable materials. It absorbs sweat, super stretch to wear ,soft and lightweight.", "Design: Round neck, spaghetti strap, sleeveless, tight fitting, shorts, one piece basic rompers, hip lifting, comfy fabric, adjustable spaghetti straps. This is a very cute bodysuit for women and teen girls.", "Occasion: You can wear this bodycon jumpsuit at home, leisure, vacation, outdoor, beach, vacation, exercise, yoga, sports, cycling, dance, party, gym exercise suitably. It can also be given to teenage girls or as a great gift.", "Match: This tight bodysuit is a fashionable item for women or teen girls. Its fabric is very comfy, which is not only suitable for summer, but also suitable for other seasons. It can be worn alone or with sports coats, flannel, shckets, sneakers, boots, etc.", "Suggestion: It is recommended to wash it by hand or put it into a laundry bag instead of bleaching. If you have any needs or questions, please contact us, and we will solve the problem for you as soon as possible."]	15767.7930	14992.5000	463	199	2023-07-26 12:04:00.905+00	2	2	\N
+-- 1407	AUTOMET Jumpsuits for Women Casual Summer Rompers Sleeveless Loose Spaghetti Strap Baggy Overalls Jumpers with Pockets 2023	["94% Cotton, 6% Spandex", "Imported", "Pull On closure", "Machine Wash", "Material: Spaghetti strap summer jumpsuit made of 94% cotton and 6% spandex. The fabric is soft and comfortable, stretchy, lightweight and breathable.", "Design: Loose fit overalls for women, fashionable pants,baggy style, v-neck design, spaghetti strap jumpsuits,sleeveless rompers ,casual summer outfits, with two sides pockets,solid color,standard size,suit for summer vacation, makes you look very chic.", "Occasion: Baggy overalls jumpers with pockets is suitable for casual, daily life,travelling,vacation,beach, outdoor activity, shopping, office, party, school, dinner, lounge, holiday, vacation, beach, cocktail, wedding, outdoor etc.It's also a great gift to your friend or family.", "Matching: This 2023 spring fashion clothes sleeveless Jumpsuit is perfect for matching with tank tops, tube tops， tshirts, coats, pendants, necklaces, jackets, sneakers, sandals, high heels and beach hats to creating a fashion and pretty looking in spring, fall ,summer and winter.", "Tips: Please refer to the AUTOMET Size Chart before ordering(NOT AMAZON SIZE). Any other questions, please contact us."]	28136.5551	27742.5000	463	199	2023-07-26 12:04:01.385+00	48	2	\N
 1494	OQQ Women's 3 Piece Tank Tops Ribbed Seamless Workout Exercise Shirts Yoga Crop Tops	["90%Nylon, 10% Spandex", "Pull On closure", "Machine Wash", "90% Nylon, 10% Spandex,Pull-On closure", "Sexy Ribbed Scoop neckline Tank Tops:Cut with a flattering scooped neckline,wide set straps simple in design, no removable padded cups.", "Knit Ribbed Seamless Design,gives you maximum freedom of movement.The thick ribbed underband will keep you supported throughout any workout.", "Moisture-wicking, breathable and stretchy fabric keeping you dry and comfortable during exercise, and enjoy the joy of yoga and exercise.", "Giving you confidence and support for any occasion.this seamless ribbed crop top will have you always on-trend, in the gym or at home."]	14166.8741	13410.0000	463	199	2023-07-26 12:04:45.606+00	20	2	\N
 1415	Levi's Women's 501 Original Shorts (Also Available in Plus)	["97% Cotton, 2% Polyester, 1% Elastane", "Imported", "Button closure", "Machine Wash", "High Rise; Slim through hip; Button fly", "True to Size", "Non-stretch"]	18399.5437	17850.0000	463	199	2023-07-26 12:04:05.671+00	16	2	\N
-1413	Busties Boob Tape Kit, Breast Tape Breathable Boobtape Bra Tape Body Tape for Large Breasts 1 Pack / 2 Pack	["97% Cotton, 3% Spandex", "Made in the USA and Imported", "Pull On closure", "Hand Wash Only", "Instant Breast Lift Tape Kit: Our boob tape will take you from saggy to perky in seconds! The satin bra tape protects your nipples while the adhesive breast tape eliminates the need for a bra. You can rock any backless, frontless dress with the Busties body tape for breast lift.", "Fits All Sizes: It's so versatile, our bob tape for large breasts plus size is a boob lifter bob tape for small breast lift too. Our boobytape for breast lift plus size is 5% spandex and can stretch up to 180% of it's own length, making this the most comfortable boob tape for breast lift you'll ever own. Our nipple tape women and bob tape for strapless dress has you covered.", "Superior Quality, 13pcs: Use the breast tape lift with any outfit! The breast tape lifting large breast will stay undetected under any low-cut shirt or dress you're wearing! The Busties breast tape kit includes 1 roll of breast tape, 4 satin boob petals and 1 pair of silicone boob pasties for women - everything you need, and more!", "Sweatproof & Waterproof: Other bob tape for breast lift don't stick well to skin and will leave you hanging. However, our boob tape for large breasts are waterproof and won't let you down. The Busties boobytape for big breast is the ultimate boob lift. It will stick and hold you up and in place all night long! Worry less about slippage and more about dancing the night away in our breast lifter.", "24/7 USA Customer Support - Our body tape for breast kit will give you the lift you need. We believe in the quality of our breast lifters tape and breast pasties. However, if you are not satisfied for any reason, our USA-based customer support will send you a replacement breast tape kit at no charge. We want you to love your new bra tape lift as much as we do. Great products, better service... we exist to serve you!"]	7759.0638	7477.5000	463	199	2023-07-26 12:04:04.687+00	11	2	\N
+-- 1413	Busties Boob Tape Kit, Breast Tape Breathable Boobtape Bra Tape Body Tape for Large Breasts 1 Pack / 2 Pack	["97% Cotton, 3% Spandex", "Made in the USA and Imported", "Pull On closure", "Hand Wash Only", "Instant Breast Lift Tape Kit: Our boob tape will take you from saggy to perky in seconds! The satin bra tape protects your nipples while the adhesive breast tape eliminates the need for a bra. You can rock any backless, frontless dress with the Busties body tape for breast lift.", "Fits All Sizes: It's so versatile, our bob tape for large breasts plus size is a boob lifter bob tape for small breast lift too. Our boobytape for breast lift plus size is 5% spandex and can stretch up to 180% of it's own length, making this the most comfortable boob tape for breast lift you'll ever own. Our nipple tape women and bob tape for strapless dress has you covered.", "Superior Quality, 13pcs: Use the breast tape lift with any outfit! The breast tape lifting large breast will stay undetected under any low-cut shirt or dress you're wearing! The Busties breast tape kit includes 1 roll of breast tape, 4 satin boob petals and 1 pair of silicone boob pasties for women - everything you need, and more!", "Sweatproof & Waterproof: Other bob tape for breast lift don't stick well to skin and will leave you hanging. However, our boob tape for large breasts are waterproof and won't let you down. The Busties boobytape for big breast is the ultimate boob lift. It will stick and hold you up and in place all night long! Worry less about slippage and more about dancing the night away in our breast lifter.", "24/7 USA Customer Support - Our body tape for breast kit will give you the lift you need. We believe in the quality of our breast lifters tape and breast pasties. However, if you are not satisfied for any reason, our USA-based customer support will send you a replacement breast tape kit at no charge. We want you to love your new bra tape lift as much as we do. Great products, better service... we exist to serve you!"]	7759.0638	7477.5000	463	199	2023-07-26 12:04:04.687+00	11	2	\N
 1414	LILLUSORY 2 Piece Outfits For Women Trendy Lounge Sets Cozy Knit Sweater Short Sleeve Fashion Loungewear Set	["100% Cotton", "Machine Wash", "Paired to perfection, this set can be effortlessly worn together or styled solo for endless ways to wear.", "Design: Top: front pouch pocket, crew neck, rib-knit fabrication; Pants: side pockets, tapered silhouette, pull-on style. Perfect for lounging, brunch, and beyond.", "Versatile: Able to be dressed up with booties, down with sneakers and can be worn as a set, or as separates. Effortless cozy and chic designs for a laidback, throw-on-and-go approach to dressing.", "Care: Machine washable or handwash, in cold water, gentle cycle", "Size: available in 4 sizes. please be sure to check the size information in the last picture before placing your order."]	39773.7322	39742.5000	463	199	2023-07-26 12:04:05.145+00	3	2	\N
 1287	SAMSUNG Galaxy Tab A8 10.5” 128GB Android Tablet, LCD Screen, Kids Content, Smart Switch, Long Lasting Battery, US Version, 2022, Silver, Amazon Exclusive	["A SCREEN EVERYONE WILL LOVE: Whether your family is streaming or video chatting with friends, the Galaxy Tab A8 tablet brings out the best in every moment on a 10.5\\" LCD screen", "POWER AND STORAGE FOR ALL: Get the power, storage and speed your family needs with an upgraded chipset and plenty of room to keep files — up to 128GB of storage; A long-lasting battery lets you go unplugged for hours to keep the family fun going", "CHARGE FAST, POWER FOR HOURS: Go for hours on a single charge and back to 100% with the fast charging USB C port; Battery life may vary depending on network environment, usage patterns and other factors", "GALAXY ECOSYSTEM EXPERIENCE: Open up a new world of convenient possibilities with the Galaxy ecosystem experience — your devices, including your phone, laptop computer, and tablet, all automatically talk to one another seamlessly", "YOUR NOTES, ALL IN ONE PLACE: Do more with your notes with Galaxy connectivity that automatically syncs everything from to-do lists to school work, whether you’re on your tablet, phone or watch", "KIDS DIGITAL LEARNING: Children can enjoy access to Samsung Kids, a library of safe and fun games, books and videos that are kid friendly and parent approved", "EASIEST. TRANSFER. EVER: No matter what operating system you're using, Smart Switch makes it a breeze to move your data and favorite files in three easy steps"]	201188.1833	201000.0000	463	199	2023-07-26 12:03:00.865+00	37	1	\N
 1290	Lenovo IdeaPad 3 – (2023) - Everyday Notebook - Windows 11-14" Full HD – 8GB Memory – 128GB Storage - Intel Core i3-1115G - Platinum Grey	["Expect more from your entertainment: Dolby Audio delivers crystal-clear sound. Whether you’re watching a video, streaming music, or video chatting, you’re sure to love what you hear on the IdeaPad 3.", "See more, Do more: A narrow bezel on 2 sides makes for a clean design  and larger display, giving you more viewing area and less clutter.", "Privacy at your fingertips: Keep your privacy intact with a physical shutter for your webcam for peace of mind when you need it.", "Big-time entertainment in a thin and light design: Experience entertainment like never before on thin & light devices, powered by an Intel Core processor with integrated Intel UHD graphics.", "Work and play from anywhere: A built-in 720p camera with a dual microphone and a battery that lasts up to 7.5 hours gives you the freedom to work or play where you want, when you want."]	223092.6517	222945.0000	463	199	2023-07-26 12:03:02.305+00	27	1	\N
@@ -1449,7 +1449,7 @@ COPY public.products (product_id, title, description, list_price, net_price, ven
 1422	snugwind Womens Casual Sleeveless Strap Loose Adjustable Jumpsuits Stretchy Long Pants Romper with Pockets	["60% Polyester, 35% Cotton, 5% Spandex", "Imported", "Pull On closure", "Hand Wash Only", "Material:60% polyester+35% cotton and 5% spandex,soft and stretchy and comfortable to wear.", "Features:Adjustable spaghetti strap jumpsuit, sleeveless jumpsuit for women,two side pockets,solid color and tie dye,wide leg,loose fit, casual style.", "Occasions: Daily Life, Dating, Party, Office, Beach, Vacation, Club Outfits And More Occasions.", "Match:The jumpsuit for women is nice to match with a hat, a pair of sandals and necklace etc. It could be wear to any day event, casual and sexy clothing for your own wardrobe.", "Garment Care:Machine washable.hand wash in cold,do not bleach."]	24865.8721	23992.5000	463	199	2023-07-26 12:04:09.056+00	32	2	\N
 1425	BMJL Women's Running Shorts Elastic High Waisted Shorts Pocket Sporty Workout Shorts Quick Dry Athletic Shorts Pants	["Polyester,Spandex", "Pull On closure", "Machine Wash", "Material:The running shorts for women, is made up of 95%Polyester and 5%Spandex, which is smooth, soft, breathable and comfortable.", "Style: The workout shorts for women, with elastic waistband and relaxed fit at the booty area fitting more kinds of bodyline easily, offer convenience of comfort and style day after day. And Multiple size options can easily meet normal or plus size need.", "Phone Pocket: The pants for women, with Side Pockets design, and it is big enough to put your phones or other belongings.", "Occasions: The athletic shorts for women is perfect for yoga,exercise,fitness,training,any type of workout,or indoor or outdoor, or daily wear, casual wear, lounging at home.", "Size Guide: All our shorts for women , are producted according to our brand size ,please choose your size refer to the last photo or Amazon size chart."]	20021.2114	19492.5000	463	199	2023-07-26 12:04:10.545+00	47	2	\N
 1437	BALEAF Women's Pleated Tennis Skirts High Waisted Lightweight Athletic Golf Skorts Skirts with Shorts Pockets	["Body: 90% Polyester, 10% Spandex; Waist: 82% Polyester, 18% Spandex; Liner: 90% Polyester, 10% Spandex", "Elastic closure", "Machine wash in Delicate cycles, Do not bleach, Tumble dry low temperature, Low temperature iron", "[Pleated Athletic Skirt] - Pleated hem at the back is flowy and cute, and the A-line silhouette makes you look slim. These tennis skirts for women show your femininity in a more fashionable air during a workout.", "[Tummy Control] - High waist and soft wide knit waistband offer tummy support and full coverage.", "[3 Pockets] - Multiple pockets give you enough room to stash items like phones, cards, keys, and tennis/golf balls. The pockets are lined with mesh to reduce bulks.", "[Anti-slip Strip] - Silicone leg grippers hold the tennis skirts in place while the inner drawcord offers you an adjustable fit.", "[Occasions] - 14\\" tennis skirts are perfect for tennis, golf, pickleball, running, workout, outdoor sports, or casual wear."]	23302.9210	22492.5000	463	199	2023-07-26 12:04:16.799+00	8	2	\N
-1449	AUTOMET Womens 2 Piece Outfits Lounge Matching Sets Two Piece Linen Shorts Crop Tops 2023 Trendy Clothes Summer Vacation Set	["30% Linen,70% Rayon", "Imported", "Pull On closure", "Machine Wash", "Material: 30% Linen and 70% Rayon,the fabric is breathable, skin friendly and lightweight, keep your comfy and fashion style in spring, summer and fall.", "Design: Linen lounge sets for women, short sets 2 piece outfits, sleeveless, square neck,solid color, relaxed fit, tank crop top,two pieces workout sets,preppy clothes, matching high waisted loose athletic shorts with two sides pockets,standard size,suit for summer vacation.", "Occasion: This trendy womens two piece summer casual outfits cute matching sets suitable for casual, daily wear,travelling,vacation,beach, outdoor activity, shopping, office, party, school, running,club, sport, gym, dancing, skating, hiking, biking, yoga, spring, fall and winter.It's also a good gift to your friend or family.", "Match: 2023 summer fashion 2 piece matching sets, easy to pair with shacket, shirts, coat, jacket, cardigan,loose fit,extra roomy and cozy, perfect with sneaker, casual shoes to creating a fashion and pretty looking in spring, fall and winter. Can match anything you like,like necklaces, watches, bracelets, earrings, rings, fashion satchels,etc.", "Tips: Please refer to the AUTOMET Size Chart before ordering(NOT AMAZON SIZE). Any other questions, please contact us."]	28678.9219	27742.5000	463	199	2023-07-26 12:04:22.738+00	43	2	\N
+-- 1449	AUTOMET Womens 2 Piece Outfits Lounge Matching Sets Two Piece Linen Shorts Crop Tops 2023 Trendy Clothes Summer Vacation Set	["30% Linen,70% Rayon", "Imported", "Pull On closure", "Machine Wash", "Material: 30% Linen and 70% Rayon,the fabric is breathable, skin friendly and lightweight, keep your comfy and fashion style in spring, summer and fall.", "Design: Linen lounge sets for women, short sets 2 piece outfits, sleeveless, square neck,solid color, relaxed fit, tank crop top,two pieces workout sets,preppy clothes, matching high waisted loose athletic shorts with two sides pockets,standard size,suit for summer vacation.", "Occasion: This trendy womens two piece summer casual outfits cute matching sets suitable for casual, daily wear,travelling,vacation,beach, outdoor activity, shopping, office, party, school, running,club, sport, gym, dancing, skating, hiking, biking, yoga, spring, fall and winter.It's also a good gift to your friend or family.", "Match: 2023 summer fashion 2 piece matching sets, easy to pair with shacket, shirts, coat, jacket, cardigan,loose fit,extra roomy and cozy, perfect with sneaker, casual shoes to creating a fashion and pretty looking in spring, fall and winter. Can match anything you like,like necklaces, watches, bracelets, earrings, rings, fashion satchels,etc.", "Tips: Please refer to the AUTOMET Size Chart before ordering(NOT AMAZON SIZE). Any other questions, please contact us."]	28678.9219	27742.5000	463	199	2023-07-26 12:04:22.738+00	43	2	\N
 1451	LILLUSORY Women's 2 Piece Trendy Outfits Oversized Slouchy Matching Lounge Sets Cozy Knit Loungewear Sweater Sets	["55% Acrylic, 45% Cotton", "Imported", "Button closure", "Hand Wash Only", "Just as chic as it is comfy, this sweater set is the perfect all-around relaxed oversized look.", "Design: Top: crew neck, button design, long sleeve, oversized loose, side slit, dropped raglan sleeves; Pants: Elastic waistband, high-rise design, pull-on style. Worn as a set or separately to run errands or wear boots and wear it to dinner, it is so versatile you can wear it anyway you want.", "Perfect in a so soft knit fabrication, this two piece matching sets is a cozy instant outfit.Slouchy, relaxed fit with wide-leg pants.", "Versatile: Able to be dressed up with booties, down with sneakers and can be worn as a set, or as separates. Effortless cozy and chic designs for a laidback, throw-on-and-go approach to dressing.", "Care: Machine washable or handwash, in cold water, gentle cycle"]	39323.6149	38992.5000	463	199	2023-07-26 12:04:23.857+00	44	2	\N
 1453	2023 Newest Added Lift Super-thin Sticky Nipple Covers Silicone Petals Adhesive Strapless Backless Bras Pasties	["100%Silicone", "Hand Wash", "PAPER-THIN:Our nipple covers bra have rabbit pull wings to lift your breasts up easily.The whole pasties are light and thin with only 0.09 inch and the key parts in the middle of the bra are thickened,and the surrounding edges are fitted your breasts extremely you will never feel embarrassed when wearing it.", "100% SILICONE MATERIAL:The invisible bra are made up of 100% high quality skin-friendly silicone.High adhesion strength to make your chest to maintain a good comfortable breathable position,without having to worry about falling off.", "INSTANT BREAST LIFT:Our Nipple Covers can conform to your figure seamlessly while staying in place.They are more sticky and don't easy to slide.Our package contain:2 pairs of rabbit ear nipple patches(reusable)and 5 pairs of disposable breast patches.", "PORTABLE FOR ANY OCCASIONS:Our adhesive silicone bra allow you to free yourself from the shackles of traditional bras.They are small,cute,portable and easy to wear.They can be invisible under your clothes and lift your breasts to make it look fuller and perfect for strapless and backless tops,wedding and formal dresses.", "HAND WASH&REUSABLE:This rabbit ear silicone nipple covers bra can be reusable for many times with good maintain.Just hand wash with water after each use and air dry it."]	14575.7719	14242.5000	463	199	2023-07-26 12:04:24.946+00	47	2	\N
 1538	OQQ Women's Yoga Rompers Sexy One Piece Spaghetti Strap Tummy Control Padded Sports Bra JumpSuits	["70% Nylon, 25% Polyester, 5% Spandex", "进口", "Pull On closure", "Hand Wash Only", "70%Nylon 25%Polyester 5% Spandex", "Super flattering, Seamless reduce chafing and increase comfort, Paded bra is very supportive, Compression tight shorts butt lifting", "Moisture-wicking, breathable and stretchy fabric keeps you dry and comfortable and shapes you right", "Material is very soft and comfy. Spaghetti strap is adjustable. Fabric is thick enough non see through, flattering and squat proof!", "COMPRESSION TIGHTS to protect against muscle trauma during training. Provide support to the upper leg muscles and reduce muscle vibrations."]	3101.8088	2917.5000	463	199	2023-07-26 12:05:07.325+00	32	2	\N
@@ -1457,7 +1457,7 @@ COPY public.products (product_id, title, description, list_price, net_price, ven
 1455	LouKeith Tennis Skirts for Women Golf Athletic Activewear Skorts Mini Summer Workout Running Shorts with Pockets	["75% Nylon, 25% Spandex", "Elastic closure", "Machine Wash", "COMFY MATERIAL: Soft, skin-friendly nylon fabric wicks moisture away from skin to keep you cool and dry. Ideal wear for tennis, golf, volleyball, running, athletics, workout, racing, yoga, cheerleading and everyday casual wear. It also figure flattering and useful for all seasons and various occasions.", "2 in 1 OUTFIT SKIRTS: LouKeith tennis skirts combines a lightweight, stretchy outer layer with breathable built-in bike shorts that flex as you fitness. The inner short can provide you with extra coverage and support, enhances your range of motion, not see through when you've been sweating on the court, make you move carefree.", "WIDE ELASTIC WAIST: The activewear skorts with compression-fit shorts inside is elastic and comfortable to wear, which can tummy control mildly and stay in place, not roll down when you do sport. Flat, high-rise waistband creates a snug fit, provides a nice natural fit with plenty of coverage while bending and stretching.", "SIDE POCKET: 1 pocket in this golf skirt with shorts can play different roles. Give you enough room to hold tennis balls and also secure to store essentials like phone, airpods, card etc.", "FASHION ACTIVE FIT: Split on the side put a unique design on a classic style. Cheer mini buttocks skirts highlight your waist and hip curve, help you enjoy the beauty while exercising. Lovely summer skorts can be matched with T-shirts, crop tank and tops, make you more charming."]	20929.7507	20242.5000	463	199	2023-07-26 12:04:25.887+00	10	2	\N
 1456	PRETTYGARDEN Women's Loose Solid Off Shoulder Elastic Waist Stretchy Long Romper Jumpsuit	["65%Polyester30%Viscose5%Spandex", "Imported", "Hook and Eye closure", "Machine Wash", "Size Guide: S=US 4-6, M=US 8-10，L=US 12-14，XL=US 16-18 High Quality Stretchy And Soft Fabric Made The Dressy Jumpsuit Works With Most Body Types, And Provides You The Ultimate Comfy Wearing Experience.", "HIGHLIGHT : Summer Jumpsuits For Women Casual Has A Elegant Off Shoulder Design Which Can Perfectly Modify The Neck Curve. Classic Beam Foot Style Never Go Out Of Trendy And Keep You Cozy. The Loose Jumpsuit Have Solid Color, Stripe Pattern, Leopard Print, And Tie Dye, A Variety Of Choices, There Is Always One Is Your Favorite.", "FEATURES: Elastic Waist, Beam Foot, Round Neck, Off the Shoulder, Short Sleeve, Solid color, Elastic Waist, Keyhole Back, Long Pants Jumpsuit, Casual Style, Lightweight and Breathable", "FASHION JUMPSUITS FOR WOMEN: Great With Jacket, Sneakers, Sandals, Heels And Hat For Stylish Looks. A Perfect Jumpsuit For Beach, Party, Vacation, Office, Street Wear, Cocktail, Daily Life And Other Occasions In Summer.", "CASUAL PANTS ROMPER: Women Off Shoulder Jumpsuit Can Be Worn Both At Home And Outdoor Thanks To The Long Pants Romper Comes Comfy And Style Together. Ladies One Piece Outfits Is The Must Have Item In Women’s Wardrobes To Meet You Daily Needs."]	29321.8728	28492.5000	463	199	2023-07-26 12:04:26.365+00	35	2	\N
 1457	FULLSOFT 4 Pack Biker Shorts for Women with Pockets – 5" High Waisted Tummy Control Workout Yoga Running Gym Short Pants	["92% Polyester, 8%Spandex", "Imported", "Pull On closure", "Hand Wash Only", "✓TWO SIDE OF POCKET : Our women compression biker shorts feature big side pockets, which are available for Mobile Phone.Chafe-free and ergonomic seams for a natural range of motion. Perfect for yoga, biking, volleyball, exercise, fitness, weightlifting, running, any type of workout, or everyday casual use.", "✓HIGH RISE : The 5\\" wide band area applied the most recent 4-way stretch fabric technique, comfortable lies flat against your skin and won't dig in. Step up your workout wardrobe with these so sleek bike shorts featured in a high-rise, fashion design with figure-flattering seam details.", "✓SOFT FABRIC: You will love our leggings once you put them on and experience a perfect combination of softness and stretchiness. They are made from 92% polyester and 8% Spandex to give you freedom of movement no matter what you’re doing.", "✓APPLICABLE OCCASION : Grab a pair of black yoga short for a day at the office, and pack a pair of the shorts for happy hour. Add a pair of heels to both, and you have a perfect look. For happy hour, add a crop top and jacket, and you will get all of the attention.Gusseted crotch for greater freedom of movement. Can be weared then under dresses or skirts as well to prevent chub-rub.", "✓SHORTS FOR ALL SIZES : Add these women’s short leggings to your cart by clicking the \\"Add-to-Cart\\" button and buy it now. We run out of inventory quickly, so order now while colors and styles last."]	20124.8594	19492.5000	463	199	2023-07-26 12:04:26.866+00	45	2	\N
-1459	5 Pairs Pilates Socks Yoga Socks with Grips for Women Non-Slip Grip Socks for Pure Barre, Ballet, Dance, Workout, Hospital	["Cotton 80%, Spandex 20%", "✅PREMIUM MATERIAL - Made of an 80:20 combination of premium cotton and spandex, our athletic crew grip socks are soft, breathable, durable and skin-friendly. Moisture wicking performance keeps your feet dry and comfortable without sweaty feeling. Medium thickness is suitable for all seasons including summer and winter.", "✅FULL SOLE NON-SLIP SILICONE GRIPS - Featured by 100% silicone gel sticky dots on the bottom, our anti-skid yoga socks offer better grip on hardwood floors, tile floors, gym floors, or Pilates equipment for improved stability & balance so that you can stay safe, avoid injuries and have better control of your body movements.", "✅GOOD CRAFT - Grips are made of soft and flexible silicone, they will not crack no matter how much you pull and guarantee durability and good firm. Durable elastane added keep the non slip socks wearing a long time without out of shape. SEAMLESS TOE DESIGN avoids rubbing and blisters. ELASTIC ARCH SUPPORT is for snug and secure fit.", "✅FIT JUST RIGHT - One Size fits Women’s US shoe size 5.5-9. These adult grippy socks are perfect for yoga, pilates, bikram, barre, ballet, studio, gym or dance. Also ideal for hospital socks, floor socks, physiotherapy, elderly care, pregnancy and more to prevent falls from stairs, or the floor.", "✅GREAT GIFT CHOICE - Grip Socks for women make a great gift for the pregnant, the elderly, the patients or a new mother. Anyone would appreciate it as the socks are convenient to carry and wash. Ideal for them stay in the hospital, and also when they are getting up in the middle of the night onto cold floors, or spending their days at home with the baby."]	13529.0376	13162.5000	463	199	2023-07-26 12:04:27.899+00	25	2	\N
+-- 1459	5 Pairs Pilates Socks Yoga Socks with Grips for Women Non-Slip Grip Socks for Pure Barre, Ballet, Dance, Workout, Hospital	["Cotton 80%, Spandex 20%", "✅PREMIUM MATERIAL - Made of an 80:20 combination of premium cotton and spandex, our athletic crew grip socks are soft, breathable, durable and skin-friendly. Moisture wicking performance keeps your feet dry and comfortable without sweaty feeling. Medium thickness is suitable for all seasons including summer and winter.", "✅FULL SOLE NON-SLIP SILICONE GRIPS - Featured by 100% silicone gel sticky dots on the bottom, our anti-skid yoga socks offer better grip on hardwood floors, tile floors, gym floors, or Pilates equipment for improved stability & balance so that you can stay safe, avoid injuries and have better control of your body movements.", "✅GOOD CRAFT - Grips are made of soft and flexible silicone, they will not crack no matter how much you pull and guarantee durability and good firm. Durable elastane added keep the non slip socks wearing a long time without out of shape. SEAMLESS TOE DESIGN avoids rubbing and blisters. ELASTIC ARCH SUPPORT is for snug and secure fit.", "✅FIT JUST RIGHT - One Size fits Women’s US shoe size 5.5-9. These adult grippy socks are perfect for yoga, pilates, bikram, barre, ballet, studio, gym or dance. Also ideal for hospital socks, floor socks, physiotherapy, elderly care, pregnancy and more to prevent falls from stairs, or the floor.", "✅GREAT GIFT CHOICE - Grip Socks for women make a great gift for the pregnant, the elderly, the patients or a new mother. Anyone would appreciate it as the socks are convenient to carry and wash. Ideal for them stay in the hospital, and also when they are getting up in the middle of the night onto cold floors, or spending their days at home with the baby."]	13529.0376	13162.5000	463	199	2023-07-26 12:04:27.899+00	25	2	\N
 1462	4-Pairs Arm Sleeves for Men and Women - Tattoo Cover Up - Cooling Sports Sleeve for Basketball Golf Football	["92.2% Nylon, 7.8% Spandex", "Imported", "DURABLE MATERIAL - Cooling Arm Sleeve is made of durable, weather resistant and stretchy material. Arm Covers are chemical FREE and completely safe for you and your kids. Material is breathable, dries fast, wicks moisture away from the skin and makes your skin feel fresh all day.", "UPF 50 PROTECTION - Our cooling UV protection sleeves use innovative technology that blocks over 98% of harmful UVA and UVB rays so it offers UPF 50+ protection. Our is perfect for hot sunny days to protect yourself and others from the sun.", "ANTI-SLIP & EXQUISITE STITCHING - Discover the one of a kind UV protection arm sleeves with special elastic band nonskid design and delicate stitching. Nonskid elastic band stick on your skin and won't let the sleeves slip annoyingly. These sleeves won't be easily ripped off because of the elaborate sewing with high-quality articulated seaming.", "STRETCH FIT AND WASHABLE - With compression sleeves your muscles can perform for longer periods, recover more rapidly, protect better against injuries. And this sleeves are incredibly durable and stretchy. Easy to machine wash and hang dry.", "FOR ALL SPORTS & OUTDOOR ACTIVITIES - Designed for long, hot hours under the sun, our lightweight arm sleeves will keep you comfortable whether you're golfing, fishing, playing basketball, cycling, hiking, driving or even gardening. Expect ultimate comfort and protection wherever adventure takes you."]	8992.1681	8887.5000	463	199	2023-07-26 12:04:29.309+00	12	2	\N
 1475	CUPSHE Women's One Piece Swimsuit Sexy Black Cutout Scallop Trim Bathing Suit	["Special Fabric: 90%Polyester, 10％Spandex", "Imported", "Hook and Eye closure", "Regular Wash", "Design: Black Knotted Scalloped One Piece Swimsuit. Scalloped Trim Detailing Along the Neckline and Along the Leg Opening. The Cutout Design Adds a Little Flirtiness to This Classic Swimsuit Style.", "About Cup Style: Removable Pads", "Garment Care: Regular Wash. Recommend with Cold Water. Do not Use Bleach. Do not Tumble Dry.", "Occasion: Best Holiday Gifts for Mom, Wife, Girlfriend or Women You Love. Perfect for Tropical Vacations, Summer, Beach & Pool, Honeymoon, Cruise.", "Available in XS, S, M, L, XL, XXL. (XS=0-2, S=4-6, M=8-10, L=12-14, XL=16-18, XXL=20). Please Refer to Our Size Chart for Specific Measurements to Achieve the Perfect Fit."]	27478.8109	26992.5000	463	199	2023-07-26 12:04:36.045+00	26	2	\N
 1463	FINETOO 6 Pack Women’s Seamless Hipster Underwear No Show Panties Invisibles Briefs Soft Stretch Bikini Underwears XS-XL	["90% polyester and 10% Spandex", "Imported", "Hand Wash Only", "Size guide [Waist Measurements]: XS = 24.41 - 28.34\\"; S = 28.35 - 31.89\\"; M = 32.28-35.93\\" ; L= 36.22-39.76\\" ; XL = 40.16-43.70\\". [Hip Measurements]: XS= 29.92 - 33.46\\"; S = 33.86-37.40\\" ; M= 37.80-41.34\\" ; L = 41.73-45.28\\"; XL = 45.67-47.24\\".", "Seamless Underwear: Low waist, just like the second layer of skin to meet the picky requirements of the butt for comfort. you won't get foreign body sensation and it can reduce the friction during exercise, you can easily control all kinds of material fabric dresses or semi-nude dresses, with sweatpants or tight-fitting professional wear can also reveal the traces, highlighting the human body beautiful lines.", "BIKINI CUT: These seamless underwear is great to wear under your workout pants. No slipping and no riding up", "Multiple colors make it easier to match your bra. Perfectly show your sexy and charming. (The real color of the item may be slightly different from the pictures shown on website caused by many factors such as brightness of the monitor and light brightness, please understand.)", "101% SATISFACTION CUSTOMER SERVICE -- If you receive the Wrong Size/Wrong items/Defective Product, please feel free to contact us. And we desire to know your true ideas of all details about the items, so that we can do better at products&service."]	17469.6771	16492.5000	463	199	2023-07-26 12:04:29.765+00	50	2	\N
@@ -1471,7 +1471,7 @@ COPY public.products (product_id, title, description, list_price, net_price, ven
 1470	Popilush Shaper Dress Bodycon Slip Maxi Dress Built in Shapewear Bra 8 in 1 Women Sleeveless Casual Summer Dresses	["modal", "Made in the USA or Imported", "Hand Wash Only", "【8 IN 1 DESIGN DETAILS】The non-compressive butt design creates a peach butt. Mesh lining is designed to sculpt the thigh contour. Adjustable straps for a truly custom fit. Detachable cups provide you with versatile wearing methods. The abdominal double layer design can smooth your abdomen. Outer fitted dress is a good way to highlight your fashion taste. Shaping bodysuit underneath can create a perfect figure.", "【ECO-FRIENDLY MODAL FABRIC】The outer slip dress is made of high-quality modal fabric, and modal is made from regenerative plants and there are fewer chemicals used in the production process than with other types of rayon. What's more, modal is completely biodegradable. We recommend buying clothes that are a size bigger.", "【UNIQUE BUILT IN SHAPEWEAR DESIGN】This is not a simple Bodycon dress, it is a fitted dress with a built-in body shaper. In this way, you only need to wear our bodycon dress, which is equivalent to the effect of other people wearing bodysuits under dresses. And our sleeveless dresses with shapewear can be more seamless and comfortable, creating a perfect hourglass figure for you in just a step.", "【COMFORTABLE FABRIC OF INNER SHAPER】The inner shapewear is made with high-quality skin friendly fabric, stretchy and sweat-absorbent, let your skin breathe fresh air freely, comfortable enough to wear all day.", "【FOR ANY OCCASION】Perfect for Daily wear, Lounge, Holiday, Beach, Wedding guests, Evening Parties, Dating, Gala, and Other Occasions. Also Suit for Garden Picnic, Retro Tea Party, Club Wearing, Night Out, Birthday party, Senior Graduation Celebration Party, Reception, Cocktail Party, Fancy Dinner Date, Show Performance, Music&Arts Festival, and other events."]	51912.9275	50992.5000	463	199	2023-07-26 12:04:33.445+00	40	2	\N
 1472	Columbia Women's Freezer Iii Dress	["89% Polyester, 11% Elastane", "Imported", "Pull On closure", "ADVANCED TECHNOLOGY: Columbia Women's Freezer III Dress features our signature wicking fabric that pulls moisture away from the body, advanced cooling technology, and UPF 30 sun protection that helps block UVA and UVB rays.", "ACTIVE FIT: This stretchy performance dress features an active fit that remains comfortable during active days.", "STRETCH FABRIC: Polyester and elastane-blend fabric provide stretch, comfort, and a wide range of motion.", "VERSATILE: The stylish silhouette and comfortable fabric make this dress every female angler's dream.", "OMNI-SHADE: Be safe and protected. Omni-Shade blocks UVA and UVB rays to help prevent sunburns and long-term skin damage. The tight weave construction with UV absorbent yarns block the full spectrum of harmful UV rays."]	35649.9393	34965.0000	463	199	2023-07-26 12:04:34.572+00	28	2	\N
 1480	Spanx Higher Power Shorts - High-Rise Waist Shapewear, Tummy Control, Breathable	["100% Nylon", "Imported", "Pull-On closure", "Hang Dry", "Style Number: 2745.", "INCREDIBLE SUPPORT: Looking for lightweight all-day tummy control? You're in the right place. This body shaper for women doesn't ride up and has no center seam, so it's totally invisible under clothes.", "LAYERABLE GARMENT: Available in regular and plus sizes, this body shapewear offers the stay-put waistband, a no-slip strip that keeps your shapewear in place all day long.", "TARGETED SHAPING: This tummy control shapewear style features shaping zones that target the stomach and is designed with comfy fabric that provides all-over support.", "FABULOUS DESIGN: The best-selling SPANX Tummy Control Shorts features a high-waist for more coverage and no muffin top, soft yarns offering smooth results with less squeeze. It is designed to be your everyday essential!"]	27888.4768	26985.0000	463	199	2023-07-26 12:04:38.531+00	10	2	\N
-1473	Trendy Queen Women Half Zip Cropped Hoodies Fleece Quarter Zip Up Pullover Sweatshirts Winter Clothes 2023 Outfits Sweater	["95%rayon，5%spandex", "Imported", "Zipper closure", "Machine Wash", "★Material: 95% rayon and 5% spandex, lightweight, breathable,super soft and fuzzy fleece lined material, this pullover tops will definitely keep you warm all day.", "★Design: Athletic workout hoodies,women pullover sweatshirt,drop shoulder collar, long sleeve with thumb holes, half zip collar, solid color, cropped length,fleece lined, relaxed fit,crop top, winter outfits for women, fashion and casual style, it's thick and really soft inside, standard size, a sweatshirt that goes with everything.", "★Match: This winter Fashion Hoodies is easy to pair with casual pants, jeans, joggers.The exaggerated fit that feels extra roomy, neither too short nor too long, perfect with shorts, sneaker, casual shoes to creating a fashion and pretty looking in spring, fall and winter. You can also match anything you like inside,like tank top, crop tops, vest, etc.", "★Occasion: Quarter Zip Pullover Sweatshirt for women, suitable for casual, daily wear, office, playing ball, party, school, running, sport, gym, dancing, skating, hiking, biking, yoga, spring, fall and winter. It's also a good gift to your friend or family.", "★Tips: Please refer to the Trendy Queen Size Chart before ordering(NOT AMAZON SIZE). Any other questions, please contact us."]	30499.3047	29992.5000	463	199	2023-07-26 12:04:35.087+00	21	2	\N
+-- 1473	Trendy Queen Women Half Zip Cropped Hoodies Fleece Quarter Zip Up Pullover Sweatshirts Winter Clothes 2023 Outfits Sweater	["95%rayon，5%spandex", "Imported", "Zipper closure", "Machine Wash", "★Material: 95% rayon and 5% spandex, lightweight, breathable,super soft and fuzzy fleece lined material, this pullover tops will definitely keep you warm all day.", "★Design: Athletic workout hoodies,women pullover sweatshirt,drop shoulder collar, long sleeve with thumb holes, half zip collar, solid color, cropped length,fleece lined, relaxed fit,crop top, winter outfits for women, fashion and casual style, it's thick and really soft inside, standard size, a sweatshirt that goes with everything.", "★Match: This winter Fashion Hoodies is easy to pair with casual pants, jeans, joggers.The exaggerated fit that feels extra roomy, neither too short nor too long, perfect with shorts, sneaker, casual shoes to creating a fashion and pretty looking in spring, fall and winter. You can also match anything you like inside,like tank top, crop tops, vest, etc.", "★Occasion: Quarter Zip Pullover Sweatshirt for women, suitable for casual, daily wear, office, playing ball, party, school, running, sport, gym, dancing, skating, hiking, biking, yoga, spring, fall and winter. It's also a good gift to your friend or family.", "★Tips: Please refer to the Trendy Queen Size Chart before ordering(NOT AMAZON SIZE). Any other questions, please contact us."]	30499.3047	29992.5000	463	199	2023-07-26 12:04:35.087+00	21	2	\N
 1474	Niidor Adhesive Bra Strapless Sticky Invisible Push up Silicone Bra for Backless Dress with Nipple Covers	["100% silicone", "Imported", "Clasp closure", "Hand Wash Only", "STRONG STICKINESS, NO SLIPPING DOWN - Niidor strapless bra is made of sticky and skin-friendly silicone adhesive, unlike other inferior material which would easily slip down and irritate skin, Niidor strapless bra sticks on perfectly without causing pain, providing you an unprecedented experience", "CONVENIENT AND STRONG CLIP - With the unique front clip design, our strapless bra can easily to clasp and unclasp. Strong enough and help to gather your breasts, bringing you a busty and charming deep v-shaped cleavage", "SEAMLESS AND INVISIBLE - Our bra is strapless, very soft and clear, the micro edge design and nude color adhesive silicone make it seamless and invisible under your clothing in a comfortable and natural way. Nobody would notice that you are wearing our strapless bra", "BE AN EYE CATCHING WINNER IN ALL OCCASIONS - Our strapless bra is the greatest companion to outfits, such as backless dresses, off shoulder gowns, halter dress, wedding dress, etc. No more embarrassing showing bra straps", "EASY-CLEANING & REUSABLE - It is easy to clean only need to simply wet the adhesive surface with warm water and mild detergent and then air to dry it. This strapless bra can be reusable for many times with good maintain. Free Gift: 2PCs sticky Silicone Nipple Covers"]	18734.3101	17992.5000	463	199	2023-07-26 12:04:35.566+00	37	2	\N
 1280	Headwolf Android Tablet with Keyboard, 2 in 1 10 Inch Tablet 12GB+128GB+512GB Expand Octa Core Android 12 Tablet with Case Mouse Stylus, 7700mAh Battery, 16MP Camera, WiFi, Bluetooth 5.0, GPS (Gray)	["Octa Core CPU Gaming Tablet - Looking for a powerful 10 inch tablet that can handle all your needs? Look no further than our Headwolf Wpad3 Android tablet! With its powerful MT8183 8-core processor, paired with the latest Android 12 system. This Android tablet offers lightning-fast app launching, super smooth gaming, and an amazing multimedia experience", "Portable 2 in 1 Tablet with Keyboard - The Android tablet 10 inch comes equipped with a Bluetooth keyboard, mouse, and stylus as well as a foldable protective case, allowing you to seamlessly transform your 10 inch tablet into a laptop-style device. This versatility makes it the ideal device for those who need to be productive on the go, whether it be for work, study, or play", "Large Memory - This 10 inch tablet comes with built-in Bluetooth 5.0 and supports both 2.4G and 5G dual-band WIFI networks. It boasts a powerful storage combination of 12GB RAM（6GB+6GB achieved through expansion technology) and 128GB ROM, utilizing DDR4X packaging technology and UFS2.1 for faster and more stable running and storage speeds. In addition, it can be expanded up to 512GB with a TF card (card not included) for extra storage. Please note that this is a WIFI tablet and does not support SIM cards", "Large Capacity Battery - The android 12 tablet built-in 7700mAh cobalt lithium battery is not only large capacity and durable, but also safer than standard batteries. High endurance, a charge can last 10 hours of use. Type-C interface does not distinguish between positive and negative, convenient for you to charge the android tablet at any time", "High Pixel Dual Camera - Capture all the beautiful moments in your life with the tablet's high-pixel dual camera. The 8MP front-facing and 16MP rear-facing cameras allow for super-smooth video chats and stunning photos and videos. 10 inch tablet equipped with a 10.1-inch HD IPS display and a high screen pixel density of 189 PPI, colors are bright and vivid, providing a more realistic visual experience", "Package includes - 1 x Wpad3 Android Tablet, 1 x Keyboard, 1 x 10 inch Tablet Case, 1 x Mouse, 1 x Condenser Stylus, 1 x Charger, 1 x Type-C Cable, 1 x Card Pin, 1 x User Manual. We provide you with a one-year repair and replacement and 24-hour dedicated customer service and technical support. If you have any problems with your Android tablet, you can contact us through Amazon \\"Your Order - Get Help\\". We will provide you with the perfect solution", "We Value Your Experience - We will continue to release software upgrade packages based on customer feedback. The latest release addresses known bugs and glitches, and we recommend that you update your 10 inch tablet in a timely manner to enjoy improved UI optimization and better user experience. You can update your Android tablet to the latest version through : Settings-About Tablet-System Update"]	143415.5458	142492.5000	463	199	2023-07-26 12:02:57.536+00	29	1	\N
 1324	SAMSUNG Galaxy Tab S7+ Plus 12.4” 128GB Android Tablet w/ S Pen Included, Edge-to-Edge Display, Expandable Storage, Fast Charging USB-C Port, ‎SM-T970NZKAXAR, Mystic Black	["PC PERFORMANCE. TABLET PORTABILITY: Transform your tablet into a PC experience with DeX mode and the optional keyboard with expanded trackpad (Keyboard sold separately)", "REDESIGNED S PEN INCLUDED: With improved 9ms pen latency, the redesigned S Pen can control presentations and take notes effortlessly", "ENTERTAINMENT, UPGRADED: Experience cinematic viewing with larger edge-to-edge displays, TFT LCD screen,** and AKG quad speakers with Dolby Atmos surround sound", "CHARGE FAST, POWER FOR HOURS: Go for hours on a single charge and back to 100% with the fast-charging USB-C port", "SYNC AND SEND FROM ANY SPACE: With One UI 3.1, you can copy text or an image from your phone and paste it on your tablet, and vice versa", "CHANGE THE WAY YOU GAME: Bring console gaming to anywhere a Wi-Fi connection is available with an immersive screen and Bluetooth-enabled controller", "UNLOCK WITH A TOUCH: The fingerprint scanner is the most secure way to keep what’s yours, yours; To unlock, simply touch the in-display or side-mounted scanner and you’re in"]	397726.8942	397492.5000	463	199	2023-07-26 12:03:19.425+00	15	1	\N
@@ -1483,20 +1483,20 @@ COPY public.products (product_id, title, description, list_price, net_price, ven
 1433	Nike Women's Pro 3in Training Shorts	["100% Polyester", "Elastic closure", "Hand Wash Only", "Dri-FIT technology moves sweat from your skin for quicker evaporation—helping you stay dry, comfortable and focused.", "The flat, elastic waistband offers you a smooth fit that stays in place.", "Gusseted crotch lets you move freely and increases mobility."]	25134.8187	24720.0000	463	199	2023-07-26 12:04:14.825+00	17	2	\N
 1460	Womens Summer Tank Tops Casual Crewneck Sleeveless T Shirts Graphic Loose fit Tops	["60% Polyester, 35% Rayon, 5% Spandex", "Imported", "Pull On closure", "Machine Wash", "Material: 35%Rayon/60%Polyester/5%Spandex,Super Soft,Comfortable,Lightweight,Stretchy Fabric Perfect for Relaxed Everyday Wear.", "Feature: round neck, sleeveless, solid color, loose fit, lightweight, oversized, cotton tops, summer basic tank tops.", "Match: You can pair this basic tops under a jacket, with jeans, leggings or a skirt in spring, summer, fall and winter.", "Occasion: Suit for home, travel, vacation, beach, weekend, dating, summer, everyday wear.", "Note: Size Chart in descriptions, please check it before your order."]	14570.6551	14137.5000	463	199	2023-07-26 12:04:28.345+00	42	2	\N
 1479	Colorfulkoala Women's High Waisted Capri Leggings with Pockets 21" Inseam Workout Yoga Pants	["75% Polyester, 25% Spandex", "elastic closure", "Crafted from a brushed, buttery soft and stretch fabric for delivering you the naked sensation and the unrestricted movement", "Experience the comfort of yoga pants with a seamless waistband that does not dig in", "Side pockets allow you to store your personal items when you’re on the go", "Flatlock construction minimize chafe", "Approx. 21” inseam; mid-calf length"]	18466.9069	17992.5000	463	199	2023-07-26 12:04:38.046+00	11	2	\N
-1486	5 Pairs Pilates Socks Yoga Socks with Grips for Women Non-Slip Grip Socks for Pure Barre, Ballet, Dance, Workout, Hospital	["Cotton 80%, Spandex 20%", "✅PREMIUM MATERIAL - Made of an 80:20 combination of premium cotton and spandex, our athletic crew grip socks are soft, breathable, durable and skin-friendly. Moisture wicking performance keeps your feet dry and comfortable without sweaty feeling. Medium thickness is suitable for all seasons including summer and winter.", "✅FULL SOLE NON-SLIP SILICONE GRIPS - Featured by 100% silicone gel sticky dots on the bottom, our anti-skid yoga socks offer better grip on hardwood floors, tile floors, gym floors, or Pilates equipment for improved stability & balance so that you can stay safe, avoid injuries and have better control of your body movements.", "✅GOOD CRAFT - Grips are made of soft and flexible silicone, they will not crack no matter how much you pull and guarantee durability and good firm. Durable elastane added keep the non slip socks wearing a long time without out of shape. SEAMLESS TOE DESIGN avoids rubbing and blisters. ELASTIC ARCH SUPPORT is for snug and secure fit.", "✅FIT JUST RIGHT - One Size fits Women’s US shoe size 5.5-9. These adult grippy socks are perfect for yoga, pilates, bikram, barre, ballet, studio, gym or dance. Also ideal for hospital socks, floor socks, physiotherapy, elderly care, pregnancy and more to prevent falls from stairs, or the floor.", "✅GREAT GIFT CHOICE - Grip Socks for women make a great gift for the pregnant, the elderly, the patients or a new mother. Anyone would appreciate it as the socks are convenient to carry and wash. Ideal for them stay in the hospital, and also when they are getting up in the middle of the night onto cold floors, or spending their days at home with the baby."]	13999.0773	13162.5000	463	199	2023-07-26 12:04:41.327+00	43	2	\N
+-- 1486	5 Pairs Pilates Socks Yoga Socks with Grips for Women Non-Slip Grip Socks for Pure Barre, Ballet, Dance, Workout, Hospital	["Cotton 80%, Spandex 20%", "✅PREMIUM MATERIAL - Made of an 80:20 combination of premium cotton and spandex, our athletic crew grip socks are soft, breathable, durable and skin-friendly. Moisture wicking performance keeps your feet dry and comfortable without sweaty feeling. Medium thickness is suitable for all seasons including summer and winter.", "✅FULL SOLE NON-SLIP SILICONE GRIPS - Featured by 100% silicone gel sticky dots on the bottom, our anti-skid yoga socks offer better grip on hardwood floors, tile floors, gym floors, or Pilates equipment for improved stability & balance so that you can stay safe, avoid injuries and have better control of your body movements.", "✅GOOD CRAFT - Grips are made of soft and flexible silicone, they will not crack no matter how much you pull and guarantee durability and good firm. Durable elastane added keep the non slip socks wearing a long time without out of shape. SEAMLESS TOE DESIGN avoids rubbing and blisters. ELASTIC ARCH SUPPORT is for snug and secure fit.", "✅FIT JUST RIGHT - One Size fits Women’s US shoe size 5.5-9. These adult grippy socks are perfect for yoga, pilates, bikram, barre, ballet, studio, gym or dance. Also ideal for hospital socks, floor socks, physiotherapy, elderly care, pregnancy and more to prevent falls from stairs, or the floor.", "✅GREAT GIFT CHOICE - Grip Socks for women make a great gift for the pregnant, the elderly, the patients or a new mother. Anyone would appreciate it as the socks are convenient to carry and wash. Ideal for them stay in the hospital, and also when they are getting up in the middle of the night onto cold floors, or spending their days at home with the baby."]	13999.0773	13162.5000	463	199	2023-07-26 12:04:41.327+00	43	2	\N
 1487	GRAPENT 2023 Womens Swim Shorts Bathing Suit Bottoms for Women Board Shorts Drawstring Tulip Swimwear Beach Clothes	["82% Polyamide, 18% Elastane", "Imported", "Drawstring,Tie closure", "The high waist of our womens swim bottoms can enhance your curves and accentuate your natural waistline, creating a more feminine and flattering appearance. The adjustable drawstring waist design provides a customizable and comfortable fit when you are enjoying the water.", "Our boyshort swimsuits for women feature wrap detailing at both sides allowing for ease of movement and providing you a unique and trendy look that's sure to turn heads at the beach or pool.", "The cute swim shorts for women with built in briefs ensure a more supportive and secure fit for maximum performance and eliminate the need for additional undergarments.", "Our board shorts for women swim are made of high-quality, quick-drying, lightweight and breathable fabrics. Perfect for beach, pool, cruise, travel, vacation or any water activity.", "GRAPENT bathing suit bottoms high waisted run true to standard US sizes. Size Small fits size 4 to size 6, Size Medium fits size 8 to size 10, Size Large fits size 12 to size 14, Size X-Large fits size 16 to size 18, Size XX-Large fits size 20 to size 22."]	17299.1656	17242.5000	463	199	2023-07-26 12:04:41.791+00	31	2	\N
 1467	MANGOPOP Women's Square Neck Short Sleeve Long Sleeve Tops Bodysuit Jumpsuit	["Stretchy fabric: 95% gossypium, 5% spandex", "Imported", "Snap closure", "Hand wash recommended (Use a laundry bag if machine wash)", "Please select your size according to size chart in the last image before ordering", "Bodysuits featuring square neck, short sleeve / long sleeve", "Bodysuit for women with tanga bottom, 2 snap buttons butt closure", "Package content:1* Bodysuit"]	15737.1911	15735.0000	463	199	2023-07-26 12:04:31.665+00	49	2	\N
 1488	WIHOLL Tunic Tops for Women Loose Fit Long Sleeve Shirts Square Neck Tops	["60% Polyester, 35% Rayon, 5% Spandex", "Fabric: 60%Polyester, 35%Rayon, 5%Spandex. Super soft and lightweight fabric. And the swiss dot sleeve isn't scratchy.", "Features: This women's long mesh sleeves shirt features an unusual and flattering square neckline, which is classic and cute. Feminine swiss dot sleeves are flowy without any tight, super comfortable for daily wear.", "Matching: This women's lace ballon sleeve blouse shirt is easy to dress up, perfect for pairing with leggings, skinny jeans, jacket, coat, cardigan, and high boots for a fashionable look. And you can wear it as off shoulder top which makes you more trendy and chic.", "Occasions: This long sleeve top for women is very trendy and cute. Perfect for home, work, daily casual wear, office, shopping, travel, holiday, vacation, party, school, dating, indoor and outdoor activities. An ideal gift for your wife, girlfriend, mom.", "Attention: Please check the WIHOLL size chart before purchasing, the amazon size chart is not ours. Hand/machine wash in gentle with cold water, hang to dry or line dry, do not bleach, warm iron if needed, wash with similar color."]	22583.1852	21742.5000	463	199	2023-07-26 12:04:42.247+00	24	2	\N
 1282	kinstone Android 11 Octa-core Tablet PC,10.3 Inch 4G LTE with SIM Card Slot,4G RAM/64G ROM,Metal Shell Material,Blue Ray Eye Protection Function,GPS,5MP/13 MP Dual Camera 5G Dual WiFi,7500mAH Battery	["🏆FASTER AND MORE RESPONSIVE --- Runs on the latest Android 11 OS and certified by GMS, give a full access to Google services such as Gmail, Youtube, Maps. Basic Google apps pre-installed only and no bloatware or unexpected ads. Octa-core up to 1.8GHz and 4GB RAM guarantee rapid processing speeds for multi-tasking, you can switch between apps as you like, check mails, watch videos/movies, or shop online. Equipped with Sensitive G-sensor, making play 3D online games smoothly, fully immersive!", "🏆ENJOY EVERYDAY WITHOUT WORRIES --- Features powerful T610 CPU 12nm upgraded chipset for blistering efficiency, together with a 7500mAh battery, enjoy your entertainment without worries (about 10h for game, 11h for video), stand-by up to 600 Hours. Phone call tablets support 4G call function with 2 SIM card slots. The slim metal design and GPS make it easy for you to take online classes, business meetings anywhere using the zoom class, Facebook, skype, etc. with 4G LTE network or fast 5G WIFI.", "🏆STORE MORE, DELETE LESS --- 64GB local memory, up to 256GB of big storage via the microSD card slot, plenty of room for keeping all your favorite hi-resolution videos, works, photos and files. 13MP rear camera with flashlight turns your photos and videos into special moments and lively. 5.0 MP front camera is enough for clear and fluent video calls. What’s more, dual speakers produce higher volume, authentic audio reproduction for your favorite music, games, movies, dramas, or videos.", "🏆STUNNING FHD IPS DISPLAY --- 103SD-L tablet comes with a 10.3\\" screen, 1920 x 1200 IPS, 16:9 aspect ratio with ultra-narrow bezel design presents bold colors and brilliant display. Enjoy widescreen movies and 4K live streaming from a wider viewing angle(178°). Eye comfort mode brings you a more relaxing viewing experience. The latest Bluetooth 5.0 connectivity achieves stable and fast connection, wireless projection work well with your smart TV. Open up a new world of convenient possibilities!", "🏆SATISFACTORY SERVICE --- Kinstone Tablet, Brand Seller, Own Professionsal R&D Team, Factories Larger than 7000m², Certified Tablets, Quality Guarantee, Any Dissatisfaction, Refund and Replacement are guaranteed. 3-year Quality Assurance, 5-year After-Sales Customer Service. Any questions about rugged android tablet, we will reply within 6 hours."]	139712.2419	139492.5000	463	199	2023-07-26 12:02:58.516+00	41	1	\N
 1489	luvamia 2023 Jean Shorts Womens Mid Rise Casual Ripped Distressed Stretchy Denim Shorts Y2K Fold Hem Short Hot Pants	["75% Cotton, 24% Polyester, 1% Elastane", "Imported", "Pull On closure", "Hand Wash Only", "These womens shorts feature mid rise, traditional 5 pockets, distressing details on the front and back. The womens jean shorts are made of breathable fabric which is perfect for spring, summer and fall.", "The summer shorts for women are easy to wear with blouses, cropped tops, basic tees and more. Nice tailored blue jean shorts women are stretchy and perfect to fit many body frames.", "luvamia distressed shorts women are suitable for beach, club, festival, cruise, nashville trip, party, night out, going out, resort, weekend getaway, leisure. Wear the beach outfits for vacation, holiday, and travel as they're easy to carry.", "Comes in basic denim colors and pop colors, the womens beach clothes provide more possibilities for different occasions.", "The shorts for women casual summer sexy run standard US size: Size Small fits size 4-size 6; Size Medium fits size 8-size 10; Size Large fits size 12-size 14; Size X-Large fits size 16-size 18; Size XX-Large fits size 20-size 22."]	21105.9074	20992.5000	463	199	2023-07-26 12:04:42.787+00	17	2	\N
-1490	Nippies Nipple Cover - Sticky Adhesive Silicone Nipple Pasties - Reusable Pasty Nipple Covers for Women with Travel Box	["Silicone", "Hand Wash Only", "BREAK FREE FROM BRAS! - Replace uncomfortable bras with our silicone nipple cover. Comfortable and supportive, it conceals the areola and breast, creating a smooth finish to wear with a backless dress, bridesmaid gown, camisole top, or bathing suit.", "STAY ON ALL DAY - Hitting the gym in a sports bra? Or the dance floor of a club in sheer fabric? The sticky nipple covers for women will stay in place no matter the activity. Consistently proven to stay in place for up to 12 hours.", "YOU’LL FORGET YOU’RE WEARING THEM - Made to accommodate small or large cup sizes, the silicone pasties are virtually invisible. Designed to match skin tone and complexion without being see-through. The texture is flat and does not shine or reflect light.", "BETTER THAN STRAPLESS BRAS - The reusable nipple covers for women are easy to put on and peel off. Carefully follow instructions when removing and keep in case to maintain shape for reuse. Use the silicone nipple covers that countless women love.", "WITHSTAND HOT SUMMER HEAT & HUMIDITY - Go out on the Las Vegas strip, join a yoga class, or attend that wedding on a sunny Miami beach with these silicone nipple stickers. Crafted to provide premium ‘runway fashion model’ support without making you sweat."]	19889.1327	19875.0000	463	199	2023-07-26 12:04:43.386+00	12	2	\N
+-- 1490	Nippies Nipple Cover - Sticky Adhesive Silicone Nipple Pasties - Reusable Pasty Nipple Covers for Women with Travel Box	["Silicone", "Hand Wash Only", "BREAK FREE FROM BRAS! - Replace uncomfortable bras with our silicone nipple cover. Comfortable and supportive, it conceals the areola and breast, creating a smooth finish to wear with a backless dress, bridesmaid gown, camisole top, or bathing suit.", "STAY ON ALL DAY - Hitting the gym in a sports bra? Or the dance floor of a club in sheer fabric? The sticky nipple covers for women will stay in place no matter the activity. Consistently proven to stay in place for up to 12 hours.", "YOU’LL FORGET YOU’RE WEARING THEM - Made to accommodate small or large cup sizes, the silicone pasties are virtually invisible. Designed to match skin tone and complexion without being see-through. The texture is flat and does not shine or reflect light.", "BETTER THAN STRAPLESS BRAS - The reusable nipple covers for women are easy to put on and peel off. Carefully follow instructions when removing and keep in case to maintain shape for reuse. Use the silicone nipple covers that countless women love.", "WITHSTAND HOT SUMMER HEAT & HUMIDITY - Go out on the Las Vegas strip, join a yoga class, or attend that wedding on a sunny Miami beach with these silicone nipple stickers. Crafted to provide premium ‘runway fashion model’ support without making you sweat."]	19889.1327	19875.0000	463	199	2023-07-26 12:04:43.386+00	12	2	\N
 1507	Niidor Adhesive Sticky on Bra Macaron Color Strapless Invisible Push up Sticky Bras for Women with Nipple Covers	["100% fabric", "Imported", "Pull-On closure", "100% SAFE MATERIAL: Niidor strapless bra is made of sticky and skin-friendly silicone adhesive, High-strength stickiness keeps your chest in a good and comfortable position without worrying about falling off. Easy to wear and peel off, good stickiness does not cause any pain to the skin.", "FASCINATING DEEP \\"V\\" BRA: The sticky bra is a deep V-shaped design that helps push your chest and only need a little pull, it will give you a complete and sexy cleavage. it is better to show off your beautiful chest curve, let you become the focus of everyone.", "EUR & US SIZE DESIGN: The adhesive bra size is designed according to the European and American cups. The size is larger than the Asian Cup. It covers the chest comprehensively and does not squeeze the chest. The cup is designed according to the standard breast, so it cannot be compatible with all shapes. If you are unsure which cup to choose, please feel free to contact us at any time", "LIGHTWEIGHT & COMFORTABLE: The invisible sticky bra is light in weight, raises the chest, does not sag, and the bra buttons are transparent, not metallic, and do not cause skin problems. No sponge, give you super comfort. The style is very fashionable and suitable for all kinds of backless deep V dresses.", "EASY-CLEANING & REUSABLE: This strapless bra can be reusable for many times with good maintain. Only need to simply wet the adhesive surface with warm water and mild detergent and then air to dry it. It will still keep the adhesive gels for your next time using."]	19059.9810	18742.5000	463	199	2023-07-26 12:04:51.805+00	15	2	\N
 1512	Eomenie Women's One Piece Swimsuits Tummy Control Cutout High Waisted Bathing Suit Wrap Tie Back 1 Piece Swimsuit	["82% Nylon, 18% Spandex", "Imported", "Tie closure", "Hand Wash Only", "Criss cross one piece bathing suits: Cutout design on front and back, adds a little flirtiness and fashionable to this classic swimsuit. The back tie knot and adjustable shoulder straps fit your body curves perfectly.", "Slimming tummy control one piece swimsuits: The ruched design of the waist gives you some coverage while also being stylish. The high cut design makes your legs look more longer and shows your figure perfectly.", "Push up one piece swimsuits for women: The non-removable padded and adjustable spaghetti straps can fix the one-piece swimsuit well, give you more support, and make you more relaxed when playing.", "Occasion: This swimsuit is best for summer swimming wear, making you more charming during beach vacations, swimming in the pool, honeymoon in Hawaii, cruise vacation, etc.", "Material: The smooth fabric is elastic, soft, and comfortable, ensuring you enjoy wearing it. The soft lining gives you extra protection."]	27989.6002	26992.5000	463	199	2023-07-26 12:04:54.566+00	7	2	\N
 1515	THE GYM PEOPLE High Waist Yoga Shorts for Women's Tummy Control Fitness Athletic Workout Running Shorts with Deep Pockets	["88% Polyester, 12% Spandex", "Imported", "Pull On closure", "Hand Wash Only", "[Premium&Comfortable Material] - Non see-through, moisture wicking, quick-dry,breathable and 4-ways stretchy premium fabric. No deforming even after washes.", "[Deep Two Side Pocket] - There are 2 pockets so that you can put your phone in there. If you like listening music when you are walking or running, these 2 pockets will keep your phone or ipod well.", "[Keep Perfect Shape] - High-waisted style with tummy control design. Wide waistband contours body curves and streamlines shape help to promote yoga shorts both compression and support.", "[Fit For Most Occasions] - Our Running shorts combine fashion,function,and of the highest quality, prefect for yoga, exercise, fitness, pilates, running, or any type of exercise or fitness-related activities.", "Please Check the Size Chart (Last Image) Before Ordering, Please Note: Color May Vary Slightly From Image.and dont worry about size promble , you can through Online Returns Center exchange it if the Yoga Shorts size dont fit"]	15402.0472	14992.5000	463	199	2023-07-26 12:04:56.047+00	1	2	\N
 1517	Colorfulkoala Women's High Waisted Biker Shorts with Pockets 6" Inseam Workout & Yoga Tights	["75% Polyester, 25% Spandex", "Imported", "Pull On closure", "Machine Wash", "Crafted from a brushed, buttery soft and stretch fabric for delivering you the naked sensation and the unrestricted movement", "Side pockets allow you to store your personal items when you’re on the go", "Seamless waistband sits at the natural waist and feels light as air", "Turn your gear inside out when washing. Wash separately, air dry or tumble dry low", "Approx. 6\\" inseam"]	15157.7207	14992.5000	463	199	2023-07-26 12:04:57.005+00	47	2	\N
 1518	Aloodor Sweatsuit for Women 2 Piece Outfits for Womens Crewneck Sweatshirts Pullover	["✦ Material：95% polyester + 5% spandex,These womens 2 piece loungewear sweatsuit sets are made with superior quality and skin-friendly material to provide you more comfy and soft wearing experience.", "Imported", "Drawstring Waist closure", "Machine Wash", "✦ Features:Classic loungewear set design,long sleeve pullover tops with color block crewneck and striped sleeves,drawstring elastic waistband sweatpants with functional pocket and long stripes on both sides.These are the highlights of this 2 piece outfits and bring a fashion and casual look,which are easier to catch his eyes.", "✦ Multi-functional wear：Simple colors and styles are suitable for all occasions.Perfect for daily wear,outdoors,sports,exercise and home.It is suitable whether it is at home or going out,comfortable enough to be worn the whole day.Best for spring,fall and winter.", "✦ Reason for selection：Comfort is always the primary consideration when choosing clothes,and this sweatsuit set is your best choice.It uses smooth,stretchy and high-quality fabrics to ensure that you can feel comfortable while you are relaxing or exercising.When you sweat it does not become sticky and non itchy.It's a perfect gift for your wife,girlfriend,mom,daughter or friends.", "✦ Tips:Machine or Hand Wash with Cold Water/Hang or Line Dry/No Bleach/No Dry Clean.Try not to wear brightly colored underwear inside the white Sets,which will not see through!", "✦Please Refer to the Aloodor Size Chart before Ordering. Anyother questions, please contact us freely!"]	27413.4465	26992.5000	463	199	2023-07-26 12:04:57.526+00	32	2	\N
-1524	AUTOMET Womens Sexy Unitard Bodysuit Workout Rompers One Piece Summer Outfits Shorts Jumpsuits Gym Yoga Fashion Clothes 2023	["80% Polyester, 20% Spandex", "Imported", "Pull On closure", "Machine Wash", "Fabric: Spandex and polyester. This romper jumpsuit is made of very breathable materials. It absorbs sweat, super stretch to wear ,soft and lightweight.", "Design: Round neck, spaghetti strap, sleeveless, tight fitting, shorts, one piece basic rompers, hip lifting, comfy fabric, adjustable spaghetti straps. This is a very cute bodysuit for women and teen girls.", "Occasion: You can wear this bodycon jumpsuit at home, leisure, vacation, outdoor, beach, vacation, exercise, yoga, sports, cycling, dance, party, gym exercise suitably. It can also be given to teenage girls or as a great gift.", "Match: This tight bodysuit is a fashionable item for women or teen girls. Its fabric is very comfy, which is not only suitable for summer, but also suitable for other seasons. It can be worn alone or with sports coats, flannel, shckets, sneakers, boots, etc.", "Suggestion: It is recommended to wash it by hand or put it into a laundry bag instead of bleaching. If you have any needs or questions, please contact us, and we will solve the problem for you as soon as possible."]	15882.2534	14992.5000	463	199	2023-07-26 12:05:00.366+00	47	2	\N
-1525	AUTOMET Jumpsuits for Women Casual Summer Rompers Sleeveless Loose Spaghetti Strap Baggy Overalls Jumpers with Pockets 2023	["94% Cotton, 6% Spandex", "Imported", "Pull On closure", "Machine Wash", "Material: Spaghetti strap summer jumpsuit made of 94% cotton and 6% spandex. The fabric is soft and comfortable, stretchy, lightweight and breathable.", "Design: Loose fit overalls for women, fashionable pants,baggy style, v-neck design, spaghetti strap jumpsuits,sleeveless rompers ,casual summer outfits, with two sides pockets,solid color,standard size,suit for summer vacation, makes you look very chic.", "Occasion: Baggy overalls jumpers with pockets is suitable for casual, daily life,travelling,vacation,beach, outdoor activity, shopping, office, party, school, dinner, lounge, holiday, vacation, beach, cocktail, wedding, outdoor etc.It's also a great gift to your friend or family.", "Matching: This 2023 spring fashion clothes sleeveless Jumpsuit is perfect for matching with tank tops, tube tops， tshirts, coats, pendants, necklaces, jackets, sneakers, sandals, high heels and beach hats to creating a fashion and pretty looking in spring, fall ,summer and winter.", "Tips: Please refer to the AUTOMET Size Chart before ordering(NOT AMAZON SIZE). Any other questions, please contact us."]	28741.9698	27742.5000	463	199	2023-07-26 12:05:00.805+00	41	2	\N
+-- 1524	AUTOMET Womens Sexy Unitard Bodysuit Workout Rompers One Piece Summer Outfits Shorts Jumpsuits Gym Yoga Fashion Clothes 2023	["80% Polyester, 20% Spandex", "Imported", "Pull On closure", "Machine Wash", "Fabric: Spandex and polyester. This romper jumpsuit is made of very breathable materials. It absorbs sweat, super stretch to wear ,soft and lightweight.", "Design: Round neck, spaghetti strap, sleeveless, tight fitting, shorts, one piece basic rompers, hip lifting, comfy fabric, adjustable spaghetti straps. This is a very cute bodysuit for women and teen girls.", "Occasion: You can wear this bodycon jumpsuit at home, leisure, vacation, outdoor, beach, vacation, exercise, yoga, sports, cycling, dance, party, gym exercise suitably. It can also be given to teenage girls or as a great gift.", "Match: This tight bodysuit is a fashionable item for women or teen girls. Its fabric is very comfy, which is not only suitable for summer, but also suitable for other seasons. It can be worn alone or with sports coats, flannel, shckets, sneakers, boots, etc.", "Suggestion: It is recommended to wash it by hand or put it into a laundry bag instead of bleaching. If you have any needs or questions, please contact us, and we will solve the problem for you as soon as possible."]	15882.2534	14992.5000	463	199	2023-07-26 12:05:00.366+00	47	2	\N
+-- 1525	AUTOMET Jumpsuits for Women Casual Summer Rompers Sleeveless Loose Spaghetti Strap Baggy Overalls Jumpers with Pockets 2023	["94% Cotton, 6% Spandex", "Imported", "Pull On closure", "Machine Wash", "Material: Spaghetti strap summer jumpsuit made of 94% cotton and 6% spandex. The fabric is soft and comfortable, stretchy, lightweight and breathable.", "Design: Loose fit overalls for women, fashionable pants,baggy style, v-neck design, spaghetti strap jumpsuits,sleeveless rompers ,casual summer outfits, with two sides pockets,solid color,standard size,suit for summer vacation, makes you look very chic.", "Occasion: Baggy overalls jumpers with pockets is suitable for casual, daily life,travelling,vacation,beach, outdoor activity, shopping, office, party, school, dinner, lounge, holiday, vacation, beach, cocktail, wedding, outdoor etc.It's also a great gift to your friend or family.", "Matching: This 2023 spring fashion clothes sleeveless Jumpsuit is perfect for matching with tank tops, tube tops， tshirts, coats, pendants, necklaces, jackets, sneakers, sandals, high heels and beach hats to creating a fashion and pretty looking in spring, fall ,summer and winter.", "Tips: Please refer to the AUTOMET Size Chart before ordering(NOT AMAZON SIZE). Any other questions, please contact us."]	28741.9698	27742.5000	463	199	2023-07-26 12:05:00.805+00	41	2	\N
 1527	Sunzel Women's Biker Shorts in High Waist Tummy Control with Deep Pockets	["70% Nylon, 30% Spandex", "Imported", "Elastic closure", "Hand Wash Only", "[The New Upgraded Sunzel Blossomy Collection]: Made of a flexible material that improves mobility when working out. Extra support is provided by the high waist, and muscle control is made possible by the smooth, silky fabric.", "[No Front Seam Biker Shorts with Pockets]: Breathable, buttery soft, four way stretch fabric, provide lasting comfort and sweat-wicking coverage. Sunzel has options with a 3- or 5-inch short inseam and a 8- or 10-inch knee length long inseam, depending on the style you’re looking for.", "[Must-Have Features]: They don’t ride up, naked feeling, non see-through, side pockets, squat proof, tummy control, high waisted, seamless waistband, compression and super stretchy.", "[Designed With Luxury And Functionality In Mind]: Pair these bike shorts with an oversized hoodie, sports bra or a cute cropped tank top to add polish to your workout outfit! These comfy bike shorts give you endless opportunities for styling and workouts.", "[Womens Gym Shorts Made For]: Running, workout, athletic, yoga, fitness, excerise, walking, biking, hiking, cycling, playing volleyball, lounge or everyday casual summer wear."]	15207.1548	14992.5000	463	199	2023-07-26 12:05:01.745+00	18	2	\N
 1482	True & Co Women's True Body Triangle Convertible Strap Bra	["77% Nylon, 23% Elastane", "Imported", "Pull-On closure", "Machine Wash", "Slim straps convert to racerback", "Made from our smooth, barely-there True Body microfiber—the softest fabric in our collection", "Wire-free style pulls over with ease. Removable pads included", "Invisible under clothes with no elastic or bulky seams", "A-D cup XS suggested for bra sizes 30C-D and 32A-B S suggested for bra sizes 32C-D and 34A-B M suggested for bra sizes 34C-D and 36A-B L suggested for bra sizes 36C-D and 38A-B XL suggested for bra sizes 38C-D and 40A-B"]	23485.2205	23100.0000	463	199	2023-07-26 12:04:39.465+00	19	2	\N
 1535	QUXIANG 4 Pairs Pasties Women Nipple Covers Reusable Adhesive Silicone Nippleless Covers (2 Round+2 Flower)	["Imported", "Hand Wash", "PERFECT COMPANION FOR LATEST TRENDS Women Pasties Reusable Silicone Nipple Covers - Eco-friendly silicone material, Comfortably on all skin types. 2.75\\" diameter for more secure coverage. They are natural and soft, you won't feel anything when wearing them.", "FASHION ADHESIVE NIPPLE COVER Pasties for Women - The adhesive silicone nipple covers are specially designed to wear under crop tops, sports bra, t-shirts, backless, strapless and sheer dress, swimwear, and gowns. According to the female breasts exclusive design, gradually thinning from the middle to the edge, clinging to the breasts, forming a smooth natural \\"skin\\", no sweat and no embarrassing outline.", "MADE FROM MEDICAL GRADE(hypo-allergenic Eco-friendly)silicone, so they can be worn comfortably even on the most sensitive skin. Lightweight and handy, we offer a QUXIANG portable box, which designed to be small enough to fit in a handbag. Carry these petals in your purse anytime and anywhere for a quick fashion fix.", "COMFORTABLE & SEXY - QUXIANG Nipple Covers are so comfortable you will forget you are using them, giving you the natural feeling. Self-adhesive & reusable - after each use, simply hand wash the nipple concealers under warm water with mild soap and let air dry face down. Once dry, self-adhesive properties are restored and can be reused 25 times or more.", "WE KNOW YOU'LL LOVE OUR PRODUCTS. If you aren't satisfied, return them for a full refund."]	9020.1406	8992.5000	463	199	2023-07-26 12:05:05.916+00	21	2	\N
@@ -1538,12 +1538,12 @@ COPY public.products (product_id, title, description, list_price, net_price, ven
 1554	wernies No Show Socks Women Low Socks Non Slip Flat Boat Line 4/8 Pairs	["Cotton,Spandex", "Machine Wash", "PREMIUM COTTON - Made of natural combed cotton & spandex which enhances durability, comfortability and sweat-wicking, these women no show socks are ideal for indoor and outdoor activity", "NOT SLIDE DOWN - Cotton low cut invisible socks with 3 silicone heel grip technology ensures non-slip and your loafer socks stay put all day long", "TWO SIZES AVAILABLE - Our no show women socks for flats fit US women's shoe sizes 5-8, US women's shoe sizes 8.5-11", "INVISIBLE WEAR - The liner socks with basic colors creates an invisible wear inside shoes. Suitable for lady's shoes, like sneakers, loafers and sport / athletic shoes (NOTE: This socks is NOT a SUPER LOW socks for Women Flats or extreme low fashion slip-ons )", "no show socks for women low socks invisible loafer flat non slip rise flats ankle liners short thin low cut sock for womens woman ladies large girls size low-rise liners boat no-show white loft cotton dress"]	13017.7000	12667.5000	463	199	2023-07-26 12:05:15.405+00	19	2	\N
 1565	Hanes Women's Value, Crew Soft Moisture-Wicking Socks, Available in 10 and 14-Packs	["76% Cotton, 22% Polyester, 1% Spandex, 1% Other Fibers", "Made in the USA or Imported", "Pull On closure", "Machine Wash", "EXCELLENT FIT – made with a touch of soft and stretchy Spandex so it gently conforms to the shape of the foot.", "KEEP YOUR COOL - Cool Comfort fabric wicks away moisture so your feet stay cool and dry all day.", "COMFORT YOU DESERVE – Cushioned foot bottom make these cushioned socks a sure bet for everyday wear, from work, play, gym, sports, and beyond.", "DURABLE – Reinforced heel and toe for added durability and sock longevity", "SMOOTH SEAMS – Comfort Toe seams are our smoothest seams yet", "ECO FRIENDLY - made with EcoSmart fabric that contains recycled fibers", "EASY CARE – Throw your new socks right in the washing machine on laundry day. Wash on cold and save!"]	7735.4813	7680.0000	463	199	2023-07-26 12:05:20.616+00	9	2	\N
 1365	SAMSUNG Galaxy Tab S8+ 12.4” 128GB WiFi 6E Android Tablet, Large AMOLED Screen, S Pen Included, Ultra Wide Camera, Long Lasting Battery, US Version, 2022, Graphite	["CNET BEST PICK: CNET (12/22) picked Samsung Galaxy Tab S8+ as \\"Best Android Tablet” for 2023, highlighting its “…great size for entertainment and gaming, while big enough for light productivity tasks and still small enough for travel.”", "FASTEST WI-FI: Work and play with the blazing fast speed of Wi-Fi 6E -- 3x faster than the previous generation of Wi-Fi", "LARGE DISPLAY, INCREDIBLE VISUALS: Get more enjoyment out of every moment with a big 12.4 inch sAMOLED screen and high resolution that dazzles with unbelievable brilliance, crispness, and color", "ULTRA WIDE CAMERA: Record super clear video in 4K and great photos with an ultra-wide front camera with auto framing; With Galaxy S8 plus, your photography skills will shine regardless of your experience level behind the lens", "S PEN: Inspire your imagination with our fastest S Pen yet, an S Pen that is more responsive than ever, feels even more like a real pen, and it’s included with tablet purchase", "DeX MULTITASKING: Do more on the go with enhanced productivity capabilities, like Samsung DeX and Microsoft 365 integration, that give you a PC experience, wherever you happen to be", "PACKED WITH POWER: Galaxy Tab S8 plus provides powerful performance with an upgraded Qualcomm Snapdragon chipset and all-day battery to get you through your day, whether you’re working, streaming, or gaming"]	600084.9180	599992.5000	463	199	2023-07-26 12:03:40.625+00	5	1	\N
-1371	Nippies Nipple Cover - Sticky Adhesive Silicone Nipple Pasties - Reusable Pasty Nipple Covers for Women with Travel Box	["Silicone", "Hand Wash Only", "BREAK FREE FROM BRAS! - Replace uncomfortable bras with our silicone nipple cover. Comfortable and supportive, it conceals the areola and breast, creating a smooth finish to wear with a backless dress, bridesmaid gown, camisole top, or bathing suit.", "STAY ON ALL DAY - Hitting the gym in a sports bra? Or the dance floor of a club in sheer fabric? The sticky nipple covers for women will stay in place no matter the activity. Consistently proven to stay in place for up to 12 hours.", "YOU’LL FORGET YOU’RE WEARING THEM - Made to accommodate small or large cup sizes, the silicone pasties are virtually invisible. Designed to match skin tone and complexion without being see-through. The texture is flat and does not shine or reflect light.", "BETTER THAN STRAPLESS BRAS - The reusable nipple covers for women are easy to put on and peel off. Carefully follow instructions when removing and keep in case to maintain shape for reuse. Use the silicone nipple covers that countless women love.", "WITHSTAND HOT SUMMER HEAT & HUMIDITY - Go out on the Las Vegas strip, join a yoga class, or attend that wedding on a sunny Miami beach with these silicone nipple stickers. Crafted to provide premium ‘runway fashion model’ support without making you sweat."]	20545.2647	19875.0000	463	199	2023-07-26 12:03:43.872+00	5	2	\N
+-- 1371	Nippies Nipple Cover - Sticky Adhesive Silicone Nipple Pasties - Reusable Pasty Nipple Covers for Women with Travel Box	["Silicone", "Hand Wash Only", "BREAK FREE FROM BRAS! - Replace uncomfortable bras with our silicone nipple cover. Comfortable and supportive, it conceals the areola and breast, creating a smooth finish to wear with a backless dress, bridesmaid gown, camisole top, or bathing suit.", "STAY ON ALL DAY - Hitting the gym in a sports bra? Or the dance floor of a club in sheer fabric? The sticky nipple covers for women will stay in place no matter the activity. Consistently proven to stay in place for up to 12 hours.", "YOU’LL FORGET YOU’RE WEARING THEM - Made to accommodate small or large cup sizes, the silicone pasties are virtually invisible. Designed to match skin tone and complexion without being see-through. The texture is flat and does not shine or reflect light.", "BETTER THAN STRAPLESS BRAS - The reusable nipple covers for women are easy to put on and peel off. Carefully follow instructions when removing and keep in case to maintain shape for reuse. Use the silicone nipple covers that countless women love.", "WITHSTAND HOT SUMMER HEAT & HUMIDITY - Go out on the Las Vegas strip, join a yoga class, or attend that wedding on a sunny Miami beach with these silicone nipple stickers. Crafted to provide premium ‘runway fashion model’ support without making you sweat."]	20545.2647	19875.0000	463	199	2023-07-26 12:03:43.872+00	5	2	\N
 \.
 
 
 --
--- Data for Name: purchases; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: purchases; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.purchases (item_id, product_id, transaction_id, created, updated, quantity) FROM stdin;
@@ -1551,7 +1551,7 @@ COPY public.purchases (item_id, product_id, transaction_id, created, updated, qu
 
 
 --
--- Data for Name: shipping_info; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: shipping_info; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.shipping_info (shipping_info_id, customer_id, recipient_first_name, recipient_last_name, address, city, state, postal_code, country, delivery_contact, delivery_instructions) FROM stdin;
@@ -1559,7 +1559,7 @@ COPY public.shipping_info (shipping_info_id, customer_id, recipient_first_name, 
 
 
 --
--- Data for Name: shopping_cart; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: shopping_cart; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.shopping_cart (cart_id, customer_id, created, updated) FROM stdin;
@@ -1567,7 +1567,7 @@ COPY public.shopping_cart (cart_id, customer_id, created, updated) FROM stdin;
 
 
 --
--- Data for Name: shopping_cart_item; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: shopping_cart_item; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.shopping_cart_item (item_id, cart_id, product_id, quantity) FROM stdin;
@@ -1575,7 +1575,7 @@ COPY public.shopping_cart_item (item_id, cart_id, product_id, quantity) FROM std
 
 
 --
--- Data for Name: stores; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: stores; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.stores (store_id, store_name, vendor_id, store_page, date_created) FROM stdin;
@@ -1584,7 +1584,7 @@ COPY public.stores (store_id, store_name, vendor_id, store_page, date_created) F
 
 
 --
--- Data for Name: subcategories; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: subcategories; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.subcategories (subcategory_id, category_id, subcategory_name) FROM stdin;
@@ -1594,7 +1594,7 @@ COPY public.subcategories (subcategory_id, category_id, subcategory_name) FROM s
 
 
 --
--- Data for Name: transaction_details; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: transaction_details; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.transaction_details (transaction_id, customer_id, vendor_id, total_amount, created, updated) FROM stdin;
@@ -1602,12 +1602,12 @@ COPY public.transaction_details (transaction_id, customer_id, vendor_id, total_a
 
 
 --
--- Data for Name: user_accounts; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: user_accounts; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.user_accounts (user_id, first_name, last_name, email, phone, password, dob, country) FROM stdin;
 463	testing	populatedb	testing@mail.to	\N	\\x706173737764	1999-12-01	Nigeria
-2	Daniel	Nyong	danielnyong66@gmail.com	\N	\\x2432612431302448793841592f59306e4b307976523453546d5275766573677142417542332f46644664424f34546c61492e65746b6639346a435257	1999-01-04	Nigeria
+-- 2	Daniel	Nyong	danielnyong66@gmail.com	\N	\\x2432612431302448793841592f59306e4b307976523453546d5275766573677142417542332f46644664424f34546c61492e65746b6639346a435257	1999-01-04	Nigeria
 5	Dan	Nyong	\N	09033117211	\\x243261243130247064465a6f6a6631784d2f4b614e4672425142486b2e435a453354696237743254665633435a542f6b7539336177527749454f7569	2000-01-11	Nigeria
 6	Dan	Nyong	\N	09033117288	\\x2432612431302438625537782e474756675159346d2f4679594548624f61535676684e395a365378647147475753314f413544484f3149446935554f	1999-01-05	Nigeria
 11	Ebuka	Eze	ebukachibueze5489@gmail.com	+2348032649250	\\x24326124313024374f4b516679794d7043545646346730716b6848364f394248485a4d6d303037336f53552e645030304779685a7376464b6248456d	1999-07-01	Nigeria
@@ -1616,7 +1616,7 @@ COPY public.user_accounts (user_id, first_name, last_name, email, phone, passwor
 
 
 --
--- Data for Name: vendor_reviews; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: vendor_reviews; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.vendor_reviews (vendor_id, customer_id, transaction_id, rating, customer_remark) FROM stdin;
@@ -1624,7 +1624,7 @@ COPY public.vendor_reviews (vendor_id, customer_id, transaction_id, rating, cust
 
 
 --
--- Data for Name: vendors; Type: TABLE DATA; Schema: public; Owner: dan
+-- -- Data for Name: vendors; Type: TABLE DATA; Schema: public; Owner: dan
 --
 
 COPY public.vendors (vendor_id) FROM stdin;
@@ -1633,77 +1633,77 @@ COPY public.vendors (vendor_id) FROM stdin;
 
 
 --
--- Name: categories_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
+-- -- Name: categories_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
 --
 
 SELECT pg_catalog.setval('public.categories_category_id_seq', 2, true);
 
 
 --
--- Name: products_product_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
+-- -- Name: products_product_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
 --
 
 SELECT pg_catalog.setval('public.products_product_id_seq', 39, true);
 
 
 --
--- Name: purchases_item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
+-- -- Name: purchases_item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
 --
 
 SELECT pg_catalog.setval('public.purchases_item_id_seq', 1, false);
 
 
 --
--- Name: shipping_info_shipping_info_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
+-- -- Name: shipping_info_shipping_info_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
 --
 
 SELECT pg_catalog.setval('public.shipping_info_shipping_info_id_seq', 3, true);
 
 
 --
--- Name: shopping_cart_cart_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
+-- -- Name: shopping_cart_cart_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
 --
 
 SELECT pg_catalog.setval('public.shopping_cart_cart_id_seq', 1, false);
 
 
 --
--- Name: shopping_cart_item_item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
+-- -- Name: shopping_cart_item_item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
 --
 
 SELECT pg_catalog.setval('public.shopping_cart_item_item_id_seq', 1, false);
 
 
 --
--- Name: stores_store_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
+-- -- Name: stores_store_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
 --
 
 SELECT pg_catalog.setval('public.stores_store_id_seq', 16, true);
 
 
 --
--- Name: subcategories_subcategory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
+-- -- Name: subcategories_subcategory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
 --
 
 SELECT pg_catalog.setval('public.subcategories_subcategory_id_seq', 896, true);
 
 
 --
--- Name: transaction_details_transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
+-- -- Name: transaction_details_transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
 --
 
 SELECT pg_catalog.setval('public.transaction_details_transaction_id_seq', 1, false);
 
 
 --
--- Name: user_accounts_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
+-- -- Name: user_accounts_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dan
 --
 
 SELECT pg_catalog.setval('public.user_accounts_user_id_seq', 21, true);
 
 
 --
--- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.categories
@@ -1711,7 +1711,7 @@ ALTER TABLE ONLY public.categories
 
 
 --
--- Name: customer_reviews customer_reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: customer_reviews customer_reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.customer_reviews
@@ -1719,7 +1719,7 @@ ALTER TABLE ONLY public.customer_reviews
 
 
 --
--- Name: customers customers_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: customers customers_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.customers
@@ -1727,7 +1727,7 @@ ALTER TABLE ONLY public.customers
 
 
 --
--- Name: product_media product_media_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: product_media product_media_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.product_media
@@ -1735,7 +1735,7 @@ ALTER TABLE ONLY public.product_media
 
 
 --
--- Name: product_reviews product_reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: product_reviews product_reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.product_reviews
@@ -1743,7 +1743,7 @@ ALTER TABLE ONLY public.product_reviews
 
 
 --
--- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.products
@@ -1751,7 +1751,7 @@ ALTER TABLE ONLY public.products
 
 
 --
--- Name: purchases purchases_created_key; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: purchases purchases_created_key; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.purchases
@@ -1759,7 +1759,7 @@ ALTER TABLE ONLY public.purchases
 
 
 --
--- Name: purchases purchases_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: purchases purchases_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.purchases
@@ -1767,7 +1767,7 @@ ALTER TABLE ONLY public.purchases
 
 
 --
--- Name: purchases purchases_updated_key; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: purchases purchases_updated_key; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.purchases
@@ -1775,7 +1775,7 @@ ALTER TABLE ONLY public.purchases
 
 
 --
--- Name: shipping_info shipping_info_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: shipping_info shipping_info_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.shipping_info
@@ -1783,7 +1783,7 @@ ALTER TABLE ONLY public.shipping_info
 
 
 --
--- Name: shopping_cart_item shopping_cart_item_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: shopping_cart_item shopping_cart_item_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.shopping_cart_item
@@ -1791,7 +1791,7 @@ ALTER TABLE ONLY public.shopping_cart_item
 
 
 --
--- Name: shopping_cart shopping_cart_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: shopping_cart shopping_cart_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.shopping_cart
@@ -1799,7 +1799,7 @@ ALTER TABLE ONLY public.shopping_cart
 
 
 --
--- Name: stores stores_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: stores stores_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.stores
@@ -1807,7 +1807,7 @@ ALTER TABLE ONLY public.stores
 
 
 --
--- Name: subcategories subcategories_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: subcategories subcategories_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.subcategories
@@ -1815,7 +1815,7 @@ ALTER TABLE ONLY public.subcategories
 
 
 --
--- Name: transaction_details transaction_details_created_key; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: transaction_details transaction_details_created_key; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.transaction_details
@@ -1823,7 +1823,7 @@ ALTER TABLE ONLY public.transaction_details
 
 
 --
--- Name: transaction_details transaction_details_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: transaction_details transaction_details_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.transaction_details
@@ -1831,7 +1831,7 @@ ALTER TABLE ONLY public.transaction_details
 
 
 --
--- Name: transaction_details transaction_details_updated_key; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: transaction_details transaction_details_updated_key; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.transaction_details
@@ -1839,7 +1839,7 @@ ALTER TABLE ONLY public.transaction_details
 
 
 --
--- Name: user_accounts user_accounts_email_key; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: user_accounts user_accounts_email_key; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.user_accounts
@@ -1847,7 +1847,7 @@ ALTER TABLE ONLY public.user_accounts
 
 
 --
--- Name: user_accounts user_accounts_phone_key; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: user_accounts user_accounts_phone_key; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.user_accounts
@@ -1855,7 +1855,7 @@ ALTER TABLE ONLY public.user_accounts
 
 
 --
--- Name: user_accounts user_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: user_accounts user_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.user_accounts
@@ -1863,7 +1863,7 @@ ALTER TABLE ONLY public.user_accounts
 
 
 --
--- Name: vendor_reviews vendor_reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: vendor_reviews vendor_reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.vendor_reviews
@@ -1871,7 +1871,7 @@ ALTER TABLE ONLY public.vendor_reviews
 
 
 --
--- Name: vendors vendors_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: vendors vendors_pkey; Type: CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.vendors
@@ -1879,7 +1879,7 @@ ALTER TABLE ONLY public.vendors
 
 
 --
--- Name: customer_reviews customer_reviews_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: customer_reviews customer_reviews_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.customer_reviews
@@ -1887,7 +1887,7 @@ ALTER TABLE ONLY public.customer_reviews
 
 
 --
--- Name: customer_reviews customer_reviews_transaction_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: customer_reviews customer_reviews_transaction_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.customer_reviews
@@ -1895,7 +1895,7 @@ ALTER TABLE ONLY public.customer_reviews
 
 
 --
--- Name: customer_reviews customer_reviews_vendor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: customer_reviews customer_reviews_vendor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.customer_reviews
@@ -1903,7 +1903,7 @@ ALTER TABLE ONLY public.customer_reviews
 
 
 --
--- Name: customers customers_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: customers customers_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.customers
@@ -1911,7 +1911,7 @@ ALTER TABLE ONLY public.customers
 
 
 --
--- Name: products fk_categories; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: products fk_categories; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.products
@@ -1919,7 +1919,7 @@ ALTER TABLE ONLY public.products
 
 
 --
--- Name: products fk_stores; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: products fk_stores; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.products
@@ -1927,7 +1927,7 @@ ALTER TABLE ONLY public.products
 
 
 --
--- Name: products fk_subcategories; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: products fk_subcategories; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.products
@@ -1935,7 +1935,7 @@ ALTER TABLE ONLY public.products
 
 
 --
--- Name: stores fk_vendors; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: stores fk_vendors; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.stores
@@ -1943,7 +1943,7 @@ ALTER TABLE ONLY public.stores
 
 
 --
--- Name: products fk_vendors; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: products fk_vendors; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.products
@@ -1951,7 +1951,7 @@ ALTER TABLE ONLY public.products
 
 
 --
--- Name: product_media product_media_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: product_media product_media_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.product_media
@@ -1959,7 +1959,7 @@ ALTER TABLE ONLY public.product_media
 
 
 --
--- Name: product_reviews product_reviews_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: product_reviews product_reviews_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.product_reviews
@@ -1967,7 +1967,7 @@ ALTER TABLE ONLY public.product_reviews
 
 
 --
--- Name: product_reviews product_reviews_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: product_reviews product_reviews_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.product_reviews
@@ -1975,7 +1975,7 @@ ALTER TABLE ONLY public.product_reviews
 
 
 --
--- Name: product_reviews product_reviews_transaction_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: product_reviews product_reviews_transaction_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.product_reviews
@@ -1983,7 +1983,7 @@ ALTER TABLE ONLY public.product_reviews
 
 
 --
--- Name: purchases purchases_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: purchases purchases_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.purchases
@@ -1991,7 +1991,7 @@ ALTER TABLE ONLY public.purchases
 
 
 --
--- Name: purchases purchases_transaction_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: purchases purchases_transaction_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.purchases
@@ -1999,7 +1999,7 @@ ALTER TABLE ONLY public.purchases
 
 
 --
--- Name: shipping_info shipping_info_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: shipping_info shipping_info_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.shipping_info
@@ -2007,7 +2007,7 @@ ALTER TABLE ONLY public.shipping_info
 
 
 --
--- Name: shopping_cart shopping_cart_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: shopping_cart shopping_cart_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.shopping_cart
@@ -2015,7 +2015,7 @@ ALTER TABLE ONLY public.shopping_cart
 
 
 --
--- Name: shopping_cart_item shopping_cart_item_cart_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: shopping_cart_item shopping_cart_item_cart_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.shopping_cart_item
@@ -2023,7 +2023,7 @@ ALTER TABLE ONLY public.shopping_cart_item
 
 
 --
--- Name: shopping_cart_item shopping_cart_item_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: shopping_cart_item shopping_cart_item_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.shopping_cart_item
@@ -2031,7 +2031,7 @@ ALTER TABLE ONLY public.shopping_cart_item
 
 
 --
--- Name: subcategories subcategories_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: subcategories subcategories_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.subcategories
@@ -2039,7 +2039,7 @@ ALTER TABLE ONLY public.subcategories
 
 
 --
--- Name: vendor_reviews vendor_reviews_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: vendor_reviews vendor_reviews_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.vendor_reviews
@@ -2047,7 +2047,7 @@ ALTER TABLE ONLY public.vendor_reviews
 
 
 --
--- Name: vendor_reviews vendor_reviews_transaction_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: vendor_reviews vendor_reviews_transaction_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.vendor_reviews
@@ -2055,7 +2055,7 @@ ALTER TABLE ONLY public.vendor_reviews
 
 
 --
--- Name: vendor_reviews vendor_reviews_vendor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: vendor_reviews vendor_reviews_vendor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.vendor_reviews
@@ -2063,7 +2063,7 @@ ALTER TABLE ONLY public.vendor_reviews
 
 
 --
--- Name: vendors vendors_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
+-- -- Name: vendors vendors_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dan
 --
 
 ALTER TABLE ONLY public.vendors
@@ -2071,7 +2071,7 @@ ALTER TABLE ONLY public.vendors
 
 
 --
--- Name: SCHEMA public; Type: ACL; Schema: -; Owner: dan
+-- -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: dan
 --
 
 REVOKE USAGE ON SCHEMA public FROM PUBLIC;
@@ -2081,28 +2081,28 @@ REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 -- Name: DEFAULT PRIVILEGES FOR SEQUENCES; Type: DEFAULT ACL; Schema: -; Owner: postgres
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL ON SEQUENCES  TO dan;
+-- -- -- ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL ON SEQUENCES  TO dan;
 
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TYPES; Type: DEFAULT ACL; Schema: -; Owner: postgres
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL ON TYPES  TO dan;
+-- -- ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL ON TYPES  TO dan;
 
 
 --
 -- Name: DEFAULT PRIVILEGES FOR FUNCTIONS; Type: DEFAULT ACL; Schema: -; Owner: postgres
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL ON FUNCTIONS  TO dan;
+-- -- ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL ON FUNCTIONS  TO dan;
 
 
 --
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: -; Owner: postgres
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL ON TABLES  TO dan;
+-- -- ALTER DEFAULT PRIVILEGES FOR ROLE postgres GRANT ALL ON TABLES  TO dan;
 
 
 --

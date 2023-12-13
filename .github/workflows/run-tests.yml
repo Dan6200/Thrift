@@ -66,3 +66,6 @@ jobs:
           PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
           REDIS_URL: rediss://localhost:6379
           SERVER: localhost:1024
+      # - name: View error logs
+      #   if: failure()
+      #   run: cat start.log

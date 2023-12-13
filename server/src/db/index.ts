@@ -6,8 +6,13 @@ import { retryConnection } from '../controllers/helpers/retry-connection.js'
 import dotenv from 'dotenv'
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 
+const connectionString = process.env.PG_URL
+
+// print url
+console.log(connectionString)
+
 const pgOptions = {
-  connectionString: process.env.PG_URL,
+  connectionString,
   ssl:
     process.env.NODE_ENV === 'production'
       ? {

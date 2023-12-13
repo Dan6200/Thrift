@@ -48,14 +48,10 @@ jobs:
       - run: npm install -g pnpm
       - run: pnpm install
       - run: pnpm build
-      - name: Start server and run tests
-        run: |
-          pnpm start-test &> start.log &
-          START_PID=$!
-          sleep 10
-          pnpm test || TEST_STATUS=$?
-          cat start.log
-          exit $TEST_STATUS
+      - name: Start server
+        run: pnpm start-test
+      - name: Run tests
+        run: pnpm test
         env:
           CI: true
           CLOUDINARY_API_KEY: 351181634279959

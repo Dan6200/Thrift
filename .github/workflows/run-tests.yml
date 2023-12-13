@@ -49,7 +49,9 @@ jobs:
       - run: pnpm install
       - run: pnpm build
       - name: Start server
-        run: pnpm start-test
+        run: |
+          pnpm start-test &
+          sleep 10
       - name: Run tests
         run: pnpm test
         env:

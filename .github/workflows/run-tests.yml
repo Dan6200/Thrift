@@ -50,7 +50,7 @@ jobs:
       - run: pnpm build
       - name: Start server
         run: |
-          pnpm start-test &
+          pnpm start-test &> results.log &
           sleep 10
       - name: Run tests
         run: pnpm test
@@ -64,6 +64,6 @@ jobs:
           PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
           REDIS_URL: rediss://localhost:6379
           SERVER: localhost:1024
-      # - name: View error logs
-      #   if: failure()
-      #   run: cat start.log
+      - name: View results
+        if: failure()
+        run: cat results.log

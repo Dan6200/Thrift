@@ -71,7 +71,7 @@ jobs:
           sleep 10
         env:
           PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
-          REDIS_URL: rediss://localhost:6379
+          REDIS_URL: redis://localhost:6379
           JWT_LIFETIME: 30m
           JWT_SECRET: MzUzWYYklY9EBRhbTbbzBTZYV211QrB5w//JxdNK3m+SYjVOKCQhH16BESOY5+x6C1kaJAaT2oTz9zuMNfZkiQ==
       - name: Run tests
@@ -84,7 +84,7 @@ jobs:
           JWT_LIFETIME: 30m
           JWT_SECRET: MzUzWYYklY9EBRhbTbbzBTZYV211QrB5w//JxdNK3m+SYjVOKCQhH16BESOY5+x6C1kaJAaT2oTz9zuMNfZkiQ==
           PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
-          REDIS_URL: rediss://localhost:6379
+          REDIS_URL: redis://localhost:6379
           SERVER: localhost:1024
       - name: View results
         if: failure()

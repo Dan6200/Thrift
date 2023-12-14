@@ -19,7 +19,6 @@ todo*
 **/tmp/**
 **upload**
 server-log.txt
-**/tests/product-media/*
 mochawesome-*
 ./regexp.txt
 notes*.md

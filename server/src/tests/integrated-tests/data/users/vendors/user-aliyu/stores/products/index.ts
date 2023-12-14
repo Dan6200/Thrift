@@ -4,6 +4,11 @@ import {
   ProductMedia,
   ProductPartial,
 } from '../../../../../../../../types-and-interfaces/products.js'
+import { fileURLToPath } from 'url'
+import path, { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 export const products: Product[] = [
   {
@@ -142,9 +147,7 @@ export const productMedia: ProductMedia[][] = [
   [
     {
       name: 'airpods-1',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Echo Wireless Earbuds',
       is_display_image: true,
       is_landing_image: false,
@@ -153,9 +156,10 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'airpods-2',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/517i7g9q7zL._AC_SX466_.jpg',
+      path: path.resolve(
+        __dirname,
+        './media/airpods/517i7g9q7zL._AC_SX466_.jpg'
+      ),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -164,9 +168,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-3',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -175,9 +177,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-4',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -186,9 +186,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-5',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -197,9 +195,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-6',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -208,9 +204,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-7',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -219,9 +213,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-8',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -230,9 +222,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-9',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -242,9 +232,7 @@ export const productMedia: ProductMedia[][] = [
   [
     {
       name: 'lenovo-tab-1',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: true,
       is_landing_image: false,
@@ -253,9 +241,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'lenovo-tab-2',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -264,9 +250,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'lenovo-tab-3',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -275,9 +259,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'lenovo-tab-4',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -286,9 +268,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'lenovo-tab-5',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -297,9 +277,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'lenovo-tab-6',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -310,9 +288,7 @@ export const productMedia: ProductMedia[][] = [
   [
     {
       name: 'echo-wireless-buds-1',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Echo Wireless Earbuds',
       is_display_image: true,
       is_landing_image: false,
@@ -321,9 +297,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-2',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -332,9 +306,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-3',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -343,9 +315,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-4',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -354,9 +324,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-5',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -365,9 +333,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-7',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -376,9 +342,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-8',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -387,9 +351,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'echo-wireless-buds-9',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -399,9 +361,7 @@ export const productMedia: ProductMedia[][] = [
   [
     {
       name: 'lenovo-tab-1',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: true,
       is_landing_image: false,
@@ -410,9 +370,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'lenovo-tab-2',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -421,9 +379,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'lenovo-tab-3',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -432,9 +388,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'lenovo-tab-4',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -443,9 +397,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'lenovo-tab-5',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -454,9 +406,7 @@ export const productMedia: ProductMedia[][] = [
 
     {
       name: 'lenovo-tab-6',
-      path:
-        process.env.HOME +
-        '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+      path: path.resolve(__dirname, './media/airpods/display.jpg'),
       description: 'Lenovo Tablet M10 Plus Gen 3',
       is_display_image: false,
       is_landing_image: false,
@@ -469,9 +419,7 @@ export const productMedia: ProductMedia[][] = [
 export const updatedProductMedia: ProductMedia[] = [
   {
     name: 'tozo-smartwatch-1',
-    path:
-      process.env.HOME +
-      '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+    path: path.resolve(__dirname, './media/airpods/display.jpg'),
     description: 'A fitness smartwatch',
     is_display_image: false,
     is_landing_image: false,
@@ -480,9 +428,7 @@ export const updatedProductMedia: ProductMedia[] = [
 
   {
     name: 'tozo-smartwatch-2',
-    path:
-      process.env.HOME +
-      '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+    path: path.resolve(__dirname, './media/airpods/display.jpg'),
     description: 'A fitness smartwatch',
     is_display_image: false,
     is_landing_image: false,
@@ -491,9 +437,7 @@ export const updatedProductMedia: ProductMedia[] = [
 
   {
     name: 'tozo-smartwatch-3',
-    path:
-      process.env.HOME +
-      '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+    path: path.resolve(__dirname, './media/airpods/display.jpg'),
     description: 'A fitness smartwatch',
     is_display_image: false,
     is_landing_image: false,
@@ -502,9 +446,7 @@ export const updatedProductMedia: ProductMedia[] = [
 
   {
     name: 'tozo-smartwatch-4',
-    path:
-      process.env.HOME +
-      '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+    path: path.resolve(__dirname, './media/airpods/display.jpg'),
     description: 'A fitness smartwatch',
     is_display_image: false,
     is_landing_image: false,
@@ -513,9 +455,7 @@ export const updatedProductMedia: ProductMedia[] = [
 
   {
     name: 'tozo-smartwatch-5',
-    path:
-      process.env.HOME +
-      '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+    path: path.resolve(__dirname, './media/airpods/display.jpg'),
     description: 'A fitness smartwatch',
     is_display_image: false,
     is_landing_image: false,
@@ -524,9 +464,7 @@ export const updatedProductMedia: ProductMedia[] = [
 
   {
     name: 'tozo-smartwatch-6',
-    path:
-      process.env.HOME +
-      '/dev-projects/thrift/testing-image-upload/airpods/display.jpg',
+    path: path.resolve(__dirname, './media/airpods/display.jpg'),
     description: 'A fitness smartwatch',
     is_display_image: false,
     is_landing_image: false,

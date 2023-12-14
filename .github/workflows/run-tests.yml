@@ -68,7 +68,7 @@ jobs:
       - name: Start server
         run: |
           pnpm start-test &> results.log &
-          sleep 10
+          sleep 5
         env:
           PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
           REDIS_URL: redis://localhost:6379

@@ -59,7 +59,7 @@ export default {
       this.lastQuery = arguments
     })
 
-    console.log('\nexecuted query:\n', text, values, name)
+    // console.log('\nexecuted query:\n', text, values, name)
 
     // allow a retry if DB fails to connect
     let res: unknown
@@ -80,18 +80,18 @@ export default {
     const duration = Date.now() - start
     // add await for this to work
 
-    console.log(
-      '\nquery result',
-      util.inspect(
-        {
-          duration: `${duration}ms`,
-          result: (res as any).rows,
-        },
-        false,
-        null,
-        true
-      )
-    )
+    // console.log(
+    //   '\nquery result',
+    //   util.inspect(
+    //     {
+    //       duration: `${duration}ms`,
+    //       result: (res as any).rows,
+    //     },
+    //     false,
+    //     null,
+    //     true
+    //   )
+    // )
 
     return res as QueryResult<QueryResultRow | QueryResultRow[]>
   },

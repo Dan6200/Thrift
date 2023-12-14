@@ -9,8 +9,8 @@ export const products: Product[] = [
   {
     title:
       'Apple AirPods Pro (2nd Generation) Wireless Earbuds, Up to 2X More Active Noise Cancelling, Adaptive Transparency, Personalized Spatial Audio, MagSafe Charging Case, Bluetooth Headphones for iPhone',
-    category_id: '1',
-    subcategory_id: '895',
+    category_id: 1,
+    subcategory_id: 895,
     description: [
       `* 1.69" HD Full Touch Screen: High texture watch frame with 1.69" LCD full touch colorful screen bring comfortable touch and excellent visual experience.`,
       `There are various watch face styles to choose from in the app. Also you can choose a picture you like to customize the watch face in "QWatch Pro" App. And the smartwatch screen will light up every time you raise your hand.`,
@@ -23,8 +23,8 @@ export const products: Product[] = [
   {
     title:
       'Bose QuietComfort 45 Bluetooth Wireless Noise Cancelling Headphones - White Smoke',
-    category_id: '1',
-    subcategory_id: '895',
+    category_id: 1,
+    subcategory_id: 895,
     description: [
       'Noise cancelling wireless headphones: The perfect balance of quiet, comfort, and sound. Bose uses tiny mics to measure, compare, and react to outside noise, cancelling it with opposite signals. Bluetooth range-up to 9 m (30 feet).',
       'HIGH-FIDELITY AUDIO: The TriPort acoustic architecture offers depth and fullness. Volume-optimized Active EQ maintains balanced performance at any volume, so bass stays consistent when turned down and the music remains clear when turned up.',
@@ -40,8 +40,8 @@ export const products: Product[] = [
   {
     title:
       'Fitbit Charge 5 Advanced Health & Fitness Tracker with Built-in GPS, Stress Management Tools, Sleep Tracking, 24/7 Heart Rate and More, Black/Graphite, One Size (S &L Bands Included)',
-    category_id: '1',
-    subcategory_id: '895',
+    category_id: 1,
+    subcategory_id: 895,
     description: [
       'Optimize your workout routine with a Daily Readiness Score that reveals if you’re ready to exercise or should focus on recovery (Requires Fitbit Premium membership). Compatibility-Apple iOS 15 or higher, Android OS 9 or higher',
       `Get a daily Stress Management Score showing your body’s response to stress and take steps to improve your levels with an on-wrist EDA sensor mindfulness session. Band Size:Sm: Fits wrist 5.1"- 6.7" . Lrg: Fits wrist 6.7" - 8.3" in circumference`,
@@ -63,8 +63,8 @@ export const productReplaced: Product[] = [
   {
     title:
       'Apple AirPods Pro (2nd Generation) Wireless Earbuds, Up to 2X More Active Noise Cancelling, Adaptive Transparency, Personalized Spatial Audio, MagSafe Charging Case, Bluetooth Headphones for iPhone',
-    category_id: '1',
-    subcategory_id: '895',
+    category_id: 1,
+    subcategory_id: 895,
     description: [
       `* 1.69" HD Full Touch Screen: High texture watch frame with 1.69" LCD full touch colorful screen bring comfortable touch and excellent visual experience.`,
       `There are various watch face styles to choose from in the app. Also you can choose a picture you like to customize the watch face in "QWatch Pro" App. And the smartwatch screen will light up every time you raise your hand.`,
@@ -77,8 +77,8 @@ export const productReplaced: Product[] = [
   {
     title:
       'Bose QuietComfort 45 Bluetooth Wireless Noise Cancelling Headphones - White Smoke',
-    category_id: '1',
-    subcategory_id: '895',
+    category_id: 1,
+    subcategory_id: 895,
     description: [
       'Noise cancelling wireless headphones: The perfect balance of quiet, comfort, and sound. Bose uses tiny mics to measure, compare, and react to outside noise, cancelling it with opposite signals. Bluetooth range-up to 9 m (30 feet).',
       'HIGH-FIDELITY AUDIO: The TriPort acoustic architecture offers depth and fullness. Volume-optimized Active EQ maintains balanced performance at any volume, so bass stays consistent when turned down and the music remains clear when turned up.',
@@ -94,8 +94,8 @@ export const productReplaced: Product[] = [
   {
     title:
       'Fitbit Charge 5 Advanced Health & Fitness Tracker with Built-in GPS, Stress Management Tools, Sleep Tracking, 24/7 Heart Rate and More, Black/Graphite, One Size (S &L Bands Included)',
-    category_id: '1',
-    subcategory_id: '895',
+    category_id: 1,
+    subcategory_id: 895,
     description: [
       'Optimize your workout routine with a Daily Readiness Score that reveals if you’re ready to exercise or should focus on recovery (Requires Fitbit Premium membership). Compatibility-Apple iOS 15 or higher, Android OS 9 or higher',
       `Get a daily Stress Management Score showing your body’s response to stress and take steps to improve your levels with an on-wrist EDA sensor mindfulness session. Band Size:Sm: Fits wrist 5.1"- 6.7" . Lrg: Fits wrist 6.7" - 8.3" in circumference`,
@@ -115,7 +115,7 @@ export const productReplaced: Product[] = [
 
 export const productPartialUpdate: ProductPartial[] = [
   {
-    category_id: '2',
+    category_id: 2,
     list_price: 35000,
     net_price: 30000,
     quantity_available: 17,
@@ -132,7 +132,7 @@ export const productPartialUpdate: ProductPartial[] = [
 
   {
     title: `Lenovo Tab M10 Plus 3rd Gen Tablet - 10" FHD - Android 12-32GB Storage - Long Battery Life`,
-    subcategory_id: `896`,
+    subcategory_id: 896,
     list_price: 100000,
     net_price: 100000,
   },

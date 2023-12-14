@@ -1,8 +1,8 @@
 //
 export type Product = {
   title: string
-  category_id: string
-  subcategory_id: string
+  category_id: number
+  subcategory_id: number
   description: string[]
   list_price: number
   net_price: number
@@ -11,8 +11,8 @@ export type Product = {
 
 export type ProductPartial = {
   title?: string
-  category_id?: string
-  subcategory_id?: string
+  category_id?: number
+  subcategory_id?: number
   description?: string[]
   list_price?: number
   net_price?: number

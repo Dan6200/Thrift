@@ -82,10 +82,10 @@ create table if not exists products (
   description          jsonb,
   list_price           numeric(19,4),
   net_price            numeric(19,4),
-  vendor_id            int              not       null    references			vendors         on   delete   set null,
-  store_id             int              not       null    references			stores          on   delete   set null,
-  category_id          int           		not    		null    references   		categories      on   delete   set null,
-  subcategory_id       int           		not    		null    references   		subcategories   on   delete   set null,
+  vendor_id            int              not       null    references			vendors         on   delete   cascade,
+  store_id             int              not       null    references			stores          on   delete   cascade,
+  category_id          int           		not    		null    references   		categories      on   delete   cascade,
+  subcategory_id       int           		not    		null    references   		subcategories   on   delete   cascade,
   created_at           timestamptz      not       null    default      		now(),
   quantity_available   int              not       null
 );

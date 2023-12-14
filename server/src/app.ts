@@ -34,7 +34,7 @@ const swaggerDocument = await readFile(
 let app: Express = express()
 app.set('trust proxy', 1)
 app.use(cookieParser())
-if (process.env.NODE_ENV !== 'production')
+if (process.env.NODE_ENV === 'production')
   app.use(
     rateLimiter({
       windowMs: 15 * 60 * 1000,

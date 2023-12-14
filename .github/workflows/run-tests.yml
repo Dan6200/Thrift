@@ -71,22 +71,22 @@ jobs:
           sleep 5
         env:
           CI: true
-          CLOUDINARY_API_KEY: 351181634279959
-          CLOUDINARY_API_SECRET: RAweXTe1mYE8xbqAWFUVbbACry4
-          CLOUDINARY_CLOUD_NAME: dk6dujsds
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          JWT_LIFETIME: ${{ secrets.JWT_LIFETIME }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
           PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
           REDIS_URL: redis://localhost:6379
-          JWT_LIFETIME: 30m
-          JWT_SECRET: MzUzWYYklY9EBRhbTbbzBTZYV211QrB5w//JxdNK3m+SYjVOKCQhH16BESOY5+x6C1kaJAaT2oTz9zuMNfZkiQ==
       - name: Run tests
         run: pnpm test
         env:
           CI: true
-          CLOUDINARY_API_KEY: 351181634279959
-          CLOUDINARY_API_SECRET: RAweXTe1mYE8xbqAWFUVbbACry4
-          CLOUDINARY_CLOUD_NAME: dk6dujsds
-          JWT_LIFETIME: 30m
-          JWT_SECRET: MzUzWYYklY9EBRhbTbbzBTZYV211QrB5w//JxdNK3m+SYjVOKCQhH16BESOY5+x6C1kaJAaT2oTz9zuMNfZkiQ==
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          JWT_LIFETIME: ${{ secrets.JWT_LIFETIME }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
           PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
           REDIS_URL: redis://localhost:6379
           SERVER: localhost:1024

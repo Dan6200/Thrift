@@ -8,7 +8,6 @@ sql-data.html
 *node_modules
 */.env
 todo*
-*.jpg
 .prettierrc.json
 **/.vscode/*
 *built/
@@ -17,7 +16,6 @@ todo*
 *.sh
 *.vim
 **/tmp/**
-**upload**
 server-log.txt
 mochawesome-*
 ./regexp.txt

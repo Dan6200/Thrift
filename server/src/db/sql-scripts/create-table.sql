@@ -71,10 +71,10 @@ create table if not exists subcategories (
 	subcategory_name		varchar
 );
 
-insert into categories(category_name) values ('Electronics')
-insert into categories(category_name) values ('Clothing')
-insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Electronics'), 'Computers')
-insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Clothing'), "Women's Fashion")
+insert into categories(category_name) values ('Electronics');
+insert into categories(category_name) values ('Clothing');
+insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Electronics'), 'Computers');
+insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Clothing'), "Women's Fashion");
 
 create table if not exists products (
   product_id           serial           primary   key,

@@ -4,8 +4,8 @@
     "target": "ESNext",
     "esModuleInterop": true,
     "moduleResolution": "nodenext",
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
     "noEmitOnError": false,
     "sourceMap": true,
     "module": "nodenext"

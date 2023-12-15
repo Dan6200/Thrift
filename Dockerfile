@@ -6,6 +6,8 @@ WORKDIR /usr/src/app
 COPY package.* ./
 RUN npm install -g pnpm
 RUN pnpm install
+RUN node -v
+RUN npx tsc -v
 COPY . .
 RUN pnpm build
 EXPOSE 1024

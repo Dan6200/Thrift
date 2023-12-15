@@ -8,7 +8,7 @@
     "strictPropertyInitialization": true,
     "noEmitOnError": false,
     "sourceMap": true,
-    "module": "ESNext"
+    "module": "nodenext"
   },
   "ts-node": { "esm": true, "experimentalSpecifierResolution": "node" },
   "include": ["**/*.ts"],

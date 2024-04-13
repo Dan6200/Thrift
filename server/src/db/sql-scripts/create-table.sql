@@ -75,6 +75,7 @@ insert into categories(category_name) values ('Electronics');
 insert into categories(category_name) values ('Clothing');
 insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Electronics'), 'Computers');
 insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Clothing'), 'Women''s Fashion');
+insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Clothing'), 'Men''s Fashion');
 
 create table if not exists products (
   product_id           serial           primary   key,
@@ -100,6 +101,7 @@ create table if not exists product_media (
 	is_video 						boolean			default		 false
 );
 
+-- UPDATE LANDING IMAGE OR DISPLAY IMAGE FOR ALL ROWS WHEN ONE ROW IS CHANGED
 CREATE OR REPLACE FUNCTION product_media_display_landing_trigger () 
 RETURNS TRIGGER AS $$
 DECLARE

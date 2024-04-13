@@ -6,28 +6,21 @@ import { Product } from '../../types-and-interfaces/products.js'
 import { AccountData } from '../../types-and-interfaces/account.js'
 import { ProductMedia } from '../../types-and-interfaces/products.js'
 import { StoresData } from '../../types-and-interfaces/stores-data.js'
-import * as Aliyu from '../integrated-tests/data/users/vendors/user-aliyu/index.js'
-
-const vendors = [Aliyu]
-
-for (let vendor of vendors) {
-  await createProducts(vendor)
-}
+import { faker } from '@faker-js/faker'
 
 async function createProducts({
-  accountInfo,
+  token,
   stores,
   products,
   productMedia,
 }: {
-  accountInfo: AccountData
+  token: string
   stores: StoresData[]
   products: Product[]
   productMedia: ProductMedia[][]
 }) {
   // Register a new user
   const server = process.env.SERVER!
-  const { token } = await register(server, accountInfo)
   // Create a vendor account for the user
   await createResource(server + '/v1/account/vendor', token, null, null)
 
@@ -41,30 +34,24 @@ async function createProducts({
     )
 
     for (const [idx, product] of products.entries()) {
-      const { product_id } = await createResource(
+      // const { product_id } =
+
+      await createResource(
         server + '/v1/products',
         token,
         { store_id },
         product
       )
-      await uploadMedia(
-        server + '/v1/media',
-        token,
-        {
-          product_id,
-        },
-        productMedia[idx]
-      )
-    }
-  }
-}
 
-async function register(server: string, accountInfo: AccountData) {
-  try {
-    const response = await axios.post(`${server}/v1/auth/register`, accountInfo)
-    return response.data
-  } catch (error) {
-    throw error
+      // await uploadMedia(
+      //   server + '/v1/media',
+      //   token,
+      //   {
+      //     product_id,
+      //   },
+      //   productMedia[idx]
+      // )
+    }
   }
 }
 

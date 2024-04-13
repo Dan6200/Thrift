@@ -40,6 +40,8 @@ services:
     depends_on: [webserver]
     # To create the ssl certificate:
     # command: certonly --webroot --webroot-path=/var/www/html --email danielnyong66@gmail.com --agree-tos --no-eff-email --noninteractive --force-renewal -d api.thrift-search.com.ng
+    # Use the staging flag to avoid rate-limiting
+    # command: certonly --webroot --webroot-path=/var/www/html --email danielnyong66@gmail.com --agree-tos --no-eff-email --noninteractive --staging -d api.thrift-search.com.ng
     # To renew every 12 hrs:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $$ {!}; done;'"
 

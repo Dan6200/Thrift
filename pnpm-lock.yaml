@@ -127,6 +127,9 @@ dependencies:
     version: 0.1.1
 
 devDependencies:
+  '@faker-js/faker':
+    specifier: ^8.3.1
+    version: 8.3.1
   '@types/chai':
     specifier: ^4.3.4
     version: 4.3.4
@@ -249,6 +252,11 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@faker-js/faker@8.3.1:
+    resolution: {integrity: sha512-FdgpFxY6V6rLZE9mmIBb9hM0xpfvQOSNOLnzolzKwsE1DH+gC7lEKV1p1IbR0lAYyvYd5a4u3qWJzowUkw1bIw==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
     dev: true
 
   /@hapi/hoek@9.3.0:

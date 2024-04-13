@@ -9,6 +9,8 @@ import util from 'node:util'
 
 const connectionString = process.env.PG_URL
 
+console.log(connectionString)
+
 const pgOptions = {
   connectionString,
   ssl:

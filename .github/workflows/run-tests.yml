@@ -1,20 +1,24 @@
 # cspell:disable
 # View results on github.com
 # gh CLI commands to view results
-# [list workflows]:
+# [list of all workflows]:
 # gh run list
 # [show the latest results of a specific workflow]
 # gh run list --workflow=<name_of_test_file>.yml -L 1
+# [Extract the run id]:
+# run_id=$(gh run list --workflow=<name_of_test_file>.yml -L 1|awk -F'\t' '{print $7}') && echo $run_id
 # [watch a workflow run]:
 # gh run watch <run_id>
 # [view details of a run]:
 # gh run view <run_id>
+# [view log details of a run]:
+# gh run view <run_id> --log
+# [view only log details]:
+# gh run view <run_id> --log|awk -F'\t' '{print $3}'|awk -F'Z ' '{print $2}'
 # [Download artifacts of a run]:
 # gh run download <run_id>
 # [Rerun a workflow run]:
 # gh run rerun <run_id>
-# [Extract the run id]:
-# run_id=$(gh run list --workflow=<name_of_test_file>.yml -L 1|awk -F'\t' '{print $7}') && echo $run_id
 
 name: Thrift-app Testing
 

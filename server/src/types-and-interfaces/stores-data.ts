@@ -3,7 +3,6 @@ export interface StoresData {
   store_page: {
     heading: string
     theme: 'light' | 'dark'
-    navigation: string[]
     pages: string[]
     hero: {
       media: { [idx: number]: string }

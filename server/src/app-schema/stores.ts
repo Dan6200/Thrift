@@ -6,7 +6,8 @@ export const StoreSchemaReqData = joi
     store_page: joi
       .object({
         heading: joi.string().required(),
-        navigation: joi.array().items(joi.string()).required(),
+        theme: joi.string().required(),
+        pages: joi.array().items(joi.string()).required(),
         hero: joi.object({
           media: joi.array().items(joi.string()).allow(null),
         }),
@@ -24,7 +25,8 @@ export const StoreSchemaReqDataPartial = joi.object({
   store_name: joi.string().min(3).max(50),
   store_page: joi.object({
     heading: joi.string().required(),
-    navigation: joi.array().items(joi.string()).required(),
+    theme: joi.string().required(),
+    pages: joi.array().items(joi.string()).required(),
     hero: joi.object({
       media: joi.array().items(joi.string()).allow(null),
     }),
@@ -51,7 +53,8 @@ export const StoreSchemaDBResultList = joi
         store_page: joi
           .object({
             heading: joi.string().required(),
-            navigation: joi.array().items(joi.string()).required(),
+            theme: joi.string().required(),
+            pages: joi.array().items(joi.string()).required(),
             hero: joi.object({
               media: joi.array().items(joi.string()).allow(null),
             }),
@@ -78,7 +81,8 @@ export const StoreSchemaDBResult = joi
     store_page: joi
       .object({
         heading: joi.string().required(),
-        navigation: joi.array().items(joi.string()).required(),
+        theme: joi.string().required(),
+        pages: joi.array().items(joi.string()).required(),
         hero: joi.object({
           media: joi.array().items(joi.string()).allow(null),
         }),

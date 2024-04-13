@@ -6,7 +6,8 @@ export const stores: StoresData[] = [
     store_name: 'Inspire Denims',
     store_page: {
       heading: 'Inspire Denims',
-      navigation: ['Home', 'New Arrivals', 'Promos', 'Contact'],
+      theme: 'dark',
+      pages: ['Home', 'New Arrivals', 'Promos', 'Contact'],
       hero: {
         media: [
           'https://promo_video.mov',
@@ -24,7 +25,8 @@ export const stores: StoresData[] = [
     store_name: 'Oraimo Electronics',
     store_page: {
       heading: 'Oriamo Electronics',
-      navigation: ['Home', 'New Arrivals', 'Promos', 'Contact'],
+      theme: 'dark',
+      pages: ['Home', 'New Arrivals', 'Promos', 'Contact'],
       hero: {
         media: [
           'https://oriamo_headphones.jpg',
@@ -43,7 +45,8 @@ export const updatedStores: StoresData[] = [
     store_name: 'Inspire Denims',
     store_page: {
       heading: 'Inspire Denims',
-      navigation: ['Home', 'New Arrivals', 'Promos', 'Contact'],
+      theme: 'dark',
+      pages: ['Home', 'New Arrivals', 'Promos', 'Contact'],
       hero: {
         media: [
           'https://inspire_denim_jacket.jpg',
@@ -62,7 +65,8 @@ export const updatedStores: StoresData[] = [
     store_name: 'Oriamo Electronics',
     store_page: {
       heading: 'Oriamo Electronics',
-      navigation: ['Home', 'New Arrivals', 'Promos', 'Contact'],
+      theme: 'dark',
+      pages: ['Home', 'New Arrivals', 'Promos', 'Contact'],
       hero: {
         media: [
           'https://oriamo_headphones.jpg',

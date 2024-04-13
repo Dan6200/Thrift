@@ -412,7 +412,7 @@ export const productMedia: ProductMedia[][] = [
   ],
 ]
 
-// should be a matrix
+// TODO: should be a matrix
 export const updatedProductMedia: ProductMedia[] = [
   {
     name: 'tozo-smartwatch-1',

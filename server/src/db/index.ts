@@ -4,7 +4,7 @@ const { Pool } = nodePostgres
 import retryQuery from '../controllers/helpers/retryQuery.js'
 import { retryConnection } from '../controllers/helpers/retry-connection.js'
 import dotenv from 'dotenv'
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
+dotenv.config({ path: `/etc/secrets/.env.${process.env.NODE_ENV}` })
 import util from 'node:util'
 
 const connectionString = process.env.PG_URL

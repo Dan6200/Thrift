@@ -7,7 +7,7 @@ export default interface ShippingInfo {
   postal_code: string
   country: string
   delivery_contact: string
-  delivery_instructions: string[]
+  delivery_instructions: string
 }
 
 export const isValidShippingInfo = (

@@ -39,7 +39,7 @@ create table if not exists shipping_info (
   postal_code             varchar       not       null,
   country									varchar       not       null,
   delivery_contact        varchar       not       null,
-  delivery_instructions   jsonb
+  delivery_instructions   varchar
 );
 
 create table if not exists payment_info (

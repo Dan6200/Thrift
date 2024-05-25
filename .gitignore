@@ -5,7 +5,6 @@ sql-data.html
 .env
 .env.*
 *.sw*
-*.csv
 *node_modules
 */.env
 todo*

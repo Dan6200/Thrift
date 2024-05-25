@@ -6,7 +6,7 @@ create table if not exists user_accounts (
   first_name   varchar(30)               not        null,
 	check				 (first_name ~* '^[a-zA-Z]+$'),
   last_name    varchar(30)               not        null,
-	check				 (last_name ~* '^[a-zA-Z]+$'),
+	check				 (last_name ~* '^[a-zA-Z]+([-'']*[a-zA-Z]+)+$'),
   email        varchar(320)              unique,
   check        (email ~* '^(([^<> ()[\]\\.,;:\s@"]+(\.[^< > ()[\]\\.,;'
 							 ':\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1'

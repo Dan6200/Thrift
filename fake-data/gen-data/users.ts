@@ -18,14 +18,14 @@ let users = [
 
 let { person, internet, phone, string, date, location } = faker
 
-for (let i = 1; i <= 50; i++) {
+for (let i = 1; i <= 500; i++) {
   users.push([
     i.toString(),
-    person.fullName(),
+    person.firstName(),
     person.lastName(),
     internet.email(),
     phone.number(),
-    string.alphanumeric(),
+    string.alphanumeric(20),
     date.birthdate(),
     location.country(),
   ] as any[])

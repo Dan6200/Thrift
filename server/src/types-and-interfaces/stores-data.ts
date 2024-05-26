@@ -1,6 +1,6 @@
 export interface StoresData {
   store_name: string
-  store_page: {
+  store_page?: {
     heading: string
     theme: 'light' | 'dark'
     pages: string[]
@@ -19,8 +19,8 @@ export const isValidStoresData = (
   return (
     typeof storesData === 'object' &&
     storesData != null &&
-    'store_name' in storesData &&
-    'store_page' in storesData &&
-    storesData.store_page != null
+    'store_name' in storesData
+    // && 'store_page' in storesData &&
+    //   storesData.store_page != null
   )
 }

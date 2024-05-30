@@ -12,9 +12,11 @@ const connectionString = process.env.PG_URL
 
 const pgOptions = {
   connectionString,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl: process.env.NODE_ENV.match(/(production|development)/)
+    ? {
+        rejectUnauthorized: false,
+      }
+    : false,
   idleTimeoutMillis: 0,
   connectionTimeoutMillis: 0,
 }

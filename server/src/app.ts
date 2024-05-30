@@ -45,7 +45,7 @@ if (process.env.NODE_ENV === 'production')
   )
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(<JSON>swaggerDocument))
+app.use('/', swaggerUi.serve, swaggerUi.setup(<JSON>swaggerDocument))
 app.use(
   '/.well-known/acme-challenge',
   express.static('public/.well-known/acme-challenge')

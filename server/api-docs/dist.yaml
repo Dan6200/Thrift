@@ -18,16 +18,16 @@ components:
       scheme: bearer
       bearerFormat: JWT
 servers:
-  - url: 'https://thrift-production.up.railway.app/{basePath}'
+  - url: 'https://thrift-app-latest.onrender.com/{basePath}'
     description: Production server
     variables:
       basePath:
         default: v1
-  - url: 'https://thrift-dev.up.railway.app/{basePath}'
-    description: Development server
-    variables:
-      basePath:
-        default: v1
+  # - url: 'https://thrift-dev.up.railway.app/{basePath}'
+  #   description: Development server
+  #   variables:
+  #     basePath:
+  #       default: v1
 paths:
   /auth/register:
     post:

@@ -4,19 +4,17 @@ const { Pool } = nodePostgres
 import retryQuery from '../controllers/helpers/retryQuery.js'
 import { retryConnection } from '../controllers/helpers/retry-connection.js'
 import dotenv from 'dotenv'
-dotenv.config({ path: `/etc/secrets/.env.${process.env.NODE_ENV}` })
-import util from 'node:util'
+if (process.env.NODE_ENV === 'production')
+  dotenv.config({ path: `/etc/secrets/.env.${process.env.NODE_ENV}` })
+else dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 
 const connectionString = process.env.PG_URL
 
 const pgOptions = {
   connectionString,
-  ssl:
-    process.env.NODE_ENV === 'production'
-      ? {
-          rejectUnauthorized: false,
-        }
-      : false,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   idleTimeoutMillis: 0,
   connectionTimeoutMillis: 0,
 }

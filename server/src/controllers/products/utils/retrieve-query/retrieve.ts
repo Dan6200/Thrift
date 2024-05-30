@@ -29,7 +29,7 @@ export default async <T>(
 					AS media, c.category_name, s.subcategory_name
 				FROM products p 
 				JOIN categories c USING (category_id)
-				JOIN subcategories s USING (category_id)
+				JOIN subcategories s USING (subcategory_id)
 			WHERE p.product_id=$1;`,
     values: [productId],
   })

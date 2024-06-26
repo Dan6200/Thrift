@@ -11,6 +11,7 @@ const router = express.Router()
 
 router
   .route('/')
+  .post(createUserAccount)
   .get(getUserAccount)
   .delete(deleteUserAccount)
   .patch(updateUserAccount)

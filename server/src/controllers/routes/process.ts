@@ -1,3 +1,4 @@
+/* Use as middleware */
 import { Response } from 'express'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import {

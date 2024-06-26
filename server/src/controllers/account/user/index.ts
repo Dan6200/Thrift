@@ -4,7 +4,10 @@ import db from '../../../db/index.js'
 import BadRequestError from '../../../errors/bad-request.js'
 import { createToken } from '../../../security/create-token.js'
 import { hashPassword } from '../../../security/password.js'
-import { AccountData } from '../../../types-and-interfaces/account.js'
+import {
+  AccountData,
+  isValidAccount,
+} from '../../../types-and-interfaces/account.js'
 import { isValidDBResponse } from '../../../types-and-interfaces/response.js'
 import { InsertRecord } from '../../helpers/generate-sql-commands/index.js'
 import { validateAccountData } from '../../helpers/validateAccountData.js'
@@ -20,11 +23,11 @@ const { CREATED } = StatusCodes
  */
 export default async (request: Request, response: Response): Promise<void> => {
   // validate the users account data
+  if (!isValidAccount(request.body))
+    throw new BadRequestError('Invalid Request Data')
   const userData: AccountData = await validateAccountData(
     request.body as AccountData
   )
-  const { password } = userData
-  userData.password = await hashPassword(<string>password)
   let dbResponse: unknown = await db.query({
     text: InsertRecord('user_accounts', Object.keys(userData), 'user_id'),
     values: Object.values(userData),

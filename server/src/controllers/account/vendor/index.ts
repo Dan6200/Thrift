@@ -6,7 +6,7 @@ import {
   SelectRecord,
   DeleteRecord,
 } from '../../helpers/generate-sql-commands/index.js'
-import processRoute from '../../helpers/process-route.js'
+import createProcessRoute from '../../helpers/process-route.js'
 import { isSuccessful } from '../../helpers/query-validation.js'
 
 const { CREATED, NO_CONTENT } = StatusCodes
@@ -32,22 +32,23 @@ const deleteQuery = async ({ userId: vendorId }) => {
   })
 }
 
-const processPostRoute = <ProcessRouteWithoutBody>processRoute
-const createVendorAccount = processPostRoute({
+const createProcessRouteWithoutBody = <ProcessRouteWithoutBody>(
+  createProcessRoute
+)
+
+const createVendorAccount = createProcessRouteWithoutBody({
   Query: createQuery,
   status: CREATED,
   validateResult: isSuccessful,
 })
 
-const processGetRoute = <ProcessRouteWithoutBody>processRoute
-const getVendorAccount = processGetRoute({
+const getVendorAccount = createProcessRouteWithoutBody({
   Query: readQuery,
   status: NO_CONTENT,
   validateResult: isSuccessful,
 })
 
-const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
-const deleteVendorAccount = processDeleteRoute({
+const deleteVendorAccount = createProcessRouteWithoutBody({
   Query: deleteQuery,
   status: NO_CONTENT,
   validateResult: isSuccessful,

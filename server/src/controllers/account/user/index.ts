@@ -1,46 +1,57 @@
 import { StatusCodes } from 'http-status-codes'
-import { QueryResult, QueryResultRow } from 'pg'
-import db from '../../../db/index.js'
-import BadRequestError from '../../../errors/bad-request.js'
-import { createToken } from '../../../security/create-token.js'
-import { hashPassword } from '../../../security/password.js'
 import {
-  AccountData,
-  isValidAccount,
-} from '../../../types-and-interfaces/account.js'
-import { isValidDBResponse } from '../../../types-and-interfaces/response.js'
-import { InsertRecord } from '../../helpers/generate-sql-commands/index.js'
-import { validateAccountData } from '../../helpers/validateAccountData.js'
+  ProcessRoute,
+  ProcessRouteWithoutBody,
+  QueryParams,
+} from '../../../types-and-interfaces/process-routes.js'
+import createRouteProcessor from '../../routes/process.js'
+import { knex } from '../../../db/index.js'
+import { QueryResult, QueryResultRow } from 'pg'
+import { isSuccessful, validateReqData } from '../../utils/query-validation.js'
+import { UserSchemaRequest } from '../../../app-schema/users.js'
 
-const { CREATED } = StatusCodes
+const { CREATED, NO_CONTENT } = StatusCodes
 
-/*
- * @param {Request} request
- * @param {Response} response
- * @returns {Promise<void>}
- * @description Create a new user account
- * @todo: Validate email and phone number through Email and SMS
- */
-export default async (request: Request, response: Response): Promise<void> => {
-  // validate the users account data
-  if (!isValidAccount(request.body))
-    throw new BadRequestError('Invalid Request Data')
-  const userData: AccountData = await validateAccountData(
-    request.body as AccountData
-  )
-  let dbResponse: unknown = await db.query({
-    text: InsertRecord('user_accounts', Object.keys(userData), 'user_id'),
-    values: Object.values(userData),
-  })
-  if (!isValidDBResponse(dbResponse))
-    throw new Error('Unable to register user account')
-  const { rows } = dbResponse as QueryResult<QueryResultRow>
-  const { user_id: userId } = rows[0]
-  if (userId == null)
-    throw new BadRequestError('Unable to register user account')
-  // create a token for the user
-  const token = createToken(userId)
-  response.status(CREATED).json({
-    token,
-  })
-}
+/**
+ * @description Add a user account to the database
+ **/
+const createQuery = async <T>({
+  body,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
+  knex('users')
+    .insert({ ...body })
+    .returning('uid')
+
+/**
+ * @description Retrieves user information.
+ **/
+const getQuery = async <T>({
+  userId,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>[]> =>
+  knex.select('*').from('users').where('uid', userId)
+
+/**
+ * @description Delete the user account from the database
+ **/
+const deleteQuery = async <T>({
+  userId,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
+  knex('users').where('uid', userId).del().returning('uid')
+
+const processPostRoute = <ProcessRoute>createRouteProcessor
+const processDeleteRoute = <ProcessRouteWithoutBody>createRouteProcessor
+
+const createUserAccount = processPostRoute({
+  Query: createQuery,
+  status: CREATED,
+  validateBody: validateReqData(UserSchemaRequest),
+  validateResult: isSuccessful,
+})
+
+const deleteUserAccount = processDeleteRoute({
+  Query: deleteQuery,
+  status: NO_CONTENT,
+  validateResult: isSuccessful,
+})
+
+export { createUserAccount, deleteUserAccount }

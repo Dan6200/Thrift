@@ -1,6 +1,5 @@
 // cspell:disable
-import nodePostgres from 'pg'
-const { Pool } = nodePostgres
+import { Pool, types } from 'pg'
 import { retryConnection } from './utils/retry-connection.js'
 import { knexOptions, pgOptions } from './postgres/options.js'
 import pgQuery from './postgres/pg-query.js'
@@ -12,7 +11,6 @@ const pool = new Pool(pgOptions)
 // handle error...
 pool.on('error', retryConnection(pool))
 
-const { types } = nodePostgres
 types.setTypeParser(23, function (val) {
   return parseInt(val, 10)
 })

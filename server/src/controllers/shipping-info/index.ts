@@ -17,17 +17,8 @@ import {
 import ShippingInfo, {
   isValidShippingInfo,
 } from '../../types-and-interfaces/shipping-info.js'
-import {
-  DeleteRecord,
-  InsertRecord,
-  SelectRecord,
-  UpdateRecord,
-} from '../helpers/generate-sql-commands/index.js'
-import processRoute from '../helpers/process-route.js'
-import {
-  validateReqData,
-  validateResData,
-} from '../helpers/query-validation.js'
+import processRoute from '../routes/process.js'
+import { validateReqData, validateResData } from '../utils/query-validation.js'
 
 /**
  * @param {QueryParams} qp

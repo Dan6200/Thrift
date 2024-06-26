@@ -1,4 +1,3 @@
-/*
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { hashPassword } from '../../security/password.js'
@@ -18,7 +17,7 @@ const { CREATED } = StatusCodes
  * @returns {Promise<void>}
  * @description Create a new user account
  * @todo: Validate email and phone number through Email and SMS
- *
+ */
 export default async (request: Request, response: Response): Promise<void> => {
   // validate the users account data
   const userData: AccountData = await validateAccountData(
@@ -42,4 +41,3 @@ export default async (request: Request, response: Response): Promise<void> => {
     token,
   })
 }
-*/

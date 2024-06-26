@@ -2,7 +2,7 @@
 // cspell:ignore alphanum
 import joi from 'joi'
 
-const AccountDataSchemaRequest = joi
+const UserSchemaRequest = joi
   .object()
   .keys({
     first_name: joi.string().alphanum().min(3).max(30).required(),
@@ -30,7 +30,7 @@ const AccountDataSchemaRequest = joi
   .or('email', 'phone')
   .required()
 
-const AccountDataSchemaDB = joi
+const UserSchemaDB = joi
   .object()
   .keys({
     first_name: joi.string().alphanum().min(3).max(30).required(),
@@ -55,7 +55,7 @@ const AccountDataSchemaDB = joi
   .or('email', 'phone')
   .required()
 
-const UpdateAccountDataSchema = joi.object({
+const UpdateUserSchema = joi.object({
   first_name: joi.string().alphanum().min(3).max(30),
   last_name: joi.string().alphanum().min(3).max(30),
   email: joi.string().email(),
@@ -64,8 +64,4 @@ const UpdateAccountDataSchema = joi.object({
   country: joi.string(),
 })
 
-export {
-  AccountDataSchemaRequest,
-  UpdateAccountDataSchema,
-  AccountDataSchemaDB,
-}
+export { UserSchemaRequest, UpdateUserSchema, UserSchemaDB }

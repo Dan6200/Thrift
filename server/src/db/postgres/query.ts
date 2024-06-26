@@ -1,30 +1,10 @@
 // cspell:disable
 import nodePostgres, { QueryResult, QueryResultRow } from 'pg'
 const { Pool } = nodePostgres
-import Knex from 'knex'
-import dotenv from 'dotenv'
+import { pgOptions } from './index.js'
+import retryQuery from '../utils/retry-query.js'
+import { retryConnection } from '../utils/retry-connection.js'
 
-if (process.env.NODE_ENV === 'production')
-  dotenv.config({ path: `/etc/secrets/.env.${process.env.NODE_ENV}` })
-else dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
-
-const connectionString = process.env.PG_URL
-
-const knex = Knex({
-  client: 'pg',
-  connection: connectionString,
-})
-
-const pgOptions = {
-  connectionString,
-  ssl: process.env.NODE_ENV.match(/(production|development)/)
-    ? {
-        rejectUnauthorized: false,
-      }
-    : false,
-  idleTimeoutMillis: 0,
-  connectionTimeoutMillis: 0,
-}
 const pool = new Pool(pgOptions)
 
 // handle error...
@@ -64,24 +44,18 @@ export default {
     // console.log('\nexecuted query:\n', text, values, name)
 
     // allow a retry if DB fails to connect
-    let res: unknown
     const retryCount = 7
     const delay = 500
-    // for prod
-    // res = retryQuery(pool.query.bind(pool), [text, values, name], retryCount, delay)
 
-    // for debugging
-
-    res = await retryQuery(
+    return retryQuery(
       pool.query.bind(pool),
       { text, values, name },
       retryCount,
       delay
     )
 
-    const duration = Date.now() - start
-    // add await for this to work
-
+    // const duration = Date.now() - start
+    //
     // console.log(
     //   '\nquery result',
     //   util.inspect(
@@ -94,22 +68,22 @@ export default {
     //     true
     //   )
     // )
-
-    return res as QueryResult<QueryResultRow | QueryResultRow[]>
+    //
+    // return res
   },
 
   async getClient(): Promise<any> {
     const client: any = await pool.connect()
     const query = client.query
     const release = client.release
-    // set a timeout of 5 seconds, after which we will log this client's last query
+
     const timeout = setTimeout(() => {
       console.error('A client has been checked out for more than 5 seconds!')
       console.error(
         `The last executed query on this client was: ${client.lastQuery}`
       )
     }, 5000)
-    // monkey patch the query method to keep track of the last query executed
+
     client.query = (...args) => {
       client.lastQuery = args
       return query.apply(client, args)

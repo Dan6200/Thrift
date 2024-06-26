@@ -1,8 +1,8 @@
 drop schema if exists public cascade;
 create schema if not exists public;
 
-create table if not exists user_accounts (
-  user_id      serial                    primary    key,
+create table if not exists users (
+  uid 		     varchar                    primary    key, -- Get from Firebase
   first_name   varchar(30)               not        null,
 	check				 (first_name ~* '^[a-zA-Z]+$'),
   last_name    varchar(30)               not        null,
@@ -16,10 +16,9 @@ create table if not exists user_accounts (
 	check				 (email is not null and phone is not null 
 							 or email is null and phone is not null 
 							 or email is not null and phone is null),
-  password     bytea                     not        null,
   dob          date                      not        null,
   country      varchar                   not        null 			default  		'Nigeria',
-  check        (current_date - dob > 12)
+  check        (current_date - dob > 18)
 );
 
 
@@ -52,6 +51,7 @@ create table if not exists vendors (
 );
 
 
+/*
 create table if not exists stores (
   store_id       serial    primary   key,   
   store_name     varchar   not       null,
@@ -59,6 +59,7 @@ create table if not exists stores (
   store_page     jsonb,
   date_created   date      not       null    default      current_date
 );
+*/
 
 create table if not exists categories (
 	category_id					serial					primary 	key,
@@ -71,11 +72,15 @@ create table if not exists subcategories (
 	subcategory_name		varchar
 );
 
-insert into categories(category_name) values ('Electronics');
-insert into categories(category_name) values ('Clothing');
-insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Electronics'), 'Computers');
-insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Clothing'), 'Women''s Fashion');
-insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Clothing'), 'Men''s Fashion');
+insert into categories(category_name) values ('Electronics'),
+('Clothing'),
+('Books'),
+('Beauty Products'),
+('Automobiles');
+
+insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Electronics'), 'Computers'),
+((select category_id from categories where category_name = 'Clothing'), 'Women''s Fashion');
+((select category_id from categories where category_name = 'Clothing'), 'Men''s Fashion');
 
 create table if not exists products (
   product_id           serial           primary   key,
@@ -84,7 +89,6 @@ create table if not exists products (
   list_price           numeric(19,4),
   net_price            numeric(19,4),
   vendor_id            int              not       null    references			vendors         on   delete   cascade,
-  store_id             int              not       null    references			stores          on   delete   cascade,
   category_id          int           		not    		null    references   		categories      on   delete   cascade,
   subcategory_id       int           		not    		null    references   		subcategories   on   delete   cascade,
   created_at           timestamptz      not       null    default      		now(),

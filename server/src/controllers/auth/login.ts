@@ -1,3 +1,6 @@
+/*
+ * Switching to Firebase Auth
+ *
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import db from '../../db/index.js'
@@ -48,3 +51,4 @@ export default async (request: Request, response: Response) => {
     token,
   })
 }
+*/

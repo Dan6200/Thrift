@@ -1,15 +1,14 @@
-/*
-import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { hashPassword } from '../../security/password.js'
 import { QueryResult, QueryResultRow } from 'pg'
-import { InsertRecord } from '../helpers/generate-sql-commands/index.js'
-import { isValidDBResponse } from '../../types-and-interfaces/response.js'
-import { createToken } from '../../security/create-token.js'
-import { AccountData } from '../../types-and-interfaces/account.js'
-import { validateAccountData } from '../helpers/validateAccountData.js'
-import BadRequestError from '../../errors/bad-request.js'
-import db from '../../db/index.js'
+import db from '../../../db/index.js'
+import BadRequestError from '../../../errors/bad-request.js'
+import { createToken } from '../../../security/create-token.js'
+import { hashPassword } from '../../../security/password.js'
+import { AccountData } from '../../../types-and-interfaces/account.js'
+import { isValidDBResponse } from '../../../types-and-interfaces/response.js'
+import { InsertRecord } from '../../helpers/generate-sql-commands/index.js'
+import { validateAccountData } from '../../helpers/validateAccountData.js'
+
 const { CREATED } = StatusCodes
 
 /*
@@ -18,7 +17,7 @@ const { CREATED } = StatusCodes
  * @returns {Promise<void>}
  * @description Create a new user account
  * @todo: Validate email and phone number through Email and SMS
- *
+ */
 export default async (request: Request, response: Response): Promise<void> => {
   // validate the users account data
   const userData: AccountData = await validateAccountData(
@@ -42,4 +41,3 @@ export default async (request: Request, response: Response): Promise<void> => {
     token,
   })
 }
-*/

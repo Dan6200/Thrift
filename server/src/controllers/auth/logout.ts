@@ -1,3 +1,6 @@
+/*
+ * Switching to Firebase Auth
+ *
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import UnauthorizedError from '../../errors/unauthorized.js'
@@ -11,3 +14,4 @@ export default async (request: Request, response: Response) => {
   await revokeToken(token)
   response.status(StatusCodes.OK).end()
 }
+*/

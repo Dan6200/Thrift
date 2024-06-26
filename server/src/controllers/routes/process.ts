@@ -1,17 +1,15 @@
-/* Use as middleware */
 import { Response } from 'express'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import {
   isValidDBResponse,
   Status,
 } from '../../types-and-interfaces/response.js'
-import { QueryParams } from '../../types-and-interfaces/process-routes.js'
+import {
+  QueryDB,
+  QueryParams,
+} from '../../types-and-interfaces/process-routes.js'
 import BadRequestError from '../../errors/bad-request.js'
 import { QueryResult, QueryResultRow } from 'pg'
-
-export type QueryDB = <T>(
-  queryParams: QueryParams<T>
-) => Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
 
 export default ({
   Query,

@@ -6,7 +6,7 @@ import {
   SelectRecord,
   DeleteRecord,
 } from '../../helpers/generate-sql-commands/index.js'
-import createProcessRoute from '../../helpers/process-route.js'
+import createProcessRoute from '../../routes/process.js'
 import { isSuccessful } from '../../helpers/query-validation.js'
 
 const { CREATED, NO_CONTENT } = StatusCodes

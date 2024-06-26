@@ -7,7 +7,7 @@ import {
   InsertRecord,
   DeleteRecord,
 } from '../../helpers/generate-sql-commands/index.js'
-import processRoute from '../../helpers/process-route.js'
+import createRouteProcessor from '../../routes/process.js'
 import db from '../../../db/index.js'
 import { QueryResult, QueryResultRow } from 'pg'
 import { isSuccessful } from '../../helpers/query-validation.js'
@@ -36,8 +36,8 @@ const deleteQuery = async <T>({
     values: [customerId],
   })
 
-const processPostRoute = <ProcessRouteWithoutBody>processRoute
-const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
+const processPostRoute = <ProcessRouteWithoutBody>createRouteProcessor
+const processDeleteRoute = <ProcessRouteWithoutBody>createRouteProcessor
 
 const createCustomerAccount = processPostRoute({
   Query: createQuery,

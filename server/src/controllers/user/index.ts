@@ -12,10 +12,15 @@ import {
   validateReqData,
   validateResData,
 } from '../utils/query-validation.js'
-import { UserSchemaDB, UserSchemaRequest } from '../../app-schema/users.js'
+import {
+  UserSchemaUpdateRequest,
+  UserSchemaID,
+  UserSchemaCreateRequest,
+  UserSchemaDBResponse,
+} from '../../app-schema/users.js'
 import { getUserQueryString } from './utils.js'
 
-const { OK, CREATED, NO_CONTENT } = StatusCodes
+const { OK, CREATED } = StatusCodes
 
 /**
  * @description Add a user account to the database
@@ -66,25 +71,25 @@ const processGetRoute = <ProcessRouteWithoutBody>createRouteProcessor
 export const postUser = processPostRoute({
   Query: createQuery,
   status: CREATED,
-  validateBody: validateReqData(UserSchemaRequest),
-  validateResult: isSuccessful,
+  validateBody: validateReqData(UserSchemaCreateRequest),
+  validateResult: isSuccessful(UserSchemaID),
 })
 
 export const getUser = processGetRoute({
   Query: getQuery,
   status: OK,
-  validateResult: validateResData(UserSchemaDB),
+  validateResult: validateResData(UserSchemaDBResponse),
 })
 
 export const patchUser = processPatchRoute({
   Query: updateQuery,
   status: OK,
-  validateBody: validateReqData(UserSchemaRequest),
-  validateResult: isSuccessful,
+  validateBody: validateReqData(UserSchemaUpdateRequest),
+  validateResult: isSuccessful(UserSchemaID),
 })
 
 export const deleteUser = processDeleteRoute({
   Query: deleteQuery,
-  status: NO_CONTENT,
-  validateResult: isSuccessful,
+  status: OK,
+  validateResult: isSuccessful(UserSchemaID),
 })

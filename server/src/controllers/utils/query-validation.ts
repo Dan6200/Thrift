@@ -1,5 +1,4 @@
-import util from 'node:util'
-import Joi, { ArraySchema, ObjectSchema } from 'joi'
+import { ArraySchema, ObjectSchema } from 'joi'
 import { QueryResult, QueryResultRow } from 'pg'
 import BadRequestError from '../../errors/bad-request.js'
 import NotFoundError from '../../errors/not-found.js'
@@ -18,26 +17,26 @@ export const validateReqData =
   }
 
 /**
- * @description Validates DB response against schema
+ * @description Validates DB result against schema
  * */
 export function validateResData<T>(
   schema: ArraySchema<T>
-): (response: QueryResult<QueryResultRow | QueryResultRow[]>) => Promise<void>
+): (result: QueryResult<QueryResultRow | QueryResultRow[]>) => Promise<void>
 export function validateResData<T>(
   schema: ObjectSchema<T>
-): (response: QueryResult<QueryResultRow | QueryResultRow[]>) => Promise<void>
+): (result: QueryResult<QueryResultRow | QueryResultRow[]>) => Promise<void>
 export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
-  return async (response: QueryResult<QueryResultRow | QueryResultRow[]>) => {
-    if (response.rows.length === 0) {
-      if (response.command === 'SELECT')
+  return async (result: QueryResult<QueryResultRow | QueryResultRow[]>) => {
+    if (result.rows.length === 0) {
+      if (result.command === 'SELECT')
         throw new NotFoundError('Requested resource was not found')
-      throw new BadRequestError(`${response.command} Operation unsuccessful`)
+      throw new BadRequestError(`${result.command} Operation unsuccessful`)
     }
     let error: Error | undefined
-    if (response.rowCount > 1) {
-      ;({ error } = schema.validate(response.rows))
+    if (result.rowCount > 1) {
+      ;({ error } = schema.validate(result.rows))
     } else {
-      ;({ error } = schema.validate(response.rows[0]))
+      ;({ error } = schema.validate(result.rows[0]))
     }
     if (error) throw new BadRequestError(error.message)
   }
@@ -45,11 +44,18 @@ export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
 
 /**
  * @description Checks to see if query was successful
- * If the result is empty, throw an error
+ * throws a BadRequestError if it is not
  * */
-export const isSuccessful = async (
-  result: QueryResult<QueryResultRow | QueryResultRow[]>
-): Promise<void> => {
-  if (result.rows.length === 0)
-    throw new BadRequestError(`${result.command} Operation unsuccessful`)
-}
+export const isSuccessful =
+  <T>(schema: ObjectSchema<T>) =>
+  async (
+    result: QueryResult<QueryResultRow | QueryResultRow[]>
+  ): Promise<void> => {
+    if (result.rows.length === 0)
+      throw new BadRequestError(`${result.command} Operation unsuccessful`)
+    if (result.rows.length > 1)
+      throw new BadRequestError(`${result.command} operated erroneously`)
+    const { error } = schema.validate(result.rows[0])
+    if (error)
+      throw new BadRequestError(`${result.command} Operation unsuccessful`)
+  }

@@ -2,7 +2,7 @@
 // cspell:ignore alphanum
 import joi from 'joi'
 
-const UserSchemaRequest = joi
+export const UserSchemaCreateRequest = joi
   .object()
   .keys({
     first_name: joi.string().alphanum().min(3).max(30).required(),
@@ -19,18 +19,19 @@ const UserSchemaRequest = joi
         /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
       )
       .allow(null),
-    password: joi
-      .string()
-      .pattern(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*+\-~^:;`._=\/\\{}\[\]\(\)])[A-Za-z\s\d!@#$%^&*+\-~^_:;`.=\/\\{}\[\]\(\)]{8,}$/
-      ),
     dob: joi.date().required(),
     country: joi.string(),
   })
   .or('email', 'phone')
   .required()
+/*
+    password: joi
+      .string()
+      .pattern(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*+\-~^:;`._=\/\\{}\[\]\(\)])[A-Za-z\s\d!@#$%^&*+\-~^_:;`.=\/\\{}\[\]\(\)]{8,}$/
+      ),*/
 
-const UserSchemaDB = joi
+export const UserSchemaDBResponse = joi
   .object()
   .keys({
     first_name: joi.string().alphanum().min(3).max(30).required(),
@@ -55,7 +56,7 @@ const UserSchemaDB = joi
   .or('email', 'phone')
   .required()
 
-const UpdateUserSchema = joi.object({
+export const UserSchemaUpdateRequest = joi.object({
   first_name: joi.string().alphanum().min(3).max(30),
   last_name: joi.string().alphanum().min(3).max(30),
   email: joi.string().email(),
@@ -64,4 +65,6 @@ const UpdateUserSchema = joi.object({
   country: joi.string(),
 })
 
-export { UserSchemaRequest, UpdateUserSchema, UserSchemaDB }
+export const UserSchemaID = joi.object({
+  uid: joi.string().alphanum().min(1).max(128),
+})

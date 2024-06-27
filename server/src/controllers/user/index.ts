@@ -12,13 +12,13 @@ import {
   validateReqData,
   validateResData,
 } from '../utils/query-validation.js'
-import {
-  UserSchemaUpdateRequest,
-  UserSchemaID,
-  UserSchemaCreateRequest,
-  UserSchemaDBResponse,
-} from '../../app-schema/users.js'
 import { getUserQueryString } from './utils.js'
+import {
+  UIDSchema,
+  UserRequestSchema,
+  UserResponseSchema,
+  UserUpdateRequestSchema,
+} from '../../app-schema/users.js'
 
 const { OK, CREATED } = StatusCodes
 
@@ -71,25 +71,25 @@ const processGetRoute = <ProcessRouteWithoutBody>createRouteProcessor
 export const postUser = processPostRoute({
   Query: createQuery,
   status: CREATED,
-  validateBody: validateReqData(UserSchemaCreateRequest),
-  validateResult: isSuccessful(UserSchemaID),
+  validateBody: validateReqData(UserRequestSchema),
+  validateResult: isSuccessful(UIDSchema),
 })
 
 export const getUser = processGetRoute({
   Query: getQuery,
   status: OK,
-  validateResult: validateResData(UserSchemaDBResponse),
+  validateResult: validateResData(UserResponseSchema),
 })
 
 export const patchUser = processPatchRoute({
   Query: updateQuery,
   status: OK,
-  validateBody: validateReqData(UserSchemaUpdateRequest),
-  validateResult: isSuccessful(UserSchemaID),
+  validateBody: validateReqData(UserUpdateRequestSchema),
+  validateResult: isSuccessful(UIDSchema),
 })
 
 export const deleteUser = processDeleteRoute({
   Query: deleteQuery,
   status: OK,
-  validateResult: isSuccessful(UserSchemaID),
+  validateResult: isSuccessful(UIDSchema),
 })

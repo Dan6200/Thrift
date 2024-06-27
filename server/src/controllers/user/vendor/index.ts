@@ -9,7 +9,7 @@ import { QueryResult, QueryResultRow } from 'pg'
 import { isSuccessful } from '../../utils/query-validation.js'
 import { VendorSchemaID } from '../../../app-schema/vendors.js'
 
-const { CREATED, NO_CONTENT } = StatusCodes
+const { CREATED, OK } = StatusCodes
 
 /**
  * @description Add a vendor account to the database
@@ -38,6 +38,6 @@ export const postVendor = processPostRoute({
 
 export const deleteVendor = processDeleteRoute({
   Query: deleteQuery,
-  status: NO_CONTENT,
+  status: OK,
   validateResult: isSuccessful(VendorSchemaID),
 })

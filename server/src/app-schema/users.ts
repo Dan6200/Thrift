@@ -2,7 +2,7 @@
 // cspell:ignore alphanum
 import joi from 'joi'
 
-export const UserSchemaCreateRequest = joi
+export const UserRequestSchema = joi
   .object()
   .keys({
     first_name: joi.string().alphanum().min(3).max(30).required(),
@@ -31,7 +31,7 @@ export const UserSchemaCreateRequest = joi
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*+\-~^:;`._=\/\\{}\[\]\(\)])[A-Za-z\s\d!@#$%^&*+\-~^_:;`.=\/\\{}\[\]\(\)]{8,}$/
       ),*/
 
-export const UserSchemaDBResponse = joi
+export const UserResponseSchema = joi
   .object()
   .keys({
     first_name: joi.string().alphanum().min(3).max(30).required(),
@@ -56,15 +56,19 @@ export const UserSchemaDBResponse = joi
   .or('email', 'phone')
   .required()
 
-export const UserSchemaUpdateRequest = joi.object({
-  first_name: joi.string().alphanum().min(3).max(30),
-  last_name: joi.string().alphanum().min(3).max(30),
-  email: joi.string().email(),
-  phone: joi.string().pattern(/^\d{10}$/),
-  dob: joi.alternatives().try(joi.date(), joi.string()),
-  country: joi.string(),
-})
+export const UserUpdateRequestSchema = joi
+  .object({
+    first_name: joi.string().alphanum().min(3).max(30),
+    last_name: joi.string().alphanum().min(3).max(30),
+    email: joi.string().email(),
+    phone: joi.string().pattern(/^\d{10}$/),
+    dob: joi.alternatives().try(joi.date(), joi.string()),
+    country: joi.string(),
+  })
+  .required()
 
-export const UserSchemaID = joi.object({
-  uid: joi.string().alphanum().min(1).max(128),
-})
+export const UIDSchema = joi
+  .object({
+    uid: joi.string().alphanum().min(1).max(128),
+  })
+  .required()

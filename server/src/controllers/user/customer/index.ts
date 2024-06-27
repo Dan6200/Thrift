@@ -9,7 +9,7 @@ import { QueryResult, QueryResultRow } from 'pg'
 import { isSuccessful } from '../../utils/query-validation.js'
 import { CustomerSchemaID } from '../../../app-schema/customers.js'
 
-const { CREATED, NO_CONTENT } = StatusCodes
+const { CREATED, OK } = StatusCodes
 
 /**
  * @description Add a customer account to the database
@@ -41,6 +41,6 @@ export const postCustomer = processPostRoute({
 
 export const deleteCustomer = processDeleteRoute({
   Query: deleteQuery,
-  status: NO_CONTENT,
+  status: OK,
   validateResult: isSuccessful(CustomerSchemaID),
 })

@@ -11,7 +11,7 @@ import testRoute from '../test-route.js'
 
 chai.use(chaiHttp).should()
 
-const { OK, NOT_FOUND, NO_CONTENT, UNAUTHORIZED } = StatusCodes
+const { OK, NOT_FOUND, UNAUTHORIZED } = StatusCodes
 
 let validateResult = async (data: any) => {
   let userInfo = data
@@ -39,7 +39,7 @@ const hasNoVendorAccount = async (data: any) => {
   data.is_vendor.should.be.false
 }
 
-const testFailToGetAccount = testRoute({
+export const testFailToGetUser = testRoute({
   verb: 'get',
   statusCode: UNAUTHORIZED,
 }) as testRouteNoData
@@ -68,37 +68,23 @@ export const testHasNoVendorAccount = testRoute({
   checks: hasNoVendorAccount,
 }) as testRouteNoData
 
-const testGetAccount = testRoute({
+export const testGetUser = testRoute({
   verb: 'get',
   statusCode: OK,
   checks: validateResult,
 }) as testRouteNoData
 
-const testUpdateAccount = testRoute({
+export const testUpdateUser = testRoute({
   verb: 'patch',
   statusCode: OK,
 }) as testRouteWithData
 
-const testChangeAccountPassword = testRoute({
-  verb: 'put',
-  statusCode: NO_CONTENT,
-}) as testRouteWithData
-
-const testDeleteAccount = testRoute({
+export const testDeleteUser = testRoute({
   verb: 'delete',
-  statusCode: NO_CONTENT,
+  statusCode: OK,
 }) as testRouteNoData
 
-const testGetNonExistentAccount = testRoute({
+export const testGetNonExistentUser = testRoute({
   verb: 'get',
   statusCode: NOT_FOUND,
 }) as testRouteNoData
-
-export {
-  testGetAccount,
-  testFailToGetAccount,
-  testUpdateAccount,
-  testChangeAccountPassword,
-  testDeleteAccount,
-  testGetNonExistentAccount,
-}

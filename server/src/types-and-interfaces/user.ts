@@ -1,4 +1,6 @@
-export interface UserData {
+import { UserRequestSchema } from '../app-schema/users.js'
+
+export interface UserRequestData {
   first_name: string
   last_name: string
   email: string
@@ -7,12 +9,6 @@ export interface UserData {
   country: string
 }
 
-export const isValidUser = (data: unknown): data is UserData =>
-  typeof data === 'object' &&
-  data !== null &&
-  'first_name' in data &&
-  'last_name' in data &&
-  'email' in data &&
-  'phone' in data &&
-  'dob' in data &&
-  'country' in data
+export const isValidUserRequestData = (
+  data: unknown
+): data is UserRequestData => !UserRequestSchema.validate(data).error

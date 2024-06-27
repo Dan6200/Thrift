@@ -1,18 +1,18 @@
 import { StatusCodes } from 'http-status-codes'
 
-interface testRequestParams {
+export interface testRequestParams {
   verb: string
   statusCode: StatusCodes
   checks?: (data: unknown) => boolean
 }
 
-type testRequestNoData = (
+export type testRequest = (
   server: string,
   token: string,
   path: string
 ) => Promise<any>
 
-export type testPublicRequestNoData = (
+export type testRequestPublic = (
   server: string,
   token: null,
   path: string
@@ -25,27 +25,25 @@ export type testRequestWithQParams = (
   query: { [k: string]: any } & { length?: never }
 ) => Promise<any>
 
-export type testPublicRequestWithQParams = (
+export type testRequestWithQParamsPublic = (
   server: string,
   token: null,
   path: string,
   query: { [k: string]: any } & { length?: never }
 ) => Promise<any>
 
-export type testRequestWithQParamsAndData = (
+export type testRequestWithQParamsAndBody = (
   server: string,
   token: string,
   path: string,
   query: { [k: string]: any } & { length?: never },
-  data: object & { length?: never }
+  body: object & { length?: never }
 ) => Promise<any>
 
-type testRequestWithData = (
+export type testRequestWithBody = (
   server: string,
   token: string,
   path: string,
   query: null,
-  data: object & { length?: never }
+  body: object & { length?: never }
 ) => Promise<any>
-
-export { testRequestParams, testRequestNoData, testRequestWithData }

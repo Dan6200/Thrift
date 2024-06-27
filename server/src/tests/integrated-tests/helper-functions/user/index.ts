@@ -2,8 +2,8 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import {
-  testRequestNoData,
-  testRequestWithData,
+  testRequestNoBody,
+  testRequestWithBody,
 } from '../../../../types-and-interfaces/test-routes.js'
 import {
   isValidUserResponseData,

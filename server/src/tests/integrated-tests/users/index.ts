@@ -1,10 +1,10 @@
-/*
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import {
+  testPostUser,
   testGetUser,
-  testUpdateUser,
+  testPatchUser,
   testDeleteUser,
   testGetNonExistentUser,
   testHasCustomerAccount,
@@ -12,8 +12,8 @@ import {
   testHasVendorAccount,
   testHasNoVendorAccount,
 } from '../helper-functions/user/index.js'
-import { AccountData } from '../../../types-and-interfaces/account.js'
-import db from '../../../db/index.js'
+import { knex } from '../../../db/index.js'
+import { UserRequestData } from '../../../types-and-interfaces/user.js'
 
 chai.use(chaiHttp).should()
 
@@ -21,31 +21,33 @@ chai.use(chaiHttp).should()
 const server = process.env.SERVER!
 
 export default function ({
-  accountInfo,
-  updatedAccountInfo,
-  updatedPassword,
+  token,
+  user,
+  updatedUser,
 }: {
-  accountInfo: AccountData
-  updatedAccountInfo: AccountData
-  updatedPassword: AccountData
+  token: string // from firebase
+  user: UserRequestData
+  updatedUser: UserRequestData
 }) {
-  const path = '/v1/account'
-  let token: string
+  const path = '/v1/user'
   describe('User account management', () => {
     before(async () => {
       // Delete all user accounts
-      await db.query({
-        text: 'delete from user_accounts where email=$1 or phone=$2',
-        values: [accountInfo.email, accountInfo.phone],
-      })
+      await knex('users')
+        .del()
+        .where('email', user.email)
+        .orWhere('phone', user.phone)
       // Create a new user for each tests
-      const response = await registration(server, accountInfo)
-      // Store the token returned
-      token = response.body.token
+      const response = await testPostUser<UserRequestData>({
+        server,
+        token,
+        path,
+        body: user,
+      })
     })
 
     it("it should get the user's account", () =>
-      testGetAccount(server, token, path))
+      testGetUser({ server, token, path }))
 
     it("it should update the user's account", () =>
       testUpdateAccount(server, token, path, null, updatedAccountInfo))
@@ -71,4 +73,3 @@ export default function ({
       emailLogin(server, accountInfo, StatusCodes.UNAUTHORIZED))
   })
 }
-*/

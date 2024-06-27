@@ -1,13 +1,13 @@
 import chai from 'chai'
 import BadRequestError from '../../../errors/bad-request.js'
-import { TestCreateRequestParams } from '../../../types-and-interfaces/test-routes.js'
+import { TestCreateRequestParamsGeneral } from '../../../types-and-interfaces/test-routes.js'
 
 export default function ({
   verb,
   statusCode,
   validateResData,
   validateReqData,
-}: TestCreateRequestParams) {
+}: TestCreateRequestParamsGeneral) {
   return async function ({
     server,
     token,

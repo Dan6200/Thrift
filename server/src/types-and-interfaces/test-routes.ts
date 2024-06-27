@@ -1,20 +1,30 @@
 import { StatusCodes } from 'http-status-codes'
 
-export interface TestCreateRequestParams {
+export type TestCreateRequestParams = {
   verb: 'get' | 'post' | 'delete' | 'put' | 'patch'
   statusCode: StatusCodes
   validateResData: (data: unknown) => boolean
 }
 
+export type TestCreateRequestParamsGeneral = {
+  validateReqData?: (data: unknown) => boolean
+} & TestCreateRequestParams
+
 export type TestCreateRequest = (
   testCreateRequestParams: TestCreateRequestParams
 ) => TestCreateRequestInner
 
-export type TestCreateRequestWithBody = (
+export type TestCreateRequestWithQParams = <T>(
   testCreateRequestParams: TestCreateRequestParams & {
     validateReqData: (data: unknown) => boolean
   }
-) => TestCreateRequestInner
+) => TestCreateRequestWithBodyInner<T>
+
+export type TestCreateRequestWithBody = <T>(
+  testCreateRequestParams: TestCreateRequestParams & {
+    validateReqData: (data: unknown) => boolean
+  }
+) => TestCreateRequestWithBodyInner<T>
 
 type TestCreateRequestInner = ({
   server,
@@ -25,5 +35,6 @@ type TestCreateRequestInner = ({
   token: string
   path: string
   query?: { [k: string]: any } & { length?: never }
-  body?: object & { length: never }
 }) => Promise<any>
+
+type TestCreateRequestWithBodyInner<T> = TestCreateRequestInner & { body: T }

@@ -7,6 +7,7 @@ import {
 } from '../../../../types-and-interfaces/test-routes.js'
 import {
   isValidUID,
+  isValidUserRequestData,
   isValidUserResponseData,
   UID,
   UserResponseData,
@@ -17,34 +18,29 @@ chai.use(chaiHttp).should()
 
 const { OK, NOT_FOUND, CREATED, UNAUTHORIZED } = StatusCodes
 
-const returnsUID = (data: unknown): data is UID => isValidUID(data)
-
-const validateUserResData = (data: unknown): data is UserResponseData =>
-  isValidUserResponseData(data)
-
 const hasNoCustomerAccount = (data: unknown) => {
-  const isValidData = validateUserResData(data)
+  const isValidData = isValidUserResponseData(data)
   if (!isValidData) throw new Error('Invalid User Data Response')
   data.is_customer.should.be.false
   return true
 }
 
 const hasCustomerAccount = (data: unknown) => {
-  const isValidData = validateUserResData(data)
+  const isValidData = isValidUserResponseData(data)
   if (!isValidData) throw new Error('Invalid User Data Response')
   data.is_customer.should.be.true
   return true
 }
 
 const hasVendorAccount = (data: unknown) => {
-  const isValidData = validateUserResData(data)
+  const isValidData = isValidUserResponseData(data)
   if (!isValidData) throw new Error('Invalid User Data Response')
   data.is_vendor.should.be.true
   return true
 }
 
 const hasNoVendorAccount = (data: unknown) => {
-  const isValidData = validateUserResData(data)
+  const isValidData = isValidUserResponseData(data)
   if (!isValidData) throw new Error('Invalid User Data Response')
   data.is_vendor.should.be.false
   return true
@@ -53,13 +49,13 @@ const hasNoVendorAccount = (data: unknown) => {
 export const testFailToGetUser = (<TestCreateRequest>testCreateRequest)({
   verb: 'get',
   statusCode: UNAUTHORIZED,
-  validateResData: validateUserResData,
+  validateResData: null,
 })
 
 export const testGetUser = (testCreateRequest as TestCreateRequest)({
   verb: 'get',
   statusCode: OK,
-  validateResData: validateUserResData,
+  validateResData: isValidUserResponseData,
 })
 
 export const testHasCustomerAccount = (<TestCreateRequest>testCreateRequest)({
@@ -86,26 +82,27 @@ export const testHasNoVendorAccount = (<TestCreateRequest>testCreateRequest)({
   validateResData: hasNoVendorAccount,
 })
 
-export const testPostUser = (<TestCreateRequest>testCreateRequest)({
+export const testPostUser = (<TestCreateRequestWithBody>testCreateRequest)({
   verb: 'post',
   statusCode: CREATED,
-  validateResData: validateUserResData,
+  validateResData: isValidUID,
+  validateReqData: isValidUserRequestData,
 })
 
-export const testUpdateUser = testCreateRequest({
+export const testPatchUser = testCreateRequest({
   verb: 'patch',
   statusCode: OK,
-  validateResData: returnsUID,
+  validateResData: isValidUID,
 })
 
 export const testDeleteUser = testCreateRequest({
   verb: 'delete',
   statusCode: OK,
-  validateResData: returnsUID,
+  validateResData: isValidUID,
 })
 
 export const testGetNonExistentUser = testCreateRequest({
   verb: 'get',
   statusCode: NOT_FOUND,
-  validateResData: returnsUID,
+  validateResData: null,
 })

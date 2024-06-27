@@ -5,12 +5,17 @@ import {
   QueryParams,
 } from '../../../types-and-interfaces/process-routes.js'
 import createRouteProcessor from '../../routes/process.js'
-import { knex } from '../../../db/index.js'
+import { knex, pg } from '../../../db/index.js'
 import { QueryResult, QueryResultRow } from 'pg'
-import { isSuccessful, validateReqData } from '../../utils/query-validation.js'
-import { UserSchemaRequest } from '../../../app-schema/users.js'
+import {
+  isSuccessful,
+  validateReqData,
+  validateResData,
+} from '../../utils/query-validation.js'
+import { UserSchemaDB, UserSchemaRequest } from '../../../app-schema/users.js'
+import { getUserQueryString } from './utils.js'
 
-const { CREATED, NO_CONTENT } = StatusCodes
+const { OK, CREATED, NO_CONTENT } = StatusCodes
 
 /**
  * @description Add a user account to the database
@@ -27,8 +32,12 @@ const createQuery = async <T>({
  **/
 const getQuery = async <T>({
   userId,
-}: QueryParams<T>): Promise<QueryResult<QueryResultRow>[]> =>
-  knex.select('*').from('users').where('uid', userId)
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
+  return pg.query({
+    text: getUserQueryString,
+    values: [userId],
+  })
+}
 
 /**
  * @description Delete the user account from the database
@@ -40,18 +49,23 @@ const deleteQuery = async <T>({
 
 const processPostRoute = <ProcessRoute>createRouteProcessor
 const processDeleteRoute = <ProcessRouteWithoutBody>createRouteProcessor
+const processGetRoute = <ProcessRouteWithoutBody>createRouteProcessor
 
-const createUserAccount = processPostRoute({
+export const createUserAccount = processPostRoute({
   Query: createQuery,
   status: CREATED,
   validateBody: validateReqData(UserSchemaRequest),
   validateResult: isSuccessful,
 })
 
-const deleteUserAccount = processDeleteRoute({
+export const getUserAccount = processGetRoute({
+  Query: getQuery,
+  status: OK,
+  validateResult: validateResData(UserSchemaDB),
+})
+
+export const deleteUserAccount = processDeleteRoute({
   Query: deleteQuery,
   status: NO_CONTENT,
   validateResult: isSuccessful,
 })
-
-export { createUserAccount, deleteUserAccount }

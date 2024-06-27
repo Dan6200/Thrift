@@ -23,7 +23,7 @@ create table if not exists users (
 
 
 create table if not exists customers (
-  customer_id   int   primary key   references   user_accounts   on   delete   cascade
+  customer_id   int   primary key   references   users   on   delete   cascade
 );
 
 
@@ -47,7 +47,7 @@ create table if not exists payment_info (
 
 
 create table if not exists vendors (
-  vendor_id   int   primary key   references   user_accounts   on   delete   cascade
+  vendor_id   int   primary key   references   users   on   delete   cascade
 );
 
 
@@ -76,7 +76,9 @@ insert into categories(category_name) values ('Electronics'),
 ('Clothing'),
 ('Books'),
 ('Beauty Products'),
-('Automobiles');
+('Automobiles'),
+('Video Games'),
+('Outdoor & Sports');
 
 insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Electronics'), 'Computers'),
 ((select category_id from categories where category_name = 'Clothing'), 'Women''s Fashion');
@@ -105,31 +107,31 @@ create table if not exists product_media (
 	is_video 						boolean			default		 false
 );
 
--- UPDATE LANDING IMAGE OR DISPLAY IMAGE FOR ALL ROWS WHEN ONE ROW IS CHANGED
-CREATE OR REPLACE FUNCTION product_media_display_landing_trigger () 
-RETURNS TRIGGER AS $$
-DECLARE
-    r RECORD;
-BEGIN 
-    IF (TG_OP='INSERT' OR TG_OP='UPDATE') THEN
-        IF NEW.is_display_image=true THEN
-            FOR r IN (SELECT * FROM product_media WHERE is_display_image=true AND filename != NEW.filename) LOOP
+-- update landing image or display image for all rows when one row is changed
+create or replace function product_media_display_landing_trigger () 
+returns trigger as $$
+declare
+    r record;
+begin 
+    if (tg_op='insert' or tg_op='update') then
+        if new.is_display_image=true then
+            for r in (select * from product_media where is_display_image=true and filename != new.filename) loop
                 r.is_display_image := false;
-            END LOOP;
-        END IF;
-        IF NEW.is_landing_image=true THEN
-            FOR r IN (SELECT * FROM product_media WHERE is_landing_image=true AND filename != NEW.filename) LOOP
+            end loop;
+        end if;
+        if new.is_landing_image=true then
+            for r in (select * from product_media where is_landing_image=true and filename != new.filename) loop
                 r.is_landing_image := false;
-            END LOOP;
-        END IF;
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+            end loop;
+        end if;
+    end if;
+    return new;
+end;
+$$ language plpgsql;
 
-CREATE TRIGGER product_media_display_landing
-BEFORE INSERT OR UPDATE ON product_media
-FOR EACH ROW EXECUTE FUNCTION product_media_display_landing_trigger();
+create trigger product_media_display_landing
+before insert or update on product_media
+for each row execute function product_media_display_landing_trigger();
 
 create table if not exists shopping_cart (
   cart_id       serial        primary   key,
@@ -145,20 +147,19 @@ create table if not exists shopping_cart_item (
   quantity     int      not       null   check        (quantity > 0)
 );
 
-create table if not exists transaction_details (
+create table if not exists transactions(
   transaction_id   serial           primary      key,
   customer_id      int              not          null,
   vendor_id        int              not          null,
   total_amount     numeric(19,4)    not          null,
   created          timestamptz      not          null    default   now()   unique,
-  updated          timestamptz      not          null    default   now()   unique,
   check            (customer_id <>  vendor_id)
 );
 
 create table if not exists purchases (
   item_id          serial        primary   key,
   product_id       int           not       null   references   products              on        delete   cascade,
-  transaction_id   int           not       null   references   transaction_details   on        delete   cascade,
+  transaction_id   int           not       null   references   transactions				   on        delete   cascade,
   created          timestamptz   not       null   default      now()                 unique,
   updated          timestamptz   not       null   default      now()                 unique,
   quantity         int           not       null   check        (quantity > 0)
@@ -166,7 +167,7 @@ create table if not exists purchases (
 
 create table if not exists product_reviews (
   product_id        int            primary   key     references   products              on   delete   cascade,
-  transaction_id    int            not       null    references   transaction_details   on   delete   cascade,
+  transaction_id    int            not       null    references   transactions				  on   delete   cascade,
   rating            numeric(3,2)   not       null,
   customer_id       int            not       null    references   customers             on   delete   cascade,
   customer_remark   varchar
@@ -175,7 +176,7 @@ create table if not exists product_reviews (
 create table if not exists vendor_reviews (
   vendor_id         int            primary   key     references   vendors               on   delete   cascade,
   customer_id       int            not       null    references   customers             on   delete   cascade,
-  transaction_id    int            not       null    references   transaction_details   on   delete   cascade,
+  transaction_id    int            not       null    references   transactions				  on   delete   cascade,
   rating            numeric(3,2)   not       null,
   customer_remark   varchar
 );
@@ -183,7 +184,7 @@ create table if not exists vendor_reviews (
 create table if not exists customer_reviews (
   customer_id      int            primary   key     references   customers             on   delete   cascade,
   vendor_id        int            not       null    references   vendors               on   delete   cascade,
-  transaction_id   int            not       null    references   transaction_details   on   delete   cascade,
+  transaction_id   int            not       null    references   transactions   on   delete   cascade,
   rating           numeric(3,2)   not       null,
   vendor_remark    varchar
 );

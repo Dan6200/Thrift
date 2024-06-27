@@ -30,15 +30,6 @@ import {
 import { QueryResult, QueryResultRow } from 'pg'
 import db from '../../db/index.js'
 
-const getQuery = async <T>({
-  userId,
-}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
-  return db.query({
-    text: getUserQueryString,
-    values: [userId],
-  })
-}
-
 const updateQuery = <T>({ userId, body }: QueryParams<T>) => {
   if (body == null) throw new BadRequestError('request data cannot be empty')
   if (Object.hasOwn(body, 'password'))

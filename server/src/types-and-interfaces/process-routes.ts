@@ -78,7 +78,7 @@ export type ProcessRoute = <T>({
     queryParams: QueryParams<T>
   ): Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
   status: Status
-  validateBody?: <T>(qp: QueryParams<T>) => Promise<void>
+  validateBody: <T>(qp: QueryParams<T>) => Promise<void>
   validateResult: (
     result: QueryResult<QueryResultRow | QueryResultRow[]>
   ) => Promise<void>

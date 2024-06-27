@@ -1,4 +1,4 @@
-export interface AccountData {
+export interface UserData {
   first_name: string
   last_name: string
   email: string
@@ -7,7 +7,7 @@ export interface AccountData {
   country: string
 }
 
-export const isValidAccount = (data: unknown): data is AccountData =>
+export const isValidUser = (data: unknown): data is UserData =>
   typeof data === 'object' &&
   data !== null &&
   'first_name' in data &&

@@ -1,3 +1,4 @@
+/*
 //cspell:ignore jsonb
 import { QueryResult, QueryResultRow } from 'pg'
 import db from '../../../db/index.js'
@@ -14,7 +15,7 @@ import {
  * @param {QueryParams} { params, query, userId }
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Delete a product
- * */
+
 export default async <T>({
   params,
   query,
@@ -45,3 +46,4 @@ export default async <T>({
     values: [+productId, +storeId!],
   })
 }
+*/

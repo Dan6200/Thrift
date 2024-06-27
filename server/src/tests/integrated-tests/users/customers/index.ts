@@ -5,7 +5,7 @@ import {
   testGetNonExistentCustomer,
 } from '../../helper-functions/user/customer/index.js'
 import { AccountData } from '../../../../types-and-interfaces/account.js'
-import db from '../../../../db/index.js'
+import { knex } from '../../../../db/index.js'
 import {
   testHasCustomerAccount,
   testHasNoCustomerAccount,
@@ -15,8 +15,9 @@ import {
 const server = process.env.SERVER!
 let token: string
 
-export default function ({ accountInfo }: { accountInfo: AccountData }) {
+export default function ({ userInfo }: { userInfo: AccountData }) {
   before(async () => {
+		await knex('users').where('email',
     await db.query({
       text: 'delete from user_accounts where email=$1 or phone=$2',
       values: [accountInfo.email, accountInfo.phone],

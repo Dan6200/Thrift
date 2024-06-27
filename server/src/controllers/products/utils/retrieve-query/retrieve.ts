@@ -1,14 +1,13 @@
+/**
 import { QueryResult, QueryResultRow } from 'pg'
 import db from '../../../../db/index.js'
 import BadRequestError from '../../../../errors/bad-request.js'
 import { QueryParams } from '../../../../types-and-interfaces/process-routes.js'
 import getQueryProtected from './retrieve-protected.js'
 
-/**
  * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieve a product
- **/
 export default async <T>(
   qp: QueryParams<T>
 ): Promise<QueryResult<QueryResultRow>> => {
@@ -34,3 +33,4 @@ export default async <T>(
     values: [productId],
   })
 }
+ **/

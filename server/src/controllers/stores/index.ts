@@ -1,3 +1,4 @@
+/*
 import { StatusCodes } from 'http-status-codes'
 import {
   StoreSchemaReqData,
@@ -194,3 +195,4 @@ const deleteStore = processDeleteRoute({
 })
 
 export { createStore, getStore, getAllStores, updateStore, deleteStore }
+*/

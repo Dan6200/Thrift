@@ -1,3 +1,4 @@
+/*
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import db from '../../db/index.js'
@@ -51,3 +52,4 @@ export async function loginWithCredentials(
       token,
     })
 }
+*/

@@ -1,15 +1,10 @@
 import express from 'express'
 import {
-  createVendorAccount,
-  getVendorAccount,
-  deleteVendorAccount,
-} from '../../../controllers/account/vendor/index.js'
+  postVendor,
+  deleteVendor,
+} from '../../../controllers/user/vendor/index.js'
 const router = express.Router()
 
-router
-  .route('/')
-  .post(createVendorAccount)
-  .get(getVendorAccount)
-  .delete(deleteVendorAccount)
+router.route('/').post(postVendor).delete(deleteVendor)
 
 export default router

@@ -2,7 +2,7 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
-import { AccountDataSchemaDB } from '../../../../app-schema/account.js'
+import { UserSchemaDBResponse } from '../../../../app-schema/users.js'
 import {
   testRouteNoData,
   testRouteWithData,
@@ -16,7 +16,7 @@ const { OK, NOT_FOUND, NO_CONTENT, UNAUTHORIZED } = StatusCodes
 let validateResult = async (data: any) => {
   let userInfo = data
   userInfo.should.be.an('object')
-  Joi.assert(userInfo, AccountDataSchemaDB)
+  Joi.assert(userInfo, UserSchemaDBResponse)
 }
 
 const hasNoCustomerAccount = async (data: any) => {

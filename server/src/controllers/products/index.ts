@@ -1,3 +1,4 @@
+/*
 import { StatusCodes } from 'http-status-codes'
 import {
   ProductSchemaDB,
@@ -11,7 +12,7 @@ import {
   ProcessRouteWithoutBody,
   QueryParams,
 } from '../../types-and-interfaces/process-routes.js'
-import processRoute from '../helpers/process-route.js'
+import createRouteProcessor from '../helpers/process-route.js'
 import {
   validateReqData,
   validateResData,
@@ -73,3 +74,4 @@ export {
   updateProduct,
   deleteProduct,
 }
+*/

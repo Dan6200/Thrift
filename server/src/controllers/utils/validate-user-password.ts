@@ -1,3 +1,4 @@
+/*
 import { QueryResultRow } from 'pg'
 import db from '../../db/index.js'
 import BadRequestError from '../../errors/bad-request.js'
@@ -5,11 +6,11 @@ import { validatePassword } from '../../security/password.js'
 import { isValidDBResponse } from '../../types-and-interfaces/response.js'
 import { SelectRecord } from './generate-sql-commands/index.js'
 
-/**
+
  * @param Id - user id
  * @param candidatePassword - password to be validated
  * @returns boolean
- */
+
 export default async (
   Id: string,
   candidatePassword: string
@@ -28,3 +29,4 @@ export default async (
   )
   return isMatch
 }
+*/

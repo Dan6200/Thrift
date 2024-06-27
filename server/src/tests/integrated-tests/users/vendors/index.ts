@@ -1,3 +1,4 @@
+/*
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { registration } from '../../helper-functions/auth/index.js'
@@ -55,3 +56,4 @@ export default function ({ accountInfo }: { accountInfo: AccountData }) {
       ))
   })
 }
+*/

@@ -1,3 +1,4 @@
+/*
 //cspell:ignore jsonb
 import { QueryResult, QueryResultRow } from 'pg'
 import db from '../../../db/index.js'
@@ -16,7 +17,6 @@ import {
  * @returns {Promise<QueryResult<QueryResultRow>>} - The database response
  * @description Create a new product
  *
- */
 export default async <T>({
   body,
   query,
@@ -61,3 +61,4 @@ export default async <T>({
     values: [...Object.values(DBFriendlyProductData), storeId, vendorId],
   })
 }
+*/

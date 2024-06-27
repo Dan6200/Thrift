@@ -1,3 +1,4 @@
+/**
 import { QueryResult, QueryResultRow } from 'pg'
 import db from '../../../../db/index.js'
 import BadRequestError from '../../../../errors/bad-request.js'
@@ -7,12 +8,10 @@ import { isValidDBResponse } from '../../../../types-and-interfaces/response.js'
 import { SelectRecord } from '../../../helpers/generate-sql-commands/index.js'
 import { handleSortQuery } from '../../../helpers/generate-sql-commands/query-params-handler.js'
 
-/**
  * @param {QueryParams} {query, userId}
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieve all products
  *
- **/
 export default async <T>({
   query,
   userId: vendorId,
@@ -56,3 +55,4 @@ SELECT JSON_AGG(product_data) AS products,
     values: [storeId],
   })
 }
+ **/

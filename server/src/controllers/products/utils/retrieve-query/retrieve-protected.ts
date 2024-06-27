@@ -1,3 +1,4 @@
+/**
 import { QueryResult, QueryResultRow } from 'pg'
 import db from '../../../../db/index.js'
 import BadRequestError from '../../../../errors/bad-request.js'
@@ -6,11 +7,9 @@ import { QueryParams } from '../../../../types-and-interfaces/process-routes.js'
 import { isValidDBResponse } from '../../../../types-and-interfaces/response.js'
 import { SelectRecord } from '../../../helpers/generate-sql-commands/index.js'
 
-/**
  * @param {QueryParams} {params, query, userId}
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieve a product
- **/
 export default async <T>({
   params,
   query,
@@ -47,3 +46,4 @@ export default async <T>({
     values: [productId, storeId],
   })
 }
+ **/

@@ -5,20 +5,16 @@ import {
   postUser,
   getUser,
   deleteUser,
-  updateUser,
-  updateUserPassword,
+  patchUser,
 } from '../../controllers/user/index.js'
 const router = express.Router()
 
 router
   .route('/')
-  .post(createUser)
+  .post(postUser)
   .get(getUser)
   .delete(deleteUser)
-  .patch(updateUser)
-
-// user password route
-router.route('/password').put(updateUserPassword)
+  .patch(patchUser)
 
 // users vendor account route
 router.use('/vendor', vendorRouter)

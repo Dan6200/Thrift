@@ -1,3 +1,4 @@
+/**
 import { StatusCodes } from 'http-status-codes'
 import { QueryResult, QueryResultRow } from 'pg'
 import {
@@ -20,14 +21,13 @@ import ShippingInfo, {
 import processRoute from '../routes/process.js'
 import { validateReqData, validateResData } from '../utils/query-validation.js'
 
-/**
  * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Create a new shipping info for a customer
  * Checks:
  * 1. If the customer exists
  * 2. If the customer already has 5 shipping addresses
- **/
+
 const createQuery = async <T>({
   body,
   userId: customerId,
@@ -71,13 +71,13 @@ const createQuery = async <T>({
   })
 }
 
-/**
+
  * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieves all the shipping info for a customer
  * Checks:
  * 1. If the customer account exists
- **/
+
 
 const getAllQuery = async <T>({
   userId: customerId,
@@ -97,13 +97,13 @@ const getAllQuery = async <T>({
   })
 }
 
-/**
+
  * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieves a single shipping info for a customer
  * Checks:
  * 1. If the customer account exists
- **/
+
 
 const getQuery = async <T>({
   params,
@@ -126,7 +126,7 @@ const getQuery = async <T>({
   })
 }
 
-/**
+
  * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Updates shipping info for the customer
@@ -134,7 +134,7 @@ const getQuery = async <T>({
  * 1. If the customer owns the shipping info
  * 2. If the shipping info ID is provided
  * 3. If the customer exists
- **/
+ 
 const updateQuery = async <T>({
   params,
   body,
@@ -170,7 +170,6 @@ const updateQuery = async <T>({
   return db.query(query)
 }
 
-/**
  * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Deletes a shipping info for the customer
@@ -178,7 +177,7 @@ const updateQuery = async <T>({
  * 1. If Id is provided
  * 2. If Customer account exists
  * 3. If Customer owns the shipping info
- */
+ 
 const deleteQuery = async <T>({
   params,
   userId: customerId,
@@ -252,3 +251,4 @@ export {
   updateShippingInfo,
   deleteShippingInfo,
 }
+ **/

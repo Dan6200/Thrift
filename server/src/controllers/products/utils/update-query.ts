@@ -1,3 +1,4 @@
+/**
 //cspell:ignore jsonb
 import { QueryResult, QueryResultRow } from 'pg'
 import db from '../../../db/index.js'
@@ -11,11 +12,9 @@ import {
   SelectRecord,
 } from '../../helpers/generate-sql-commands/index.js'
 
-/**
  * @param {QueryParams} {params, query, body, userId}
  * @returns {Promise<QueryResult<QueryResultRow>>} {Promise<QueryResult<QueryResultRow>>}
  * @description Update a product
- * */
 export default async <T>({
   params,
   query,
@@ -73,3 +72,4 @@ export default async <T>({
     values: [+productId, +storeId!, ...Object.values(DBFriendlyProductData)],
   })
 }
+ * */

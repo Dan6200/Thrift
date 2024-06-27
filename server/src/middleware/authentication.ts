@@ -1,3 +1,4 @@
+/*
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
 import { Response, NextFunction } from 'express'
 import UnauthorizedError from '../errors/unauthorized.js'
@@ -32,3 +33,4 @@ export default async (
     throw new UnauthorizedError('Unauthorized Operation')
   }
 }
+*/

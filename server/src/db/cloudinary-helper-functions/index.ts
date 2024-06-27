@@ -1,3 +1,4 @@
+/*
 //cspell:disable
 import {
   AdminAndResourceOptions,
@@ -59,3 +60,4 @@ export default {
     // return imageTag;
   },
 }
+*/

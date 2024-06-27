@@ -1,6 +1,6 @@
 import express from 'express'
 import multer from 'multer'
-import mediaStorage from '../../controllers/helpers/media-storage.js'
+import mediaStorage from '../../controllers/utils/media-storage.js'
 import { uploadProductMedia } from '../../controllers/media/index.js'
 
 const router = express.Router()

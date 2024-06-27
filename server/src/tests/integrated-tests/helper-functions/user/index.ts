@@ -13,7 +13,7 @@ import testCreateRequest from '../test-route.js'
 
 chai.use(chaiHttp).should()
 
-const { OK, NOT_FOUND, UNAUTHORIZED } = StatusCodes
+const { OK, NOT_FOUND, CREATED, UNAUTHORIZED } = StatusCodes
 
 let validateResult = (data: unknown): data is UserResponseData =>
   isValidUserResponseData(data)
@@ -74,6 +74,12 @@ export const testHasNoVendorAccount = testCreateRequest({
   statusCode: OK,
   checks: hasNoVendorAccount,
 }) as TestCreateRequest
+
+export const testPostUser = testCreateRequest({
+  verb: 'post',
+  statusCode: CREATED,
+  checks: validateResult,
+}) as TestCreateRequestWithBody
 
 export const testGetUser = testCreateRequest({
   verb: 'get',

@@ -1,6 +1,5 @@
 //cspell:disable
-import testAuthentication from './authentication/index.js'
-import testUserAccount from './accounts/index.js'
+import testUserAccount from './users/index.js'
 import testCustomerAccount from './accounts/customers/index.js'
 import testVendorAccount from './accounts/vendors/index.js'
 import testStores from './stores/index.js'

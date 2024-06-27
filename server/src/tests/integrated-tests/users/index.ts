@@ -1,18 +1,15 @@
-/*
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import {
-  registration,
-  logout,
-  emailLogin,
-} from '../helper-functions/auth/index.js'
-import {
-  testGetAccount,
-  testUpdateAccount,
-  testChangeAccountPassword,
-  testDeleteAccount,
-  testGetNonExistentAccount,
+  testGetUser,
+  testUpdateUser,
+  testDeleteUser,
+  testGetNonExistentUser,
+  testHasCustomerAccount,
+  testHasNoCustomerAccount,
+  testHasVendorAccount,
+  testHasNoVendorAccount,
 } from '../helper-functions/user/index.js'
 import { AccountData } from '../../../types-and-interfaces/account.js'
 import db from '../../../db/index.js'
@@ -73,4 +70,3 @@ export default function ({
       emailLogin(server, accountInfo, StatusCodes.UNAUTHORIZED))
   })
 }
-*/

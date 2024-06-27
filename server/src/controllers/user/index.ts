@@ -3,16 +3,16 @@ import {
   ProcessRoute,
   ProcessRouteWithoutBody,
   QueryParams,
-} from '../../../types-and-interfaces/process-routes.js'
-import createRouteProcessor from '../../routes/process.js'
-import { knex, pg } from '../../../db/index.js'
+} from '../../types-and-interfaces/process-routes.js'
+import createRouteProcessor from '../routes/process.js'
+import { knex, pg } from '../../db/index.js'
 import { QueryResult, QueryResultRow } from 'pg'
 import {
   isSuccessful,
   validateReqData,
   validateResData,
-} from '../../utils/query-validation.js'
-import { UserSchemaDB, UserSchemaRequest } from '../../../app-schema/users.js'
+} from '../utils/query-validation.js'
+import { UserSchemaDB, UserSchemaRequest } from '../../app-schema/users.js'
 import { getUserQueryString } from './utils.js'
 
 const { OK, CREATED, NO_CONTENT } = StatusCodes

@@ -32,12 +32,23 @@ const createQuery = async <T>({
  **/
 const getQuery = async <T>({
   userId,
-}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
-  return pg.query({
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
+  pg.query({
     text: getUserQueryString,
     values: [userId],
   })
-}
+
+/**
+ * @description Updates user information.
+ **/
+const updateQuery = async <T>({
+  body,
+  userId,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
+  knex('users')
+    .update({ ...body })
+    .where('uid', userId)
+    .returning('uid')
 
 /**
  * @description Delete the user account from the database
@@ -48,23 +59,31 @@ const deleteQuery = async <T>({
   knex('users').where('uid', userId).del().returning('uid')
 
 const processPostRoute = <ProcessRoute>createRouteProcessor
+const processPatchRoute = <ProcessRoute>createRouteProcessor
 const processDeleteRoute = <ProcessRouteWithoutBody>createRouteProcessor
 const processGetRoute = <ProcessRouteWithoutBody>createRouteProcessor
 
-export const createUserAccount = processPostRoute({
+export const postUser = processPostRoute({
   Query: createQuery,
   status: CREATED,
   validateBody: validateReqData(UserSchemaRequest),
   validateResult: isSuccessful,
 })
 
-export const getUserAccount = processGetRoute({
+export const getUser = processGetRoute({
   Query: getQuery,
   status: OK,
   validateResult: validateResData(UserSchemaDB),
 })
 
-export const deleteUserAccount = processDeleteRoute({
+export const patchUser = processPatchRoute({
+  Query: updateQuery,
+  status: OK,
+  validateBody: validateReqData(UserSchemaRequest),
+  validateResult: isSuccessful,
+})
+
+export const deleteUser = processDeleteRoute({
   Query: deleteQuery,
   status: NO_CONTENT,
   validateResult: isSuccessful,

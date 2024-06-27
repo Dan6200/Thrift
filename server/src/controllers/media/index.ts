@@ -1,8 +1,7 @@
 //cspell:ignore originalname
 import { StatusCodes } from 'http-status-codes'
-import { InsertRecord } from '../helpers/generate-sql-commands/index.js'
 import BadRequestError from '../../errors/bad-request.js'
-import db from '../../db/index.js'
+import { knex } from '../../db/index.js'
 
 const uploadProductMedia = async (req: any, res: any) => {
   const { productId } = req.query
@@ -18,32 +17,17 @@ const uploadProductMedia = async (req: any, res: any) => {
     req.files.map(async (file: any) => {
       const { filename, originalname, path: filepath } = file
       // Returns filename as Id instead of product_id
-      return (
-        await db.query({
-          text: InsertRecord(
-            'product_media',
-            [
-              'product_id',
-              'filename',
-              'filepath',
-              'description',
-              'is_display_image',
-              'is_landing_image',
-              'is_video',
-            ],
-            'filename'
-          ),
-          values: [
-            productId,
-            filename,
-            filepath,
-            descriptions[originalname],
-            is_display_image[originalname],
-            is_landing_image[originalname],
-            is_video[originalname],
-          ],
+      return knex('product_media')
+        .insert({
+          product_id: productId,
+          filename,
+          filepath,
+          description: descriptions[originalname],
+          is_display_image: is_display_image[originalname],
+          is_landing_image: is_landing_image[originalname],
+          is_video: is_video[originalname],
         })
-      ).rows[0]
+        .returning('filename')
     })
   )
   res.status(StatusCodes.CREATED).send(files)

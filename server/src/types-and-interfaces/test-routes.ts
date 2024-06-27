@@ -1,51 +1,51 @@
 import { StatusCodes } from 'http-status-codes'
 
-interface testRouteParams {
-	verb: string
-	statusCode: StatusCodes
-	checks?: (response: any) => Promise<void>
+interface testRequestParams {
+  verb: string
+  statusCode: StatusCodes
+  checks?: (data: unknown) => boolean
 }
 
-type testRouteNoData = (
-	server: string,
-	token: string,
-	path: string
+type testRequestNoData = (
+  server: string,
+  token: string,
+  path: string
 ) => Promise<any>
 
-export type testPublicRouteNoData = (
-	server: string,
-	token: null,
-	path: string
+export type testPublicRequestNoData = (
+  server: string,
+  token: null,
+  path: string
 ) => Promise<any>
 
-export type testRouteWithQParams = (
-	server: string,
-	token: string,
-	path: string,
-	query: { [k: string]: any } & { length?: never }
+export type testRequestWithQParams = (
+  server: string,
+  token: string,
+  path: string,
+  query: { [k: string]: any } & { length?: never }
 ) => Promise<any>
 
-export type testPublicRouteWithQParams = (
-	server: string,
-	token: null,
-	path: string,
-	query: { [k: string]: any } & { length?: never }
+export type testPublicRequestWithQParams = (
+  server: string,
+  token: null,
+  path: string,
+  query: { [k: string]: any } & { length?: never }
 ) => Promise<any>
 
-export type testRouteWithQParamsAndData = (
-	server: string,
-	token: string,
-	path: string,
-	query: { [k: string]: any } & { length?: never },
-	data: object & { length?: never }
+export type testRequestWithQParamsAndData = (
+  server: string,
+  token: string,
+  path: string,
+  query: { [k: string]: any } & { length?: never },
+  data: object & { length?: never }
 ) => Promise<any>
 
-type testRouteWithData = (
-	server: string,
-	token: string,
-	path: string,
-	query: null,
-	data: object & { length?: never }
+type testRequestWithData = (
+  server: string,
+  token: string,
+  path: string,
+  query: null,
+  data: object & { length?: never }
 ) => Promise<any>
 
-export { testRouteParams, testRouteNoData, testRouteWithData }
+export { testRequestParams, testRequestNoData, testRequestWithData }

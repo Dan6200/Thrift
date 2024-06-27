@@ -1,90 +1,97 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
-import Joi from 'joi'
-import { UserSchemaDBResponse } from '../../../../app-schema/users.js'
 import {
-  testRouteNoData,
-  testRouteWithData,
+  testRequestNoData,
+  testRequestWithData,
 } from '../../../../types-and-interfaces/test-routes.js'
-import testRoute from '../test-route.js'
+import {
+  isValidUserResponseData,
+  UserResponseData,
+} from '../../../../types-and-interfaces/user.js'
+import testRequest from '../test-route.js'
 
 chai.use(chaiHttp).should()
 
 const { OK, NOT_FOUND, UNAUTHORIZED } = StatusCodes
 
-let validateResult = async (data: any) => {
-  let userInfo = data
-  userInfo.should.be.an('object')
-  Joi.assert(userInfo, UserSchemaDBResponse)
-}
+let validateResult = (data: unknown): data is UserResponseData =>
+  isValidUserResponseData(data)
 
-const hasNoCustomerAccount = async (data: any) => {
-  validateResult(data)
+const hasNoCustomerAccount = (data: unknown) => {
+  const isValidData = validateResult(data)
+  if (!isValidData) throw new Error('Invalid User Data Response')
   data.is_customer.should.be.false
+  return true
 }
 
-const hasCustomerAccount = async (data: any) => {
-  validateResult(data)
+const hasCustomerAccount = (data: unknown) => {
+  const isValidData = validateResult(data)
+  if (!isValidData) throw new Error('Invalid User Data Response')
   data.is_customer.should.be.true
+  return true
 }
 
-const hasVendorAccount = async (data: any) => {
-  validateResult(data)
+const hasVendorAccount = (data: unknown) => {
+  const isValidData = validateResult(data)
+  if (!isValidData) throw new Error('Invalid User Data Response')
   data.is_vendor.should.be.true
+  return true
 }
 
-const hasNoVendorAccount = async (data: any) => {
-  validateResult(data)
+const hasNoVendorAccount = (data: unknown) => {
+  const isValidData = validateResult(data)
+  if (!isValidData) throw new Error('Invalid User Data Response')
   data.is_vendor.should.be.false
+  return true
 }
 
-export const testFailToGetUser = testRoute({
+export const testFailToGetUser = testRequest({
   verb: 'get',
   statusCode: UNAUTHORIZED,
-}) as testRouteNoData
+}) as testRequestNoData
 
-export const testHasCustomerAccount = testRoute({
+export const testHasCustomerAccount = testRequest({
   verb: 'get',
   statusCode: OK,
   checks: hasCustomerAccount,
-}) as testRouteNoData
+}) as testRequestNoData
 
-export const testHasNoCustomerAccount = testRoute({
+export const testHasNoCustomerAccount = testRequest({
   verb: 'get',
   statusCode: OK,
   checks: hasNoCustomerAccount,
-}) as testRouteNoData
+}) as testRequestNoData
 
-export const testHasVendorAccount = testRoute({
+export const testHasVendorAccount = testRequest({
   verb: 'get',
   statusCode: OK,
   checks: hasVendorAccount,
-}) as testRouteNoData
+}) as testRequestNoData
 
-export const testHasNoVendorAccount = testRoute({
+export const testHasNoVendorAccount = testRequest({
   verb: 'get',
   statusCode: OK,
   checks: hasNoVendorAccount,
-}) as testRouteNoData
+}) as testRequestNoData
 
-export const testGetUser = testRoute({
+export const testGetUser = testRequest({
   verb: 'get',
   statusCode: OK,
   checks: validateResult,
-}) as testRouteNoData
+}) as testRequestNoData
 
-export const testUpdateUser = testRoute({
+export const testUpdateUser = testRequest({
   verb: 'patch',
   statusCode: OK,
-}) as testRouteWithData
+}) as testRequestWithData
 
-export const testDeleteUser = testRoute({
+export const testDeleteUser = testRequest({
   verb: 'delete',
   statusCode: OK,
-}) as testRouteNoData
+}) as testRequestNoData
 
-export const testGetNonExistentUser = testRoute({
+export const testGetNonExistentUser = testRequest({
   verb: 'get',
   statusCode: NOT_FOUND,
-}) as testRouteNoData
+}) as testRequestNoData

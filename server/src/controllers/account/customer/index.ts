@@ -6,7 +6,7 @@ import {
 import createRouteProcessor from '../../routes/process.js'
 import { knex } from '../../../db/index.js'
 import { QueryResult, QueryResultRow } from 'pg'
-import { isSuccessful } from '../../helpers/query-validation.js'
+import { isSuccessful } from '../../utils/query-validation.js'
 
 const { CREATED, NO_CONTENT } = StatusCodes
 
@@ -32,16 +32,14 @@ const deleteQuery = async <T>({
 const processPostRoute = <ProcessRouteWithoutBody>createRouteProcessor
 const processDeleteRoute = <ProcessRouteWithoutBody>createRouteProcessor
 
-const createCustomerAccount = processPostRoute({
+export const postCustomer = processPostRoute({
   Query: createQuery,
   status: CREATED,
   validateResult: isSuccessful,
 })
 
-const deleteCustomerAccount = processDeleteRoute({
+export const deleteCustomer = processDeleteRoute({
   Query: deleteQuery,
   status: NO_CONTENT,
   validateResult: isSuccessful,
 })
-
-export { createCustomerAccount, deleteCustomerAccount }

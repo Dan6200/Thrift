@@ -1,57 +1,42 @@
 import { StatusCodes } from 'http-status-codes'
-import db from '../../../db/index.js'
-import { ProcessRouteWithoutBody } from '../../../types-and-interfaces/process-routes.js'
 import {
-  InsertRecord,
-  SelectRecord,
-  DeleteRecord,
-} from '../../helpers/generate-sql-commands/index.js'
-import createProcessRoute from '../../routes/process.js'
-import { isSuccessful } from '../../helpers/query-validation.js'
+  ProcessRouteWithoutBody,
+  QueryParams,
+} from '../../../types-and-interfaces/process-routes.js'
+import createRouteProcessor from '../../routes/process.js'
+import { knex } from '../../../db/index.js'
+import { QueryResult, QueryResultRow } from 'pg'
+import { isSuccessful } from '../../utils/query-validation.js'
 
 const { CREATED, NO_CONTENT } = StatusCodes
 
-const createQuery = async ({ userId: vendorId }) => {
-  return db.query({
-    text: InsertRecord('vendors', ['vendor_id'], 'vendor_id'),
-    values: [vendorId],
-  })
-}
+/**
+ * @description Add a vendor account to the database
+ **/
+const createQuery = async <T>({
+  userId: vendorId,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
+  knex('vendors').insert({ vendor_id: vendorId }).returning('vendor_id')
 
-const readQuery = async ({ userId: vendorId }) => {
-  return db.query({
-    text: SelectRecord('vendors', ['1'], 'vendor_id=$1'),
-    values: [vendorId],
-  })
-}
+/**
+ * @description Delete the vendor account from the database
+ **/
+const deleteQuery = async <T>({
+  userId: vendorId,
+}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
+  knex('vendors').where('vendor_id', vendorId).del().returning('vendor_id')
 
-const deleteQuery = async ({ userId: vendorId }) => {
-  return db.query({
-    text: DeleteRecord('vendors', ['vendor_id'], 'vendor_id=$1'),
-    values: [vendorId],
-  })
-}
+const processPostRoute = <ProcessRouteWithoutBody>createRouteProcessor
+const processDeleteRoute = <ProcessRouteWithoutBody>createRouteProcessor
 
-const createProcessRouteWithoutBody = <ProcessRouteWithoutBody>(
-  createProcessRoute
-)
-
-const createVendorAccount = createProcessRouteWithoutBody({
+export const postVendor = processPostRoute({
   Query: createQuery,
   status: CREATED,
   validateResult: isSuccessful,
 })
 
-const getVendorAccount = createProcessRouteWithoutBody({
-  Query: readQuery,
-  status: NO_CONTENT,
-  validateResult: isSuccessful,
-})
-
-const deleteVendorAccount = createProcessRouteWithoutBody({
+export const deleteVendor = processDeleteRoute({
   Query: deleteQuery,
   status: NO_CONTENT,
   validateResult: isSuccessful,
 })
-
-export { createVendorAccount, getVendorAccount, deleteVendorAccount }

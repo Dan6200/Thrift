@@ -1,4 +1,8 @@
-import { UserRequestSchema, UserResponseSchema } from '../app-schema/users.js'
+import {
+  UIDSchema,
+  UserRequestSchema,
+  UserResponseSchema,
+} from '../app-schema/users.js'
 
 export interface UserRequestData {
   first_name: string
@@ -8,6 +12,13 @@ export interface UserRequestData {
   dob: Date
   country: string
 }
+
+export interface UID {
+  uid: string
+}
+
+export const isValidUID = (data: unknown): data is UID =>
+  !UIDSchema.validate(data).error
 
 export interface UserResponseData extends UserRequestData {
   is_customer: boolean

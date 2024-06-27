@@ -2,14 +2,14 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import {
-  testRequestNoBody,
-  testRequestWithBody,
+  TestCreateRequest,
+  TestCreateRequestWithBody,
 } from '../../../../types-and-interfaces/test-routes.js'
 import {
   isValidUserResponseData,
   UserResponseData,
 } from '../../../../types-and-interfaces/user.js'
-import testRequest from '../test-route.js'
+import testCreateRequest from '../test-route.js'
 
 chai.use(chaiHttp).should()
 
@@ -46,52 +46,52 @@ const hasNoVendorAccount = (data: unknown) => {
   return true
 }
 
-export const testFailToGetUser = testRequest({
+export const testFailToGetUser = testCreateRequest({
   verb: 'get',
   statusCode: UNAUTHORIZED,
-}) as testRequestNoData
+}) as TestCreateRequest
 
-export const testHasCustomerAccount = testRequest({
+export const testHasCustomerAccount = testCreateRequest({
   verb: 'get',
   statusCode: OK,
   checks: hasCustomerAccount,
-}) as testRequestNoData
+}) as TestCreateRequest
 
-export const testHasNoCustomerAccount = testRequest({
+export const testHasNoCustomerAccount = testCreateRequest({
   verb: 'get',
   statusCode: OK,
   checks: hasNoCustomerAccount,
-}) as testRequestNoData
+}) as TestCreateRequest
 
-export const testHasVendorAccount = testRequest({
+export const testHasVendorAccount = testCreateRequest({
   verb: 'get',
   statusCode: OK,
   checks: hasVendorAccount,
-}) as testRequestNoData
+}) as TestCreateRequest
 
-export const testHasNoVendorAccount = testRequest({
+export const testHasNoVendorAccount = testCreateRequest({
   verb: 'get',
   statusCode: OK,
   checks: hasNoVendorAccount,
-}) as testRequestNoData
+}) as TestCreateRequest
 
-export const testGetUser = testRequest({
+export const testGetUser = testCreateRequest({
   verb: 'get',
   statusCode: OK,
   checks: validateResult,
-}) as testRequestNoData
+}) as TestCreateRequest
 
-export const testUpdateUser = testRequest({
+export const testUpdateUser = testCreateRequest({
   verb: 'patch',
   statusCode: OK,
-}) as testRequestWithData
+}) as TestCreateRequestWithBody
 
-export const testDeleteUser = testRequest({
+export const testDeleteUser = testCreateRequest({
   verb: 'delete',
   statusCode: OK,
-}) as testRequestNoData
+}) as TestCreateRequest
 
-export const testGetNonExistentUser = testRequest({
+export const testGetNonExistentUser = testCreateRequest({
   verb: 'get',
   statusCode: NOT_FOUND,
-}) as testRequestNoData
+}) as TestCreateRequest

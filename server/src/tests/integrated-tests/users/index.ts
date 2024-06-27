@@ -38,7 +38,7 @@ export default function ({
         .where('email', user.email)
         .orWhere('phone', user.phone)
       // Create a new user for each tests
-      const response = await testPostUser<UserRequestData>({
+      const response = await testPostUser({
         server,
         token,
         path,
@@ -50,7 +50,7 @@ export default function ({
       testGetUser({ server, token, path }))
 
     it("it should update the user's account", () =>
-      testUpdateAccount(server, token, path, null, updatedAccountInfo))
+      testUpdateAccount({server, token, path, null, updatedAccountInfo}))
 
     it("it should change the user's password", () =>
       testChangeAccountPassword(

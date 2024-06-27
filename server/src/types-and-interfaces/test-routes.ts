@@ -14,27 +14,28 @@ export type TestCreateRequest = (
   testCreateRequestParams: TestCreateRequestParams
 ) => TestCreateRequestInner
 
-export type TestCreateRequestWithQParams = <T>(
+export type TestCreateRequestWithQParams = (
   testCreateRequestParams: TestCreateRequestParams & {
     validateReqData: (data: unknown) => boolean
   }
-) => TestCreateRequestWithBodyInner<T>
+) => TestCreateRequestInner
 
-export type TestCreateRequestWithBody = <T>(
+export type TestCreateRequestWithBody = (
   testCreateRequestParams: TestCreateRequestParams & {
     validateReqData: (data: unknown) => boolean
   }
-) => TestCreateRequestWithBodyInner<T>
+) => TestCreateRequestInnerWBody
 
-type TestCreateRequestInner = ({
-  server,
-  token,
-  path,
-}: {
+type TestCreateRequestInnerWBody = <T>(
+  createRequestParams: CreateRequestParams & { body: T }
+) => Promise<any>
+
+type TestCreateRequestInner = (
+  createRequestParams: CreateRequestParams
+) => Promise<any>
+
+type CreateRequestParams = {
   server: string
   token: string
   path: string
-  query?: { [k: string]: any } & { length?: never }
-}) => Promise<any>
-
-type TestCreateRequestWithBodyInner<T> = TestCreateRequestInner & { body: T }
+}

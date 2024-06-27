@@ -4,12 +4,14 @@ import { StatusCodes } from 'http-status-codes'
 import {
   TestCreateRequest,
   TestCreateRequestWithBody,
+  TestCreateRequestWithBodyInner,
 } from '../../../../types-and-interfaces/test-routes.js'
 import {
   isValidUID,
   isValidUserRequestData,
   isValidUserResponseData,
   UID,
+  UserRequestData,
   UserResponseData,
 } from '../../../../types-and-interfaces/user.js'
 import testCreateRequest from '../test-route.js'
@@ -82,7 +84,9 @@ export const testHasNoVendorAccount = (<TestCreateRequest>testCreateRequest)({
   validateResData: hasNoVendorAccount,
 })
 
-export const testPostUser = (<TestCreateRequestWithBody>testCreateRequest)({
+const testCreateRequestWithBody = <TestCreateRequestWithBody>testCreateRequest
+
+export const testPostUser = testCreateRequestWithBody({
   verb: 'post',
   statusCode: CREATED,
   validateResData: isValidUID,

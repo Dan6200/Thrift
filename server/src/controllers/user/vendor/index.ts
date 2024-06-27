@@ -7,6 +7,7 @@ import createRouteProcessor from '../../routes/process.js'
 import { knex } from '../../../db/index.js'
 import { QueryResult, QueryResultRow } from 'pg'
 import { isSuccessful } from '../../utils/query-validation.js'
+import { VendorSchemaID } from '../../../app-schema/vendors.js'
 
 const { CREATED, NO_CONTENT } = StatusCodes
 
@@ -32,11 +33,11 @@ const processDeleteRoute = <ProcessRouteWithoutBody>createRouteProcessor
 export const postVendor = processPostRoute({
   Query: createQuery,
   status: CREATED,
-  validateResult: isSuccessful,
+  validateResult: isSuccessful(VendorSchemaID),
 })
 
 export const deleteVendor = processDeleteRoute({
   Query: deleteQuery,
   status: NO_CONTENT,
-  validateResult: isSuccessful,
+  validateResult: isSuccessful(VendorSchemaID),
 })

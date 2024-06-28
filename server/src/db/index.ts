@@ -1,5 +1,5 @@
 // cspell:disable
-import { Pool, types } from 'pg'
+import { Pool, QueryResult, QueryResultRow, types } from 'pg'
 import { retryConnection } from './utils/retry-connection.js'
 import { knexOptions, pgOptions } from './postgres/options.js'
 import pgQuery from './postgres/pg-query.js'

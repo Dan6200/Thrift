@@ -1,19 +1,15 @@
-import nodePostgres, { QueryResult, QueryResultRow } from 'pg'
+import { Pool, QueryResult, QueryResultRow } from 'pg'
 import retryQuery from '../utils/retry-query.js'
 
-export default async function ({
-  pool,
-  text,
-  values,
-  name,
-}: {
-  pool: nodePostgres.Pool
-  text: string
-  values?: Array<any>
+export default async function (
+  this: any,
+  pool: Pool,
+  text?: string,
+  values?: Array<any>,
   name?: string
-}): Promise<QueryResult<QueryResultRow | QueryResultRow[]>> {
+): Promise<QueryResult<QueryResultRow | QueryResultRow[]>> {
   const start = Date.now()
-  setTimeout(function () {
+  setTimeout(() => {
     this.lastQuery = arguments
   })
 

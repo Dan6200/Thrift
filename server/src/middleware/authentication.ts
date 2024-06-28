@@ -1,12 +1,9 @@
-/*
-import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
 import { Response, NextFunction } from 'express'
 import UnauthorizedError from '../errors/unauthorized.js'
 import {
   RequestWithPayload,
   RequestUserPayload,
 } from '../types-and-interfaces/request.js'
-import { isTokenRevoked } from '../controllers/helpers/revoke-token.js'
 
 export default async (
   request: RequestWithPayload,
@@ -23,14 +20,10 @@ export default async (
   if (!authHeader || !authHeader?.startsWith('Bearer '))
     throw new UnauthorizedError('Unauthorized Operation')
   const token = authHeader.split(' ')[1]
-  if (await isTokenRevoked(token))
-    throw new UnauthorizedError('Unauthorized Operation')
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET as Secret)
-    request.user = payload as JwtPayload as RequestUserPayload
+    auth
     next()
   } catch (err) {
     throw new UnauthorizedError('Unauthorized Operation')
   }
 }
-*/

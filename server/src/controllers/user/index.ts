@@ -38,10 +38,7 @@ const createQuery = async <T>({
 const getQuery = async <T>({
   userId,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
-  pg.query({
-    text: getUserQueryString,
-    values: [userId],
-  })
+  pg.query(getUserQueryString, [userId])
 
 /**
  * @description Updates user information.

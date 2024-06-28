@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
     "strict": true,
     "outDir": "../built",
     "target": "ESNext",

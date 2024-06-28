@@ -1,6 +1,11 @@
-import admin from 'firebase-admin'
-var serviceAccount = require('/etc/secrets/fb-secret-key.json')
+import { initializeApp } from 'firebase-admin/app'
+import { credential } from 'firebase-admin'
+import { getAuth } from 'firebase-admin/auth'
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+const app = initializeApp({
+  credential: await import('/etc/secrets/fb-secret-key.json').then(
+    (serviceAccount) => credential.cert(serviceAccount)
+  ),
 })
+
+export const auth = getAuth(app)

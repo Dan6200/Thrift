@@ -1,6 +1,8 @@
 import chai from 'chai'
-import BadRequestError from '../../../errors/bad-request.js'
-import { TestCreateRequestParamsGeneral } from '../../../types-and-interfaces/test-routes.js'
+import BadRequestError from '../../../../errors/bad-request.js'
+import { TestCreateRequestParamsGeneral } from '../../../../types-and-interfaces/test-routes.js'
+import { UserRequestData } from '../../../../types-and-interfaces/user.js'
+import { createUserWithEmailAndPasswordWrapper } from './create-user.js'
 
 export default function ({
   verb,
@@ -8,7 +10,7 @@ export default function ({
   validateResData,
   validateReqData,
 }: TestCreateRequestParamsGeneral) {
-  return async function ({
+  return async function <T>({
     server,
     token,
     path,
@@ -19,7 +21,7 @@ export default function ({
     token: string
     path: string
     query?: { [k: string]: any }
-    body?: object & { length: never }
+    body?: T
   }) {
     // Validate the request body
     if (body && !validateReqData)
@@ -27,12 +29,17 @@ export default function ({
     if (validateReqData && !validateReqData(body))
       throw new BadRequestError('Invalid Request Data')
 
+    if (verb === 'post' && path === '/v1/user') {
+      const { email, password } = <UserRequestData & { password: string }>body
+      token = await createUserWithEmailAndPasswordWrapper(email, password)
+    }
+
     // Make request
     const request = chai
       .request(server)
       [verb](path)
       .query(query ?? {})
-      .send(body)
+      .send(<object>body)
 
     // Add request token
     if (token) request.auth(token, { type: 'bearer' })

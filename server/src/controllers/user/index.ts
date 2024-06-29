@@ -36,29 +36,29 @@ const createQuery = async <T>({
  * @description Retrieves user information.
  **/
 const getQuery = async <T>({
-  userId,
+  uid,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
-  pg.query(getUserQueryString, [userId])
+  pg.query(getUserQueryString, [uid])
 
 /**
  * @description Updates user information.
  **/
 const updateQuery = async <T>({
   body,
-  userId,
+  uid,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
   knex('users')
     .update({ ...body })
-    .where('uid', userId)
+    .where('uid', uid)
     .returning('uid')
 
 /**
  * @description Delete the user account from the database
  **/
 const deleteQuery = async <T>({
-  userId,
+  uid,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
-  knex('users').where('uid', userId).del().returning('uid')
+  knex('users').where('uid', uid).del().returning('uid')
 
 const processPostRoute = <ProcessRoute>createRouteProcessor
 const processPatchRoute = <ProcessRoute>createRouteProcessor

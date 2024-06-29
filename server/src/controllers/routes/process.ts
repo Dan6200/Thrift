@@ -21,7 +21,7 @@ export default ({
   Query: QueryDB
   QueryForwarder?: (s: string) => QueryDB
   status: Status
-  validateBody?: <T>(qp: QueryParams<T>) => Promise<void>
+  validateBody?: <T>({ body }: { body: T }) => Promise<void>
   validateResult?: (
     result: QueryResult<QueryResultRow | QueryResultRow[]>
   ) => Promise<void>
@@ -29,11 +29,8 @@ export default ({
   // return the route processor middleware
   return async (request: RequestWithPayload, response: Response) => {
     const { params, query, body } = request
-    let userId: string | undefined
-    if (request.user != null)
-      ({
-        user: { userId },
-      } = request)
+    let uid: string | undefined
+    if (request.uid != null) ({ uid } = request)
 
     // Validate request data
     if (
@@ -42,7 +39,7 @@ export default ({
       validateBody
     ) {
       // validateBody throws error if body is invalid
-      await validateBody({ userId, body, params, query })
+      await validateBody({ body })
     }
 
     let dbResponse: unknown
@@ -50,13 +47,13 @@ export default ({
       // Call the correct query handler based on route is public or not
       const publicQuery = <string>query!.public
       dbResponse = await QueryForwarder(publicQuery)({
-        userId,
+        uid,
         body,
         params,
         query,
       })
     } else {
-      dbResponse = await Query({ userId, body, params, query })
+      dbResponse = await Query({ uid, body, params, query })
     }
     if (!isValidDBResponse(dbResponse))
       throw new BadRequestError(`The Database operation could not be completed`)

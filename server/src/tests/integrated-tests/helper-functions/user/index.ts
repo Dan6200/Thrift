@@ -4,15 +4,11 @@ import { StatusCodes } from 'http-status-codes'
 import {
   TestCreateRequest,
   TestCreateRequestWithBody,
-  TestCreateRequestWithBodyInner,
 } from '../../../../types-and-interfaces/test-routes.js'
 import {
   isValidUID,
   isValidUserRequestData,
   isValidUserResponseData,
-  UID,
-  UserRequestData,
-  UserResponseData,
 } from '../../../../types-and-interfaces/user.js'
 import testCreateRequest from '../test-route.js'
 

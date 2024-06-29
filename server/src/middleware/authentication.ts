@@ -19,7 +19,7 @@ export default async (
     throw new UnauthorizedError('Unauthorized Operation')
   const token = authHeader.split(' ')[1]
   try {
-    const uid = await auth.verifyIdToken(token)
+    const { uid } = await auth.verifyIdToken(token)
     request.uid = uid
     next()
   } catch (err) {

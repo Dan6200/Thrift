@@ -78,10 +78,9 @@ jobs:
           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
           CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          JWT_LIFETIME: ${{ secrets.JWT_LIFETIME }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
           PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
           REDIS_URL: redis://localhost:6379
+          FB_SERVICE_ACCOUNT: ${{ secrets.FB_SERVICE_ACCOUNT }}
       - name: Run tests
         run: pnpm test
         env:
@@ -89,10 +88,9 @@ jobs:
           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
           CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          JWT_LIFETIME: ${{ secrets.JWT_LIFETIME }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
           PG_URL: 'postgres://postgres:postgres@localhost:5432/test'
           REDIS_URL: redis://localhost:6379
+          FB_SERVICE_ACCOUNT: ${{ secrets.FB_SERVICE_ACCOUNT }}
           SERVER: localhost:1024
       - name: View results
         if: failure()

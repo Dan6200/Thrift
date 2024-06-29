@@ -1,9 +1,7 @@
 import { Response, NextFunction } from 'express'
+import { auth } from '../auth/firebase/index.js'
 import UnauthorizedError from '../errors/unauthorized.js'
-import {
-  RequestWithPayload,
-  RequestUserPayload,
-} from '../types-and-interfaces/request.js'
+import { RequestWithPayload } from '../types-and-interfaces/request.js'
 
 export default async (
   request: RequestWithPayload,
@@ -21,7 +19,8 @@ export default async (
     throw new UnauthorizedError('Unauthorized Operation')
   const token = authHeader.split(' ')[1]
   try {
-    auth
+    const uid = await auth.verifyIdToken(token)
+    request.uid = uid
     next()
   } catch (err) {
     throw new UnauthorizedError('Unauthorized Operation')

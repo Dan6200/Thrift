@@ -48,4 +48,4 @@ dist-ssr
 db_backup.sql
 
 # Avoid pushing secret key
-thrift-app*.json
+*.json

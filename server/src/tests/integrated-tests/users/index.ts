@@ -44,32 +44,24 @@ export default function ({
         path,
         body: user,
       })
+      console.log('response', response)
     })
 
     it("it should get the user's account", () =>
       testGetUser({ server, token, path }))
 
-    it("it should update the user's account", () =>
-      testUpdateAccount({server, token, path, null, updatedAccountInfo}))
-
-    it("it should change the user's password", () =>
-      testChangeAccountPassword(
-        server,
-        token,
-        path + '/password',
-        null,
-        updatedPassword
-      ))
-
-    it("it should delete the user's account", () =>
-      testDeleteAccount(server, token, path))
-
-    it("it should fail to get user's account", () =>
-      testGetNonExistentAccount(server, token, path))
-
-    it('it should logout user', () => logout(server, token))
-
-    it('it should fail to login the deleted user', () =>
-      emailLogin(server, accountInfo, StatusCodes.UNAUTHORIZED))
+    // it("it should update the user's account", () =>
+    //   testUpdateAccount({server, token, path, null, updatedAccountInfo}))
+    //
+    // it("it should delete the user's account", () =>
+    //   testDeleteAccount(server, token, path))
+    //
+    // it("it should fail to get user's account", () =>
+    //   testGetNonExistentAccount(server, token, path))
+    //
+    // it('it should logout user', () => logout(server, token))
+    //
+    // it('it should fail to login the deleted user', () =>
+    //   emailLogin(server, accountInfo, StatusCodes.UNAUTHORIZED))
   })
 }

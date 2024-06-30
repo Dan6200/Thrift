@@ -15,13 +15,13 @@ const userInfo: UserRequestData & { password: string } = {
   country: 'Nigeria',
 }
 
-const updatedAccountInfo = {
+const updatedUserInfo = {
   dob: new Date('2000-10-23'),
 } as UserRequestData
 
 export {
   userInfo,
-  updatedAccountInfo,
+  updatedUserInfo,
   listOfShippingInfo,
   listOfUpdatedShippingInfo,
 }

@@ -1,6 +1,6 @@
 import express from 'express'
-import vendorRouter from './vendor/index.js'
-import customerRouter from './customer/index.js'
+// import vendorRouter from './vendor/index.js'
+// import customerRouter from './customer/index.js'
 import {
   postUser,
   getUser,
@@ -17,8 +17,8 @@ router
   .patch(patchUser)
 
 // users vendor account route
-router.use('/vendor', vendorRouter)
+// router.use('/vendor', vendorRouter)
 // users customer account route
-router.use('/customer', customerRouter)
+// router.use('/customer', customerRouter)
 
 export default router

@@ -10,7 +10,7 @@ export {
   updatedProductMedia,
 } from './stores/products/index.js'
 
-const accountInfo: UserRequestData & { password: string } = {
+const userInfo: UserRequestData & { password: string } = {
   first_name: 'Aliyu',
   last_name: 'Mustapha',
   email: 'aliyumustapha@gmail.com',
@@ -20,8 +20,8 @@ const accountInfo: UserRequestData & { password: string } = {
   country: 'Nigeria',
 }
 
-const updatedAccountInfo = {
+const updatedUserInfo = {
   dob: new Date('2000-06-08'),
 } as UserRequestData
 
-export { accountInfo, updatedAccountInfo }
+export { userInfo, updatedUserInfo }

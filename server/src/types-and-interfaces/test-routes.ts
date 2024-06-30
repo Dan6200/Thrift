@@ -34,7 +34,7 @@ type TestCreateRequestInner = (
   createRequestParams: CreateRequestParams
 ) => Promise<any>
 
-type CreateRequestParams = {
+export type CreateRequestParams = {
   server: string
   token: string
   path: string

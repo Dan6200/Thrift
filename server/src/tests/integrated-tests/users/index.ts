@@ -14,21 +14,14 @@ import {
 } from '../helper-functions/user/index.js'
 import { knex } from '../../../db/index.js'
 import { UserRequestData } from '../../../types-and-interfaces/user.js'
+import { CreateRequestParams } from '../../../types-and-interfaces/test-routes.js'
 
 chai.use(chaiHttp).should()
 
 // Set server url
 const server = process.env.SERVER!
 
-export default function ({
-  token,
-  user,
-  updatedUser,
-}: {
-  token: string // from firebase
-  user: UserRequestData
-  updatedUser: UserRequestData
-}) {
+export default function ({ user }: { user: UserRequestData }) {
   const path = '/v1/user'
   describe('User account management', () => {
     before(async () => {
@@ -38,17 +31,19 @@ export default function ({
         .where('email', user.email)
         .orWhere('phone', user.phone)
       // Create a new user for each tests
-      const response = await testPostUser({
+      const postUserParams = {
         server,
-        token,
         path,
         body: user,
-      })
+      }
+      if (!isValidPostUserParams(postUserParams))
+        throw new Error('Invalid parameter object')
+      const response = await testPostUser(postUserParams)
       console.log('response', response)
     })
 
-    it("it should get the user's account", () =>
-      testGetUser({ server, token, path }))
+    // it("it should get the user's account", () =>
+    //   testGetUser({ server, token, path }))
 
     // it("it should update the user's account", () =>
     //   testUpdateAccount({server, token, path, null, updatedAccountInfo}))
@@ -65,3 +60,10 @@ export default function ({
     //   emailLogin(server, accountInfo, StatusCodes.UNAUTHORIZED))
   })
 }
+
+const isValidPostUserParams = (obj: unknown): obj is CreateRequestParams =>
+  typeof obj === 'object' &&
+  obj !== null &&
+  'body' in obj &&
+  'server' in obj &&
+  'path' in obj

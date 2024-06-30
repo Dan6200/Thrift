@@ -2,7 +2,7 @@ import { faker } from '../faker.js'
 import { Product } from '../../../types-and-interfaces/products.js'
 
 const randomProduct = faker.commerce
-export default function (): Product {
+export default function (this: Product): Product {
   return {
     title: randomProduct.productName(),
     description: [randomProduct.productDescription()],

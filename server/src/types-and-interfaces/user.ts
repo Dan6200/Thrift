@@ -4,14 +4,16 @@ import {
   UserResponseSchema,
 } from '../app-schema/users.js'
 
-export interface UserRequestData {
+interface UserData {
   first_name: string
   last_name: string
-  email: string
-  phone: string
+  email?: string
+  phone?: string
   dob: Date
   country: string
 }
+
+export type UserRequestData = UserData & ({ email: string } | { phone: string })
 
 export interface UID {
   uid: string
@@ -20,10 +22,12 @@ export interface UID {
 export const isValidUID = (data: unknown): data is UID =>
   !UIDSchema.validate(data).error
 
-export interface UserResponseData extends UserRequestData {
+interface UserResponse extends UserData {
   is_customer: boolean
   is_vendor: boolean
 }
+
+export type UserResponseData = UserResponse & UserRequestData
 
 export const isValidUserRequestData = (
   data: unknown

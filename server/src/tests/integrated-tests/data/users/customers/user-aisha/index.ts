@@ -1,11 +1,11 @@
-import { AccountData } from '../../../../../../types-and-interfaces/account.js'
+import { UserRequestData } from '../../../../../../types-and-interfaces/user.js'
 import {
   listOfShippingInfo,
   listOfUpdatedShippingInfo,
 } from './shipping-info.js'
 
 // Make sure test data is correct especially dates
-const accountInfo: AccountData = {
+const userInfo: UserRequestData & { password: string } = {
   first_name: 'Aisha',
   last_name: 'Mohammed',
   email: 'aisha.mohammed@school.edu',
@@ -15,20 +15,13 @@ const accountInfo: AccountData = {
   country: 'Nigeria',
 }
 
-const updatedAccountInfo: AccountData = {
+const updatedAccountInfo = {
   dob: new Date('2000-10-23'),
-}
-
-const updatedPassword: AccountData = {
-  password: '236!a15HA04',
-  // cspell:disable
-  new_password: 'sgsdlaWEWRsdf23@#%#@',
-}
+} as UserRequestData
 
 export {
-  accountInfo,
+  userInfo,
   updatedAccountInfo,
-  updatedPassword,
   listOfShippingInfo,
   listOfUpdatedShippingInfo,
 }

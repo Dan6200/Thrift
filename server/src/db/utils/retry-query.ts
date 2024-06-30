@@ -26,8 +26,8 @@ export default async function retryQuery(
     res = await query(params)
     runOnce = true
     return res
-  } catch (err) {
-    if (networkErrors.has(err.code))
+  } catch (err: any) {
+    if (networkErrors.has(err?.code))
       return new Promise((resolve) => {
         setTimeout(resolve, ms)
       }).then(() => {

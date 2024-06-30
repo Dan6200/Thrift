@@ -1,35 +1,29 @@
 // cspell: disable
-import { AccountData } from '../../../../../../types-and-interfaces/account.js'
+import { UserRequestData } from '../../../../../../types-and-interfaces/user.js'
 import {
-	listOfShippingInfo,
-	listOfUpdatedShippingInfo,
+  listOfShippingInfo,
+  listOfUpdatedShippingInfo,
 } from './shipping-info.js'
 
-const accountInfo: AccountData = {
-	first_name: 'Ebuka',
-	last_name: 'Eze',
-	email: 'ebukachibueze5489@gmail.com',
-	phone: '+2348032649250',
-	password: 'EbukaDa1!',
-	dob: new Date('1999-07-01'),
-	country: 'Nigeria',
+const accountInfo: UserRequestData & { password: string } = {
+  first_name: 'Ebuka',
+  last_name: 'Eze',
+  email: 'ebukachibueze5489@gmail.com',
+  phone: '+2348032649250',
+  password: 'EbukaDa1!',
+  dob: new Date('1999-07-01'),
+  country: 'Nigeria',
 }
 
-const updatedAccountInfo: AccountData = {
-	country: 'Ghana',
-	first_name: 'John',
-	dob: new Date('2003-06-08'),
-}
-
-const updatedPassword: AccountData = {
-	password: 'EbukaDa1!',
-	new_password: 'jayafd3245XF*!&$',
-}
+const updatedAccountInfo: UserRequestData = {
+  country: 'Ghana',
+  first_name: 'John',
+  dob: new Date('2003-06-08'),
+} as UserRequestData
 
 export {
-	accountInfo,
-	updatedAccountInfo,
-	updatedPassword,
-	listOfShippingInfo,
-	listOfUpdatedShippingInfo,
+  accountInfo,
+  updatedAccountInfo,
+  listOfShippingInfo,
+  listOfUpdatedShippingInfo,
 }

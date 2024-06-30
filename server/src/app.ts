@@ -9,7 +9,6 @@ import xss from 'xss-clean'
 import rateLimiter from 'express-rate-limit'
 import cookieParser from 'cookie-parser'
 // routers
-import authRouter from './routes/auth.js'
 import userRouter from './routes/user/index.js'
 import shippingRouter from './routes/shipping/index.js'
 import productsRouter from './routes/products/index.js'

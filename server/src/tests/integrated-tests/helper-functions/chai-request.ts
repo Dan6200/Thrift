@@ -1,11 +1,11 @@
-import chai from "chai";
-import { Express } from "express";
-import chaiHttp from "chai-http";
-chai.use(chaiHttp).should();
+import chai from 'chai'
+import { Express } from 'express'
+import chaiHttp from 'chai-http'
+chai.use(chaiHttp).should()
 
 export default async (
   server: string | Express | ChaiHttp.Agent,
-  verb: string,
+  verb: 'get' | 'patch' | 'put' | 'delete' | 'post',
   path: string,
   token?: string,
   data?: object
@@ -14,5 +14,5 @@ export default async (
     .request(server)
     [verb](path)
     .send(data)
-    .auth(token, { type: "bearer" });
-};
+    .auth(token, { type: 'bearer' })
+}

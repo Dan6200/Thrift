@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { AccountData } from '../../types-and-interfaces/account.js'
+import { UserRequestData } from '../../types-and-interfaces/user.js'
 
-export default async function (server: string, accountInfo: AccountData) {
+export default async function (server: string, accountInfo: UserRequestData) {
   try {
-    const response = await axios.post(`${server}/v1/auth/register`, accountInfo)
+    const response = await axios.post(`${server}/v1/user`, accountInfo)
     return response.data
   } catch (error) {
     throw error

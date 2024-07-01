@@ -12,8 +12,7 @@ import * as Aisha from './data/users/customers/user-aisha/index.js'
 import * as Mustapha from './data/users/customers/user-mustapha/index.js'
 import * as Aliyu from './data/users/vendors/user-aliyu/index.js'
 
-// const users = [Ebuka, Aliyu, Aisha, Mustapha]
-const users = [Ebuka]
+const users = [Ebuka, Aliyu, Aisha, Mustapha]
 // const customers = [Ebuka, Aisha, Mustapha]
 // const vendors = [Aliyu]
 

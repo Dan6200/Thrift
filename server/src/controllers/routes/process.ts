@@ -21,10 +21,10 @@ export default ({
   Query: QueryDB
   QueryForwarder?: (s: string) => QueryDB
   status: Status
-  validateBody?: <T>({ body }: { body: T }) => Promise<boolean>
+  validateBody?: <T>({ body }: { body: T }) => boolean
   validateResult?: (
     result: QueryResult<QueryResultRow | QueryResultRow[]>
-  ) => Promise<boolean>
+  ) => boolean
 }) => {
   // return the route processor middleware
   return async (request: RequestWithPayload, response: Response) => {

@@ -33,7 +33,7 @@ export type ProcessRouteWithoutBody = <T>({
   status: Status
   validateResult: (
     result: QueryResult<QueryResultRow | QueryResultRow[]>
-  ) => Promise<boolean>
+  ) => boolean
 }) => (
   request: RequestWithPayload,
   response: Response
@@ -51,7 +51,7 @@ export type ProcessRouteWithNoDBResult = <T>({
     query?: ParsedQs
   }) => Promise<Record<string, T>>
   status: Status
-  validateBody?: (data: unknown) => Promise<boolean>
+  validateBody?: (data: unknown) => boolean
 }) => (
   request: RequestWithPayload,
   response: Response
@@ -78,8 +78,10 @@ export type ProcessRoute = <T>({
     queryParams: QueryParams<T>
   ): Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
   status: Status
-  validateBody: (data: unknown) => Promise<boolean>
-  validateResult: (data: unknown) => Promise<boolean>
+  validateBody: (data: unknown) => boolean
+  validateResult: (
+    result: QueryResult<QueryResultRow | QueryResultRow[]>
+  ) => boolean
 }) => (
   request: RequestWithPayload,
   response: Response
@@ -93,8 +95,10 @@ export type ProcessRouteWithForwarder = <T>({
 }: {
   QueryForwarder: (s: string) => QueryDB
   status: Status
-  validateBody?: (data: unknown) => Promise<boolean>
-  validateResult?: (data: unknown) => Promise<boolean>
+  validateBody?: (data: unknown) => boolean
+  validateResult?: (
+    result: QueryResult<QueryResultRow | QueryResultRow[]>
+  ) => boolean
 }) => (
   request: RequestWithPayload,
   response: Response

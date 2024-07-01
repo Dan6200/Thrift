@@ -25,6 +25,7 @@ const server = process.env.SERVER!
 
 export default function ({ user }: { user: UserRequestData }) {
   const path = '/v1/user'
+  const uidsToDelete: any[] = []
   describe('User account management', () => {
     before(async () => {
       // Delete all user accounts
@@ -45,11 +46,11 @@ export default function ({ user }: { user: UserRequestData }) {
         throw new Error('Invalid parameter object')
       const response = await testPostUser(postUserParams)
       console.log('response', response)
+      uidsToDelete.push(response.uid)
     })
 
     after(async () => {
       // Delete all users from firebase auth
-      const uidsToDelete = await knex('users').select('uid')
       uidsToDelete.forEach((uid) => {
         auth
           .deleteUser(uid)

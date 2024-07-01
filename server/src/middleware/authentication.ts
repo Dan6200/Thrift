@@ -21,6 +21,7 @@ export default async (
   try {
     const { uid } = await auth.verifyIdToken(token)
     request.uid = uid
+    console.log('token verified, uid: ', uid)
     next()
   } catch (err) {
     throw new UnauthorizedError('Unauthorized Operation')

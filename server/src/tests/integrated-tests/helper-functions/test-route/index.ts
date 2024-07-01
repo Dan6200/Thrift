@@ -32,6 +32,7 @@ export default function ({
     if (verb === 'post' && path === '/v1/user') {
       const { email, password } = <UserRequestData>body
       token = await createUserWithEmailAndPasswordWrapper(email, password)
+      console.log('users token', token)
     }
 
     // Make request

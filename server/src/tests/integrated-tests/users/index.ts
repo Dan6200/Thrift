@@ -51,7 +51,7 @@ export default function ({ user }: { user: UserRequestData }) {
 
     after(async () => {
       // Delete all users from firebase auth
-      console.log(uidsToDelete)
+      console.log('uids', uidsToDelete)
       uidsToDelete.forEach((uid) => {
         auth
           .deleteUser(uid)

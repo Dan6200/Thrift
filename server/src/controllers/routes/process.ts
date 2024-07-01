@@ -58,7 +58,7 @@ export default ({
       dbResponse = await Query({ uid, body: bodyWoPassword, params, query })
     }
     console.log('db response', dbResponse)
-    if (!isTypeQueryResultRow(dbResponse) || !Array.isArray(dbResponse))
+    if (!isTypeQueryResultRow(dbResponse) && !Array.isArray(dbResponse))
       throw new BadRequestError(`The Database operation could not be completed`)
 
     if (validateResult) {

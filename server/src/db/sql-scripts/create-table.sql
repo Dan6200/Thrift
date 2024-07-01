@@ -81,7 +81,7 @@ insert into categories(category_name) values ('Electronics'),
 ('Outdoor & Sports');
 
 insert into subcategories(category_id, subcategory_name) values ((select category_id from categories where category_name = 'Electronics'), 'Computers'),
-((select category_id from categories where category_name = 'Clothing'), 'Women''s Fashion');
+((select category_id from categories where category_name = 'Clothing'), 'Women''s Fashion'),
 ((select category_id from categories where category_name = 'Clothing'), 'Men''s Fashion');
 
 create table if not exists products (

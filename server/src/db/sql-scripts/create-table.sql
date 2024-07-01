@@ -23,13 +23,13 @@ create table if not exists users (
 
 
 create table if not exists customers (
-  customer_id   int   primary key   references   users   on   delete   cascade
+  customer_id   varchar   primary key   references   users   on   delete   cascade
 );
 
 
 create table if not exists shipping_info (
   shipping_info_id        serial        primary   key,
-  customer_id             int           not       null    references   customers   on   delete   cascade,
+  customer_id             varchar           not       null    references   customers   on   delete   cascade,
   recipient_first_name    varchar(30)   not       null,
   recipient_last_name     varchar(30)   not       null,
   address                 varchar       not       null,
@@ -47,7 +47,7 @@ create table if not exists payment_info (
 
 
 create table if not exists vendors (
-  vendor_id   int   primary key   references   users   on   delete   cascade
+  vendor_id   varchar   primary key   references   users   on   delete   cascade
 );
 
 
@@ -55,7 +55,7 @@ create table if not exists vendors (
 create table if not exists stores (
   store_id       serial    primary   key,   
   store_name     varchar   not       null,
-  vendor_id      int       not       null    references   vendors        on   delete   cascade,
+  vendor_id      varchar       not       null    references   vendors        on   delete   cascade,
   store_page     jsonb,
   date_created   date      not       null    default      current_date
 );
@@ -90,7 +90,7 @@ create table if not exists products (
   description          jsonb,
   list_price           numeric(19,4),
   net_price            numeric(19,4),
-  vendor_id            int              not       null    references			vendors         on   delete   cascade,
+  vendor_id            varchar              not       null    references			vendors         on   delete   cascade,
   category_id          int           		not    		null    references   		categories      on   delete   cascade,
   subcategory_id       int           		not    		null    references   		subcategories   on   delete   cascade,
   created_at           timestamptz      not       null    default      		now(),
@@ -135,7 +135,7 @@ for each row execute function product_media_display_landing_trigger();
 
 create table if not exists shopping_cart (
   cart_id       serial        primary   key,
-  customer_id   int           not       null   references   customers   on   delete   cascade,
+  customer_id   varchar           not       null   references   customers   on   delete   cascade,
   created       timestamptz   not       null   default      now(),
   updated       timestamptz   not       null   default      now()
 );
@@ -149,8 +149,8 @@ create table if not exists shopping_cart_item (
 
 create table if not exists transactions(
   transaction_id   serial           primary      key,
-  customer_id      int              not          null,
-  vendor_id        int              not          null,
+  customer_id      varchar              not          null,
+  vendor_id        varchar              not          null,
   total_amount     numeric(19,4)    not          null,
   created          timestamptz      not          null    default   now()   unique,
   check            (customer_id <>  vendor_id)
@@ -169,21 +169,21 @@ create table if not exists product_reviews (
   product_id        int            primary   key     references   products              on   delete   cascade,
   transaction_id    int            not       null    references   transactions				  on   delete   cascade,
   rating            numeric(3,2)   not       null,
-  customer_id       int            not       null    references   customers             on   delete   cascade,
+  customer_id       varchar            not       null    references   customers             on   delete   cascade,
   customer_remark   varchar
 );
 
 create table if not exists vendor_reviews (
-  vendor_id         int            primary   key     references   vendors               on   delete   cascade,
-  customer_id       int            not       null    references   customers             on   delete   cascade,
+  vendor_id         varchar            primary   key     references   vendors               on   delete   cascade,
+  customer_id       varchar            not       null    references   customers             on   delete   cascade,
   transaction_id    int            not       null    references   transactions				  on   delete   cascade,
   rating            numeric(3,2)   not       null,
   customer_remark   varchar
 );
 
 create table if not exists customer_reviews (
-  customer_id      int            primary   key     references   customers             on   delete   cascade,
-  vendor_id        int            not       null    references   vendors               on   delete   cascade,
+  customer_id      varchar            primary   key     references   customers             on   delete   cascade,
+  vendor_id        varchar            not       null    references   vendors               on   delete   cascade,
   transaction_id   int            not       null    references   transactions   on   delete   cascade,
   rating           numeric(3,2)   not       null,
   vendor_remark    varchar

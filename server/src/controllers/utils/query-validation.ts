@@ -60,7 +60,7 @@ export const isSuccessful =
       if (error)
         throw new BadRequestError(`${result.command} Operation unsuccessful`)
     } else {
-      if (result.length === 0)
+      if (Array.isArray(result) && result.length === 0)
         throw new BadRequestError(`Operation unsuccessful`)
     }
     return true

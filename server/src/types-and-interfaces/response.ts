@@ -24,4 +24,15 @@ export function isTypeQueryResultRow(
   )
 }
 
+export function isTypeQueryResultRowList(
+  dbResponse: unknown
+): dbResponse is QueryResult<QueryResultRow[]> {
+  return (
+    dbResponse != undefined &&
+    typeof dbResponse === 'object' &&
+    Array.isArray(dbResponse) &&
+    isTypeQueryResultRow(dbResponse[0])
+  )
+}
+
 export { Status, ResponseData }

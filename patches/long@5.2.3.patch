@@ -1,0 +1,8 @@
+diff --git a/umd/index.d.ts b/umd/index.d.ts
+index c623535ccdd8ae7fe81ab7a4fad6b672f2eb56a8..4c9dced97180622afc16f8ef9afe59602f4e37f7 100644
+--- a/umd/index.d.ts
++++ b/umd/index.d.ts
+@@ -1,2 +1,3 @@
++// @ts-expect-error
+ import Long from "../index.js";
+ export = Long;

@@ -31,8 +31,16 @@ export type UserResponseData = UserResponse & UserRequestData
 
 export const isValidUserRequestData = (
   data: unknown
-): data is UserRequestData => !UserRequestSchema.validate(data).error
+): data is UserRequestData => {
+  const { error } = UserRequestSchema.validate(data)
+  if (error) throw new Error(error.toString())
+  return true
+}
 
 export const isValidUserResponseData = (
   data: unknown
-): data is UserResponseData => !UserResponseSchema.validate(data).error
+): data is UserResponseData => {
+  const { error } = UserResponseSchema.validate(data)
+  if (error) throw new Error(error.toString())
+  return true
+}

@@ -1,7 +1,9 @@
 import { fileURLToPath } from 'url'
 import app from './app.js'
 import dotenv from 'dotenv'
-dotenv.config({ path: `/etc/secrets/.env.${process.env.NODE_ENV}` })
+if (process.env.NODE_ENV === 'production')
+  dotenv.config({ path: `/etc/secrets/.env.production` })
+else dotenv.config({ path: `env.${process.env.NODE_ENV}` })
 
 const port = process.env.PORT || 1024
 

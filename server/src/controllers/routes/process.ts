@@ -1,7 +1,7 @@
 import { Response } from 'express'
 import { RequestWithPayload } from '../../types-and-interfaces/request.js'
 import {
-  isValidDBResponse,
+  isTypeQueryResultRow,
   Status,
 } from '../../types-and-interfaces/response.js'
 import {
@@ -23,7 +23,7 @@ export default ({
   status: Status
   validateBody?: <T>(body: T) => boolean
   validateResult?: (
-    result: QueryResult<QueryResultRow | QueryResultRow[]>
+    result: any[] | QueryResult<QueryResultRow | QueryResultRow[]>
   ) => boolean
 }) => {
   // return the route processor middleware
@@ -57,16 +57,23 @@ export default ({
       const { password, ...bodyWoPassword } = body
       dbResponse = await Query({ uid, body: bodyWoPassword, params, query })
     }
-    if (!isValidDBResponse(dbResponse) || !Array.isArray(dbResponse))
+    if (!isTypeQueryResultRow(dbResponse) || !Array.isArray(dbResponse))
       throw new BadRequestError(`The Database operation could not be completed`)
 
     if (validateResult) {
       // validateBody throws error if data is invalid
       // check for errors
       validateResult(dbResponse)
-      if (dbResponse.rowCount === 1)
-        return response.status(status).json(dbResponse.rows[0])
-      return response.status(status).json(dbResponse.rows)
+      let responseData: any = null
+      if (isTypeQueryResultRow(dbResponse)) {
+        if (dbResponse.rowCount === 1) responseData = dbResponse.rows[0]
+        else responseData = dbResponse.rows
+      }
+      if (Array.isArray(dbResponse)) {
+        if (dbResponse.length === 1) responseData = dbResponse[0]
+        else responseData = dbResponse
+      }
+      return response.status(status).json(responseData)
     }
     response.status(status).end()
   }

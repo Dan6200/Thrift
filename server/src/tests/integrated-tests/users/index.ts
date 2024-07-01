@@ -51,7 +51,7 @@ export default function ({ user }: { user: UserRequestData }) {
     after(async () => {
       // Delete all users from firebase auth
       console.log('uids', uidsToDelete)
-      Promise.all(
+      await Promise.all(
         uidsToDelete.map(async (uid) => {
           console.log('uid', uid)
           await auth

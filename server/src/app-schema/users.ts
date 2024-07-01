@@ -48,6 +48,7 @@ export const UserResponseSchema = joi
         /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
       )
       .allow(null),
+    password: joi.string(),
     dob: joi.alternatives().try(joi.date().required(), joi.string().required()),
     country: joi.string(),
     is_customer: joi.boolean().required(),
@@ -62,7 +63,6 @@ export const UserUpdateRequestSchema = joi
     last_name: joi.string().alphanum().min(3).max(30),
     email: joi.string().email(),
     phone: joi.string().pattern(/^\d{10}$/),
-    password: joi.string(),
     dob: joi.alternatives().try(joi.date(), joi.string()),
     country: joi.string(),
   })

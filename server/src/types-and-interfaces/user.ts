@@ -9,6 +9,7 @@ interface UserData {
   last_name: string
   email?: string
   phone?: string
+  password: string
   dob: Date
   country: string
 }

@@ -30,7 +30,7 @@ export default function ({
       throw new BadRequestError('Invalid Request Data')
 
     if (verb === 'post' && path === '/v1/user') {
-      const { email, password } = <UserRequestData & { password: string }>body
+      const { email, password } = <UserRequestData>body
       token = await createUserWithEmailAndPasswordWrapper(email, password)
     }
 

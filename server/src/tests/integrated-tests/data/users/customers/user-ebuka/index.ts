@@ -5,7 +5,7 @@ import {
   listOfUpdatedShippingInfo,
 } from './shipping-info.js'
 
-const userInfo: UserRequestData & { password: string } = {
+const userInfo: UserRequestData = {
   first_name: 'Ebuka',
   last_name: 'Eze',
   email: 'ebukachibueze5489@gmail.com',

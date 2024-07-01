@@ -5,7 +5,7 @@ import {
 } from './shipping-info.js'
 
 // Make sure test data is correct especially dates
-const userInfo: UserRequestData & { password: string } = {
+const userInfo: UserRequestData = {
   first_name: 'Aisha',
   last_name: 'Mohammed',
   email: 'aisha.mohammed@school.edu',

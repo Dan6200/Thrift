@@ -10,7 +10,7 @@ export {
   updatedProductMedia,
 } from './stores/products/index.js'
 
-const userInfo: UserRequestData & { password: string } = {
+const userInfo: UserRequestData = {
   first_name: 'Aliyu',
   last_name: 'Mustapha',
   email: 'aliyumustapha@gmail.com',

@@ -30,6 +30,9 @@ export default function ({ user }: { user: UserRequestData }) {
         .del()
         .where('email', user.email)
         .orWhere('phone', user.phone)
+    })
+
+    it('should create a new user', async () => {
       // Create a new user for each tests
       const postUserParams = {
         server,

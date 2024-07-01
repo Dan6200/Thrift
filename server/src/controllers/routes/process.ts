@@ -39,7 +39,7 @@ export default ({
       validateBody
     ) {
       // validateBody throws error if body is invalid
-      await validateBody({ body })
+      validateBody({ body })
     }
 
     let dbResponse: unknown
@@ -61,7 +61,7 @@ export default ({
     if (validateResult) {
       // validateBody throws error if data is invalid
       // check for errors
-      await validateResult(dbResponse)
+      validateResult(dbResponse)
       if (dbResponse.rowCount === 1)
         return response.status(status).json(dbResponse.rows[0])
       return response.status(status).json(dbResponse.rows)

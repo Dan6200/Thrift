@@ -12,7 +12,7 @@ type ResponseData = {
 export function isValidDBResponse(
   dbResponse: unknown
 ): dbResponse is QueryResult<QueryResultRow> {
-  console.log(dbResponse)
+  console.log('database response', dbResponse)
   return (
     dbResponse != undefined &&
     typeof dbResponse === 'object' &&

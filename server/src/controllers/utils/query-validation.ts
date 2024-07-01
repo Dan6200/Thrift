@@ -11,7 +11,6 @@ export const validateReqData =
   (data: unknown) => {
     if (typeof data == 'undefined' || Object.keys(data).length === 0)
       throw new BadRequestError('request data cannot be empty')
-    console.log(data)
     const { error } = schema.validate(data)
     if (error) throw new BadRequestError(error.message)
     return true

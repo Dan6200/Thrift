@@ -59,7 +59,7 @@ export default function ({ user }: { user: UserRequestData }) {
             .then(() => console.log(`user with uid: ${uid} deleted`))
             .catch(() => console.error(`failed to delete user with uid ${uid}`))
         })
-      )
+      ).catch((err) => console.error(`failed to delete users ${err}`))
     })
 
     // it("it should get the user's account", () =>

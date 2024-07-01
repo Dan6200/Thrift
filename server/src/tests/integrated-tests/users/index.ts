@@ -25,7 +25,8 @@ const server = process.env.SERVER!
 
 export default function ({ user }: { user: UserRequestData }) {
   const path = '/v1/user'
-  const uidsToDelete: any[] = []
+  let uidToDelete: string = ''
+  let token: string = ''
   describe('User account management', () => {
     before(async () => {
       // Delete all user accounts
@@ -45,23 +46,22 @@ export default function ({ user }: { user: UserRequestData }) {
       if (!isValidPostUserParams(postUserParams))
         throw new Error('Invalid parameter object')
       const response = await testPostUser(postUserParams)
-      uidsToDelete.push(response.uid)
+      uidToDelete = response.uid
+      token = await auth.createCustomToken(response.uid)
     })
+
+    it("it should get the user's account", () =>
+      testGetUser({ server, token, path }))
 
     after(async () => {
       // Delete all users from firebase auth
-      await Promise.all(
-        uidsToDelete.map(async (uid) => {
-          await auth
-            .deleteUser(uid)
-            .then(() => console.log(`user with uid: ${uid} deleted`))
-            .catch(() => console.error(`failed to delete user with uid ${uid}`))
-        })
-      ).catch((err) => console.error(`failed to delete users ${err}`))
+      await auth
+        .deleteUser(uidToDelete)
+        .then(() => console.log(`user with uid: ${uidToDelete} deleted`))
+        .catch(() =>
+          console.error(`failed to delete user with uid ${uidToDelete}`)
+        )
     })
-
-    // it("it should get the user's account", () =>
-    //   testGetUser({ server, token, path }))
 
     // it("it should update the user's account", () =>
     //   testUpdateAccount({server, token, path, null, updatedAccountInfo}))

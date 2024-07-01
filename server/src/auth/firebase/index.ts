@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production')
     (serviceAccount) => serviceAccount
   )
 if (process.env.NODE_ENV === 'testing')
-  serviceAccount = process.env.FB_SERVICE_ACCOUNT
+  serviceAccount = JSON.parse(process.env.FB_SERVICE_ACCOUNT)
 
 app = initializeApp({
   credential: credential.cert(serviceAccount),

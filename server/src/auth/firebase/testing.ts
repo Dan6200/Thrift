@@ -5,5 +5,6 @@ let firebaseConfig = {}
 if (process.env.NODE_ENV === 'testing') {
   firebaseConfig = process.env.FB_CONFIG
 } else throw new Error('Not available during production or development')
+console.log('firebase config: ', firebaseConfig)
 const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)

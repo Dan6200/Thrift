@@ -52,13 +52,14 @@ export default function ({ user }: { user: UserRequestData }) {
     after(async () => {
       // Delete all users from firebase auth
       console.log('uids', uidsToDelete)
-      uidsToDelete.forEach((uid) => {
-        console.log(uid)
-        auth
-          .deleteUser(uid)
-          .then(() => console.log(`user with uid: ${uid} deleted`))
-          .catch(() => console.error(`failed to delete user with uid ${uid}`))
-      })
+      Promise.all(
+        uidsToDelete.map(async (uid) => {
+          await auth
+            .deleteUser(uid)
+            .then(() => console.log(`user with uid: ${uid} deleted`))
+            .catch(() => console.error(`failed to delete user with uid ${uid}`))
+        })
+      )
     })
 
     // it("it should get the user's account", () =>

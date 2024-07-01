@@ -14,6 +14,7 @@ export const validateReqData =
       throw new BadRequestError('request data cannot be empty')
     const { error } = schema.validate(body)
     if (error) throw new BadRequestError(error.message)
+    return true
   }
 
 /**
@@ -21,10 +22,10 @@ export const validateReqData =
  * */
 export function validateResData<T>(
   schema: ArraySchema<T>
-): (result: QueryResult<QueryResultRow | QueryResultRow[]>) => Promise<void>
+): (result: QueryResult<QueryResultRow | QueryResultRow[]>) => Promise<boolean>
 export function validateResData<T>(
   schema: ObjectSchema<T>
-): (result: QueryResult<QueryResultRow | QueryResultRow[]>) => Promise<void>
+): (result: QueryResult<QueryResultRow | QueryResultRow[]>) => Promise<boolean>
 export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
   return async (result: QueryResult<QueryResultRow | QueryResultRow[]>) => {
     if (result.rows.length === 0) {
@@ -39,6 +40,7 @@ export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
       ;({ error } = schema.validate(result.rows[0]))
     }
     if (error) throw new BadRequestError(error.message)
+    return true
   }
 }
 
@@ -50,7 +52,7 @@ export const isSuccessful =
   <T>(schema: ObjectSchema<T>) =>
   async (
     result: QueryResult<QueryResultRow | QueryResultRow[]>
-  ): Promise<void> => {
+  ): Promise<boolean> => {
     if (result.rows.length === 0)
       throw new BadRequestError(`${result.command} Operation unsuccessful`)
     if (result.rows.length > 1)
@@ -58,4 +60,5 @@ export const isSuccessful =
     const { error } = schema.validate(result.rows[0])
     if (error)
       throw new BadRequestError(`${result.command} Operation unsuccessful`)
+    return true
   }

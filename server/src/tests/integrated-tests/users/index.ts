@@ -1,3 +1,4 @@
+//cspell:ignore uids
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
@@ -15,6 +16,7 @@ import {
 import { knex } from '../../../db/index.js'
 import { UserRequestData } from '../../../types-and-interfaces/user.js'
 import { CreateRequestParams } from '../../../types-and-interfaces/test-routes.js'
+import { auth } from '../../../auth/firebase/index.js'
 
 chai.use(chaiHttp).should()
 
@@ -43,6 +45,17 @@ export default function ({ user }: { user: UserRequestData }) {
         throw new Error('Invalid parameter object')
       const response = await testPostUser(postUserParams)
       console.log('response', response)
+    })
+
+    after(async () => {
+      // Delete all users from firebase auth
+      const uidsToDelete = await knex('users').select('uid')
+      uidsToDelete.forEach((uid) => {
+        auth
+          .deleteUser(uid)
+          .then(() => console.log(`user with uid: ${uid} deleted`))
+          .catch(() => console.error(`failed to delete user with uid ${uid}`))
+      })
     })
 
     // it("it should get the user's account", () =>

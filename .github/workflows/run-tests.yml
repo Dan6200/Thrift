@@ -56,14 +56,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          node-version: 20
       - name: Run SQL script
         run: |
           docker run -e PGPASSWORD=postgres -v ${{ github.workspace }}:/scripts/ --network host postgres psql -h localhost -U postgres -d test -f /scripts/server/src/db/sql-scripts/create-table.sql
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 20
         uses: actions/setup-node@v2
         with:
-          node-version: 20.x
+          node-version: 20
       - run: npm install -g pnpm
       - run: pnpm install
       - run: pnpm build

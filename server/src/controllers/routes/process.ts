@@ -53,7 +53,9 @@ export default ({
         query,
       })
     } else {
-      dbResponse = await Query({ uid, body, params, query })
+      // remove password
+      const { password, ...bodyWoPassword } = body
+      dbResponse = await Query({ uid, body: bodyWoPassword, params, query })
     }
     if (!isValidDBResponse(dbResponse))
       throw new BadRequestError(`The Database operation could not be completed`)

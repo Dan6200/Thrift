@@ -19,6 +19,7 @@ export const UserRequestSchema = joi
         /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
       )
       .allow(null),
+    password: joi.string(),
     dob: joi.date().required(),
     country: joi.string(),
   })
@@ -48,7 +49,6 @@ export const UserResponseSchema = joi
         /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
       )
       .allow(null),
-    password: joi.string(),
     dob: joi.alternatives().try(joi.date().required(), joi.string().required()),
     country: joi.string(),
     is_customer: joi.boolean().required(),

@@ -45,7 +45,6 @@ export default function ({ user }: { user: UserRequestData }) {
       if (!isValidPostUserParams(postUserParams))
         throw new Error('Invalid parameter object')
       const response = await testPostUser(postUserParams)
-      console.log('response', response)
       uidsToDelete.push(response.uid)
     })
 
@@ -54,6 +53,7 @@ export default function ({ user }: { user: UserRequestData }) {
       console.log('uids', uidsToDelete)
       Promise.all(
         uidsToDelete.map(async (uid) => {
+          console.log('uid', uid)
           await auth
             .deleteUser(uid)
             .then(() => console.log(`user with uid: ${uid} deleted`))

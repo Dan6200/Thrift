@@ -4,12 +4,16 @@ import { getAuth } from 'firebase-admin/auth'
 
 const { credential } = fbAdmin
 let app = null
-if (process.env.NODE_ENV.match(/(production|testing)/)) {
-  app = initializeApp({
-    credential: await import(process.env.FB_SERVICE_ACCOUNT).then(
-      (serviceAccount) => credential.cert(serviceAccount)
-    ),
-  })
-}
+let serviceAccount: any = null
+if (process.env.NODE_ENV === 'production')
+  serviceAccount = await import(process.env.FB_SERVICE_ACCOUNT).then(
+    (serviceAccount) => serviceAccount
+  )
+if (process.env.NODE_ENV === 'testing')
+  serviceAccount = process.env.FB_SERVICE_ACCOUNT
+
+app = initializeApp({
+  credential: credential.cert(serviceAccount),
+})
 
 export const auth = getAuth(app)

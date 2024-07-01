@@ -54,10 +54,6 @@ jobs:
         ports:
           - 6379:6379
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-
     steps:
       - uses: actions/checkout@v2
       - name: Run SQL script
@@ -67,7 +63,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
       - run: npm install -g pnpm
       - run: pnpm install
       - run: pnpm build

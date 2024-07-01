@@ -26,10 +26,11 @@ const { OK, CREATED } = StatusCodes
  * @description Add a user account to the database
  **/
 const createQuery = async <T>({
+  uid,
   body,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
   knex('users')
-    .insert({ ...body })
+    .insert({ uid, ...body })
     .returning('uid')
 
 /**

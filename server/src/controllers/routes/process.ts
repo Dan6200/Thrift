@@ -4,10 +4,7 @@ import {
   isTypeQueryResultRow,
   Status,
 } from '../../types-and-interfaces/response.js'
-import {
-  QueryDB,
-  QueryParams,
-} from '../../types-and-interfaces/process-routes.js'
+import { QueryDB } from '../../types-and-interfaces/process-routes.js'
 import BadRequestError from '../../errors/bad-request.js'
 import { QueryResult, QueryResultRow } from 'pg'
 
@@ -54,8 +51,13 @@ export default ({
       })
     } else {
       // remove password
-      const { password, ...bodyWoPassword } = body
-      dbResponse = await Query({ uid, body: bodyWoPassword, params, query })
+      const { password, ...bodyWithoutPassword } = body
+      dbResponse = await Query({
+        uid,
+        body: bodyWithoutPassword,
+        params,
+        query,
+      })
     }
 
     if (!isTypeQueryResultRow(dbResponse) && !Array.isArray(dbResponse))

@@ -21,7 +21,7 @@ export default ({
   Query: QueryDB
   QueryForwarder?: (s: string) => QueryDB
   status: Status
-  validateBody?: <T>({ body }: { body: T }) => boolean
+  validateBody?: <T>(body: T) => boolean
   validateResult?: (
     result: QueryResult<QueryResultRow | QueryResultRow[]>
   ) => boolean
@@ -39,7 +39,7 @@ export default ({
       validateBody
     ) {
       // validateBody throws error if body is invalid
-      validateBody({ body })
+      validateBody(body)
     }
 
     let dbResponse: unknown

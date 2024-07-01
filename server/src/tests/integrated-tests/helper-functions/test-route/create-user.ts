@@ -9,6 +9,7 @@ export async function createUserWithEmailAndPasswordWrapper(
   return createUserWithEmailAndPassword(auth, email, password)
     .then(({ user }: UserCredential) => user.getIdToken())
     .catch((error) => {
+      console.error(error)
       throw new UnauthorizedError('Could not Authenticate user')
     })
 }

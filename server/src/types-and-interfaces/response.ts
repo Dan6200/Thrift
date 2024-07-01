@@ -9,10 +9,9 @@ type ResponseData = {
   data?: string | object
 }
 
-export function isValidDBResponse(
+export function isTypeQueryResultRow(
   dbResponse: unknown
 ): dbResponse is QueryResult<QueryResultRow> {
-  console.log('database response', dbResponse)
   return (
     dbResponse != undefined &&
     typeof dbResponse === 'object' &&

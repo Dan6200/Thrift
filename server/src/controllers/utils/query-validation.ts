@@ -2,6 +2,7 @@ import { ArraySchema, ObjectSchema } from 'joi'
 import { QueryResult, QueryResultRow } from 'pg'
 import BadRequestError from '../../errors/bad-request.js'
 import NotFoundError from '../../errors/not-found.js'
+import { isTypeQueryResultRow } from '../../types-and-interfaces/response.js'
 
 /**
  * @description Validates data against schema
@@ -49,13 +50,18 @@ export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
  * */
 export const isSuccessful =
   <T>(schema: ObjectSchema<T>) =>
-  (result: QueryResult<QueryResultRow | QueryResultRow[]>): boolean => {
-    if (result.rows.length === 0)
-      throw new BadRequestError(`${result.command} Operation unsuccessful`)
-    if (result.rows.length > 1)
-      throw new BadRequestError(`${result.command} operated erroneously`)
-    const { error } = schema.validate(result.rows[0])
-    if (error)
-      throw new BadRequestError(`${result.command} Operation unsuccessful`)
+  (result: any[] | QueryResult<QueryResultRow | QueryResultRow[]>): boolean => {
+    if (isTypeQueryResultRow(result)) {
+      if (result.rows.length === 0)
+        throw new BadRequestError(`${result.command} Operation unsuccessful`)
+      if (result.rows.length > 1)
+        throw new BadRequestError(`${result.command} operated erroneously`)
+      const { error } = schema.validate(result.rows[0])
+      if (error)
+        throw new BadRequestError(`${result.command} Operation unsuccessful`)
+    } else {
+      if (result.length === 0)
+        throw new BadRequestError(`Operation unsuccessful`)
+    }
     return true
   }

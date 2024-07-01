@@ -57,7 +57,7 @@ export default ({
       const { password, ...bodyWoPassword } = body
       dbResponse = await Query({ uid, body: bodyWoPassword, params, query })
     }
-    if (!isValidDBResponse(dbResponse))
+    if (!isValidDBResponse(dbResponse) || !Array.isArray(dbResponse))
       throw new BadRequestError(`The Database operation could not be completed`)
 
     if (validateResult) {

@@ -15,7 +15,7 @@ const testPostCustomer = (<TestCreateRequest>testRoute)({
 
 const testDeleteCustomer = (<TestCreateRequest>testRoute)({
   verb: 'delete',
-  statusCode: StatusCodes.NO_CONTENT,
+  statusCode: StatusCodes.OK,
   validateResData: isValidCustomerId,
 })
 

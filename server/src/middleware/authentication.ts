@@ -15,13 +15,13 @@ export default async (
 
   // check header for token
   const authHeader = request.headers.authorization
-  console.log('auth header exists', !!authHeader)
+  console.log('auth header does not exist', !authHeader)
   console.log(
-    'auth header starts with bearer',
-    authHeader.startsWith('Bearer ')
+    'auth header does not start with bearer',
+    !authHeader.startsWith('Bearer ')
   )
-  if (!authHeader || !authHeader?.startsWith('Bearer '))
-    throw new UnauthorizedError('Unauthorized Operation')
+  // if (!authHeader || !authHeader?.startsWith('Bearer '))
+  //   throw new UnauthorizedError('Unauthorized Operation')
   const token = authHeader.split(' ')[1]
   try {
     const { uid } = await auth.verifyIdToken(token)

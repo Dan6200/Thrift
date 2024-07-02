@@ -2,6 +2,7 @@ import {
   UIDSchema,
   UserRequestSchema,
   UserResponseSchema,
+  UserUpdateRequestSchema,
 } from '../app-schema/users.js'
 
 interface UserData {
@@ -29,6 +30,14 @@ interface UserResponse extends UserData {
 }
 
 export type UserResponseData = UserResponse & UserRequestData
+
+export const isValidUserUpdateRequestData = (
+  data: unknown
+): data is UserRequestData => {
+  const { error } = UserUpdateRequestSchema.validate(data)
+  if (error) throw new Error(error.toString())
+  return true
+}
 
 export const isValidUserRequestData = (
   data: unknown

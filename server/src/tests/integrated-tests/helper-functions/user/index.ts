@@ -9,6 +9,7 @@ import {
   isValidUID,
   isValidUserRequestData,
   isValidUserResponseData,
+  isValidUserUpdateRequestData,
 } from '../../../../types-and-interfaces/user.js'
 import testCreateRequest from '../test-route/index.js'
 
@@ -93,6 +94,7 @@ export const testPatchUser = testCreateRequest({
   verb: 'patch',
   statusCode: OK,
   validateResData: isValidUID,
+  validateReqData: isValidUserUpdateRequestData,
 })
 
 export const testDeleteUser = testCreateRequest({

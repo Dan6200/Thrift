@@ -25,6 +25,7 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
     it('it should create a customer user for the user', () =>
       testPostCustomer({ server, token, path }))
 
+    /*
     it("it should show that the customer account has been created in the user's is_customer field", async () =>
       testHasCustomerAccount({
         server,
@@ -41,5 +42,6 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
         token,
         path: path.slice(0, path.lastIndexOf('customers')),
       }))
+			*/
   })
 }

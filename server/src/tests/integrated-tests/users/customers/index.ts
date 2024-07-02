@@ -32,7 +32,7 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
       // Create a new user for each tests
       const postUserParams = {
         server,
-        path,
+        path: '/v1/users',
         body: userInfo,
       }
       if (!isValidPostUserParams(postUserParams))
@@ -53,7 +53,7 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
       testHasCustomerAccount({
         server,
         token,
-        path: path.slice(0, path.lastIndexOf('customers')),
+        path: '/v1/users'
       }))
 
     it("it should delete the user's customer account", () =>
@@ -63,7 +63,7 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
       testHasNoCustomerAccount({
         server,
         token,
-        path: path.slice(0, path.lastIndexOf('customers')),
+        path: '/v1/users'
       }))
 			*/
   })

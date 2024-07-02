@@ -43,6 +43,7 @@ export default function ({
 
     // Add request token
     if (token) request.auth(token, { type: 'bearer' })
+    console.log('token exists', token)
     const response = await request
     response.should.have.status(statusCode)
 

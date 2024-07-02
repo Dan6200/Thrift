@@ -25,7 +25,13 @@ chai.use(chaiHttp).should()
 // Set server url
 const server = process.env.SERVER!
 
-export default function ({ user }: { user: UserRequestData }) {
+export default function ({
+  userInfo,
+  updatedUserInfo,
+}: {
+  userInfo: UserRequestData
+  updatedUserInfo: UserRequestData
+}) {
   const path = '/v1/user'
   let uidToDelete: string = ''
   let token: string = ''
@@ -34,8 +40,8 @@ export default function ({ user }: { user: UserRequestData }) {
       // Delete all user accounts
       await knex('users')
         .del()
-        .where('email', user.email)
-        .orWhere('phone', user.phone)
+        .where('email', userInfo.email)
+        .orWhere('phone', userInfo.phone)
     })
 
     it('should create a new user', async () => {
@@ -43,7 +49,7 @@ export default function ({ user }: { user: UserRequestData }) {
       const postUserParams = {
         server,
         path,
-        body: user,
+        body: userInfo,
       }
       if (!isValidPostUserParams(postUserParams))
         throw new Error('Invalid parameter object')
@@ -58,6 +64,15 @@ export default function ({ user }: { user: UserRequestData }) {
     it("it should get the user's account", () =>
       testGetUser({ server, token, path }))
 
+    it("it should update the user's account", () =>
+      testPatchUser({
+        server,
+        token,
+        path,
+        query: undefined,
+        body: updatedUserInfo,
+      }))
+
     after(async () => {
       // Delete all users from firebase auth
       await auth
@@ -70,8 +85,6 @@ export default function ({ user }: { user: UserRequestData }) {
         )
     })
 
-    // it("it should update the user's account", () =>
-    //   testUpdateAccount({server, token, path, null, updatedAccountInfo}))
     //
     // it("it should delete the user's account", () =>
     //   testDeleteAccount(server, token, path))

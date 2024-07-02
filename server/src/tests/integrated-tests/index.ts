@@ -41,13 +41,13 @@ export default function (): void {
 
   /** Customer Account actions **/
 
-  // for (let customer of customers) {
-  //   const { userInfo } = customer
-  //   const { first_name: name } = userInfo
-  //   describe(`Testing Customer Account for ${name}`, () =>
-  //     testCustomerAccount(customer))
-  // }
-  //
+  for (let customer of customers) {
+    const { userInfo } = customer
+    const { first_name: name } = userInfo
+    describe(`Testing Customer Account for ${name}`, () =>
+      testCustomerAccount(customer))
+  }
+
   /** Shipping Info related tests **/
 
   // for (let customer of customers) {

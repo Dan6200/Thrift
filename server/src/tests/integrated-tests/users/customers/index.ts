@@ -48,6 +48,17 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
     it('it should create a customer user for the user', () =>
       testPostCustomer({ server, token, path }))
 
+    after(async () => {
+      // Delete all users from firebase auth
+      await auth
+        .deleteUser(uidToDelete)
+        .then(() => console.log(`user with uid: ${uidToDelete} deleted`))
+        .catch((error) =>
+          console.error(
+            `failed to delete user with uid ${uidToDelete}: ${error}`
+          )
+        )
+    })
     /*
     it("it should show that the customer account has been created in the user's is_customer field", async () =>
       testHasCustomerAccount({

@@ -1,7 +1,7 @@
 import chai from 'chai'
-import BadRequestError from '../../../../errors/bad-request.js'
-import { TestCreateRequestParamsGeneral } from '../../../../types-and-interfaces/test-routes.js'
-import { UserRequestData } from '../../../../types-and-interfaces/user.js'
+import BadRequestError from '../../../errors/bad-request.js'
+import { TestCreateRequestParamsGeneral } from '../../../types-and-interfaces/test-routes.js'
+import { UserRequestData } from '../../../types-and-interfaces/user.js'
 import { createUserWithEmailAndPasswordWrapper } from './create-user.js'
 import { deleteUser } from './delete-user.js'
 

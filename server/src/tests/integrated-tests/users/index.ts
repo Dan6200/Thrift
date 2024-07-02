@@ -1,18 +1,13 @@
 //cspell:ignore uids
 import chai from 'chai'
 import chaiHttp from 'chai-http'
-import { StatusCodes } from 'http-status-codes'
 import {
   testPostUser,
   testGetUser,
   testPatchUser,
   testDeleteUser,
   testGetNonExistentUser,
-  testHasCustomerAccount,
-  testHasNoCustomerAccount,
-  testHasVendorAccount,
-  testHasNoVendorAccount,
-} from '../helper-functions/user/index.js'
+} from './utils/index.js'
 import { knex } from '../../../db/index.js'
 import { UserRequestData } from '../../../types-and-interfaces/user.js'
 import { CreateRequestParams } from '../../../types-and-interfaces/test-routes.js'
@@ -90,11 +85,6 @@ export default function ({
           )
         )
     })
-
-    // it('it should logout user', () => logout(server, token))
-    //
-    // it('it should fail to login the deleted user', () =>
-    //   emailLogin(server, accountInfo, StatusCodes.UNAUTHORIZED))
   })
 }
 

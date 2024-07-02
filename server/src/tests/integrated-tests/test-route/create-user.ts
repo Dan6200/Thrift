@@ -1,6 +1,6 @@
-import { auth } from '../../../../auth/firebase/testing.js'
+import { auth } from '../../../auth/firebase/testing.js'
 import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth'
-import UnauthorizedError from '../../../../errors/unauthorized.js'
+import UnauthorizedError from '../../../errors/unauthorized.js'
 
 export async function createUserWithEmailAndPasswordWrapper({
   email,

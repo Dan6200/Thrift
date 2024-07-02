@@ -11,7 +11,7 @@ import {
   isValidUserResponseData,
   isValidUserUpdateRequestData,
 } from '../../../../types-and-interfaces/user.js'
-import testCreateRequest from '../test-route/index.js'
+import testCreateRequest from '../../test-route/index.js'
 
 chai.use(chaiHttp).should()
 

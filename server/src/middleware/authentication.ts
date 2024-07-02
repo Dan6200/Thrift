@@ -15,6 +15,7 @@ export default async (
 
   // check header for token
   const authHeader = request.headers.authorization
+  console.log('authorization headers', authHeader)
   if (!authHeader || !authHeader?.startsWith('Bearer '))
     throw new UnauthorizedError('Unauthorized Operation')
   const token = authHeader.split(' ')[1]

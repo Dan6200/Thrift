@@ -42,7 +42,6 @@ export default function ({
       .send(<object>body)
 
     // Add request token
-    console.log('token is: ', typeof token)
     if (token) request.auth(token, { type: 'bearer' })
     const response = await request
     response.should.have.status(statusCode)

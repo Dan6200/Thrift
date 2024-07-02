@@ -3,6 +3,7 @@ import BadRequestError from '../../../../errors/bad-request.js'
 import { TestCreateRequestParamsGeneral } from '../../../../types-and-interfaces/test-routes.js'
 import { UserRequestData } from '../../../../types-and-interfaces/user.js'
 import { createUserWithEmailAndPasswordWrapper } from './create-user.js'
+import { deleteUser } from './delete-user.js'
 
 export default function ({
   verb,
@@ -29,9 +30,11 @@ export default function ({
     if (validateReqData && !validateReqData(body))
       throw new BadRequestError('Invalid Request Data')
 
+    // Create user for testing
     if (verb === 'post' && path === '/v1/user') {
-      const { email, password } = <UserRequestData>body
-      token = await createUserWithEmailAndPasswordWrapper(email, password)
+      token = await createUserWithEmailAndPasswordWrapper(
+        <UserRequestData & { email: string }>body
+      )
     }
 
     // Make request
@@ -49,6 +52,12 @@ export default function ({
     // Validate the response body
     if (response.body && validateResData && !validateResData(response.body))
       throw new BadRequestError('Invalid Database Result')
+
+    // Delete user for testing
+    if (verb === 'delete' && path === '/v1/user') {
+      await deleteUser(response.body)
+    }
+
     return response.body
   }
 }

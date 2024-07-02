@@ -17,18 +17,6 @@ const server = process.env.SERVER!
 export default function ({ userInfo }: { userInfo: UserRequestData }) {
   describe('Customer account management', () => {
     before(async () => {
-      // Delete all user accounts
-      await knex('users')
-        .del()
-        .where('email', userInfo.email)
-        .orWhere('phone', userInfo.phone)
-    })
-
-    const path = '/v1/users/customers'
-    let uidToDelete: string = ''
-    let token: string
-
-    it('should create a new user', async () => {
       // Create a new user for each tests
       const postUserParams = {
         server,
@@ -44,6 +32,10 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
         user.getIdToken()
       )
     })
+
+    const path = '/v1/users/customers'
+    let uidToDelete: string = ''
+    let token: string
 
     it('it should create a customer user for the user', () =>
       testPostCustomer({ server, token, path }))

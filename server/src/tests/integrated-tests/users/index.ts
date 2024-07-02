@@ -31,14 +31,6 @@ export default function ({
   let uidToDelete: string = ''
   let token: string = ''
   describe('User account management', () => {
-    before(async () => {
-      // Delete all user accounts
-      await knex('users')
-        .del()
-        .where('email', userInfo.email)
-        .orWhere('phone', userInfo.phone)
-    })
-
     it('should create a new user', async () => {
       // Create a new user for each tests
       const postUserParams = {

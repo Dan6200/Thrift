@@ -58,7 +58,6 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
         path: '/v1/users',
       }))
 
-    /*
     it("it should delete the user's customer account", () =>
       testDeleteCustomer({ server, token, path }))
 
@@ -66,8 +65,7 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
       testHasNoCustomerAccount({
         server,
         token,
-        path: '/v1/users'
+        path: '/v1/users',
       }))
-			*/
   })
 }

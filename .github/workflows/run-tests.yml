@@ -75,7 +75,6 @@ jobs:
           sleep 5
         env:
           CI: true
-          ACTIONS_RUNNER_DEBUG: true
           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
           CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
@@ -98,5 +97,3 @@ jobs:
       - name: View results
         if: failure()
         run: cat results.log
-        env:
-          ACTIONS_RUNNER_DEBUG: true

@@ -4,11 +4,15 @@ import { knex } from '../../../../db/index.js'
 import {
   testHasCustomerAccount,
   testHasNoCustomerAccount,
+  testPostUser,
 } from '../../users/utils/index.js'
+import { auth } from '../../../../auth/firebase/index.js'
+import { auth as _auth } from '../../../../auth/firebase/testing.js'
+import { isValidPostUserParams } from '../index.js'
+import { signInWithCustomToken } from 'firebase/auth'
 
 // Set server url
 const server = process.env.SERVER!
-let token: string
 
 export default function ({ userInfo }: { userInfo: UserRequestData }) {
   describe('Customer account management', () => {
@@ -21,6 +25,25 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
     })
 
     const path = '/v1/users/customers'
+    let uidToDelete: string = ''
+    let token: string
+
+    it('should create a new user', async () => {
+      // Create a new user for each tests
+      const postUserParams = {
+        server,
+        path,
+        body: userInfo,
+      }
+      if (!isValidPostUserParams(postUserParams))
+        throw new Error('Invalid parameter object')
+      const response = await testPostUser(postUserParams)
+      uidToDelete = response.uid
+      const customToken = await auth.createCustomToken(response.uid)
+      token = await signInWithCustomToken(_auth, customToken).then(({ user }) =>
+        user.getIdToken()
+      )
+    })
 
     it('it should create a customer user for the user', () =>
       testPostCustomer({ server, token, path }))

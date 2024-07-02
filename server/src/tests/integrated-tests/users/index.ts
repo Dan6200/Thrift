@@ -88,7 +88,9 @@ export default function ({
   })
 }
 
-const isValidPostUserParams = (obj: unknown): obj is CreateRequestParams =>
+export const isValidPostUserParams = (
+  obj: unknown
+): obj is CreateRequestParams =>
   typeof obj === 'object' &&
   obj !== null &&
   'body' in obj &&

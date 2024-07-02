@@ -3,7 +3,7 @@ import {
   UserRequestSchema,
   UserResponseSchema,
   UserUpdateRequestSchema,
-} from '../app-schema/users.js'
+} from '../../app-schema/users.js'
 
 interface UserData {
   first_name: string

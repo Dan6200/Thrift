@@ -1,20 +1,16 @@
-import {
-  postCustomer,
-  testDeleteCustomer,
-  testGetNonExistentCustomer,
-} from './customer/utils/index.js'
-import { UserData } from '../../../../types-and-interfaces/user.js'
+import { testPostCustomer, testDeleteCustomer } from './utils/index.js'
+import { UserRequestData } from '../../../../types-and-interfaces/users/index.js'
 import { knex } from '../../../../db/index.js'
 import {
-  testHasCustomerUser,
-  testHasNoCustomerUser,
-} from '../../helper-functions/user/index.js'
+  testHasCustomerAccount,
+  testHasNoCustomerAccount,
+} from '../../users/utils/index.js'
 
 // Set server url
 const server = process.env.SERVER!
 let token: string
 
-export default function ({ userInfo }: { userInfo: UserData }) {
+export default function ({ userInfo }: { userInfo: UserRequestData }) {
   describe('Customer account management', () => {
     before(async () => {
       // Delete all user accounts
@@ -27,26 +23,26 @@ export default function ({ userInfo }: { userInfo: UserData }) {
     const path = '/v1/user/customer'
 
     it('it should create a customer user for the user', () =>
-      testCreateCustomer(server, token, path))
+      testPostCustomer({ server, token, path }))
 
-    it('it should show that the customer user has been created in the user users is_customer field', async () =>
-      testHasCustomerUser(
+    it('it should show that the customer account has been created with is_customer field', async () =>
+      testHasCustomerAccount({
         server,
         token,
-        path.slice(0, path.lastIndexOf('customer'))
+        path.slice(0, path.lastIndexOf('customer'))}
       ))
 
     it("it should delete the user's customer user", () =>
-      testDeleteCustomer(server, token, path))
+      testDeleteCustomer({server, token, path}))
 
     it("it should fail to get the user's customer user", () =>
-      testGetNonExistentCustomer(server, token, path))
+      testGetNonExistentCustomer({server, token, path}))
 
     it('it should show that the customer user does not exist in the user users is_customer field', async () =>
-      testHasNoCustomerUser(
+      testHasNoCustomerAccount({
         server,
         token,
-        path.slice(0, path.lastIndexOf('customer'))
+        path.slice(0, path.lastIndexOf('customer'))}
       ))
   })
 }

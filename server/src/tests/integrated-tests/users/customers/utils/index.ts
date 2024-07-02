@@ -2,24 +2,21 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
 import { TestCreateRequest } from '../../../../../types-and-interfaces/test-routes.js'
+import { isValidCustomerId } from '../../../../../types-and-interfaces/users/customers.js'
 import testRoute from '../../../test-route/index.js'
 
 chai.use(chaiHttp).should()
 
-const routeParams = {
-  path: '/v1/users/customer',
-}
-
-const testPostCustomer = testRoute({
-  ...routeParams,
+const testPostCustomer = (<TestCreateRequest>testRoute)({
   verb: 'post',
   statusCode: StatusCodes.CREATED,
+  validateResData: isValidCustomerId,
 })
 
-const testDeleteCustomer = testRoute({
-  ...routeParams,
+const testDeleteCustomer = (<TestCreateRequest>testRoute)({
   verb: 'delete',
   statusCode: StatusCodes.NO_CONTENT,
+  validateResData: isValidCustomerId,
 })
 
 export { testPostCustomer, testDeleteCustomer }

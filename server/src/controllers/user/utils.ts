@@ -1,7 +1,7 @@
 export const getUserQueryString = `
 SELECT first_name, last_name, email, phone, country, dob,
 			 CASE WHEN customer_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_customer,
-			 CASE WHEN v.vendor_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_vendor
+			 CASE WHEN vendor_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_vendor
 FROM users
 LEFT JOIN customers
 ON uid = customer_id

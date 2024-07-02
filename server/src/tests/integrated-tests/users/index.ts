@@ -70,7 +70,6 @@ export default function ({
       // Delete all users from firebase auth
       await auth
         .deleteUser(uidToDelete)
-        .then(() => console.log(`user with uid: ${uidToDelete} deleted`))
         .catch((error) =>
           console.error(
             `failed to delete user with uid ${uidToDelete}: ${error}`

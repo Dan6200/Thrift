@@ -48,7 +48,6 @@ export default function ({ user }: { user: UserRequestData }) {
       const response = await testPostUser(postUserParams)
       uidToDelete = response.uid
       token = await auth.createCustomToken(response.uid)
-      console.log('token is string', typeof token)
     })
 
     it("it should get the user's account", () =>

@@ -98,3 +98,5 @@ jobs:
       - name: View results
         if: failure()
         run: cat results.log
+        env:
+          ACTIONS_RUNNER_DEBUG: true

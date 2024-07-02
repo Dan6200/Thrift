@@ -1,4 +1,4 @@
-import { UserRequestData } from '../../../../../../types-and-interfaces/user.js'
+import { UserRequestData } from '../../../../../../types-and-interfaces/users/index.js'
 import {
   listOfShippingInfo,
   listOfUpdatedShippingInfo,

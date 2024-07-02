@@ -10,7 +10,7 @@ import {
   isValidUserRequestData,
   isValidUserResponseData,
   isValidUserUpdateRequestData,
-} from '../../../../types-and-interfaces/user.js'
+} from '../../../../types-and-interfaces/users/index.js'
 import testCreateRequest from '../../test-route/index.js'
 
 chai.use(chaiHttp).should()

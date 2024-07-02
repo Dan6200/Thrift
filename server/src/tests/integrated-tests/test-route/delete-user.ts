@@ -1,5 +1,5 @@
-import { auth } from '../../../../auth/firebase/index.js'
-import BadRequestError from '../../../../errors/bad-request.js'
+import { auth } from '../../../auth/firebase/index.js'
+import BadRequestError from '../../../errors/bad-request.js'
 
 export const deleteUser = async ({ uid }: { uid: string }) => {
   if (!uid)

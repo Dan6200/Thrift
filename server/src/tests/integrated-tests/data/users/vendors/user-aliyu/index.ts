@@ -1,5 +1,6 @@
 // cspell:disable
-import { UserRequestData } from '../../../../../../types-and-interfaces/user.js'
+
+import { UserRequestData } from '../../../../../../types-and-interfaces/users/index.js'
 
 export { stores, updatedStores } from './stores/index.js'
 export {

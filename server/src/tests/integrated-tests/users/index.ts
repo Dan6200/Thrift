@@ -73,6 +73,12 @@ export default function ({
         body: updatedUserInfo,
       }))
 
+    it("it should delete the user's account", () =>
+      testDeleteUser({ server, token, path }))
+
+    it("it should fail to get user's account", () =>
+      testGetNonExistentUser({ server, token, path }))
+
     after(async () => {
       // Delete all users from firebase auth
       await auth
@@ -85,13 +91,6 @@ export default function ({
         )
     })
 
-    //
-    // it("it should delete the user's account", () =>
-    //   testDeleteAccount(server, token, path))
-    //
-    // it("it should fail to get user's account", () =>
-    //   testGetNonExistentAccount(server, token, path))
-    //
     // it('it should logout user', () => logout(server, token))
     //
     // it('it should fail to login the deleted user', () =>

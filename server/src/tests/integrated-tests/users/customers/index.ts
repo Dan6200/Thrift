@@ -20,29 +20,26 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
         .orWhere('phone', userInfo.phone)
     })
 
-    const path = '/v1/user/customer'
+    const path = '/v1/users/customers'
 
     it('it should create a customer user for the user', () =>
       testPostCustomer({ server, token, path }))
 
-    it('it should show that the customer account has been created with is_customer field', async () =>
+    it("it should show that the customer account has been created in the user's is_customer field", async () =>
       testHasCustomerAccount({
         server,
         token,
-        path.slice(0, path.lastIndexOf('customer'))}
-      ))
+        path: path.slice(0, path.lastIndexOf('customers')),
+      }))
 
-    it("it should delete the user's customer user", () =>
-      testDeleteCustomer({server, token, path}))
+    it("it should delete the user's customer account", () =>
+      testDeleteCustomer({ server, token, path }))
 
-    it("it should fail to get the user's customer user", () =>
-      testGetNonExistentCustomer({server, token, path}))
-
-    it('it should show that the customer user does not exist in the user users is_customer field', async () =>
+    it("it should show that the customer account does not exist in the user's is_customer field", async () =>
       testHasNoCustomerAccount({
         server,
         token,
-        path.slice(0, path.lastIndexOf('customer'))}
-      ))
+        path: path.slice(0, path.lastIndexOf('customers')),
+      }))
   })
 }

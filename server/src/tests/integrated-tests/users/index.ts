@@ -9,11 +9,11 @@ import {
   testGetNonExistentUser,
 } from './utils/index.js'
 import { knex } from '../../../db/index.js'
-import { UserRequestData } from '../../../types-and-interfaces/user.js'
 import { CreateRequestParams } from '../../../types-and-interfaces/test-routes.js'
 import { auth as _auth } from '../../../auth/firebase/testing.js'
 import { auth } from '../../../auth/firebase/index.js'
 import { signInWithCustomToken } from 'firebase/auth'
+import { UserRequestData } from '../../../types-and-interfaces/users/index.js'
 
 chai.use(chaiHttp).should()
 

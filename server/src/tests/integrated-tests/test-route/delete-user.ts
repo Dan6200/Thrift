@@ -6,7 +6,6 @@ export const deleteUser = async ({ uid }: { uid: string }) => {
     throw new BadRequestError('Must provide UID for the user to be deleted')
   await auth
     .deleteUser(uid)
-    .then(() => console.log(`user with uid: ${uid} deleted`))
     .catch((error) =>
       console.error(`failed to delete user with uid ${uid}: ${error}`)
     )

@@ -16,7 +16,9 @@ import {
 import { knex } from '../../../db/index.js'
 import { UserRequestData } from '../../../types-and-interfaces/user.js'
 import { CreateRequestParams } from '../../../types-and-interfaces/test-routes.js'
+import { auth as _auth } from '../../../auth/firebase/testing.js'
 import { auth } from '../../../auth/firebase/index.js'
+import { signInWithCustomToken } from 'firebase/auth'
 
 chai.use(chaiHttp).should()
 
@@ -47,7 +49,10 @@ export default function ({ user }: { user: UserRequestData }) {
         throw new Error('Invalid parameter object')
       const response = await testPostUser(postUserParams)
       uidToDelete = response.uid
-      token = await auth.createCustomToken(response.uid)
+      const customToken = await auth.createCustomToken(response.uid)
+      token = await signInWithCustomToken(_auth, customToken).then(({ user }) =>
+        user.getIdToken()
+      )
     })
 
     it("it should get the user's account", () =>

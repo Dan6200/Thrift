@@ -27,7 +27,7 @@ export default function ({
   userInfo: UserRequestData
   updatedUserInfo: UserRequestData
 }) {
-  const path = '/v1/user'
+  const path = '/v1/users'
   let uidToDelete: string = ''
   let token: string = ''
   describe('User account management', () => {

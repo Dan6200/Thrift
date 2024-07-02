@@ -19,6 +19,6 @@ router
 // users vendor account route
 // router.use('/vendor', vendorRouter)
 // users customer account route
-router.use('/customer', customerRouter)
+router.use('/customers', customerRouter)
 
 export default router

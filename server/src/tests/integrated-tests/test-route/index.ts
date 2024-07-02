@@ -31,7 +31,7 @@ export default function ({
       throw new BadRequestError('Invalid Request Data')
 
     // Create user for testing
-    if (verb === 'post' && path === '/v1/user') {
+    if (verb === 'post' && path === '/v1/users') {
       token = await createUserWithEmailAndPasswordWrapper(
         <UserRequestData & { email: string }>body
       )
@@ -54,7 +54,7 @@ export default function ({
       throw new BadRequestError('Invalid Database Result')
 
     // Delete user for testing
-    if (verb === 'delete' && path === '/v1/user') {
+    if (verb === 'delete' && path === '/v1/users') {
       await deleteUser(response.body)
     }
 

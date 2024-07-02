@@ -47,7 +47,7 @@ export default function ({
     response.should.have.status(statusCode)
 
     // Validate the response body
-    if (response.body && !validateResData(response.body))
+    if (response.body && validateResData && !validateResData(response.body))
       throw new BadRequestError('Invalid Database Result')
     console.log(response.body)
     return response.body

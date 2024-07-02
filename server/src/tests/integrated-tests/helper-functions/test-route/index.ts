@@ -49,7 +49,6 @@ export default function ({
     // Validate the response body
     if (response.body && validateResData && !validateResData(response.body))
       throw new BadRequestError('Invalid Database Result')
-    console.log('response body', response.body)
     return response.body
   }
 }

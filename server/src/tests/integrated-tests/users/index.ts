@@ -63,8 +63,10 @@ export default function ({ user }: { user: UserRequestData }) {
       await auth
         .deleteUser(uidToDelete)
         .then(() => console.log(`user with uid: ${uidToDelete} deleted`))
-        .catch(() =>
-          console.error(`failed to delete user with uid ${uidToDelete}`)
+        .catch((error) =>
+          console.error(
+            `failed to delete user with uid ${uidToDelete}: ${error}`
+          )
         )
     })
 

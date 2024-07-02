@@ -24,11 +24,11 @@ export const pg = {
   async end(): Promise<void> {
     await pool.end()
   },
-  query: function (text?: string, values?: Array<any>, name?: string) {
-    pgQuery.call(this, pool, text, values, name)
+  query: function async(text?: string, values?: Array<any>, name?: string) {
+    return pgQuery.call(this, pool, text, values, name)
   },
-  getClient: function () {
-    pgGetClient.call(this, pool)
+  getClient: function async() {
+    return pgGetClient.call(this, pool)
   },
 }
 

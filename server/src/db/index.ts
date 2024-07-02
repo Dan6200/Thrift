@@ -24,8 +24,8 @@ export const pg = {
   async end(): Promise<void> {
     await pool.end()
   },
-  query: pgQuery.bind(this, pool),
-  getClient: pgGetClient.bind(this, pool),
+  query: pgQuery.call(this, pool),
+  getClient: pgGetClient.call(this, pool),
 }
 
 export const knex = Knex(knexOptions)

@@ -9,7 +9,7 @@ interface ShippingInfoId {
   customer_id: string
 }
 
-export const isValidCustomerId = (data: unknown): data is ShippingInfoId =>
+export const isValidShippingInfoId = (data: unknown): data is ShippingInfoId =>
   !ShippingInfoSchemaID.validate(data).error
 
 export default interface ShippingInfo {

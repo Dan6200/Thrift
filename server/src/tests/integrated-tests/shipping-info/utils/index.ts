@@ -1,68 +1,63 @@
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
-import { ShippingInfoSchemaDB } from '../../../../app-schema/shipping.js'
-import { TestCreateRequest } from '../../../../types-and-interfaces/test-routes.js'
+import { ShippingInfoResponseSchema } from '../../../../app-schema/shipping.js'
+import {
+  isValidShippingInfoId,
+  isValidShippingInfoRequest,
+  isValidShippingInfoResponse,
+  isValidShippingInfoResponseList,
+} from '../../../../types-and-interfaces/shipping-info.js'
+import {
+  TestCreateRequest,
+  TestCreateRequestWithBody,
+} from '../../../../types-and-interfaces/test-routes.js'
 import testRoute from '../../test-route/index.js'
 
 const { CREATED, OK, NOT_FOUND } = StatusCodes
 
-let checkId = async (data: any) => {
-  data.should.have.property('shipping_info_id')
-  data.shipping_info_id.should.be.a('number')
-}
-
-let validateResultList = async (data: any) => {
-  let shippingInfoList = data
-  shippingInfoList.should.be.an('array')
-  for (let shippingInfo of shippingInfoList) validateResult(shippingInfo)
-}
-
-let validateResult = async (data: any) => {
-  let shippingInfo = data
-  shippingInfo.should.be.an('object')
-  Joi.assert(shippingInfo, ShippingInfoSchemaDB)
-}
-
 const routeParams = {
-  path: `/v1/user/customer/shipping-info`,
+  path: `/v1/users/customers/shipping-info`,
   statusCode: OK,
 }
 
-const testCreateShipping = (testRoute as TestCreateRequest)({
+const testCreateShipping = (testRoute as TestCreateRequestWithBody)({
   ...routeParams,
   verb: 'post',
   statusCode: CREATED,
-  checks: checkId,
+  validateReqData: isValidShippingInfoRequest,
+  validateResData: isValidShippingInfoId,
 })
 
 const testGetAllShipping = (testRoute as TestCreateRequest)({
   ...routeParams,
   verb: 'get',
-  checks: validateResultList,
+  validateResData: isValidShippingInfoResponseList,
 })
 
 const testGetShipping = (testRoute as TestCreateRequest)({
   ...routeParams,
   verb: 'get',
-  checks: validateResult,
+  validateResData: isValidShippingInfoResponse,
 })
 
-const testUpdateShipping = (testRoute as TestCreateRequest)({
+const testUpdateShipping = (testRoute as TestCreateRequestWithBody)({
   ...routeParams,
   verb: 'put',
-  checks: checkId,
+  validateReqData: isValidShippingInfoRequest,
+  validateResData: isValidShippingInfoId,
 })
 
 const testDeleteShipping = (testRoute as TestCreateRequest)({
   ...routeParams,
   verb: 'delete',
-  checks: checkId,
+  validateResData: isValidShippingInfoId,
 })
 
 const testGetNonExistentShipping = (testRoute as TestCreateRequest)({
   ...routeParams,
   verb: 'get',
   statusCode: NOT_FOUND,
+  validateResData: isValidShippingInfoResponse,
 })
 
 export {

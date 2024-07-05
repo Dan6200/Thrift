@@ -20,6 +20,18 @@ export type TestCreateRequestWithQParams = (
   }
 ) => TestCreateRequestInner
 
+export type TestCreateRequestWithQueryAndBody = (
+  testCreateRequestParams: TestCreateRequestParams & {
+    validateReqData: (data: unknown) => boolean
+  }
+) => TestCreateRequestInnerWQueryNBody
+
+export type TestCreateRequestWithQuery = (
+  testCreateRequestParams: TestCreateRequestParams & {
+    validateReqData: (data: unknown) => boolean
+  }
+) => TestCreateRequestInnerWQuery
+
 export type TestCreateRequestWithBody = (
   testCreateRequestParams: TestCreateRequestParams & {
     validateReqData: (data: unknown) => boolean
@@ -28,6 +40,18 @@ export type TestCreateRequestWithBody = (
 
 type TestCreateRequestInnerWBody = <T>(
   createRequestParams: CreateRequestParams & { body: T }
+) => Promise<any>
+
+type TestCreateRequestInnerWQuery = <T>(
+  createRequestParams: CreateRequestParams & {
+    query: { [k: string]: any } | null
+  }
+) => Promise<any>
+
+type TestCreateRequestInnerWQueryNBody = <T>(
+  createRequestParams: CreateRequestParams & { body: T } & {
+    query: { [k: string]: any } | null
+  }
 ) => Promise<any>
 
 type TestCreateRequestInner = (

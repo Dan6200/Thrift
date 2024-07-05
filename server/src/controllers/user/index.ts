@@ -28,7 +28,7 @@ const { OK, CREATED } = StatusCodes
 const createQuery = async <T>({
   uid,
   body,
-}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
+}: QueryParams<T>): Promise<typeof uid> =>
   knex('users')
     .insert({ uid, ...body })
     .returning('uid')
@@ -56,9 +56,7 @@ const updateQuery = async <T>({
 /**
  * @description Delete the user account from the database
  **/
-const deleteQuery = async <T>({
-  uid,
-}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
+const deleteQuery = async <T>({ uid }: QueryParams<T>): Promise<typeof uid> =>
   knex('users').where('uid', uid).del().returning('uid')
 
 const processPostRoute = <ProcessRoute>createRouteProcessor

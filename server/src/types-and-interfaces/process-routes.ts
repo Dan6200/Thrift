@@ -20,7 +20,7 @@ export type QueryParams<T> = {
 
 export type QueryDB = <T>(
   queryParams: QueryParams<T>
-) => Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
+) => Promise<string | QueryResult<QueryResultRow | QueryResultRow[]>>
 
 export type ProcessRouteWithoutBody = <T>({
   Query,
@@ -29,7 +29,7 @@ export type ProcessRouteWithoutBody = <T>({
 }: {
   Query<T>(
     queryParams: QueryParams<T>
-  ): Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
+  ): Promise<any[] | string | QueryResult<QueryResultRow | QueryResultRow[]>>
   status: Status
   validateResult: (
     result: QueryResult<QueryResultRow | QueryResultRow[]>
@@ -76,7 +76,7 @@ export type ProcessRoute = <T>({
 }: {
   Query<T>(
     queryParams: QueryParams<T>
-  ): Promise<QueryResult<QueryResultRow | QueryResultRow[]>>
+  ): Promise<string | QueryResult<QueryResultRow | QueryResultRow[]>>
   status: Status
   validateBody: (data: unknown) => boolean
   validateResult: (

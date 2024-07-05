@@ -5,7 +5,6 @@ import {
 } from '../../../types-and-interfaces/process-routes.js'
 import createRouteProcessor from '../../routes/process.js'
 import { knex } from '../../../db/index.js'
-import { QueryResult, QueryResultRow } from 'pg'
 import { isSuccessful } from '../../utils/query-validation.js'
 import { VendorSchemaID } from '../../../app-schema/vendors.js'
 
@@ -16,7 +15,7 @@ const { CREATED, OK } = StatusCodes
  **/
 const createQuery = async <T>({
   uid: vendorId,
-}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
+}: QueryParams<T>): Promise<typeof vendorId> =>
   knex('vendors').insert({ vendor_id: vendorId }).returning('vendor_id')
 
 /**
@@ -24,7 +23,7 @@ const createQuery = async <T>({
  **/
 const deleteQuery = async <T>({
   uid: vendorId,
-}: QueryParams<T>): Promise<QueryResult<QueryResultRow>> =>
+}: QueryParams<T>): Promise<typeof vendorId> =>
   knex('vendors').where('vendor_id', vendorId).del().returning('vendor_id')
 
 const processPostRoute = <ProcessRouteWithoutBody>createRouteProcessor

@@ -2,8 +2,8 @@
 import testUserAccount from './users/index.js'
 import testCustomerAccount from './users/customers/index.js'
 import testVendorAccount from './users/vendors/index.js'
-// import testStores from './stores/index.js'
-// import testShipping from './shipping-info/index.js'
+import testStores from './stores/index.js'
+import testShipping from './shipping-info/index.js'
 // import testProducts from './products/index.js'
 // import testPublicProducts from './public/products/index.js'
 // import testMedia from './media/index.js'
@@ -50,12 +50,13 @@ export default function (): void {
 
   /** Shipping Info related tests **/
 
-  // for (let customer of customers) {
-  //   const name = customer.accountInfo.first_name
-  //   describe(`Testing the Shipping Information of ${name}'s account`, async () =>
-  //     testShipping(customer))
-  // }
-  //
+  for (let customer of customers) {
+    const { userInfo } = customer
+    const { first_name: name } = userInfo
+    describe(`Testing the Shipping Information of ${name}'s account`, async () =>
+      testShipping(customer))
+  }
+
   /** Vendor Account actions **/
 
   for (let vendor of vendors) {

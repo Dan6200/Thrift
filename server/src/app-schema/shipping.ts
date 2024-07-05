@@ -1,7 +1,7 @@
 // cspell:ignore alphanum
 import joi from 'joi'
 
-const ShippingInfoSchemaReq = joi
+export const ShippingInfoRequestSchema = joi
   .object({
     recipient_first_name: joi.string().alphanum().min(3).max(30).required(),
     recipient_last_name: joi.string().alphanum().min(3).max(30).required(),
@@ -20,13 +20,13 @@ const ShippingInfoSchemaReq = joi
   })
   .required()
 
-const ShippingInfoSchemaID = joi
+export const ShippingInfoSchemaID = joi
   .object({
     shipping_info_id: joi.number().required(),
   })
   .required()
 
-const ShippingInfoSchemaDB = joi
+export const ShippingInfoResponseSchema = joi
   .object({
     shipping_info_id: joi.number().required(),
     customer_id: joi.number().required(),
@@ -47,7 +47,7 @@ const ShippingInfoSchemaDB = joi
   })
   .required()
 
-const ShippingInfoSchemaDBList = joi.array().items(
+export const ShippingInfoResponseListSchema = joi.array().items(
   joi
     .object({
       shipping_info_id: joi.number().required(),
@@ -69,10 +69,3 @@ const ShippingInfoSchemaDBList = joi.array().items(
     })
     .required()
 )
-
-export {
-  ShippingInfoSchemaReq,
-  ShippingInfoSchemaID,
-  ShippingInfoSchemaDB,
-  ShippingInfoSchemaDBList,
-}

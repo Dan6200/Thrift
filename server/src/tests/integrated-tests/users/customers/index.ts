@@ -1,6 +1,5 @@
 import { testPostCustomer, testDeleteCustomer } from './utils/index.js'
 import { UserRequestData } from '../../../../types-and-interfaces/users/index.js'
-import { knex } from '../../../../db/index.js'
 import {
   testHasCustomerAccount,
   testHasNoCustomerAccount,

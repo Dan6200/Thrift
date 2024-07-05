@@ -1,7 +1,7 @@
 //cspell:disable
 import testUserAccount from './users/index.js'
 import testCustomerAccount from './users/customers/index.js'
-// import testVendorAccount from './accounts/vendors/index.js'
+import testVendorAccount from './users/vendors/index.js'
 // import testStores from './stores/index.js'
 // import testShipping from './shipping-info/index.js'
 // import testProducts from './products/index.js'
@@ -14,7 +14,7 @@ import * as Aliyu from './data/users/vendors/user-aliyu/index.js'
 
 const users = [Ebuka, Aliyu, Aisha, Mustapha]
 const customers = [Ebuka, Aisha, Mustapha]
-// const vendors = [Aliyu]
+const vendors = [Aliyu]
 
 export default function (): void {
   /** Public Routes **/
@@ -58,12 +58,13 @@ export default function (): void {
   //
   /** Vendor Account actions **/
 
-  // for (let vendor of vendors) {
-  //   const name = vendor.accountInfo.first_name
-  //   describe(`Testing Vendor Account for ${name}`, () =>
-  //     testVendorAccount(vendor))
-  // }
-  //
+  for (let vendor of vendors) {
+    const { userInfo } = vendor
+    const { first_name: name } = userInfo
+    describe(`Testing Vendor Account for ${name}`, () =>
+      testVendorAccount(vendor))
+  }
+
   /** Stores related tests **/
 
   // for (let vendor of vendors) {

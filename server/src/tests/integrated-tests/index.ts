@@ -2,7 +2,7 @@
 import testUserAccount from './users/index.js'
 import testCustomerAccount from './users/customers/index.js'
 import testVendorAccount from './users/vendors/index.js'
-import testStores from './stores/index.js'
+// import testStores from './stores/index.js'
 import testShipping from './shipping-info/index.js'
 // import testProducts from './products/index.js'
 // import testPublicProducts from './public/products/index.js'

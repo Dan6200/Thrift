@@ -13,7 +13,7 @@ export const isValidShippingInfoId = (data: unknown): data is ShippingInfoId =>
   !ShippingInfoSchemaID.validate(data).error
 
 export default interface ShippingInfo {
-  shipping_info_id: string
+  shipping_info_id?: string
   recipient_first_name: string
   recipient_last_name: string
   address: string

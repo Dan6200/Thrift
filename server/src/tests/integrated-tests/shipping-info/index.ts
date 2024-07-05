@@ -47,6 +47,7 @@ export default function ({
     token = await signInWithCustomToken(_auth, customToken).then(({ user }) =>
       user.getIdToken()
     )
+    await testPostCustomer({ server, token, path: '/v1/users/customers' })
   })
 
   after(async function () {
@@ -77,7 +78,11 @@ export default function ({
 
   it('it should retrieve all shipping information through a loop', async () => {
     for (const shippingId of shippingIds) {
-      await testGetShipping(server, token, shippingPath + '/' + shippingId)
+      await testGetShipping({
+        server,
+        token,
+        path: shippingPath + '/' + shippingId,
+      })
     }
   })
 
@@ -85,29 +90,32 @@ export default function ({
     assert(shippingIds.length === listOfUpdatedShippingInfo.length)
     let idx: number, shippingId: number
     for ([idx, shippingId] of shippingIds.entries()) {
-      await testUpdateShipping(
+      await testUpdateShipping({
         server,
         token,
-        shippingPath + '/' + shippingId,
-        null,
-        listOfUpdatedShippingInfo[idx]
-      )
+        path: shippingPath + '/' + shippingId,
+        body: listOfUpdatedShippingInfo[idx],
+      })
     }
   })
 
   it(`it should delete all shipping addresses for the customer`, async () => {
     for (const shippingId of shippingIds) {
-      await testDeleteShipping(server, token, shippingPath + '/' + shippingId)
+      await testDeleteShipping({
+        server,
+        token,
+        path: shippingPath + '/' + shippingId,
+      })
     }
   })
 
   it(`it should fail to retrieve any of the deleted shipping information`, async () => {
     for (const shippingId of shippingIds) {
-      await testGetNonExistentShipping(
+      await testGetNonExistentShipping({
         server,
         token,
-        `${shippingPath}/${shippingId}`
-      )
+        path: `${shippingPath}/${shippingId}`,
+      })
     }
   })
 }

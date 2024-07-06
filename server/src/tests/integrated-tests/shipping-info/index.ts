@@ -89,6 +89,8 @@ export default function ({
   })
 
   it(`it should update all shipping addresses for the customer`, async () => {
+    console.log('shipping ids', shippingIds)
+    console.log('updated shipping info', listOfUpdatedShippingInfo)
     assert(shippingIds.length === listOfUpdatedShippingInfo.length)
     let idx: number, shippingId: number
     for ([idx, shippingId] of shippingIds.entries()) {

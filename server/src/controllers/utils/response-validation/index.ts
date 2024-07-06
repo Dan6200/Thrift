@@ -41,6 +41,7 @@ export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
         const { error } = schema.validate(result[0])
         if (error) throw new BadRequestError(error.message)
       } else return false
+      return true
     }
   }
 }

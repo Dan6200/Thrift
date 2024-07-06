@@ -18,7 +18,6 @@ export function validateResData<T>(
 ): (result: QueryResult<QueryResultRow | QueryResultRow[]>) => boolean
 export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
   return (result: QueryResult<QueryResultRow | QueryResultRow[]> | any[]) => {
-    console.log('schema type: ', typeof schema)
     if (isTypeQueryResultRow(result)) {
       if (result.rows?.length === 0) {
         if (result.command === 'SELECT')
@@ -39,6 +38,9 @@ export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
         const { error } = schema.validate(result)
         if (error) throw new BadRequestError(error.message)
       } else if (result.length === 1) {
+        const { shipping_info_id } = result[0]
+        if (shipping_info_id)
+          console.log('shipping info id type: ', typeof shipping_info_id)
         const { error } = schema.validate(result[0])
         if (error) throw new BadRequestError(error.message)
       } else return false

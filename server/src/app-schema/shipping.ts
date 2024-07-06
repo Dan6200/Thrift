@@ -29,7 +29,7 @@ export const ShippingInfoSchemaID = joi
 export const ShippingInfoResponseSchema = joi
   .object({
     shipping_info_id: joi.number().required(),
-    customer_id: joi.number().required(),
+    customer_id: joi.string().required(),
     recipient_first_name: joi.string().alphanum().min(3).max(30).required(),
     recipient_last_name: joi.string().alphanum().min(3).max(30).required(),
     address: joi.string().required(),
@@ -51,7 +51,7 @@ export const ShippingInfoResponseListSchema = joi.array().items(
   joi
     .object({
       shipping_info_id: joi.number().required(),
-      customer_id: joi.number().required(),
+      customer_id: joi.string().required(),
       recipient_first_name: joi.string().alphanum().min(3).max(30).required(),
       recipient_last_name: joi.string().alphanum().min(3).max(30).required(),
       address: joi.string().required(),

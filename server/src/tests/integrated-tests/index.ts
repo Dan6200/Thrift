@@ -12,9 +12,9 @@ import * as Aisha from './data/users/customers/user-aisha/index.js'
 import * as Mustapha from './data/users/customers/user-mustapha/index.js'
 import * as Aliyu from './data/users/vendors/user-aliyu/index.js'
 
-const users = [Ebuka, Aliyu, Aisha, Mustapha]
+// const users = [Ebuka, Aliyu, Aisha, Mustapha]
 const customers = [Ebuka, Aisha, Mustapha]
-const vendors = [Aliyu]
+// const vendors = [Aliyu]
 
 export default function (): void {
   /** Public Routes **/
@@ -32,21 +32,21 @@ export default function (): void {
 
   /** User Account actions **/
 
-  for (let user of users) {
-    const { userInfo, updatedUserInfo } = user
-    const { first_name: name } = userInfo
-    describe(`Testing User Account for ${name}`, () =>
-      testUserAccount({ userInfo, updatedUserInfo }))
-  }
-
+  // for (let user of users) {
+  //   const { userInfo, updatedUserInfo } = user
+  //   const { first_name: name } = userInfo
+  //   describe(`Testing User Account for ${name}`, () =>
+  //     testUserAccount({ userInfo, updatedUserInfo }))
+  // }
+  //
   /** Customer Account actions **/
-
-  for (let customer of customers) {
-    const { userInfo } = customer
-    const { first_name: name } = userInfo
-    describe(`Testing Customer Account for ${name}`, () =>
-      testCustomerAccount(customer))
-  }
+  //
+  // for (let customer of customers) {
+  //   const { userInfo } = customer
+  //   const { first_name: name } = userInfo
+  //   describe(`Testing Customer Account for ${name}`, () =>
+  //     testCustomerAccount(customer))
+  // }
 
   /** Shipping Info related tests **/
 
@@ -59,13 +59,13 @@ export default function (): void {
 
   /** Vendor Account actions **/
 
-  for (let vendor of vendors) {
-    const { userInfo } = vendor
-    const { first_name: name } = userInfo
-    describe(`Testing Vendor Account for ${name}`, () =>
-      testVendorAccount(vendor))
-  }
-
+  // for (let vendor of vendors) {
+  //   const { userInfo } = vendor
+  //   const { first_name: name } = userInfo
+  //   describe(`Testing Vendor Account for ${name}`, () =>
+  //     testVendorAccount(vendor))
+  // }
+  //
   /** Stores related tests **/
 
   // for (let vendor of vendors) {

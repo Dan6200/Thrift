@@ -15,22 +15,30 @@ export function validateResData<T>(
 ): (result: QueryResult<QueryResultRow | QueryResultRow[]>) => boolean
 export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
   return (result: QueryResult<QueryResultRow | QueryResultRow[]> | any[]) => {
+    console.log('schema type: ', typeof schema)
     if (isTypeQueryResultRow(result)) {
       if (result.rows?.length === 0) {
         if (result.command === 'SELECT')
           throw new NotFoundError('Requested resource was not found')
         throw new BadRequestError(`${result.command} Operation unsuccessful`)
       }
-      let error: Error | undefined
       if (result.rowCount > 1) {
-        ;({ error } = schema.validate(result.rows))
-      } else {
-        ;({ error } = schema.validate(result.rows[0]))
-      }
-      if (error) throw new BadRequestError(error.message)
+        const { error } = schema.validate(result.rows)
+        if (error) throw new BadRequestError(error.message)
+      } else if (result.rowCount === 1) {
+        const { error } = schema.validate(result.rows[0])
+        if (error) throw new BadRequestError(error.message)
+      } else return false
       return true
     } else {
       // console.dir(result)
+      if (result.length > 1) {
+        const { error } = schema.validate(result)
+        if (error) throw new BadRequestError(error.message)
+      } else if (result.length === 1) {
+        const { error } = schema.validate(result[0])
+        if (error) throw new BadRequestError(error.message)
+      } else return false
     }
   }
 }

@@ -9,7 +9,7 @@ import { auth } from '../../../../auth/firebase/index.js'
 import { auth as _auth } from '../../../../auth/firebase/testing.js'
 import { isValidPostUserParams } from '../index.js'
 import { signInWithCustomToken } from 'firebase/auth'
-import knex from 'knex'
+import { knex } from '../../../../db/index.js'
 
 // Set server url
 const server = process.env.SERVER!

@@ -18,7 +18,8 @@ import ShippingInfo, {
   isValidShippingInfoRequest,
 } from '../../types-and-interfaces/shipping-info.js'
 import processRoute from '../routes/process.js'
-import { validateReqData, validateResData } from '../utils/query-validation.js'
+import { validateReqData } from '../utils/request-validation.js'
+import { validateResData } from '../utils/response-validation/index.js'
 
 /**
  * @param {QueryParams} qp

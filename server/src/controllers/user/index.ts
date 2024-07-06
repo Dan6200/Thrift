@@ -7,11 +7,9 @@ import {
 import createRouteProcessor from '../routes/process.js'
 import { knex, pg } from '../../db/index.js'
 import { QueryResult, QueryResultRow } from 'pg'
-import {
-  isSuccessful,
-  validateReqData,
-  validateResData,
-} from '../utils/query-validation.js'
+import { isSuccessful } from '../utils/query-validation.js'
+import { validateReqData } from '../utils/request-validation.js'
+import { validateResData } from '../utils/response-validation/index.js'
 import { getUserQueryString } from './utils.js'
 import {
   UIDSchema,

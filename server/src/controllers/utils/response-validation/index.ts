@@ -1,0 +1,36 @@
+import { ArraySchema, ObjectSchema } from 'joi'
+import { QueryResult, QueryResultRow } from 'pg'
+import BadRequestError from '../../../errors/bad-request.js'
+import NotFoundError from '../../../errors/not-found.js'
+import { isTypeQueryResultRow } from '../../../types-and-interfaces/response.js'
+
+/**
+ * @description Validates DB result against schema
+ * */
+export function validateResData<T>(
+  schema: ArraySchema<T>
+): (result: QueryResult<QueryResultRow | QueryResultRow[]>) => boolean
+export function validateResData<T>(
+  schema: ObjectSchema<T>
+): (result: QueryResult<QueryResultRow | QueryResultRow[]>) => boolean
+export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
+  return (result: QueryResult<QueryResultRow | QueryResultRow[]> | any[]) => {
+    if (isTypeQueryResultRow(result)) {
+      if (result.rows?.length === 0) {
+        if (result.command === 'SELECT')
+          throw new NotFoundError('Requested resource was not found')
+        throw new BadRequestError(`${result.command} Operation unsuccessful`)
+      }
+      let error: Error | undefined
+      if (result.rowCount > 1) {
+        ;({ error } = schema.validate(result.rows))
+      } else {
+        ;({ error } = schema.validate(result.rows[0]))
+      }
+      if (error) throw new BadRequestError(error.message)
+      return true
+    } else {
+      console.dir(result)
+    }
+  }
+}

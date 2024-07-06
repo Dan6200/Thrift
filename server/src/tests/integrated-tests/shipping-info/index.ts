@@ -74,7 +74,6 @@ export default function ({
         path: shippingPath,
         body: shippingInfo,
       })
-      console.log('test create shipping result', shipping_info_id)
       shippingIds.push(shipping_info_id)
     }
   })

@@ -33,7 +33,7 @@ export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
       } else return false
       return true
     } else {
-      console.dir(result)
+      console.log('shipping info result', result)
       if (result.length > 1) {
         const { error } = schema.validate(result)
         if (error) throw new BadRequestError(error.message)

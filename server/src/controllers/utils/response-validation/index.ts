@@ -2,7 +2,10 @@ import { ArraySchema, ObjectSchema } from 'joi'
 import { QueryResult, QueryResultRow } from 'pg'
 import BadRequestError from '../../../errors/bad-request.js'
 import NotFoundError from '../../../errors/not-found.js'
-import { isTypeQueryResultRow } from '../../../types-and-interfaces/response.js'
+import {
+  isTypeQueryResultRow,
+  isTypeQueryResultRowList,
+} from '../../../types-and-interfaces/response.js'
 
 /**
  * @description Validates DB result against schema

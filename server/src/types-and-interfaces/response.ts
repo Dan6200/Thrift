@@ -11,7 +11,7 @@ type ResponseData = {
 
 export function isTypeQueryResultRow(
   dbResponse: unknown
-): dbResponse is QueryResult<QueryResultRow> {
+): dbResponse is QueryResult<QueryResultRow | QueryResultRow[]> {
   return (
     dbResponse != undefined &&
     typeof dbResponse === 'object' &&

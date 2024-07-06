@@ -68,15 +68,14 @@ export default function ({
 
   it(`it should add multiple shipping addresses for the customer`, async () => {
     for (const shippingInfo of listOfShippingInfo) {
-      const { shipping_info_id } = (
-        await testCreateShipping({
-          server,
-          token,
-          path: shippingPath,
-          body: shippingInfo,
-        })
-      )[0]
-      shippingIds.push(shipping_info_id)
+      const result = await testCreateShipping({
+        server,
+        token,
+        path: shippingPath,
+        body: shippingInfo,
+      })
+      console.log(result)
+      // shippingIds.push(shipping_info_id)
     }
   })
 

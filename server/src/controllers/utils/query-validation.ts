@@ -10,6 +10,7 @@ import { isTypeQueryResultRow } from '../../types-and-interfaces/response.js'
 export const validateReqData =
   <T>(schema: ObjectSchema<T>) =>
   (data: unknown) => {
+    console.log('debug data', data)
     if (typeof data == 'undefined' || Object.keys(data)?.length === 0)
       throw new BadRequestError('request data cannot be empty')
     const { error } = schema.validate(data)
@@ -28,7 +29,7 @@ export function validateResData<T>(
 ): (result: QueryResult<QueryResultRow | QueryResultRow[]>) => boolean
 export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
   return (result: QueryResult<QueryResultRow | QueryResultRow[]>) => {
-    if (result.rows.length === 0) {
+    if (result.rows?.length === 0) {
       if (result.command === 'SELECT')
         throw new NotFoundError('Requested resource was not found')
       throw new BadRequestError(`${result.command} Operation unsuccessful`)

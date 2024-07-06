@@ -50,7 +50,6 @@ const createQuery = async <T>({
       .where('customer_id', customerId)
       .count('shipping_info_id')
   )[0]
-  console.log('shipping address count', count)
   if (typeof count === 'string') count = parseInt(count)
   if (count > LIMIT)
     throw new BadRequestError(`Cannot have more than ${LIMIT} stores`)

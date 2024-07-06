@@ -30,7 +30,7 @@ export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
       if (error) throw new BadRequestError(error.message)
       return true
     } else {
-      console.dir(result)
+      // console.dir(result)
     }
   }
 }

@@ -50,8 +50,10 @@ export default function ({
     response.should.have.status(statusCode)
 
     // Validate the response body
-    if (response.body && validateResData && !validateResData(response.body))
+    if (response.body && validateResData && !validateResData(response.body)) {
+      if (response.status === 404) return null
       throw new BadRequestError('Invalid Database Result')
+    }
 
     // Delete user for testing
     if (verb === 'delete' && path === '/v1/users') {

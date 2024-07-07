@@ -2,7 +2,7 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { Product } from '../../../types-and-interfaces/products.js'
 import {
-  testCreateProduct,
+  testPostProduct,
   testGetAllProducts,
   testGetAllProductsWithQParams,
   testGetProduct,
@@ -71,14 +71,15 @@ export default function ({
 
   describe('Testing Products In Each Store', async function () {
     it('it should Add a couple products to each store', async () => {
-      let idx = 0
-      for (const productId of productIds)
-        await testUpdateProduct({
+      for (const product of products) {
+        const { product_id } = await testPostProduct({
           server,
           token,
-          path: `${productsRoute}/${productId}`,
-          body: products[idx++],
+          path: `${productsRoute}`,
+          body: product,
         })
+        productIds.push(product_id)
+      }
     })
 
     it('it should retrieve all the products', async () => {

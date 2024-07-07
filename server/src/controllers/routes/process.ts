@@ -7,6 +7,7 @@ import {
 import { QueryDB } from '../../types-and-interfaces/process-routes.js'
 import BadRequestError from '../../errors/bad-request.js'
 import { QueryResult, QueryResultRow } from 'pg'
+import NotFoundError from '../../errors/not-found.js'
 
 export default ({
   Query,
@@ -68,6 +69,10 @@ export default ({
       // check for errors returns true if response is valid
       if (!validateResult(dbResponse)) {
         console.log(Query)
+        if (Query?.name.match(/get/) || QueryForwarder?.name.match(/get/)) {
+          if (Array.isArray(dbResponse) && dbResponse.length === 0)
+            throw new NotFoundError('The Requested Resource Could not be found')
+        }
         throw new BadRequestError('Invalid Database Response')
       }
       let responseData: any = null

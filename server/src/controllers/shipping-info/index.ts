@@ -36,7 +36,7 @@ const createQuery = async <T>({
 }: QueryParams<T>): Promise<string> => {
   if (!customerId) throw new UnauthorizedError('Cannot access resource')
   // check if customer account exists
-  const result = await knex<ShippingInfo>('customers')
+  const result = await knex('customers')
     .where('customer_id', customerId)
     .select('customer_id')
   if (result.length === 0)
@@ -46,7 +46,7 @@ const createQuery = async <T>({
   // Limit the amount of shipping addresses a user can have:
   const LIMIT = 5
   let { count } = (
-    await knex<ShippingInfo>('shipping_info')
+    await knex('shipping_info')
       .where('customer_id', customerId)
       .count('shipping_info_id')
   )[0]
@@ -79,7 +79,7 @@ const getAllQuery = async <T>({
   uid: customerId,
 }: QueryParams<T>): Promise<ShippingInfo[]> => {
   if (!customerId) throw new UnauthorizedError('Cannot access resource')
-  const result = await knex<ShippingInfo>('customers')
+  const result = await knex('customers')
     .where('customer_id', customerId)
     .select('customer_id')
   if (result.length === 0)
@@ -105,7 +105,7 @@ const getQuery = async <T>({
   if (params == null) throw new BadRequestError('No route parameters provided')
   const { shippingInfoId } = params
   if (!customerId) throw new UnauthorizedError('Cannot access resource')
-  const result = await knex<ShippingInfo>('customers')
+  const result = await knex('customers')
     .where('customer_id', customerId)
     .select('customer_id')
   if (result.length === 0)
@@ -138,7 +138,7 @@ const updateQuery = async <T>({
   const shippingData = body
   if (!shippingInfoId) throw new BadRequestError('Need ID to update resource')
   if (!customerId) throw new UnauthorizedError('Cannot access resource')
-  const result = await knex<ShippingInfo>('customers')
+  const result = await knex('customers')
     .where('customer_id', customerId)
     .select('customer_id')
   if (result.length === 0)
@@ -173,7 +173,7 @@ const deleteQuery = async <T>({
   if (!shippingInfoId)
     throw new BadRequestError('Need Id param to delete resource')
   if (!customerId) throw new UnauthorizedError('Cannot access resource')
-  const result = await knex<ShippingInfo>('customers')
+  const result = await knex('customers')
     .where('customer_id', customerId)
     .select('customer_id')
   if (result.length === 0)

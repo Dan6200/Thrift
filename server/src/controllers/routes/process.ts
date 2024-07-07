@@ -66,8 +66,10 @@ export default ({
     if (validateResult) {
       // validateBody throws error if data is invalid
       // check for errors returns true if response is valid
-      if (!validateResult(dbResponse))
+      if (!validateResult(dbResponse)) {
+        console.log(Query)
         throw new BadRequestError('Invalid Database Response')
+      }
       let responseData: any = null
       if (isTypeQueryResultRow(dbResponse)) {
         if (dbResponse.rowCount === 1) responseData = dbResponse.rows[0]

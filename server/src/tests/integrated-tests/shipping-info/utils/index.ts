@@ -57,7 +57,7 @@ const testGetNonExistentShipping = (testRoute as TestCreateRequest)({
   ...routeParams,
   verb: 'get',
   statusCode: NOT_FOUND,
-  validateResData: isValidShippingInfoResponse,
+  validateResData: null,
 })
 
 export {

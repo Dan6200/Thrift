@@ -4,5 +4,8 @@ interface CustomerId {
   customer_id: string
 }
 
-export const isValidCustomerId = (data: unknown): data is CustomerId =>
-  !CustomerSchemaID.validate(data).error
+export const isValidCustomerId = (data: unknown): data is CustomerId => {
+  const { error } = CustomerSchemaID.validate(data)
+  error && console.error(error)
+  return !error
+}

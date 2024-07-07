@@ -6,11 +6,16 @@ import {
 } from '../app-schema/shipping.js'
 
 interface ShippingInfoId {
-  customer_id: string
+  shipping_info_id: number
 }
 
-export const isValidShippingInfoId = (data: unknown): data is ShippingInfoId =>
-  !ShippingInfoSchemaID.validate(data).error
+export const isValidShippingInfoId = (
+  data: unknown
+): data is ShippingInfoId => {
+  const { error } = ShippingInfoSchemaID.validate(data)
+  error && console.error(error)
+  return !error
+}
 
 export default interface ShippingInfo {
   shipping_info_id?: string
@@ -30,22 +35,22 @@ export const isValidShippingInfoRequest = (
   data: unknown
 ): data is ShippingInfo => {
   const { error } = ShippingInfoRequestSchema.validate(data)
-  if (error) throw new Error(error.toString())
-  return true
+  error && console.error(error)
+  return !error
 }
 
 export const isValidShippingInfoResponseList = (
   data: unknown
 ): data is ShippingInfo => {
   const { error } = ShippingInfoResponseListSchema.validate(data)
-  if (error) throw new Error(error.toString())
-  return true
+  error && console.error(error)
+  return !error
 }
 
 export const isValidShippingInfoResponse = (
   data: unknown
 ): data is ShippingInfo => {
   const { error } = ShippingInfoResponseSchema.validate(data)
-  if (error) throw new Error(error.toString())
-  return true
+  error && console.error(error)
+  return !error
 }

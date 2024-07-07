@@ -14,22 +14,14 @@ export type TestCreateRequest = (
   testCreateRequestParams: TestCreateRequestParams
 ) => TestCreateRequestInner
 
-export type TestCreateRequestWithQParams = (
-  testCreateRequestParams: TestCreateRequestParams & {
-    validateReqData: (data: unknown) => boolean
-  }
-) => TestCreateRequestInner
-
-export type TestCreateRequestWithQueryAndBody = (
+export type TestCreateRequestWithQParamsAndBody = (
   testCreateRequestParams: TestCreateRequestParams & {
     validateReqData: (data: unknown) => boolean
   }
 ) => TestCreateRequestInnerWQueryNBody
 
-export type TestCreateRequestWithQuery = (
-  testCreateRequestParams: TestCreateRequestParams & {
-    validateReqData: (data: unknown) => boolean
-  }
+export type TestCreateRequestWithQParams = (
+  testCreateRequestParams: TestCreateRequestParams
 ) => TestCreateRequestInnerWQuery
 
 export type TestCreateRequestWithBody = (

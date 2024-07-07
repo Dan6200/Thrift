@@ -1,4 +1,10 @@
-//
+import {
+  ProductIdSchema,
+  ProductListResponseSchema,
+  ProductRequestSchema,
+  ProductResponseSchema,
+} from '../app-schema/products.js'
+
 export type Product = {
   title: string
   category_id: number
@@ -28,18 +34,34 @@ export type ProductMedia = {
   is_video: boolean
 }
 
-export function isValidProductData(
+export function isValidProductRequestData(
   productData: unknown
 ): productData is Product {
-  return (
-    typeof productData === 'object' &&
-    productData != null &&
-    'title' in productData &&
-    'category_id' in productData &&
-    'subcategory_id' in productData &&
-    'description' in productData &&
-    'list_price' in productData &&
-    'net_price' in productData &&
-    'quantity_available' in productData
-  )
+  const { error } = ProductRequestSchema.validate(productData)
+  error && console.error(error)
+  return !error
+}
+
+export function isValidProductResponseData(data: unknown): data is Product {
+  const { error } = ProductResponseSchema.validate(data)
+  error && console.error(error)
+  return !error
+}
+
+interface ProductID {
+  product_id: number
+}
+
+export function isValidProductId(data: unknown): data is ProductID {
+  const { error } = ProductIdSchema.validate(data)
+  error && console.error(error)
+  return !error
+}
+
+export function isValidProductListResponseData(
+  data: unknown
+): data is Product[] {
+  const { error } = ProductListResponseSchema.validate(data)
+  error && console.error(error)
+  return !error
 }

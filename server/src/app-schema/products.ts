@@ -1,6 +1,6 @@
 import joi from 'joi'
 
-const ProductSchemaReq = joi
+export const ProductRequestSchema = joi
   .object({
     title: joi.string().required(),
     category_id: joi.number().required(),
@@ -12,13 +12,13 @@ const ProductSchemaReq = joi
   })
   .required()
 
-const ProductSchemaDBID = joi
+export const ProductIdSchema = joi
   .object({
     product_id: joi.number().required(),
   })
   .required()
 
-const ProductSchemaDB = joi
+export const ProductResponseSchema = joi
   .object({
     product_id: joi.number().required(),
     title: joi.string().required(),
@@ -39,7 +39,7 @@ const ProductSchemaDB = joi
   })
   .required()
 
-const ProductSchemaDBList = joi
+export const ProductListResponseSchema = joi
   .object({
     products: joi
       .array()
@@ -67,10 +67,3 @@ const ProductSchemaDBList = joi
     total_products: joi.number().required(),
   })
   .required()
-
-export {
-  ProductSchemaReq,
-  ProductSchemaDB,
-  ProductSchemaDBList,
-  ProductSchemaDBID,
-}

@@ -4,5 +4,8 @@ interface VendorId {
   vendor_id: string
 }
 
-export const isValidVendorId = (data: unknown): data is VendorId =>
-  !VendorSchemaID.validate(data).error
+export const isValidVendorId = (data: unknown): data is VendorId => {
+  const { error } = VendorSchemaID.validate(data)
+  error && console.error(error)
+  return !error
+}

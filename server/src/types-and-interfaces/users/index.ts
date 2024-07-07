@@ -21,8 +21,11 @@ export interface UID {
   uid: string
 }
 
-export const isValidUID = (data: unknown): data is UID =>
-  !UIDSchema.validate(data).error
+export const isValidUID = (data: unknown): data is UID => {
+  const { error } = UIDSchema.validate(data)
+  error && console.error(error)
+  return !error
+}
 
 interface UserResponse extends UserData {
   is_customer: boolean
@@ -35,22 +38,22 @@ export const isValidUserUpdateRequestData = (
   data: unknown
 ): data is UserRequestData => {
   const { error } = UserUpdateRequestSchema.validate(data)
-  if (error) throw new Error(error.toString())
-  return true
+  error && console.error(error)
+  return !error
 }
 
 export const isValidUserRequestData = (
   data: unknown
 ): data is UserRequestData => {
   const { error } = UserRequestSchema.validate(data)
-  if (error) throw new Error(error.toString())
-  return true
+  error && console.error(error)
+  return !error
 }
 
 export const isValidUserResponseData = (
   data: unknown
 ): data is UserResponseData => {
   const { error } = UserResponseSchema.validate(data)
-  if (error) throw new Error(error.toString())
-  return true
+  error && console.error(error)
+  return !error
 }

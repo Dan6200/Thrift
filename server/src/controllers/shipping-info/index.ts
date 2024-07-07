@@ -150,6 +150,7 @@ const updateQuery = async <T>({
     delivery_instructions: JSON.stringify(shippingData.delivery_instructions),
   }
   return knex<ShippingInfo>('shipping_info')
+    .where('shipping_info_id', shippingInfoId)
     .update(DBFriendlyData)
     .returning('shipping_info_id')
 }

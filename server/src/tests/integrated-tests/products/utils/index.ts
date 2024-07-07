@@ -13,6 +13,7 @@ import {
 } from '../../../../types-and-interfaces/products.js'
 import {
   TestCreateRequest,
+  TestCreateRequestWithBody,
   TestCreateRequestWithQParams,
   TestCreateRequestWithQParamsAndBody,
 } from '../../../../types-and-interfaces/test-routes.js'
@@ -53,6 +54,21 @@ const testCreateProduct = async function* ({
   }
 }
 
+export const testPostProduct = (<TestCreateRequestWithBody>testRoute)({
+  statusCode: OK,
+  verb: 'post',
+  validateReqData: isValidProductRequestData,
+  validateResData: isValidProductId,
+})
+
+export const testGetAllProductsWithQParams = (<TestCreateRequestWithQParams>(
+  testRoute
+))({
+  statusCode: OK,
+  verb: 'get',
+  validateResData: isValidProductResponseData,
+})
+
 const testGetAllProducts = (<TestCreateRequest>testRoute)({
   statusCode: OK,
   verb: 'get',
@@ -67,6 +83,14 @@ export const testGetAllProductsPublic = (<TestCreateRequestWithQParams>(
   validateResData: isValidProductListResponseData,
 })
 
+export const testGetProductWithQParams = (<TestCreateRequestWithQParams>(
+  testRoute
+))({
+  statusCode: OK,
+  verb: 'get',
+  validateResData: isValidProductResponseData,
+})
+
 const testGetProduct = (<TestCreateRequest>testRoute)({
   statusCode: OK,
   verb: 'get',
@@ -79,7 +103,7 @@ export const testGetProductPublic = (<TestCreateRequestWithQParams>testRoute)({
   validateResData: isValidProductResponseData,
 })
 
-const testUpdateProduct = (<TestCreateRequestWithQParamsAndBody>testRoute)({
+const testUpdateProduct = (<TestCreateRequestWithBody>testRoute)({
   statusCode: OK,
   verb: 'patch',
   validateReqData: isValidProductRequestData,

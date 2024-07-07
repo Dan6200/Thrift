@@ -78,15 +78,15 @@ export default function ({
     }
   })
 
-  // it('it should retrieve all shipping information through a loop', async () => {
-  //   for (const shippingId of shippingIds) {
-  //     await testGetShipping({
-  //       server,
-  //       token,
-  //       path: shippingPath + '/' + shippingId,
-  //     })
-  //   }
-  // })
+  it('it should retrieve all shipping information through a loop', async () => {
+    for (const shippingId of shippingIds) {
+      await testGetShipping({
+        server,
+        token,
+        path: shippingPath + '/' + shippingId,
+      })
+    }
+  })
 
   it(`it should update all shipping addresses for the customer`, async () => {
     assert(shippingIds.length === listOfUpdatedShippingInfo.length)
@@ -101,23 +101,23 @@ export default function ({
     }
   })
 
-  // it(`it should delete all shipping addresses for the customer`, async () => {
-  //   for (const shippingId of shippingIds) {
-  //     await testDeleteShipping({
-  //       server,
-  //       token,
-  //       path: shippingPath + '/' + shippingId,
-  //     })
-  //   }
-  // })
-  //
-  // it(`it should fail to retrieve any of the deleted shipping information`, async () => {
-  //   for (const shippingId of shippingIds) {
-  //     await testGetNonExistentShipping({
-  //       server,
-  //       token,
-  //       path: `${shippingPath}/${shippingId}`,
-  //     })
-  //   }
-  // })
+  it(`it should delete all shipping addresses for the customer`, async () => {
+    for (const shippingId of shippingIds) {
+      await testDeleteShipping({
+        server,
+        token,
+        path: shippingPath + '/' + shippingId,
+      })
+    }
+  })
+
+  it(`it should fail to retrieve any of the deleted shipping information`, async () => {
+    for (const shippingId of shippingIds) {
+      await testGetNonExistentShipping({
+        server,
+        token,
+        path: `${shippingPath}/${shippingId}`,
+      })
+    }
+  })
 }

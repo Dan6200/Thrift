@@ -35,6 +35,7 @@ export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
     } else {
       console.log('response: ', result)
       if (result.length > 1) {
+        console.log('runs')
         const { error } = schema.validate(result)
         if (error) throw new BadRequestError(error.message)
       } else if (result.length === 1) {

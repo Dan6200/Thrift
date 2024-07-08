@@ -16,8 +16,8 @@ export default async <T>({
   const response = await knex('vendors')
     .where('vendor_id', vendorId)
     .first('vendor_id')
+  console.log('db response', response)
   if (response.length === 0) {
-    console.log('db response', response)
     throw new BadRequestError(
       'Must have a Vendor account to be able to list products'
     )

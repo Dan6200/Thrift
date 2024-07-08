@@ -1,9 +1,9 @@
 import { QueryResult, QueryResultRow } from 'pg'
-import { pg } from '../../../../db/index.js'
+import { pg, knex } from '../../../../db/index.js'
 import BadRequestError from '../../../../errors/bad-request.js'
 import UnauthorizedError from '../../../../errors/unauthorized.js'
 import { QueryParams } from '../../../../types-and-interfaces/process-routes.js'
-import { handleSortQuery } from '../../../helpers/generate-sql-commands/query-params-handler.js'
+import { handleSortQuery } from './utility.js'
 
 /**
  * @param {QueryParams} {query, userId}
@@ -15,18 +15,13 @@ export default async <T>({
   uid: vendorId,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   const { sort, limit, offset } = query
-  const dbResponse = await db.query({
-    text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
-    values: [storeId],
-  })
-  if (!isValidDBResponse(dbResponse))
-    throw new BadRequestError('Invalid response from database')
-  if (!dbResponse.rows.length)
+  const response = await knex('vendors')
+    .where('vendor_id', vendorId)
+    .select('vendor_id')
+  if (response.length === 0)
     throw new BadRequestError(
-      'No store found for this product. First create a store'
+      'Must have a Vendor account to be able to list products'
     )
-  if (dbResponse.rows[0].vendor_id !== vendorId)
-    throw new UnauthorizedError('Cannot access store.')
   let dbQueryString = `
 	WITH product_data AS (
 	 SELECT p.*, 
@@ -45,10 +40,6 @@ export default async <T>({
 			${offset ? `OFFSET ${offset}` : ''})
 
 SELECT JSON_AGG(product_data) AS products, 
-	(SELECT COUNT(*) FROM products 
-				WHERE store_id=$1) AS total_products FROM product_data;`
-  return db.query({
-    text: dbQueryString,
-    values: [storeId],
-  })
+	(SELECT COUNT(*) FROM products) AS total_products FROM product_data;`
+  return pg.query(dbQueryString)
 }

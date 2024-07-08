@@ -26,4 +26,5 @@ export default async <T>({
     .where('product_id', productId)
     .andWhere('vendor_id', vendorId)
     .del()
+    .returning('product_id')
 }

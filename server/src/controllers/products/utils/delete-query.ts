@@ -15,6 +15,13 @@ export default async <T>({
 }: QueryParams<T>): Promise<number> => {
   if (params == null) throw new BadRequestError('Must provide product id')
   const { productId } = params
+  const response = await knex('vendors')
+    .where('vendor_id', vendorId)
+    .first('vendor_id')
+  if (!response.length)
+    throw new BadRequestError(
+      'Must have a vendor account to be able to delete product'
+    )
   return knex('products')
     .where('product_id', productId)
     .andWhere('vendor_id', vendorId)

@@ -15,7 +15,7 @@ export default async <T>({
 }: QueryParams<T>): Promise<number> => {
   const response = await knex('vendors')
     .where('vendor_id', vendorId)
-    .select('1')
+    .first('vendor_id')
   if (response.length === 0) {
     console.log('db response', response)
     throw new BadRequestError(

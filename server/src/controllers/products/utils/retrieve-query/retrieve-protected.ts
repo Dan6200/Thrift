@@ -14,9 +14,12 @@ export default async <T>({
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   if (params == null) throw new BadRequestError('Must provide a product id')
   const { productId } = params
-  if (vendorId)
+  const response = await knex('vendors')
+    .where('vendor_id', vendorId)
+    .first('vendor_id')
+  if (!response.length)
     throw new BadRequestError(
-      'Must have a Vendor account to be able to view products'
+      'Must have a Vendor account to be able to view product list'
     )
   return pg.query(
     `SELECT p.*, 

@@ -14,7 +14,10 @@ export default async <T>({
   uid: vendorId,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
   const { sort, limit, offset } = query
-  if (vendorId)
+  const response = await knex('vendors')
+    .where('vendor_id', vendorId)
+    .first('vendor_id')
+  if (!response.length)
     throw new BadRequestError(
       'Must have a Vendor account to be able to view products'
     )

@@ -48,4 +48,5 @@ dist-ssr
 db_backup.sql
 
 # Avoid pushing secret key
-*.json
+firebase-config.json
+thrift-app-*.json

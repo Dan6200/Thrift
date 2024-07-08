@@ -1,9 +1,9 @@
 import { StatusCodes } from 'http-status-codes'
 import {
-  ProductSchemaDB,
-  ProductSchemaDBID,
-  ProductSchemaDBList,
-  ProductSchemaReq,
+  ProductResponseSchema,
+  ProductIdSchema,
+  ProductListResponseSchema,
+  ProductRequestSchema,
 } from '../../app-schema/products.js'
 import {
   ProcessRoute,
@@ -11,7 +11,6 @@ import {
   ProcessRouteWithoutBody,
   QueryParams,
 } from '../../types-and-interfaces/process-routes.js'
-import createRouteProcessor from '../helpers/process-route.js'
 import {
   validateReqData,
   validateResData,

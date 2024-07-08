@@ -23,7 +23,7 @@ import { validateResData } from '../utils/response-validation/index.js'
 
 /**
  * @param {QueryParams} qp
- * @returns {Promise<string>}
+ * @returns {Promise<number>}
  * @description Create a new shipping info for a customer
  * Checks:
  * 1. If the customer exists
@@ -33,7 +33,7 @@ import { validateResData } from '../utils/response-validation/index.js'
 const createQuery = async <T>({
   body,
   uid: customerId,
-}: QueryParams<T>): Promise<string> => {
+}: QueryParams<T>): Promise<number> => {
   if (!customerId) throw new UnauthorizedError('Cannot access resource')
   // check if customer account exists
   const result = await knex('customers')
@@ -118,7 +118,7 @@ const getQuery = async <T>({
 }
 
 /* @param {QueryParams} qp
- * @returns {Promise<string>}
+ * @returns {Promise<number>}
  * @description Updates shipping info for the customer
  * Checks:
  * 1. If the customer owns the shipping info
@@ -130,7 +130,7 @@ const updateQuery = async <T>({
   params,
   body,
   uid: customerId,
-}: QueryParams<T>): Promise<string> => {
+}: QueryParams<T>): Promise<number> => {
   if (params == null) throw new BadRequestError('No route parameters provided')
   const { shippingInfoId } = params
   if (!isValidShippingInfoRequest(body))

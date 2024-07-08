@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
+import createRouteProcessor from '../routes/process.js'
 import {
   ProductResponseSchema,
   ProductIdSchema,
@@ -9,12 +10,9 @@ import {
   ProcessRoute,
   ProcessRouteWithForwarder,
   ProcessRouteWithoutBody,
-  QueryParams,
 } from '../../types-and-interfaces/process-routes.js'
-import {
-  validateReqData,
-  validateResData,
-} from '../helpers/query-validation.js'
+import { validateReqData } from '../utils/request-validation.js'
+import { validateResData } from '../utils/response-validation/index.js'
 import {
   getAllQueryForwarder,
   getQueryForwarder,
@@ -22,47 +20,46 @@ import {
 import createQuery from './utils/create-query.js'
 import updateQuery from './utils/update-query.js'
 import deleteQuery from './utils/delete-query.js'
-import { QueryResult, QueryResultRow } from 'pg'
 
 const { CREATED, OK } = StatusCodes
 
-const processPostRoute = <ProcessRoute>processRoute
-const processGetAllRoute = <ProcessRouteWithForwarder>processRoute
-const processGetRoute = <ProcessRouteWithForwarder>processRoute
-const processPutRoute = <ProcessRoute>processRoute
-const processDeleteRoute = <ProcessRouteWithoutBody>processRoute
+const processPostRoute = <ProcessRoute>createRouteProcessor
+const processGetAllRoute = <ProcessRouteWithForwarder>createRouteProcessor
+const processGetRoute = <ProcessRouteWithForwarder>createRouteProcessor
+const processPutRoute = <ProcessRoute>createRouteProcessor
+const processDeleteRoute = <ProcessRouteWithoutBody>createRouteProcessor
 
 //cspell:ignore DBID
 const createProduct = processPostRoute({
   Query: createQuery,
   status: CREATED,
-  validateBody: validateReqData(ProductSchemaReq),
-  validateResult: validateResData(ProductSchemaDBID),
+  validateBody: validateReqData(ProductRequestSchema),
+  validateResult: validateResData(ProductIdSchema),
 })
 
 const getAllProducts = processGetAllRoute({
   QueryForwarder: getAllQueryForwarder,
   status: OK,
-  validateResult: validateResData(ProductSchemaDBList),
+  validateResult: validateResData(ProductListResponseSchema),
 })
 
 const getProduct = processGetRoute({
   QueryForwarder: getQueryForwarder,
   status: OK,
-  validateResult: validateResData(ProductSchemaDB),
+  validateResult: validateResData(ProductResponseSchema),
 })
 
 const updateProduct = processPutRoute({
   Query: updateQuery,
   status: OK,
-  validateBody: validateReqData(ProductSchemaReq),
-  validateResult: validateResData(ProductSchemaDBID),
+  validateBody: validateReqData(ProductRequestSchema),
+  validateResult: validateResData(ProductIdSchema),
 })
 
 const deleteProduct = processDeleteRoute({
   Query: deleteQuery,
   status: OK,
-  validateResult: validateResData(ProductSchemaDBID),
+  validateResult: validateResData(ProductIdSchema),
 })
 
 export {

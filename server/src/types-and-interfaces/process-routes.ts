@@ -29,7 +29,7 @@ export type ProcessRouteWithoutBody = <T>({
 }: {
   Query<T>(
     queryParams: QueryParams<T>
-  ): Promise<any[] | string | QueryResult<QueryResultRow | QueryResultRow[]>>
+  ): Promise<any[] | number | QueryResult<QueryResultRow | QueryResultRow[]>>
   status: Status
   validateResult: (
     result: QueryResult<QueryResultRow | QueryResultRow[]>
@@ -76,7 +76,7 @@ export type ProcessRoute = <T>({
 }: {
   Query<T>(
     queryParams: QueryParams<T>
-  ): Promise<string | QueryResult<QueryResultRow | QueryResultRow[]>>
+  ): Promise<number | QueryResult<QueryResultRow | QueryResultRow[]>>
   status: Status
   validateBody: (data: unknown) => boolean
   validateResult: (

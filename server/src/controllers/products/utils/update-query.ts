@@ -2,13 +2,11 @@
 import { QueryResult, QueryResultRow } from 'pg'
 import { knex } from '../../../db/index.js'
 import BadRequestError from '../../../errors/bad-request.js'
-import UnauthorizedError from '../../../errors/unauthorized.js'
 import { QueryParams } from '../../../types-and-interfaces/process-routes.js'
 import {
   isValidProductRequestData,
   ProductRequestData,
   ProductResponseData,
-  ProductID,
 } from '../../../types-and-interfaces/products.js'
 
 /* @param {QueryParams} {params, query, body, userId}

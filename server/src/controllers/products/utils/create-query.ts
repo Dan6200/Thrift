@@ -6,13 +6,13 @@ import { isValidProductRequestData } from '../../../types-and-interfaces/product
 
 /**
  * @param {QueryParams} {body, query, userId}
- * @returns {Promise<string>} - The database response
+ * @returns {Promise<number>} - The database response
  * @description Create a new product
  */
 export default async <T>({
   body,
   uid: vendorId,
-}: QueryParams<T>): Promise<string> => {
+}: QueryParams<T>): Promise<number> => {
   if (!vendorId)
     throw new BadRequestError(
       'Must have a Vendor account to be able to list products'

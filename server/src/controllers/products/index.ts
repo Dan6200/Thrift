@@ -1,4 +1,3 @@
-/*
 import { StatusCodes } from 'http-status-codes'
 import {
   ProductSchemaDB,
@@ -74,4 +73,3 @@ export {
   updateProduct,
   deleteProduct,
 }
-*/

@@ -1,13 +1,14 @@
-/**
 import { QueryResult, QueryResultRow } from 'pg'
-import db from '../../../../db/index.js'
+import { pg } from '../../../../db/index.js'
 import BadRequestError from '../../../../errors/bad-request.js'
 import { QueryParams } from '../../../../types-and-interfaces/process-routes.js'
 import getQueryProtected from './retrieve-protected.js'
 
+/**
  * @param {QueryParams} qp
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieve a product
+ **/
 export default async <T>(
   qp: QueryParams<T>
 ): Promise<QueryResult<QueryResultRow>> => {
@@ -18,8 +19,8 @@ export default async <T>(
   const { params } = qp
   if (params == null) throw new BadRequestError('Must provide a product id')
   const { productId } = params
-  return db.query({
-    text: `SELECT p.*, 
+  return pg.query(
+    `SELECT p.*, 
 		(SELECT JSON_AGG(media_data) FROM
 			(SELECT pm.*
 					 FROM product_media pm 
@@ -30,7 +31,6 @@ export default async <T>(
 				JOIN categories c USING (category_id)
 				JOIN subcategories s USING (subcategory_id)
 			WHERE p.product_id=$1;`,
-    values: [productId],
-  })
+    [productId]
+  )
 }
- **/

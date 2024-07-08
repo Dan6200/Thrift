@@ -1,13 +1,14 @@
-/**
 import { QueryResult, QueryResultRow } from 'pg'
-import db from '../../../../db/index.js'
+import { pg, knex } from '../../../../db/index.js'
 import BadRequestError from '../../../../errors/bad-request.js'
 import { QueryParams } from '../../../../types-and-interfaces/process-routes.js'
-import { handleSortQuery } from '../../../helpers/generate-sql-commands/query-params-handler.js'
+import { handleSortQuery } from './utility.js'
 import getAllQueryProtected from './retrieve-all-protected.js'
 
+/**
  * @description Retrieve all products
  *
+ **/
 export const getAllQuery = async <T>(
   qp: QueryParams<T>
 ): Promise<QueryResult<QueryResultRow>> => {
@@ -16,7 +17,6 @@ export const getAllQuery = async <T>(
     return getAllQueryProtected(qp)
   }
   const { query } = qp
-  if (query == null) throw new BadRequestError('Must provide a store id')
   const { sort, limit, offset } = query
   let dbQueryString = `
 	WITH product_data AS (
@@ -36,8 +36,5 @@ export const getAllQuery = async <T>(
 
 SELECT JSON_AGG(product_data) AS products, 
 (SELECT COUNT(*) FROM products) AS total_products FROM product_data;`
-  return db.query({
-    text: dbQueryString,
-  })
+  return pg.query(dbQueryString)
 }
- **/

@@ -24,12 +24,9 @@ export default async <T>({
 
   const { productId } = params
 
-  const result = await knex('vendors')
-    .where('vendor_id', vendorId)
-    .select('vendor_id')
-  if (result.length === 0)
+  if (!vendorId)
     throw new BadRequestError(
-      'No Vendor account found. Please create a Vendor account'
+      'Must have a vendor account to be able to update product list'
     )
 
   if (!isValidProductRequestData(body))
@@ -44,6 +41,7 @@ export default async <T>({
 
   return knex<ProductResponseData>('products')
     .where('product_id', productId)
+    .andWhere('vendor_id', vendorId)
     .update(DBFriendlyProductData)
     .returning('product_id')
 }

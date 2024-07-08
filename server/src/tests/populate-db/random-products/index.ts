@@ -1,8 +1,8 @@
 import { faker } from '../faker.js'
-import { Product } from '../../../types-and-interfaces/products.js'
+import { ProductRequestData } from '../../../types-and-interfaces/products.js'
 
 const randomProduct = faker.commerce
-export default function (this: Product): Product {
+export default function (this: ProductRequestData): ProductRequestData {
   return {
     title: randomProduct.productName(),
     description: [randomProduct.productDescription()],

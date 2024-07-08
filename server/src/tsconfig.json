@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    },
     "resolveJsonModule": true,
     "strict": true,
     "outDir": "../built",

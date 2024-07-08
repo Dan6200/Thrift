@@ -1,16 +1,16 @@
 // cspell:disable
 import {
-  Product,
+  ProductRequestData,
   ProductMedia,
-  ProductPartial,
-} from '../../../../../../../../types-and-interfaces/products.js'
+  ProductRequestPartial,
+} from '@/types-and-interfaces/products.js'
 import { fileURLToPath } from 'url'
-import path, { dirname } from 'path'
+import { dirname } from 'path'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-export const products: Product[] = [
+export const products: ProductRequestData[] = [
   {
     title:
       'Apple AirPods Pro (2nd Generation) Wireless Earbuds, Up to 2X More Active Noise Cancelling, Adaptive Transparency, Personalized Spatial Audio, MagSafe Charging Case, Bluetooth Headphones for iPhone',
@@ -64,7 +64,7 @@ export const products: Product[] = [
   },
 ]
 
-export const productReplaced: Product[] = [
+export const productReplaced: ProductRequestData[] = [
   {
     title:
       'Apple AirPods Pro (2nd Generation) Wireless Earbuds, Up to 2X More Active Noise Cancelling, Adaptive Transparency, Personalized Spatial Audio, MagSafe Charging Case, Bluetooth Headphones for iPhone',
@@ -118,7 +118,7 @@ export const productReplaced: Product[] = [
   },
 ]
 
-export const productPartialUpdate: ProductPartial[] = [
+export const productPartialUpdate: ProductRequestPartial[] = [
   {
     category_id: 2,
     list_price: 35000,

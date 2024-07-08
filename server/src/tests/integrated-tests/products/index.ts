@@ -1,6 +1,6 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
-import { Product } from '../../../types-and-interfaces/products.js'
+import { ProductRequestData } from '../../../types-and-interfaces/products.js'
 import {
   testPostProduct,
   testGetAllProducts,
@@ -31,8 +31,8 @@ export default function ({
   productReplaced,
 }: {
   userInfo: UserRequestData
-  products: Product[]
-  productReplaced: Product[]
+  products: ProductRequestData[]
+  productReplaced: ProductRequestData[]
 }) {
   before(async () => {
     // Create a new user for each tests

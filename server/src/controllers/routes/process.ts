@@ -61,8 +61,10 @@ export default ({
       })
     }
 
-    if (!isTypeQueryResultRow(dbResponse) && !Array.isArray(dbResponse))
+    if (!isTypeQueryResultRow(dbResponse) && !Array.isArray(dbResponse)) {
+      console.log(typeof dbResponse, dbResponse)
       throw new BadRequestError(`The Database operation could not be completed`)
+    }
 
     if (validateResult) {
       // validateBody throws error if data is invalid

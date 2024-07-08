@@ -13,10 +13,15 @@ export default async <T>({
   body,
   uid: vendorId,
 }: QueryParams<T>): Promise<number> => {
-  if (!vendorId)
+  const response = await knex('vendors')
+    .where('vendor_id', vendorId)
+    .select('1')
+  if (response.length === 0) {
+    console.log('db response', response)
     throw new BadRequestError(
       'Must have a Vendor account to be able to list products'
     )
+  }
 
   if (!isValidProductRequestData(body))
     throw new BadRequestError('Invalid product data')

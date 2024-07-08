@@ -55,7 +55,7 @@ const testCreateProduct = async function* ({
 }
 
 export const testPostProduct = (<TestCreateRequestWithBody>testRoute)({
-  statusCode: OK,
+  statusCode: CREATED,
   verb: 'post',
   validateReqData: isValidProductRequestData,
   validateResData: isValidProductId,

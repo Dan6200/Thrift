@@ -18,7 +18,7 @@ export default async <T>({
   const response = await knex('vendors')
     .where('vendor_id', vendorId)
     .first('vendor_id')
-  if (!response.length)
+  if (response.length)
     throw new BadRequestError(
       'Must have a vendor account to be able to delete product'
     )

@@ -42,7 +42,7 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
 
     after(async () => {
       // Delete users from db
-      await knex('users').where('uid', uidToDelete).del()
+      if (uidToDelete) await knex('users').where('uid', uidToDelete).del()
       // Delete all users from firebase auth
       await auth
         .deleteUser(uidToDelete)

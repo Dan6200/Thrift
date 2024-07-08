@@ -33,10 +33,9 @@ export default function (): void {
   /** User Account actions **/
 
   for (let user of users) {
-    const { userInfo, updatedUserInfo } = user
+    const { userInfo } = user
     const { first_name: name } = userInfo
-    describe(`Testing User Account for ${name}`, () =>
-      testUserAccount({ userInfo, updatedUserInfo }))
+    describe(`Testing User Account for ${name}`, () => testUserAccount(user))
   }
 
   /** Customer Account actions **/

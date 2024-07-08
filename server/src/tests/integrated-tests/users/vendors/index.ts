@@ -1,14 +1,15 @@
 import { testPostVendor, testDeleteVendor } from './utils/index.js'
-import { UserRequestData } from '../../../../types-and-interfaces/users/index.js'
+import { UserRequestData } from '@/types-and-interfaces/users/index.js'
 import {
   testHasVendorAccount,
   testHasNoVendorAccount,
   testPostUser,
 } from '../../users/utils/index.js'
-import { auth } from '../../../../auth/firebase/index.js'
-import { auth as _auth } from '../../../../auth/firebase/testing.js'
+import { auth } from '@/auth/firebase/index.js'
+import { auth as _auth } from '@/auth/firebase/testing.js'
 import { isValidPostUserParams } from '../index.js'
 import { signInWithCustomToken } from 'firebase/auth'
+import { knex } from '@/db/index.js'
 
 // Set server url
 const server = process.env.SERVER!
@@ -40,6 +41,8 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
       testPostVendor({ server, token, path }))
 
     after(async () => {
+      // Delete users from db
+      if (uidToDelete) await knex('users').where('uid', uidToDelete).del()
       // Delete all users from firebase auth
       await auth
         .deleteUser(uidToDelete)

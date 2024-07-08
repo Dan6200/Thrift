@@ -19,7 +19,7 @@ export function validateResData<T>(
 export function validateResData<T>(schema: ArraySchema<T> | ObjectSchema<T>) {
   return (result: QueryResult<QueryResultRow | QueryResultRow[]> | any[]) => {
     if (isTypeQueryResultRow(result)) {
-      console.log('response: ', result.rows)
+      console.dir('response: ', result.rows)
       if (result.rows?.length === 0) {
         if (result.command === 'SELECT')
           throw new NotFoundError('Requested resource was not found')

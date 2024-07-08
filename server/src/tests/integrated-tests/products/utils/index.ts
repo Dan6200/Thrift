@@ -66,13 +66,13 @@ export const testGetAllProductsWithQParams = (<TestCreateRequestWithQParams>(
 ))({
   statusCode: OK,
   verb: 'get',
-  validateResData: isValidProductResponseData,
+  validateResData: isValidProductListResponseData,
 })
 
 const testGetAllProducts = (<TestCreateRequest>testRoute)({
   statusCode: OK,
   verb: 'get',
-  validateResData: isValidProductResponseData,
+  validateResData: isValidProductListResponseData,
 })
 
 export const testGetAllProductsPublic = (<TestCreateRequestWithQParams>(

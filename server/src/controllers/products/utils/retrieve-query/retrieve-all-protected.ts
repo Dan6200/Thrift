@@ -1,23 +1,20 @@
-/**
 import { QueryResult, QueryResultRow } from 'pg'
-import db from '../../../../db/index.js'
+import { pg } from '../../../../db/index.js'
 import BadRequestError from '../../../../errors/bad-request.js'
 import UnauthorizedError from '../../../../errors/unauthorized.js'
 import { QueryParams } from '../../../../types-and-interfaces/process-routes.js'
-import { isValidDBResponse } from '../../../../types-and-interfaces/response.js'
-import { SelectRecord } from '../../../helpers/generate-sql-commands/index.js'
 import { handleSortQuery } from '../../../helpers/generate-sql-commands/query-params-handler.js'
 
+/**
  * @param {QueryParams} {query, userId}
  * @returns {Promise<QueryResult<QueryResultRow>>}
  * @description Retrieve all products
- *
+ */
 export default async <T>({
   query,
-  userId: vendorId,
+  uid: vendorId,
 }: QueryParams<T>): Promise<QueryResult<QueryResultRow>> => {
-  if (query == null) throw new BadRequestError('Must provide a store id')
-  const { storeId, sort, limit, offset } = query
+  const { sort, limit, offset } = query
   const dbResponse = await db.query({
     text: SelectRecord('stores', ['vendor_id'], 'store_id=$1'),
     values: [storeId],
@@ -55,4 +52,3 @@ SELECT JSON_AGG(product_data) AS products,
     values: [storeId],
   })
 }
- **/

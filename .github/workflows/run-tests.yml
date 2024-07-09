@@ -68,6 +68,7 @@ jobs:
           node-version: 20
       - run: npm install -g pnpm
       - run: pnpm install
+      - run: pnpm add tsconfig-paths --save-dev
       - run: pnpm build
       - name: Start server
         run: |

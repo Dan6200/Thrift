@@ -33,6 +33,7 @@ export default function ({
   describe('User account management', () => {
     it('should create a new user', async () => {
       // Create a new user for each tests
+      console.log('server', process.env.SERVER)
       const postUserParams = {
         server,
         path,
@@ -40,7 +41,9 @@ export default function ({
       }
       if (!isValidPostUserParams(postUserParams))
         throw new Error('Invalid parameter object')
-      const response = await testPostUser(postUserParams)
+      const response = await testPostUser(postUserParams).catch((error) =>
+        console.error(error)
+      )
       uidToDelete = response.uid
       const customToken = await auth.createCustomToken(response.uid)
       token = await signInWithCustomToken(_auth, customToken).then(({ user }) =>
@@ -70,9 +73,10 @@ export default function ({
       // Delete users from db
       if (uidToDelete) await knex('users').where('uid', uidToDelete).del()
       // Delete all users from firebase auth
+      console.log('uid: ', uidToDelete)
       await auth
         .deleteUser(uidToDelete)
-        .catch((error) =>
+        .catch((error: Error) =>
           console.error(
             `failed to delete user with uid ${uidToDelete}: ${error}`
           )

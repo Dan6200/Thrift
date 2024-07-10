@@ -2,21 +2,22 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["server/src/*"]
     },
     "resolveJsonModule": true,
     "strict": true,
-    "outDir": "../built",
+    "outDir": "built",
     "target": "ESNext",
     "esModuleInterop": true,
-    "moduleResolution": "nodenext",
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
-    "noEmitOnError": false,
-    "sourceMap": true,
-    "module": "nodenext"
+    "noEmitOnError": true,
+    "sourceMap": true
   },
-  "ts-node": { "esm": true, "experimentalSpecifierResolution": "node" },
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "built"]
 }

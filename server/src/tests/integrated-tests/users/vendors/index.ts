@@ -1,15 +1,15 @@
 import { testPostVendor, testDeleteVendor } from './utils/index.js'
-import { UserRequestData } from '@/types-and-interfaces/users/index.js'
 import {
   testHasVendorAccount,
   testHasNoVendorAccount,
   testPostUser,
 } from '../../users/utils/index.js'
-import { auth } from '@/auth/firebase/index.js'
-import { auth as _auth } from '@/auth/firebase/testing.js'
 import { isValidPostUserParams } from '../index.js'
 import { signInWithCustomToken } from 'firebase/auth'
+import { UserRequestData } from '@/types-and-interfaces/users/index.js'
 import { knex } from '@/db/index.js'
+import { auth } from '@/auth/firebase/index.js'
+import { auth as _auth } from '@/auth/firebase/testing.js'
 
 // Set server url
 const server = process.env.SERVER!
@@ -46,7 +46,7 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
       // Delete all users from firebase auth
       await auth
         .deleteUser(uidToDelete)
-        .catch((error) =>
+        .catch((error: Error) =>
           console.error(
             `failed to delete user with uid ${uidToDelete}: ${error}`
           )

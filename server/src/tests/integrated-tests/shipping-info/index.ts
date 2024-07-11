@@ -90,8 +90,7 @@ export default function ({
 
   it(`it should update all shipping addresses for the customer`, async () => {
     assert(shippingIds.length === listOfUpdatedShippingInfo.length)
-    let idx: number, shippingId: number
-    for ([idx, shippingId] of shippingIds.entries()) {
+    for (const [idx, shippingId] of shippingIds.entries()) {
       await testUpdateShipping({
         server,
         token,

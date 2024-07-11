@@ -121,13 +121,12 @@ export default function ({
 
     it('it should update all the products a vendor has for sale', async () => {
       assert(productIds?.length === productReplaced.length)
-      let idx = 0
-      for (const productId of productIds)
+      for (const [idx, productId] of productIds.entries())
         await testUpdateProduct({
           server,
           token,
           path: `${productsRoute}/${productId}`,
-          body: productReplaced[idx++],
+          body: productReplaced[idx],
         })
     })
 

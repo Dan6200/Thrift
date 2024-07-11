@@ -1,99 +1,90 @@
-// import db from '../../../db/index.js'
-// import { AccountData } from '../../../types-and-interfaces/account.js'
-// import {
-//   Product,
-//   ProductMedia,
-// } from '../../../types-and-interfaces/products.js'
-// import { StoresData } from '../../../types-and-interfaces/stores-data.js'
-// import { registration } from '../helper-functions/auth/index.js'
-// import {
-//   testCreateProduct,
-//   testUploadProductMedia,
-// } from '../helper-functions/products/index.js'
-// import { testCreateStore } from '../helper-functions/store/index.js'
-// import { testCreateVendor } from '../helper-functions/vendor/index.js'
-//
-// // globals
-// const mediaRoute = '/v1/media'
-// const vendorsRoute = '/v1/account/vendor/'
-// const storesRoute = '/v1/stores'
-// const productsRoute = '/v1/products'
-// let token: string, server: string
-// let storeIds = new Map<number, number[] | null>()
-//
-// export default function ({
-//   accountInfo,
-//   stores: vendorStores,
-//   products,
-//   productMedia,
-// }: {
-//   accountInfo: AccountData
-//   stores: StoresData[]
-//   products: Product[]
-//   productMedia: ProductMedia[][]
-// }) {
-//   describe('Product media management', () => {
-//     before(async function () {
-//       //  Set the server url
-//       server = process.env.SERVER!
-//       // Delete all user accounts
-//       await db.query({
-//         text: 'delete from user_accounts where email=$1 or phone=$2',
-//         values: [accountInfo.email, accountInfo.phone],
-//       })
-//       ;({
-//         body: { token },
-//       } = await registration(server, accountInfo))
-//       // Create a vendor account for the user
-//       await testCreateVendor(server, token, vendorsRoute)
-//       // Create a store for the vendor
-//       let idx: number, store: StoresData
-//       for ([idx, store] of vendorStores.entries()) {
-//         const { store_id } = await testCreateStore(
-//           server,
-//           token,
-//           storesRoute,
-//           null,
-//           store
-//         )
-//         for await (const { product_id } of testCreateProduct(
-//           server,
-//           token,
-//           productsRoute,
-//           { storeId: store_id },
-//           products
-//         )) {
-//           if (storeIds.get(store_id)) {
-//             storeIds.set(store_id, storeIds.get(store_id)!.concat(product_id))
-//           } else {
-//             storeIds.set(store_id, [product_id])
-//           }
-//         }
-//       }
-//     })
-//     after(async () => {
-//       await db.query({
-//         text: 'delete from user_accounts where email=$1 or phone=$2',
-//         values: [accountInfo.email, accountInfo.phone],
-//       })
-//     })
-//
-//     // Create a product for the store
-//     it("it should add the product's media to an existing product", async () => {
-//       let productIds: number[] | null
-//       for ([, productIds] of storeIds.entries()) {
-//         if (productIds)
-//           for (const [idx, productId] of productIds.entries())
-//             await testUploadProductMedia(
-//               server,
-//               token,
-//               mediaRoute,
-//               productMedia[idx],
-//               {
-//                 productId,
-//               }
-//             )
-//       }
-//     })
-//   })
-// }
+import { knex } from '../../../db/index.js'
+import { UserRequestData } from '@/types-and-interfaces/users/index.js'
+import {
+  ProductRequestData,
+  ProductMedia,
+} from '../../../types-and-interfaces/products.js'
+import {
+  testPostProduct,
+  testUploadProductMedia,
+} from '../products/utils/index.js'
+import { testPostVendor } from '../users/vendors/utils/index.js'
+import { isValidPostUserParams } from '../users/index.js'
+import { testPostUser } from '../users/utils/index.js'
+import { auth } from '../../../auth/firebase/index.js'
+import { auth as _auth } from '../../../auth/firebase/testing.js'
+import { signInWithCustomToken } from 'firebase/auth'
+
+// globals
+const mediaRoute = '/v1/media'
+const vendorsRoute = '/v1/account/vendor/'
+const productsRoute = '/v1/products'
+let token: string, server: string
+let uidToDelete: string
+let productIds: number[] | null
+
+export default function ({
+  userInfo,
+  products,
+  productMedia,
+}: {
+  userInfo: UserRequestData
+  products: ProductRequestData[]
+  productMedia: ProductMedia[][]
+}) {
+  describe('Product media management', () => {
+    before(async () => {
+      // Create a new user for each tests
+      const postUserParams = {
+        server,
+        path: '/v1/users',
+        body: userInfo,
+      }
+      if (!isValidPostUserParams(postUserParams))
+        throw new Error('Invalid parameter object')
+      const response = await testPostUser(postUserParams)
+      uidToDelete = response.uid
+      const customToken = await auth.createCustomToken(response.uid)
+      token = await signInWithCustomToken(_auth, customToken).then(({ user }) =>
+        user.getIdToken()
+      )
+      await testPostVendor({ server, token, path: vendorsRoute })
+      for (const product of products) {
+        const { product_id } = await testPostProduct({
+          server,
+          token,
+          path: `${productsRoute}`,
+          body: product,
+        })
+        productIds.push(product_id)
+      }
+    })
+
+    after(async function () {
+      // Delete users from db
+      if (uidToDelete) await knex('users').where('uid', uidToDelete).del()
+      // Delete all users from firebase auth
+      await auth
+        .deleteUser(uidToDelete)
+        .catch((error: Error) =>
+          console.error(
+            `failed to delete user with uid ${uidToDelete}: ${error}`
+          )
+        )
+    })
+
+    // Create a product for the store
+    it("it should add the product's media to an existing product", async () => {
+      for (const [idx, productId] of productIds.entries())
+        await testUploadProductMedia(
+          server,
+          token,
+          mediaRoute,
+          productMedia[idx],
+          {
+            productId,
+          }
+        )
+    })
+  })
+}

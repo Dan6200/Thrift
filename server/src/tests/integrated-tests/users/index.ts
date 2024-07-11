@@ -68,16 +68,17 @@ export default function ({
     it("it should fail to get user's account", () =>
       testGetNonExistentUser({ server, token, path }))
 
-    after(async () => {
+    it.skip(async () => {
       // Delete users from db
       if (uidToDelete) await knex('users').where('uid', uidToDelete).del()
       // Delete all users from firebase auth
-      await auth.deleteUser(uidToDelete).catch()
-      // .catch((error: Error) =>
-      //   console.error(
-      //     `failed to delete user with uid ${uidToDelete}: ${error}`
-      //   )
-      // )
+      await auth
+        .deleteUser(uidToDelete)
+        .catch((error: Error) =>
+          console.error(
+            `failed to delete user with uid ${uidToDelete}: ${error}`
+          )
+        )
     })
   })
 }

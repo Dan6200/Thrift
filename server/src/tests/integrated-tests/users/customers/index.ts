@@ -44,13 +44,12 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
       // Delete users from db
       if (uidToDelete) await knex('users').where('uid', uidToDelete).del()
       // Delete all users from firebase auth
-      await auth
-        .deleteUser(uidToDelete)
-        .catch((error: Error) =>
-          console.error(
-            `failed to delete user with uid ${uidToDelete}: ${error}`
-          )
-        )
+      await auth.deleteUser(uidToDelete)
+      // .catch((error: Error) =>
+      //   console.error(
+      //     `failed to delete user with uid ${uidToDelete}: ${error}`
+      //   )
+      // )
     })
 
     it("it should show that the customer account has been created in the user's is_customer field", async () =>

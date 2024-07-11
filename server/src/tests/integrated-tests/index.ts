@@ -25,8 +25,7 @@ export default function (): void {
   for (let vendor of vendors) {
     const { userInfo } = vendor
     const { first_name: name } = userInfo
-    describe(`Testing Public Routes for ${name}`, () =>
-      testPublicProducts(vendor))
+    describe(`Testing Public Routes for ${name}`, () => testPublicProducts())
   }
 
   /** Private Routes **/

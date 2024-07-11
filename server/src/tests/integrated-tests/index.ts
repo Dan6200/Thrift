@@ -12,9 +12,9 @@ import * as Aisha from './data/users/customers/user-aisha/index.js'
 import * as Mustapha from './data/users/customers/user-mustapha/index.js'
 import * as Aliyu from './data/users/vendors/user-aliyu/index.js'
 
-// const users = [Ebuka, Aliyu, Aisha, Mustapha]
-// const customers = [Ebuka, Aisha, Mustapha]
-const users = [Aliyu]
+const users = [Ebuka, Aliyu, Aisha, Mustapha]
+const customers = [Ebuka, Aisha, Mustapha]
+// const users = [Aliyu]
 const vendors = [Aliyu]
 
 export default function (): void {
@@ -41,21 +41,21 @@ export default function (): void {
 
   /** Customer Account actions **/
 
-  // for (let customer of customers) {
-  //   const { userInfo } = customer
-  //   const { first_name: name } = userInfo
-  //   describe(`Testing Customer Account for ${name}`, () =>
-  //     testCustomerAccount(customer))
-  // }
+  for (let customer of customers) {
+    const { userInfo } = customer
+    const { first_name: name } = userInfo
+    describe(`Testing Customer Account for ${name}`, () =>
+      testCustomerAccount(customer))
+  }
 
   /** Shipping Info related tests **/
 
-  // for (let customer of customers) {
-  //   const { userInfo } = customer
-  //   const { first_name: name } = userInfo
-  //   describe(`Testing the Shipping Information of ${name}'s account`, async () =>
-  //     testShipping(customer))
-  // }
+  for (let customer of customers) {
+    const { userInfo } = customer
+    const { first_name: name } = userInfo
+    describe(`Testing the Shipping Information of ${name}'s account`, async () =>
+      testShipping(customer))
+  }
 
   /** Vendor Account actions **/
 
@@ -75,12 +75,12 @@ export default function (): void {
   //
   /** Product related tests **/
 
-  // for (let vendor of vendors) {
-  //   const { userInfo } = vendor
-  //   const { first_name: name } = userInfo
-  //   describe(`Testing Products listed by ${name}`, async () =>
-  //     testProducts(vendor))
-  // }
+  for (let vendor of vendors) {
+    const { userInfo } = vendor
+    const { first_name: name } = userInfo
+    describe(`Testing Products listed by ${name}`, async () =>
+      testProducts(vendor))
+  }
 
   /** Media related tests **/
 

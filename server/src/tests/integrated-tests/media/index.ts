@@ -17,7 +17,7 @@ import { signInWithCustomToken } from 'firebase/auth'
 
 // globals
 const mediaRoute = '/v1/media'
-const vendorsRoute = '/v1/account/vendor/'
+const vendorsRoute = '/v1/users/vendors/'
 const productsRoute = '/v1/products'
 let token: string
 const server: string = process.env.SERVER!

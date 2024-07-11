@@ -19,7 +19,8 @@ import { signInWithCustomToken } from 'firebase/auth'
 const mediaRoute = '/v1/media'
 const vendorsRoute = '/v1/account/vendor/'
 const productsRoute = '/v1/products'
-let token: string, server: string
+let token: string
+const server: string = process.env.SERVER!
 let uidToDelete: string
 let productIds: number[] | null
 

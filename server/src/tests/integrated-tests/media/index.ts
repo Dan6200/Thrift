@@ -22,7 +22,7 @@ const productsRoute = '/v1/products'
 let token: string
 const server: string = process.env.SERVER!
 let uidToDelete: string
-let productIds: number[] | null
+const productIds: number[] = []
 
 export default function ({
   userInfo,
@@ -57,7 +57,6 @@ export default function ({
           path: `${productsRoute}`,
           body: product,
         })
-        console.log(productIds)
         productIds.push(product_id)
       }
     })

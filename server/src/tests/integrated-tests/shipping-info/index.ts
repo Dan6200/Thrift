@@ -54,7 +54,7 @@ export default function ({
     // Delete users from db
     if (uidToDelete) await knex('users').where('uid', uidToDelete).del()
     // Delete all users from firebase auth
-    await auth.deleteUser(uidToDelete)
+    await auth.deleteUser(uidToDelete).catch()
     // .catch((error: Error) =>
     //   console.error(`failed to delete user with uid ${uidToDelete}: ${error}`)
     // )

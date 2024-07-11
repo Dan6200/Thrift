@@ -18,39 +18,7 @@ chai.use(chaiHttp).should()
 // Set server url
 const server = process.env.SERVER!
 
-export default function ({ userInfo }: { userInfo: UserRequestData }) {
-  before(async () => {
-    // Create a new user for each tests
-    const postUserParams = {
-      server,
-      path: '/v1/users',
-      body: userInfo,
-    }
-    if (!isValidPostUserParams(postUserParams))
-      throw new Error('Invalid parameter object')
-    const response = await testPostUser(postUserParams)
-    uidToDelete = response.uid
-    const customToken = await auth.createCustomToken(response.uid)
-    token = await signInWithCustomToken(_auth, customToken).then(({ user }) =>
-      user.getIdToken()
-    )
-    await testPostVendor({ server, token, path: vendorsRoute })
-  })
-
-  after(async function () {
-    // Delete users from db
-    if (uidToDelete) await knex('users').where('uid', uidToDelete).del()
-    // Delete all users from firebase auth
-    await auth
-      .deleteUser(uidToDelete)
-      .catch((error: Error) =>
-        console.error(`failed to delete user with uid ${uidToDelete}: ${error}`)
-      )
-  })
-
-  let token: string
-  let uidToDelete: string
-  const vendorsRoute = '/v1/users/vendors/'
+export default function () {
   const productsRoute = '/v1/products'
   const productIds: number[] = []
 
@@ -58,7 +26,6 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
     it('it should retrieve all the products', async () => {
       await testGetAllProductsPublic({
         server,
-        token,
         path: productsRoute,
         query: { public: true },
       })
@@ -68,7 +35,6 @@ export default function ({ userInfo }: { userInfo: UserRequestData }) {
       for (const productId of productIds) {
         await testGetProductPublic({
           server,
-          token,
           path: `${productsRoute}/${productId}`,
           query: { public: true },
         })

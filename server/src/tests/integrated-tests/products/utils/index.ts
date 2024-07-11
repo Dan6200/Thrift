@@ -13,6 +13,7 @@ import {
 } from '../../../../types-and-interfaces/products.js'
 import {
   TestCreateRequest,
+  TestCreateRequestPublic,
   TestCreateRequestWithBody,
   TestCreateRequestWithQParams,
   TestCreateRequestWithQParamsAndBody,
@@ -75,9 +76,7 @@ const testGetAllProducts = (<TestCreateRequest>testRoute)({
   validateResData: isValidProductListResponseData,
 })
 
-export const testGetAllProductsPublic = (<TestCreateRequestWithQParams>(
-  testRoute
-))({
+export const testGetAllProductsPublic = (<TestCreateRequestPublic>testRoute)({
   statusCode: OK,
   verb: 'get',
   validateResData: isValidProductListResponseData,
@@ -97,7 +96,7 @@ const testGetProduct = (<TestCreateRequest>testRoute)({
   validateResData: isValidProductResponseData,
 })
 
-export const testGetProductPublic = (<TestCreateRequestWithQParams>testRoute)({
+export const testGetProductPublic = (<TestCreateRequestPublic>testRoute)({
   statusCode: OK,
   verb: 'get',
   validateResData: isValidProductResponseData,

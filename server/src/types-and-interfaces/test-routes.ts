@@ -20,6 +20,10 @@ export type TestCreateRequestWithQParamsAndBody = (
   }
 ) => TestCreateRequestInnerWQueryNBody
 
+export type TestCreateRequestPublic = (
+  testCreateRequestParams: TestCreateRequestParams
+) => TestCreateRequestPublicInner
+
 export type TestCreateRequestWithQParams = (
   testCreateRequestParams: TestCreateRequestParams
 ) => TestCreateRequestInnerWQuery
@@ -32,6 +36,12 @@ export type TestCreateRequestWithBody = (
 
 type TestCreateRequestInnerWBody = <T>(
   createRequestParams: CreateRequestParams & { body: T }
+) => Promise<any>
+
+type TestCreateRequestPublicInner = <T>(
+  createRequestParams: Omit<CreateRequestParams, 'token'> & {
+    query: { [k: string]: any } | null
+  }
 ) => Promise<any>
 
 type TestCreateRequestInnerWQuery = <T>(

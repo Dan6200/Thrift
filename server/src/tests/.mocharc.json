@@ -1,10 +1,11 @@
 {
   "import": "tsx",
+  "parallel": true,
+  "reporter": "nyan",
   "require": "dotenv/config",
   "timeout": 10000,
   "recursive": true,
   "extension": ["ts", "js", "tsx"],
   "exit": true,
-  "enable-source-maps": true,
-  "reporter": "mochawesome"
+  "enable-source-maps": true
 }

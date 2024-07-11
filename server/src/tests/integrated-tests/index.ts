@@ -15,7 +15,7 @@ import * as Aliyu from './data/users/vendors/user-aliyu/index.js'
 // const users = [Ebuka, Aliyu, Aisha, Mustapha]
 // const customers = [Ebuka, Aisha, Mustapha]
 const users = [Aliyu]
-// const vendors = [Aliyu]
+const vendors = [Aliyu]
 
 export default function (): void {
   /** Public Routes **/
@@ -59,12 +59,12 @@ export default function (): void {
 
   /** Vendor Account actions **/
 
-  // for (let vendor of vendors) {
-  //   const { userInfo } = vendor
-  //   const { first_name: name } = userInfo
-  //   describe(`Testing Vendor Account for ${name}`, () =>
-  //     testVendorAccount(vendor))
-  // }
+  for (let vendor of vendors) {
+    const { userInfo } = vendor
+    const { first_name: name } = userInfo
+    describe(`Testing Vendor Account for ${name}`, () =>
+      testVendorAccount(vendor))
+  }
 
   /** Stores related tests **/
 

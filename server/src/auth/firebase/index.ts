@@ -7,12 +7,15 @@ dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 const { credential } = fbAdmin
 let app = null
 let serviceAccount: any = null
-serviceAccount = await import(process.env.FB_SERVICE_ACCOUNT, {
-  assert: { type: 'json' },
-}).then((module) => {
-  serviceAccount = module.default
-  return serviceAccount
-})
+if (process.env.NODE_ENV === 'production')
+  serviceAccount = await import(process.env.FB_SERVICE_ACCOUNT, {
+    assert: { type: 'json' },
+  }).then((module) => {
+    serviceAccount = module.default
+    return serviceAccount
+  })
+if (process.env.NODE_ENV === 'testing')
+  serviceAccount = JSON.parse(process.env.FB_SERVICE_ACCOUNT)
 
 app = initializeApp({
   credential: credential.cert(serviceAccount),

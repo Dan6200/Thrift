@@ -31,7 +31,7 @@ export default function () {
       })
     })
 
-    it('it should retrieve a specific product without authentication', async () => {
+    it('it should retrieve a specific product', async () => {
       for (const productId of productIds) {
         await testGetProductPublic({
           server,

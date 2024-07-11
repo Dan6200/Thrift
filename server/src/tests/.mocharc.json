@@ -1,6 +1,5 @@
 {
   "import": "tsx",
-  "parallel": true,
   "reporter": "nyan",
   "require": "dotenv/config",
   "timeout": 10000,

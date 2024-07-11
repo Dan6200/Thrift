@@ -57,6 +57,7 @@ export default function ({
           path: `${productsRoute}`,
           body: product,
         })
+        console.log(productIds)
         productIds.push(product_id)
       }
     })

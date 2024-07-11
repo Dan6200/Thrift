@@ -1,5 +1,5 @@
 {
-  "loader": "tsx",
+  "import": "tsx",
   "require": "dotenv/config",
   "timeout": 10000,
   "recursive": true,

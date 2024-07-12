@@ -12,8 +12,7 @@ export async function bulkDeleteImages() {
       })
       const publicIds = resources.map((resource: any) => resource.public_id)
       if (publicIds.length > 0) {
-        const result = await cloudinary.api.delete_resources(publicIds)
-        console.log('Deleted assets: ', result)
+        await cloudinary.api.delete_resources(publicIds)
       } else {
         console.log('No assets found in the folder')
         break

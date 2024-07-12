@@ -1,5 +1,3 @@
-//cspell:ignore cloudinary
-
 import { cloudinary } from '@/controllers/utils/media-storage.js'
 
 export async function bulkDeleteImages() {
@@ -7,7 +5,7 @@ export async function bulkDeleteImages() {
     try {
       const { resources } = await cloudinary.api.resources({
         type: 'upload',
-        prefix: 'thrift-app-media',
+        prefix: 'thrift-app-media-testing',
         max_results: 100,
       })
       const publicIds = resources.map((resource: any) => resource.public_id)
@@ -22,4 +20,3 @@ export async function bulkDeleteImages() {
     }
   }
 }
-bulkDeleteImages()

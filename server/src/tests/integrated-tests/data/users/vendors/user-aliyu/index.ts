@@ -9,7 +9,7 @@ export {
   productPartialUpdate,
   productMedia,
   updatedProductMedia,
-} from './stores/products/index.js'
+} from './products/index.js'
 
 const userInfo: UserRequestData = {
   first_name: 'Aliyu',

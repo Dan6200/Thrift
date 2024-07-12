@@ -1,9 +1,13 @@
-// cspell:disable
+// cspell:ignore fieldname
 ///////////////////////////////////////////////////
 // Uploads an image file to cloudinary using multer
 ///////////////////////////////////////////////////
 import { CloudinaryStorage, Options } from 'multer-storage-cloudinary'
 import { v2 as cloudinary } from 'cloudinary'
+import dotenv from 'dotenv'
+if (process.env.NODE_ENV === 'production')
+  dotenv.config({ path: `/etc/secrets/.env.${process.env.NODE_ENV}` })
+else dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -13,15 +17,32 @@ cloudinary.config({
 })
 
 export { cloudinary }
+let cloudinaryStorage: CloudinaryStorage | null = null
 
-export default new CloudinaryStorage({
-  cloudinary,
-  params: {
-    use_filename: true,
-    folder: 'thrift-app-media',
-    unique_filename: true,
-    overwrite: true,
-    public_id: (_req, file) =>
-      `${file.fieldname}-${Math.trunc(Math.random() * 1e9)}`,
-  },
-} as Options)
+if (process.env.NODE_ENV === 'testing') {
+  cloudinaryStorage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+      use_filename: true,
+      folder: 'thrift-app-media',
+      unique_filename: true,
+      overwrite: true,
+      public_id: (_req, file) =>
+        `${file.fieldname}-${Math.trunc(Math.random() * 1e9)}`,
+    },
+  } as Options)
+} else {
+  cloudinaryStorage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+      use_filename: true,
+      folder: 'thrift-app-media',
+      unique_filename: true,
+      overwrite: true,
+      public_id: (_req, file) =>
+        `${file.fieldname}-${Math.trunc(Math.random() * 1e9)}`,
+    },
+  } as Options)
+}
+
+export { cloudinaryStorage }

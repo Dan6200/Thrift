@@ -20,6 +20,7 @@ WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/built ./built
 COPY package.* ./
+COPY server/src/api-docs/* ./api-docs/
 COPY patches ./patches
 RUN npm install -g pnpm
 RUN pnpm install --prod

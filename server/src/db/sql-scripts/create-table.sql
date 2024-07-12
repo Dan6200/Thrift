@@ -1,5 +1,5 @@
-drop schema if exists public cascade;
-create schema if not exists public;
+-- drop schema if exists public cascade;
+-- create schema if not exists public;
 
 create table if not exists users (
   uid 		     varchar                    primary    key, -- Get from Firebase
@@ -22,7 +22,7 @@ create table if not exists users (
 );
 
 
-create table if not exists customers (
+create table if not exists customers(
   customer_id   varchar   primary key   references   users   on   delete   cascade
 );
 
@@ -46,12 +46,11 @@ create table if not exists payment_info (
 
 
 
-create table if not exists vendors (
+create table if not exists vendors(
   vendor_id   varchar   primary key   references   users   on   delete   cascade
 );
 
 
-/*
 create table if not exists stores (
   store_id       serial    primary   key,   
   store_name     varchar   not       null,
@@ -59,7 +58,6 @@ create table if not exists stores (
   store_page     jsonb,
   date_created   date      not       null    default      current_date
 );
-*/
 
 create table if not exists categories (
 	category_id					serial					primary 	key,
@@ -84,7 +82,7 @@ insert into subcategories(category_id, subcategory_name) values ((select categor
 ((select category_id from categories where category_name = 'Clothing'), 'Women''s Fashion'),
 ((select category_id from categories where category_name = 'Clothing'), 'Men''s Fashion');
 
-create table if not exists products (
+create table if not exists products(
   product_id           serial           primary   key,
   title                varchar,
   description          jsonb,
@@ -97,7 +95,7 @@ create table if not exists products (
   quantity_available   int              not       null
 );
 
-create table if not exists product_media (
+create table if not exists product_media(
   product_id					int					not null   references   products   on   delete   cascade,
   filename						varchar			primary    key,
   filepath						varchar			not        null,

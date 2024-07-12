@@ -1,9 +1,10 @@
+//cspell:ignore cloudinary
 import { knex } from '../../../db/index.js'
 import { UserRequestData } from '@/types-and-interfaces/users/index.js'
 import {
   ProductRequestData,
   ProductMedia,
-} from '../../../types-and-interfaces/products.js'
+} from '@/types-and-interfaces/products.js'
 import {
   testPostProduct,
   testUploadProductMedia,
@@ -11,9 +12,10 @@ import {
 import { testPostVendor } from '../users/vendors/utils/index.js'
 import { isValidPostUserParams } from '../users/index.js'
 import { testPostUser } from '../users/utils/index.js'
-import { auth } from '../../../auth/firebase/index.js'
-import { auth as _auth } from '../../../auth/firebase/testing.js'
+import { auth } from '@/auth/firebase/index.js'
+import { auth as _auth } from '@/auth/firebase/testing.js'
 import { signInWithCustomToken } from 'firebase/auth'
+import { bulkDeleteImages } from '../utils/bulk-delete.js'
 
 // globals
 const mediaRoute = '/v1/media'
@@ -35,6 +37,8 @@ export default function ({
 }) {
   describe('Product media management', () => {
     before(async () => {
+      // Bulk delete media from cloudinary
+      await bulkDeleteImages()
       // Create a new user for each tests
       const postUserParams = {
         server,
@@ -72,6 +76,8 @@ export default function ({
             `failed to delete user with uid ${uidToDelete}: ${error}`
           )
         )
+      // Bulk delete media from cloudinary
+      await bulkDeleteImages()
     })
 
     // Create a product for the store

@@ -12,6 +12,8 @@ cloudinary.config({
   secure: true,
 })
 
+export { cloudinary }
+
 export default new CloudinaryStorage({
   cloudinary,
   params: {

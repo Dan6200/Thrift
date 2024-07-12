@@ -6,6 +6,9 @@ WORKDIR /usr/src/app
 
 COPY package.* ./
 RUN npm install -g pnpm
+RUN pnpm add patch -D
+COPY patches ./patches
+RUN pnpm patch
 RUN pnpm install
 COPY . .
 RUN pnpm build

@@ -19,8 +19,8 @@ FROM node:20-slim
 WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/built ./built
+COPY --from=build /usr/src/app/server/api-docs/* ./api-docs/
 COPY package.* ./
-COPY --from=build /usr/src/app/api-docs/* ./api-docs/
 COPY patches ./patches
 RUN npm install -g pnpm
 RUN pnpm install --prod

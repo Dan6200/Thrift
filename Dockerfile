@@ -19,7 +19,6 @@ FROM node:20-slim
 WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/built ./built
-RUN ls
 COPY server/api-docs/* ./api-docs/
 COPY package.* ./
 COPY patches ./patches

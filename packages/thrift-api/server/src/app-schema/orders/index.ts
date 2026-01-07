@@ -65,6 +65,7 @@ export const OrderResponseSchema = Joi.object({
   status: Joi.string()
     .valid('pending', 'processing', 'shipped', 'delivered', 'cancelled')
     .required(),
+  payment_reference: Joi.string().optional().allow(null),
   created_at: Joi.date().iso().required(),
   updated_at: Joi.date().iso().required(),
   items: Joi.array()

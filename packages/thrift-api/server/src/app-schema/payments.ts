@@ -12,7 +12,9 @@ export const InitializePaymentRequestSchema = Joi.object({
     // email: Joi.string().email().required(), // Email will be derived from authenticated user for security
     callback_url: Joi.string().uri().optional(), // Optional: Frontend can specify redirect URL
   }).required(),
-  query: Joi.object().optional(), // No query params for /initialize
+  query: Joi.object({
+    save_card: Joi.boolean().optional(),
+  }).optional(),
 })
 
 // Schema for Paystack webhook payload
@@ -29,3 +31,8 @@ export const InitializePaymentResponseSchema = Joi.object({
   access_code: Joi.string().optional(), // Paystack's access code for pop-up widgets
   reference: Joi.string().required(), // Paystack's unique transaction reference
 })
+
+export const PaystackWebhookResponseSchema = Joi.object({
+  message: Joi.string().required(),
+  order: Joi.object().optional(), // Webhook might return updated order details
+}).unknown(true) // Allow unknown keys if the order object is complex and not fully validated here

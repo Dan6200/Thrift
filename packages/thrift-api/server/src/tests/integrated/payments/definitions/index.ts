@@ -29,7 +29,10 @@ export const testInitializePayment = (args: {
     verb: 'post',
     statusCode: args.expectedStatusCode || OK,
     path,
-    validateTestReqData: validateInitializePaymentReq,
+    validateTestReqData:
+      args.expectedStatusCode === BAD_REQUEST
+        ? null
+        : validateInitializePaymentReq,
     validateTestResData:
       args.expectedStatusCode === OK ? validateInitializePaymentRes : null,
   })(requestParams)

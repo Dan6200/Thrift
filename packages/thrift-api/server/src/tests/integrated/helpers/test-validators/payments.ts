@@ -6,12 +6,13 @@ import {
   PaystackWebhookRequestSchema,
 } from '#src/app-schema/payments.js'
 
-export const validateInitializePaymentReq = (data: unknown) =>
-  validateTestData(
+export const validateInitializePaymentReq = (data: unknown) => {
+  return validateTestData(
     InitializePaymentRequestSchema,
     data,
     'Initialize Payment Request Validation Error',
   )
+}
 
 export const validateInitializePaymentRes = (data: unknown) =>
   validateTestData(

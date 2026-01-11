@@ -102,13 +102,6 @@ describe('Payments', () => {
         body: { order_id: testOrderId },
       })
 
-      expect(response.status).to.equal(OK)
-      expect(response.body)
-        .to.have.property('authorization_url')
-        .that.is.a('string')
-      expect(response.body).to.have.property('reference').that.is.a('string')
-      expect(response.body).to.have.property('access_code').that.is.a('string')
-
       // Verify payment_reference is updated in the database
       const updatedOrder = await knex('orders')
         .where({ order_id: testOrderId })
@@ -119,21 +112,20 @@ describe('Payments', () => {
     })
 
     it('should return 400 if order_id is missing', async () => {
-      const response = await testInitializePayment({
+      await testInitializePayment({
         token: customerToken,
+        // Pass in undefined as order_id
         body: { order_id: undefined as any },
         expectedStatusCode: BAD_REQUEST,
       })
-      expect(response.status).to.equal(BAD_REQUEST)
     })
 
     it('should return 404 if order does not exist', async () => {
-      const response = await testInitializePayment({
+      await testInitializePayment({
         token: customerToken,
         body: { order_id: 99999999 },
         expectedStatusCode: NOT_FOUND,
       })
-      expect(response.status).to.equal(NOT_FOUND)
     })
 
     it('should return 400 if order is not in pending status', async () => {
@@ -153,32 +145,29 @@ describe('Payments', () => {
         .where({ order_id: nonPendingOrderId })
         .update({ status: 'completed' })
 
-      const response = await testInitializePayment({
+      await testInitializePayment({
         token: customerToken,
         body: { order_id: nonPendingOrderId },
         expectedStatusCode: BAD_REQUEST,
       })
-      expect(response.status).to.equal(BAD_REQUEST)
 
       await knex('orders').where({ order_id: nonPendingOrderId }).del()
     })
 
     it('should return 401 if user is unauthenticated', async () => {
-      const response = await testInitializePayment({
+      await testInitializePayment({
         token: 'invalid_token',
         body: { order_id: testOrderId },
         expectedStatusCode: UNAUTHORIZED,
       })
-      expect(response.status).to.equal(UNAUTHORIZED)
     })
 
     it('should return 404 (or 403) if order does not belong to authenticated user', async () => {
-      const response = await testInitializePayment({
+      await testInitializePayment({
         token: vendorToken,
         body: { order_id: testOrderId },
         expectedStatusCode: NOT_FOUND,
       })
-      expect(response.status).to.equal(NOT_FOUND)
     })
   })
 
@@ -243,6 +232,8 @@ describe('Payments', () => {
           'Content-Type': 'application/json',
         },
       })
+
+      console.log('Paystack Webhook Response', response)
 
       expect(response.status).to.equal(OK)
       expect(response.body).to.have.property(

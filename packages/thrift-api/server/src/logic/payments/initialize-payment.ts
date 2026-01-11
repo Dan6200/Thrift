@@ -27,6 +27,12 @@ export const initializePaymentLogic = async (
   // validatedBody comes from InitializePaymentRequestSchema
   const { order_id, callback_url } = req.validatedBody
 
+  if (!order_id) {
+    throw new BadRequestError('Order ID cannot be NULL.')
+  }
+
+  const { save_card } = req.validatedQueryParams || {}
+
   // 1. Fetch order details to get amount and customer email
   const order = await knex('orders')
     .where({ order_id, customer_id: userId })
@@ -64,6 +70,7 @@ export const initializePaymentLogic = async (
       metadata: JSON.stringify({
         order_id: order.order_id,
         customer_id: userId,
+        save_card: !!save_card, // Pass intent to save card
         // Any other relevant data for your application
       }),
       callback_url:

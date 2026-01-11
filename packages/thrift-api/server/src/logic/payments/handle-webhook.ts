@@ -74,9 +74,29 @@ export const handlePaystackWebhookLogic = async (
         )
       }
 
-      console.log(
-        `Order ${orderId} status updated to 'processing' (Paystack reference: ${paystackReference}).`,
-      )
+      // 5. Save Card if requested
+      const saveCard = event.data.metadata?.save_card
+      const authorization = event.data.authorization
+
+      if (saveCard && authorization && authorization.reusable) {
+        const customerId = event.data.metadata?.customer_id
+        const customerEmail = event.data.customer?.email
+
+        // Use upsert (on conflict do nothing/update) to avoid duplicates if same card used
+        await knex('payment_info')
+          .insert({
+            customer_id: customerId,
+            authorization_code: authorization.authorization_code,
+            email: customerEmail,
+            last4: authorization.last4,
+            exp_month: authorization.exp_month,
+            exp_year: authorization.exp_year,
+            brand: authorization.brand,
+          })
+          .onConflict('authorization_code') // Assuming unique constraint on authorization_code
+          .ignore() // Or update last_used_at if you have such a column
+      }
+
       req.dbResult = {
         message: 'Webhook processed successfully',
         order: updatedOrder,

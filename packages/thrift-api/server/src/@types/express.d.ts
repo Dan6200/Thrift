@@ -10,6 +10,7 @@ declare global {
       dbResult?: any | any[] // This will hold the result from the DB query middleware
       validatedResponse?: any | any[] // This will hold the validated response data before sending
       authorized?: boolean // Flag to indicate successful authorization
+      eventPayload?: any // Data to be used by the publishEvent middleware
     }
   }
 }

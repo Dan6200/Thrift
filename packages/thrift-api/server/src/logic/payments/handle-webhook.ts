@@ -30,6 +30,30 @@ export const handlePaystackWebhookLogic = async (
 
   // 2. Process Webhook Event
   const event = req.body
+  const eventId = event.id // Paystack's unique event identifier
+
+  if (!eventId) {
+    logger.error('Paystack webhook missing event id.')
+    throw new BadRequestError('Webhook missing event identifier.')
+  }
+
+  // 2.1 Replay Protection: Check if event already processed
+  try {
+    await knex('processed_webhooks').insert({
+      event_id: eventId,
+      provider: 'paystack',
+      payload: event, // Optional: Store for audit trail
+    })
+  } catch (error: any) {
+    if (error.code === '23505') {
+      // Postgres unique violation (duplicate key)
+      logger.info(`Webhook: Event ${eventId} already processed. Skipping.`)
+      req.dbResult = { message: 'Event already processed.' }
+      return next()
+    }
+    logger.error(`Failed to record webhook event ${eventId}:`, error.message)
+    throw new InternalServerError('Failed to process webhook identity.')
+  }
 
   if (event.event === 'charge.success') {
     const paystackReference = event.data.reference

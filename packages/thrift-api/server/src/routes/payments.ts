@@ -6,30 +6,41 @@ import { validate } from '#src/request-validation.js'
 import { sendResponse } from '#src/send-response.js'
 import {
   initializePaymentLogic,
-  handlePaystackWebhookLogic, // Import the new webhook logic
+  handlePaystackWebhookLogic,
+  processOrderJobLogic, // Import job logic
 } from '#src/logic/payments/index.js'
 import {
   InitializePaymentRequestSchema,
   InitializePaymentResponseSchema,
-  PaystackWebhookRequestSchema, // Schema for webhook validation
+  PaystackWebhookRequestSchema,
+  PaystackWebhookResponseSchema, // Import webhook response schema
 } from '#src/app-schema/payments.js'
 import { validateDbResult } from '#src/db-result-validation.js'
+import { publishEvent } from '#src/events/publish.js'
+import { PaymentSuccessEvent } from '#src/events/payment-success.js'
 
 const router = Router()
 const { OK } = StatusCodes
 
 router.post(
   '/webhook',
-  // Webhooks do NOT use authenticateUser middleware, as the request comes from Paystack
-  // Use a schema validator for the webhook payload if needed (PaystackWebhookRequestSchema)
-  // Paystack webhook body structure is standard, so validation may be basic
-  validate(PaystackWebhookRequestSchema),
+  // Webhooks do NOT use authenticateUser middleware
+  // validate(PaystackWebhookRequestSchema), // Optional: Validate incoming webhook structure
   handlePaystackWebhookLogic,
-  validateDbResult(InitializePaymentResponseSchema), // Add response validation
+  publishEvent(PaymentSuccessEvent), // Publish event to QStash
+  validateDbResult(PaystackWebhookResponseSchema), // Validate our response
   sendResponse(OK),
 )
 
-router.use(authenticateUser) // Payments usually require authentication
+// QStash Job Endpoint (Protected by Signature Verification inside logic)
+router.post(
+  '/jobs/process-order',
+  processOrderJobLogic,
+  validateDbResult(PaystackWebhookResponseSchema), // Reuse schema or create specific one
+  sendResponse(OK),
+)
+
+router.use(authenticateUser) // subsequent routes require authentication
 
 // Route to initialize a payment
 router.post(

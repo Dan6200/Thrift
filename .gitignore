@@ -107,3 +107,4 @@ thrift-app-*.json
 !.vercel/project.json
 /server/src/tests/integrated/data/addresses/
 /doc/schema/
+tbls.yaml

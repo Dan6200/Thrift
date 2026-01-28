@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { client as qstash } from '#src/lib/queue.js'
+import logger from '#src/utils/logger.js'
 
 // Base Event Interface
 export interface DomainEvent {
@@ -45,11 +46,11 @@ export const publishEvent = (EventClass: EventConstructor) => {
         body: event.toPayload(),
       })
 
-      console.log(`Event Published: ${EventClass.name} -> ${destination}`)
+      logger.info(`Event Published: ${EventClass.name} -> ${destination}`)
 
       next()
     } catch (error: any) {
-      console.error(`Failed to publish event ${EventClass.name}:`, error)
+      logger.error(`Failed to publish event ${EventClass.name}:`, error)
       // We generally want to fail the request if publishing fails, so the webhook provider retries
       next(error)
     }

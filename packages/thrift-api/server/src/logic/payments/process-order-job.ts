@@ -3,6 +3,7 @@ import { knex } from '#src/db/index.js'
 import InternalServerError from '#src/errors/internal-server.js'
 import NotFoundError from '#src/errors/not-found.js'
 import { Receiver } from '@upstash/qstash'
+import logger from '#src/utils/logger.js'
 
 const receiver = new Receiver({
   currentSigningKey: process.env.QSTASH_CURRENT_SIGNING_KEY || '',
@@ -25,11 +26,11 @@ export const processOrderJobLogic = async (
     })
 
     if (!isValid) {
-      console.error('Invalid QStash signature')
+      logger.error('Invalid QStash signature')
       return next(new InternalServerError('Invalid job signature.'))
     }
   } catch (err) {
-    console.error('QStash verification error:', err)
+    logger.error('QStash verification error:', err)
     return next(new InternalServerError('Job verification failed.'))
   }
 
@@ -45,7 +46,7 @@ export const processOrderJobLogic = async (
   const orderId = data.metadata?.order_id
 
   if (!orderId) {
-    console.warn('Job missing order_id metadata', data)
+    logger.warn('Job missing order_id metadata', data)
     req.dbResult = { message: 'order_id missing/ignored.' }
     return next()
   }
@@ -84,17 +85,17 @@ export const processOrderJobLogic = async (
         .onConflict('authorization_code')
         .ignore()
 
-      console.log(`Job Processor: Saved card for user ${customerId}`)
+      logger.info(`Job Processor: Saved card for user ${customerId}`)
     }
 
-    console.log(`Job Processor: Order ${orderId} successfully processed.`)
+    logger.info(`Job Processor: Order ${orderId} successfully processed.`)
     req.dbResult = {
       message: 'Order processed successfully',
       order: updatedOrder,
     }
     next()
   } catch (error: any) {
-    console.error('Error in processOrderJobLogic:', error.message)
+    logger.error('Error in processOrderJobLogic:', error.message)
     next(new InternalServerError(`Job processing failed: ${error.message}`))
   }
 }

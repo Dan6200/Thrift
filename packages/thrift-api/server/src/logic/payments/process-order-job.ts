@@ -54,7 +54,11 @@ export const processOrderJobLogic = async (
   try {
     // 3. Update Order Status
     const [updatedOrder] = await knex('orders')
-      .where({ order_id: orderId, payment_reference: paystackReference })
+      .where({
+        order_id: orderId,
+        payment_reference: paystackReference,
+        status: 'pending',
+      })
       .update({ status: 'processing', updated_at: knex.fn.now() })
       .returning('*')
 

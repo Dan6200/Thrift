@@ -1,0 +1,52 @@
+substitutions:
+  _REGION: "us-central1"
+  _REPO_NAME: "thrift-images"
+  _SERVICE_NAME: "thrift-classical-search"
+  _TAG: latest
+
+steps:
+  # Step 1: Ensure Artifact Registry repository exists
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "ensure-repo"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        if ! gcloud artifacts repositories describe "${_REPO_NAME}" --location="${_REGION}" &>/dev/null; then
+          gcloud artifacts repositories create "${_REPO_NAME}" \
+            --repository-format=docker \
+            --location="${_REGION}" \
+            --description="Docker repository for thrift-search services"
+        fi
+
+  # Step 2: Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    id: "build-image"
+    args:
+      - "build"
+      - "-t"
+      - "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${_TAG}"
+      - "-t"
+      - "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:latest"
+      - "."
+
+  # Step 3: Deploy to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "deploy-cloud-run"
+    entrypoint: "gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "${_SERVICE_NAME}"
+      - "--image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${_TAG}"
+      - "--region=${_REGION}"
+      - "--platform=managed"
+      - "--allow-unauthenticated"
+
+# Automatically pushes tagged images to Artifact Registry
+images:
+  - "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${_TAG}"
+  - "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:latest"
+
+options:
+  logging: CLOUD_LOGGING_ONLY

@@ -20,12 +20,6 @@
     "lint-staged": "^16.2.1",
     "prettier": "^3.6.2"
   },
-  "pnpm": {
-    "overrides": {
-      "react": "19.2.0",
-      "react-dom": "19.2.0"
-    }
-  },
   "dependencies": {
     "@paystack/paystack-sdk": "^1.0.1",
     "bullmq": "^5.66.4",

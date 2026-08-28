@@ -23,6 +23,12 @@ export const getAllProductsLogic = async (
     namedBindings.storeId = storeId
   }
 
+  /**
+   * ARCHITECTURAL NOTE:
+   * We use JSON_AGG here to move the O(n) reduction logic from the
+   * Node.js Event Loop to the Postgres Engine.
+   * Result: significant reduction in payload size and faster response times.
+   */
   let dbQueryString = `
 		WITH product_data AS (
 			SELECT

@@ -1,27 +1,3 @@
-# cspell:disable
-# View results on github.com
-# gh CLI commands to view results
-# [list of all workflows]:
-# gh run list
-# [show the latest results of a specific workflow]
-# gh run list --workflow=<name_of_test_file>.yml -L 1
-# [Extract the run id]:
-# run_id=$(gh run list --workflow=<name_of_test_file>.yml -L 1|awk -F'\t' '{print $7}') && echo $run_id
-# [watch a workflow run]:
-# gh run watch <run_id>
-# [view details of a run]:
-# gh run view <run_id>
-# [view log details of a run]:
-# gh run view <run_id> --log
-# [view only log details]:
-# gh run view <run_id> --log|awk -F'\t' '{print $3}'|awk -F'Z ' '{print $2}'
-# [One line]:
-# run_id=$(gh run list -L 1|awk -F'\t' '{print $7}') && gh run view $run_id --log-failed|awk -F'\t' '{print $3}'|awk -F'Z ' '{print $2}'
-# [Download artifacts of a run]:
-# gh run download <run_id>
-# [Rerun a workflow run]:
-# gh run rerun <run_id>
-
 name: Thrift-api Testing
 
 on:
@@ -45,46 +21,45 @@ jobs:
       CLOUDINARY_CLOUD_NAME: dk6dujsds
 
     steps:
-      - uses: actions/checkout@v2
-        with:
-          node-version: 22
+      - uses: actions/checkout@v4
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
         with:
           version: latest
-        # env:
-        #   SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
 
       - name: Start Supabase
         run: supabase start
         working-directory: packages/thrift-api
 
-      - name: Use Node.js 22
-        uses: actions/setup-node@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: "pnpm"
 
-      - run: npm install -g pnpm
-        working-directory: packages/thrift-api
+      # Install workspace dependencies from the root
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - run: pnpm install
-        working-directory: packages/thrift-api
-
-      - run: pnpm build
-        working-directory: packages/thrift-api
+      - name: Build thrift-api
+        run: pnpm --filter thrift-api build
 
       - name: Start server
         run: |
-          pnpm test-server &> results.log &
+          pnpm --filter thrift-api test-server &> results.log &
           sleep 5
         working-directory: packages/thrift-api
 
       - name: Run tests
-        run: pnpm tests
-        working-directory: packages/thrift-api
+        run: pnpm --filter thrift-api tests
 
-      - name: View results
+      - name: View results on failure
         if: failure()
         run: cat results.log
         working-directory: packages/thrift-api

@@ -52,19 +52,40 @@ export const processOrderJobLogic = async (
   }
 
   try {
-    // 3. Update Order Status
+    /**
+     * IDEMPOTENCY STRATEGY:
+     * To ensure this job can safely run multiple times without duplicate side-effects (e.g., charging twice or sending duplicate emails):
+     * 1. We only update orders currently in 'pending' status.
+     * 2. If no rows are updated, we check if it's because the order was already processed by a previous run.
+     */
     const [updatedOrder] = await knex('orders')
       .where({
         order_id: orderId,
         payment_reference: paystackReference,
-        status: 'pending',
+        status: 'pending', // Only allow transition from pending
       })
-      .update({ status: 'processing', updated_at: knex.fn.now() })
+      .update({
+        status: 'processing',
+        updated_at: knex.fn.now(),
+      })
       .returning('*')
 
     if (!updatedOrder) {
+      // Check if it failed because it was already processed
+      const existingOrder = await knex('orders')
+        .where({ order_id: orderId, payment_reference: paystackReference })
+        .first()
+
+      if (existingOrder && existingOrder.status !== 'pending') {
+        logger.info(
+          `Job Processor: Order ${orderId} already processed (Current Status: ${existingOrder.status}). Exiting gracefully.`,
+        )
+        req.dbResult = { message: 'Order already processed.' }
+        return next()
+      }
+
       throw new NotFoundError(
-        `Order ${orderId} with reference ${paystackReference} not found during job processing.`,
+        `Order ${orderId} with reference ${paystackReference} not found or is in an invalid state.`,
       )
     }
 

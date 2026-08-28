@@ -1,10 +1,11 @@
 packages:
   - packages/*
 onlyBuiltDependencies:
-  - '@scarf/scarf'
-  - '@tailwindcss/oxide'
+  - "@scarf/scarf"
+  - "@tailwindcss/oxide"
   - bcrypt
   - core-js
   - esbuild
   - sharp
   - unrs-resolver
+  - msgpackr-extract

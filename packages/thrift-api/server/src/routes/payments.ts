@@ -25,7 +25,7 @@ const { OK } = StatusCodes
 router.post(
   '/webhook',
   // Webhooks do NOT use authenticateUser middleware
-  // validate(PaystackWebhookRequestSchema), // Optional: Validate incoming webhook structure
+  validate(PaystackWebhookRequestSchema), // Optional: Validate incoming webhook structure
   handlePaystackWebhookLogic,
   publishEvent(PaymentSuccessEvent), // Publish event to QStash
   validateDbResult(PaystackWebhookResponseSchema), // Validate our response

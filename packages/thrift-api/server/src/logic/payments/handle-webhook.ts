@@ -5,6 +5,7 @@ import InternalServerError from '#src/errors/internal-server.js'
 import Paystack from '@paystack/paystack-sdk' // Paystack SDK
 import crypto from 'crypto'
 import logger from '#src/utils/logger.js'
+import { knex } from '#src/db/index.js'
 
 const paystack = new Paystack(process.env.PAYSTACK_SECRET_KEY as string)
 

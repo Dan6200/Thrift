@@ -6,12 +6,12 @@ import { sendResponse } from '#src/send-response.js'
 import authenticateUser from '#src/authentication.js'
 import { hasStoreAccess } from '#src/authorization/has-store-access.js'
 import {
-  createProductLogic,
   getAllProductsLogic,
   getProductLogic,
   updateProductLogic,
   deleteProductLogic,
 } from '#src/logic/products/index.js'
+import { createProductHandler } from '#src/context/catalog/http/create-product.js'
 import {
   createVariantLogic,
   updateVariantLogic,
@@ -43,7 +43,7 @@ router
     authenticateUser,
     validate(ProductCreateRequestSchema),
     hasStoreAccess(['admin', 'editor']),
-    createProductLogic,
+    createProductHandler,
     validateDbResult(ProductResponseSchema),
     sendResponse(CREATED),
   )

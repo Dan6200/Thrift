@@ -194,175 +194,175 @@ expectedDataAfterVariantAdditionAndUpdates:
 
 productMedia:
   - - name: 'airpods-1'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/crikey.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/crikey.jpg'
       description: 'Echo Wireless Earbuds'
       is_display_image: true
       is_thumbnail_image: true
       filetype: 'image/jpeg'
     - name: 'airpods-2'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/bose-headphones/house.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/bose-headphones/house.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-3'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/josh.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/josh.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-4'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/crikey.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/crikey.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-5'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-6'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/crikey.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/crikey.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-7'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/cat.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/cat.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-8'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/cat.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/cat.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-9'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/bose-headphones/blake.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/bose-headphones/blake.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
   - - name: 'lenovo-tab-1'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/bose-headphones/blake.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/bose-headphones/blake.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: true
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'lenovo-tab-2'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/bose-headphones/random.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/bose-headphones/random.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'lenovo-tab-3'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/bose-headphones/random.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/bose-headphones/random.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'lenovo-tab-4'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'lenovo-tab-5'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'lenovo-tab-6'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
   - - name: 'echo-wireless-buds-1'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Echo Wireless Earbuds'
       is_display_image: true
       is_thumbnail_image: true
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-2'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-3'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-4'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-5'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-7'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-8'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'echo-wireless-buds-9'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
   - - name: 'lenovo-tab-1'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: true
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'lenovo-tab-2'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'lenovo-tab-3'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'lenovo-tab-4'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'lenovo-tab-5'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'lenovo-tab-6'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'Lenovo Tablet M10 Plus Gen 3'
       is_display_image: false
       is_thumbnail_image: false
@@ -370,37 +370,37 @@ productMedia:
 
 updatedProductMedia:
   - - name: 'tozo-smartwatch-1'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'A fitness smartwatch'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'tozo-smartwatch-2'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'A fitness smartwatch'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'tozo-smartwatch-3'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'A fitness smartwatch'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'tozo-smartwatch-4'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'A fitness smartwatch'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'tozo-smartwatch-5'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/airpods/display.jpg'
       description: 'A fitness smartwatch'
       is_display_image: false
       is_thumbnail_image: false
       filetype: 'image/jpeg'
     - name: 'tozo-smartwatch-6'
-      path: './server/src/tests/integrated/data/users/vendors/user-aliyu/products/media/'
+      path: './src/tests/integrated/data/users/vendors/user-aliyu/products/media/'
       description: 'A fitness smartwatch'
       is_display_image: false
       is_thumbnail_image: false

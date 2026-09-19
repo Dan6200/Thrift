@@ -23,7 +23,7 @@ const {
   variantsToCreate,
   variantUpdates,
 } = loadYamlFile(
-  'server/src/tests/integrated/data/users/vendors/user-aliyu/products/index.yml',
+  'src/tests/integrated/data/users/vendors/user-aliyu/products/index.yml',
 )
 import { ProfileRequestData } from '../../../types/profile/index.js'
 import assert from 'assert'

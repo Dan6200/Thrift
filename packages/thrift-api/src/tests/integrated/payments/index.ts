@@ -1,4 +1,4 @@
-// packages/thrift-api/server/src/tests/integrated/payments/index.ts
+// packages/thrift-api/src/tests/integrated/payments/index.ts
 import { expect } from 'chai'
 import { StatusCodes } from 'http-status-codes'
 import { v4 as uuidv4 } from 'uuid'
@@ -27,10 +27,10 @@ const {
 
 // Load test data
 const customerData = loadUserData(
-  'server/src/tests/integrated/data/users/customers/user-aisha',
+  'src/tests/integrated/data/users/customers/user-aisha',
 )
 const vendorData = loadUserData(
-  'server/src/tests/integrated/data/users/vendors/user-aliyu',
+  'src/tests/integrated/data/users/vendors/user-aliyu',
 )
 
 describe('Payments', () => {

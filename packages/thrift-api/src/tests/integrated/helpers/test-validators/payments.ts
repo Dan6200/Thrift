@@ -1,4 +1,4 @@
-// packages/thrift-api/server/src/tests/integrated/helpers/test-validators/payments.ts
+// packages/thrift-api/src/tests/integrated/helpers/test-validators/payments.ts
 import { validateTestData } from '../test-validators.js'
 import {
   InitializePaymentRequestSchema,

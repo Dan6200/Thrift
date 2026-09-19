@@ -25,13 +25,13 @@ import { updateVariantForTesting } from '../helpers/product-variants.js'
 import { ProductVariant } from '#src/types/products.js'
 
 const Ebuka = loadUserData(
-  'server/src/tests/integrated/data/users/customers/user-ebuka',
+  'src/tests/integrated/data/users/customers/user-ebuka',
 )
 const Aisha = loadUserData(
-  'server/src/tests/integrated/data/users/customers/user-aisha',
+  'src/tests/integrated/data/users/customers/user-aisha',
 )
 const Mustapha = loadUserData(
-  'server/src/tests/integrated/data/users/customers/user-mustapha',
+  'src/tests/integrated/data/users/customers/user-mustapha',
 )
 
 chai.use(chaiHttp).should()

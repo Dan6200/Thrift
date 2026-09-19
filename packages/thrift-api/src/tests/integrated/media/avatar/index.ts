@@ -25,7 +25,7 @@ export default function ({ userInfo }: { userInfo: ProfileRequestData }) {
 
   const avatarMedia = {
     name: 'avatar.jpg',
-    path: './server/src/tests/integrated/data/users/vendors/user-aliyu/profile/avatar.jpg',
+    path: './src/tests/integrated/data/users/vendors/user-aliyu/profile/avatar.jpg',
     description: 'User avatar',
   }
 

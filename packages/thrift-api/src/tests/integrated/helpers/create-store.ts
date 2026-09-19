@@ -1,7 +1,7 @@
 import chai from 'chai'
 import { loadYamlFile } from './load-data.js'
 const { listOfStores } = loadYamlFile(
-  'server/src/tests/integrated/data/users/vendors/user-aliyu/stores.yml',
+  'src/tests/integrated/data/users/vendors/user-aliyu/stores.yml',
 )
 
 export async function createStoreForTesting(token: string) {

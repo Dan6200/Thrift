@@ -15,17 +15,15 @@ import testOrders from './orders/index.js'
 import { bulkDeleteImages } from './utils/bulk-delete.js'
 
 const Ebuka = loadUserData(
-  'server/src/tests/integrated/data/users/customers/user-ebuka',
+  'src/tests/integrated/data/users/customers/user-ebuka',
 )
 const Aisha = loadUserData(
-  'server/src/tests/integrated/data/users/customers/user-aisha',
+  'src/tests/integrated/data/users/customers/user-aisha',
 )
 const Mustapha = loadUserData(
-  'server/src/tests/integrated/data/users/customers/user-mustapha',
+  'src/tests/integrated/data/users/customers/user-mustapha',
 )
-const Aliyu = loadUserData(
-  'server/src/tests/integrated/data/users/vendors/user-aliyu',
-)
+const Aliyu = loadUserData('src/tests/integrated/data/users/vendors/user-aliyu')
 
 const users = [Ebuka, Aliyu, Aisha, Mustapha]
 const customers = [Ebuka, Aisha, Mustapha] // is_customer is true

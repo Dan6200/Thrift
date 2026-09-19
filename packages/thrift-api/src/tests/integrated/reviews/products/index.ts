@@ -20,13 +20,13 @@ import { createProductsForTesting } from '../../helpers/create-product.js'
 import { loadUserData } from '../../helpers/load-data.js'
 
 const { userInfo: vendorInfo } = loadUserData(
-  'server/src/tests/integrated/data/users/vendors/user-aliyu',
+  'src/tests/integrated/data/users/vendors/user-aliyu',
 )
 const { userInfo: mustaphaInfo } = loadUserData(
-  'server/src/tests/integrated/data/users/customers/user-mustapha',
+  'src/tests/integrated/data/users/customers/user-mustapha',
 )
 const { userInfo: ebukaInfo } = loadUserData(
-  'server/src/tests/integrated/data/users/customers/user-ebuka',
+  'src/tests/integrated/data/users/customers/user-ebuka',
 )
 import { createOrderForTesting } from '../../helpers/create-order.js'
 

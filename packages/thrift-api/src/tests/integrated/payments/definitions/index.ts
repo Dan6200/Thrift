@@ -1,4 +1,4 @@
-// packages/thrift-api/server/src/tests/integrated/payments/definitions/index.ts
+// packages/thrift-api/src/tests/integrated/payments/definitions/index.ts
 import { StatusCodes } from 'http-status-codes'
 import testRequest from '#src/tests/integrated/test-request/index.js'
 import {

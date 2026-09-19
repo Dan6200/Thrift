@@ -21,7 +21,7 @@ export const updateVariantLogic = async (
       'pv.product_id': productId,
       'p.store_id': storeId,
     })
-    .first('pv.variant_id', 'p.list_price', 'p.net_price')
+    .first('pv.variant_id')
 
   if (!variant) {
     throw new NotFoundError('Variant not found for this product in this store.')
@@ -82,10 +82,19 @@ export const updateVariantLogic = async (
 
     // Fetch the full variant details for the response
     const options = await trx('variant_to_option_values as vtov')
-      .join('product_option_values as pov', 'vtov.value_id', 'pov.value_id')
+      .join(
+        'product_option_values as pov',
+        'vtov.variant_value_id',
+        'pov.option_value_id',
+      )
       .join('product_options as po', 'pov.option_id', 'po.option_id')
       .where('vtov.variant_id', updatedVariant?.variant_id ?? variantId)
-      .select('po.option_id', 'po.option_name', 'pov.value_id', 'pov.value')
+      .select(
+        'po.option_id',
+        'po.option_name',
+        'pov.option_value_id',
+        'pov.value',
+      )
 
     await trx.commit()
 

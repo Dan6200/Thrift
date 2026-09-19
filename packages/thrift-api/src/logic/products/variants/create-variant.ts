@@ -11,17 +11,18 @@ export const createVariantLogic = async (
   const { storeId } = req.validatedQueryParams!
   const variantData = req.validatedBody!
 
-  // Authorization for product access is handled by preceding middleware
-
   const product = await knex('products')
     .where({ product_id: productId, store_id: storeId })
-    .first('list_price', 'net_price')
+    .first('product_id')
   if (!product) {
     throw new NotFoundError('Product not found in this store.')
   }
 
   const newVariant = await knex.transaction(async (trx) => {
-    const valueMap = new Map<string, { value: string; value_id: number }>()
+    const valueMap = new Map<
+      string,
+      { value: string; option_value_id: number }
+    >()
 
     for (const option of variantData.options) {
       let optionResult =
@@ -38,12 +39,12 @@ export const createVariantLogic = async (
       let value =
         (await trx('product_option_values')
           .where({ option_id: optionResult.option_id, value: option.value })
-          .first(['value_id', 'value'])) || {}
+          .first(['option_value_id', 'value'])) || {}
 
-      if (!value.value_id) {
+      if (!value.option_value_id) {
         ;[value] = await trx('product_option_values')
           .insert({ option_id: optionResult.option_id, value: option.value })
-          .returning(['value_id', 'value'])
+          .returning(['option_value_id', 'value'])
       }
       valueMap.set(option.value, { ...optionResult, ...value })
     }
@@ -52,8 +53,7 @@ export const createVariantLogic = async (
       .insert({
         product_id: productId,
         sku: variantData.sku,
-        list_price: variantData.list_price || product.list_price,
-        net_price: variantData.net_price || product.net_price,
+        base_price: variantData.base_price,
       })
       .returning('*')
 
@@ -67,7 +67,7 @@ export const createVariantLogic = async (
 
     const links = variantData.options.map((opt: any) => ({
       variant_id: createdVariant.variant_id,
-      value_id: valueMap.get(opt.value).value_id,
+      variant_value_id: valueMap.get(opt.value).option_value_id,
     }))
     await trx('variant_to_option_values').insert(links)
 

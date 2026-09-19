@@ -13,7 +13,6 @@ export const createProductLogic = async (
   const createdProduct = await knex.transaction(async (trx) => {
     const { variants, ...productDetails } = productData
 
-    // 1. Insert the base product
     const [product] = await trx('products')
       .insert({
         ...productDetails,
@@ -32,9 +31,7 @@ export const createProductLogic = async (
       const valueIds = new Map<string, number>()
       const createdOptions = []
 
-      // 3. Process options for this variant
       for (const option of variant.options) {
-        // Get or create product_option
         let { option_id } =
           (await trx('product_options')
             .where({
@@ -52,37 +49,33 @@ export const createProductLogic = async (
             .returning('option_id')
         }
 
-        // Get or create product_option_value
-        let { value_id } =
+        let { option_value_id } =
           (await trx('product_option_values')
             .where({ option_id: option_id, value: option.value })
-            .first('value_id')) || {}
+            .first('option_value_id')) || {}
 
-        if (!value_id) {
-          ;[{ value_id }] = await trx('product_option_values')
+        if (!option_value_id) {
+          ;[{ option_value_id }] = await trx('product_option_values')
             .insert({
               option_id: option_id,
               value: option.value.toUpperCase(),
             })
-            .returning('value_id')
+            .returning('option_value_id')
         }
-        valueIds.set(option.value, value_id)
-        createdOptions.push({ option_id, value_id, ...option })
+        valueIds.set(option.value, option_value_id)
+        createdOptions.push({ option_id, option_value_id, ...option })
       }
 
-      // 4. Insert the product_variant
       const [newVariant] = await trx('product_variants')
         .insert({
           product_id: product.product_id,
           sku: variant.sku,
-          list_price: variant.list_price || product.list_price,
-          net_price: variant.net_price || product.net_price,
+          base_price: variant.base_price,
         })
         .returning([
           'variant_id',
           'sku',
-          'list_price',
-          'net_price',
+          'base_price',
           'created_at',
           'updated_at',
         ])
@@ -95,10 +88,9 @@ export const createProductLogic = async (
         })
       }
 
-      // 5. Link variant to option values
-      const links = Array.from(valueIds.values()).map((value_id) => ({
+      const links = Array.from(valueIds.values()).map((option_value_id) => ({
         variant_id: newVariant.variant_id,
-        value_id,
+        variant_value_id: option_value_id,
       }))
       await trx('variant_to_option_values').insert(links)
 

@@ -60,7 +60,7 @@ export const initializePaymentLogic = async (
     // 2. Initialize transaction with Paystack
     const transaction = await paystack.transaction.initialize({
       email: profile.email,
-      amount: Math.round(order.total_amount * 100), // Amount in kobo/cents
+      amount: Number(order.total_amount),
       reference: `THR-${order.order_id}-${Date.now()}`, // Unique reference
       // Paystack metadata expects a JSON string
       metadata: JSON.stringify({

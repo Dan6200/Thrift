@@ -39,7 +39,7 @@ export const getCartLogic = async (
       'sci.created_at',
       'sci.updated_at',
       'p.title as product_title',
-      'pv.net_price as price',
+      'pv.base_price as price',
       'm.filepath as image_url',
     )
 

@@ -100,6 +100,8 @@ export const processOrderJobLogic = async (
       await knex('payment_info')
         .insert({
           customer_id: customerId,
+          payment_type: 'card',
+          provider: 'paystack',
           authorization_code: authorization.authorization_code,
           email: customerEmail,
           last4: authorization.last4,

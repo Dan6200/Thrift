@@ -46,7 +46,7 @@ export const createOrderLogic = async (
 
     const variants = await trx('product_variants')
       .whereIn('variant_id', variantIds)
-      .select('variant_id', 'net_price', 'list_price')
+      .select('variant_id', 'base_price')
 
     const inventory = await trx('product_variant_inventory')
       .whereIn('variant_id', variantIds)
@@ -57,10 +57,7 @@ export const createOrderLogic = async (
         acc[v.variant_id] = v
         return acc
       },
-      {} as Record<
-        number,
-        { variant_id: number; net_price: number; list_price: number }
-      >,
+      {} as Record<number, { variant_id: number; base_price: number }>,
     )
 
     const inventoryById = inventory.reduce(
@@ -92,7 +89,7 @@ export const createOrderLogic = async (
         )
       }
 
-      const price_at_purchase = variant.net_price || variant.list_price
+      const price_at_purchase = variant.base_price
       total_amount += price_at_purchase * item.quantity
 
       orderItemsToInsert.push({

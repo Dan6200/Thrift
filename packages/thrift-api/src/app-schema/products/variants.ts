@@ -4,7 +4,7 @@ import joi from 'joi'
 export const VariantOptionSchema = joi.object({
   option_id: joi.number().required(),
   option_name: joi.string().required(),
-  value_id: joi.number().required(),
+  option_value_id: joi.number().required(),
   value: joi.string().required(),
 })
 
@@ -15,16 +15,14 @@ export const RequestVariantOptionSchema = joi.object({
 
 export const RequestVariantSchema = joi.object({
   sku: joi.string().required(),
-  list_price: joi.number().optional(),
-  net_price: joi.number().optional(),
+  base_price: joi.number().integer().min(0).required(),
   quantity_available: joi.number().required(),
   options: joi.array().items(RequestVariantOptionSchema).min(1).required(),
 })
 
 export const UpdateRequestVariantSchema = joi.object({
   sku: joi.string().optional(),
-  list_price: joi.number().optional(),
-  net_price: joi.number().optional(),
+  base_price: joi.number().integer().min(0).optional(),
   quantity_available: joi.number().optional(),
   inventory_change_reason: joi.string().when('quantity_available', {
     is: joi.exist(),
@@ -39,8 +37,7 @@ export const VariantResponseSchema = joi.object({
   variant_id: joi.number().required(),
   product_id: joi.number().required(),
   sku: joi.string().required(),
-  list_price: joi.number(),
-  net_price: joi.number().allow(null),
+  base_price: joi.number().integer().min(0).required(),
   quantity_available: joi.number().required(),
   options: joi.array().items(VariantOptionSchema).required(),
   created_at: joi.date().required(),

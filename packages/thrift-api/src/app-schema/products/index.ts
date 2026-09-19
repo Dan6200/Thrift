@@ -9,8 +9,7 @@ import { ProductMediaResponseSchema } from '../media/products.js'
 export const ProductVariantResponseSchema = joi.object({
   variant_id: joi.number().required(),
   sku: joi.string().required(),
-  list_price: joi.number(),
-  net_price: joi.number().allow(null),
+  base_price: joi.number().integer().min(0).required(),
   quantity_available: joi.number().required(),
   options: joi.array().items(VariantOptionSchema).required(),
   created_at: joi.date().required(),
@@ -23,8 +22,6 @@ export const ProductUpdateDataSchema = joi.object({
   category_id: joi.number().optional(),
   subcategory_id: joi.number().optional(),
   description: joi.array().items(joi.string()).optional(),
-  list_price: joi.number().optional(),
-  net_price: joi.number().optional(),
   variants: joi.array().items(UpdateRequestVariantSchema).optional(),
 })
 
@@ -33,8 +30,6 @@ export const ProductCreateDataSchema = joi.object({
   category_id: joi.number().required(),
   subcategory_id: joi.number().required(),
   description: joi.array().items(joi.string()),
-  list_price: joi.number().required(),
-  net_price: joi.number().required(),
   variants: joi.array().items(RequestVariantSchema).min(1).required(),
 })
 
@@ -107,8 +102,6 @@ export const ProductResponseSchema = joi
     category_id: joi.number().required(),
     subcategory_id: joi.number().required(),
     description: joi.array().items(joi.string()),
-    list_price: joi.number().required(),
-    net_price: joi.number().allow(null).required(),
     vendor_id: joi.string().guid({ version: 'uuidv4' }).required(),
     store_id: joi.number().required(),
     created_at: joi.date().required(),
@@ -126,8 +119,6 @@ export const ProductGETResponseSchema = joi
     subcategory_id: joi.number().required(),
     subcategory_name: joi.string().required(),
     description: joi.array().items(joi.string()),
-    list_price: joi.number().required(),
-    net_price: joi.number().allow(null).required(),
     products_sold: joi.number().required(),
     average_rating: joi.number().allow(null).required(),
     review_count: joi.number().allow(null).required(),

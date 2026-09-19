@@ -1,7 +1,7 @@
 export type VariantOption = {
   option_id: number
   option_name: string
-  value_id: number
+  option_value_id: number
   value: string
   created_at?: Date
   updated_at?: Date
@@ -10,8 +10,7 @@ export type VariantOption = {
 export type ProductVariant = {
   variant_id: number
   sku: string
-  list_price?: number
-  net_price?: number
+  base_price: number
   quantity_available: number
   options: VariantOption[]
   created_at?: Date
@@ -25,8 +24,6 @@ export type ProductResponseData = {
   category_id: number
   subcategory_id: number
   description: string[]
-  list_price: number
-  net_price: number
   variants?: ProductVariant[]
   media?: ProductMedia[]
   created_at?: Date
@@ -40,16 +37,14 @@ export type RequestVariantOption = {
 
 export type RequestVariant = {
   sku: string
-  list_price?: number
-  net_price?: number
+  base_price: number
   quantity_available: number
   options: RequestVariantOption[]
 }
 
 export type UpdateRequestVariant = {
   sku?: string
-  list_price?: number
-  net_price?: number
+  base_price?: number
   quantity_available?: number
   inventory_change_reason?: string
   inventory_change_notes?: string
@@ -61,8 +56,6 @@ export type ProductRequestData = {
   category_id: number
   subcategory_id: number
   description: string[]
-  list_price: number
-  net_price: number
   variants?: RequestVariant[]
 }
 
@@ -71,8 +64,6 @@ export type UpdateProductRequestData = {
   category_id?: number
   subcategory_id?: number
   description?: string[]
-  list_price?: number
-  net_price?: number
   variants?: UpdateRequestVariant[]
 }
 

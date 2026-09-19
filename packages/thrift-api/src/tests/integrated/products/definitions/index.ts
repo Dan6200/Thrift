@@ -68,8 +68,6 @@ const compareProductData = (actual: any, expected: ProductResponseData) => {
   try {
     actualProduct.title.should.equal(expected.title)
     actualProduct.description.should.deep.equal(expected.description)
-    actualProduct.list_price.should.equal(expected.list_price)
-    actualProduct.net_price.should.equal(expected.net_price)
     actualProduct.category_id.should.equal(expected.category_id)
     actualProduct.subcategory_id.should.equal(expected.subcategory_id)
 
@@ -92,11 +90,7 @@ const compareProductData = (actual: any, expected: ProductResponseData) => {
 
         // Assertions on variant level
         actualVariant.sku.should.equal(expectedVariant.sku)
-        const expectedListPrice =
-          expectedVariant.list_price ?? expected.list_price
-        const expectedNetPrice = expectedVariant.net_price ?? expected.net_price
-        actualVariant.list_price.should.equal(expectedListPrice)
-        actualVariant.net_price.should.equal(expectedNetPrice)
+        actualVariant.base_price.should.equal(expectedVariant.base_price)
         actualVariant.quantity_available.should.equal(
           expectedVariant.quantity_available,
         )
@@ -139,10 +133,8 @@ const compareVariantData = (
 
   try {
     actualVariant.sku.should.equal(expected.sku)
-    expected.list_price &&
-      actualVariant.list_price.should.equal(expected.list_price)
-    expected.net_price &&
-      actualVariant.net_price.should.equal(expected.net_price)
+    expected.base_price &&
+      actualVariant.base_price.should.equal(expected.base_price)
     actualVariant.quantity_available.should.equal(expected.quantity_available)
 
     if (expected.options) {

@@ -10,7 +10,7 @@ import { createStoreForTesting } from '../helpers/create-store.js'
 import { loadUserData } from '../helpers/load-data.js'
 
 const { userInfo: aliyuInfo, products } = loadUserData(
-  'server/src/tests/integrated/data/users/vendors/user-aliyu',
+  'src/tests/integrated/data/users/vendors/user-aliyu',
 )
 import { deleteUserForTesting } from '../helpers/delete-user.js'
 import { createUserForTesting } from '../helpers/create-user.js'
@@ -23,7 +23,7 @@ export default function (customer: { userInfo: ProfileRequestData }) {
   let userId: string
   let aliyuUserId: string
   let cartItemIds: number[] = []
-  const cartItems: (CartItemRequestData & { net_price: number })[] = []
+  const cartItems: (CartItemRequestData & { base_price: number })[] = []
 
   before(async () => {
     // Create and sign in customer
@@ -47,10 +47,10 @@ export default function (customer: { userInfo: ProfileRequestData }) {
       // Extract the variants
       for (const {
         variant_id,
-        net_price,
+        base_price,
         quantity_available: quantity,
       } of response.body.variants) {
-        cartItems.push({ variant_id, net_price, quantity })
+        cartItems.push({ variant_id, base_price, quantity })
       }
     }
   })
@@ -74,11 +74,11 @@ export default function (customer: { userInfo: ProfileRequestData }) {
   it('should add an item to the cart', async () => {
     assert(!!cartItems.length)
     for (const item of cartItems) {
-      const { net_price, ...restItem } = item
+      const { base_price, ...restItem } = item
       const { item_id } = await testAddItemToCart({
         token,
         body: restItem,
-        expectedData: { ...item, price: net_price } as any,
+        expectedData: { ...item, price: base_price } as any,
       })
       cartItemIds.push(item_id)
     }
@@ -89,7 +89,7 @@ export default function (customer: { userInfo: ProfileRequestData }) {
       token,
       expectedData: {
         items: cartItems.map((item) => {
-          const { net_price, ...rest } = item
+          const { base_price, ...rest } = item
           return rest
         }) as any,
         total_items: cartItems.reduce(
@@ -97,7 +97,7 @@ export default function (customer: { userInfo: ProfileRequestData }) {
           0,
         ),
         total_price: cartItems.reduce(
-          (total, { net_price, quantity }) => total + net_price * quantity,
+          (total, { base_price, quantity }) => total + base_price * quantity,
           0,
         ),
       },
@@ -106,10 +106,10 @@ export default function (customer: { userInfo: ProfileRequestData }) {
 
   it('should update the quantity of a specific item in the cart', async () => {
     const updatedQuantity = 5
-    const { net_price, ...cartItemFiltered } = cartItems[0]
+    const { base_price, ...cartItemFiltered } = cartItems[0]
     const expectedData = {
       ...cartItemFiltered,
-      price: net_price,
+      price: base_price,
       quantity: updatedQuantity,
     }
     await testUpdateCartItem({
@@ -129,18 +129,18 @@ export default function (customer: { userInfo: ProfileRequestData }) {
 
   it('should get all the items in a cart, and reflect all the modifications', async () => {
     const updatedQuantity = 5
-    let total_price = cartItems[0].net_price * updatedQuantity, // first Item that was removed, needed for calculation later
+    let total_price = cartItems[0].base_price * updatedQuantity, // first Item that was removed, needed for calculation later
       total_items = 0
     const calculatedItems = cartItems
       .toSpliced(0, 1, {
         variant_id: cartItems[0].variant_id,
         quantity: updatedQuantity,
-        net_price: null,
+        base_price: null,
       })
       .toSpliced(2, 1)
       .map((item) => {
-        const { net_price, ...rest } = item
-        total_price += net_price * rest.quantity
+        const { base_price, ...rest } = item
+        total_price += base_price * rest.quantity
         total_items += rest.quantity
         return rest
       })

@@ -20,7 +20,7 @@ import { createProductsForTesting } from '#src/tests/integrated/helpers/create-p
 import { loadUserData } from '../helpers/load-data.js'
 
 const { userInfo: aliyuInfo, products } = loadUserData(
-  'server/src/tests/integrated/data/users/vendors/user-aliyu',
+  'src/tests/integrated/data/users/vendors/user-aliyu',
 )
 
 chai.use(chaiHttp).should()
@@ -63,7 +63,7 @@ export default function (customer: { userInfo: ProfileRequestData }) {
     const productRes = productResponses[0]
     product_id = productRes.body.product_id // Capture product_id
     variantId = productRes.body.variants[0].variant_id
-    variantPrice = productRes.body.variants[0].net_price
+    variantPrice = productRes.body.variants[0].base_price
   })
 
   after(async () => {

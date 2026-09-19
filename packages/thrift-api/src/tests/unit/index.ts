@@ -6,12 +6,12 @@ chai.should()
 
 export default () => {
   it('it should create a database query from a query parameter input', () =>
-    handleSortQuery('-list_price,-net_price,product_id').should.equal(
-      `ORDER BY list_price DESC, net_price DESC, product_id ASC`,
+    handleSortQuery('-base_price,product_id').should.equal(
+      `ORDER BY base_price DESC, product_id ASC`,
     ))
 
   it('it should create a database query from a query parameter input', () =>
-    handleSortQuery('product_id,list_price,-net_price').should.equal(
-      `ORDER BY product_id ASC, list_price ASC, net_price DESC`,
+    handleSortQuery('product_id,base_price').should.equal(
+      `ORDER BY product_id ASC, base_price ASC`,
     ))
 }

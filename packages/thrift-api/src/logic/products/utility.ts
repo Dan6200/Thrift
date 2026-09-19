@@ -2,8 +2,7 @@ export function handleSortQuery(queryString: string): string {
   const allowedColumns = [
     'product_id',
     'title',
-    'list_price',
-    'net_price',
+    'base_price',
     'created_at',
     'updated_at',
     'average_rating',

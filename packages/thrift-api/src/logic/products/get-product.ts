@@ -46,8 +46,7 @@ export const getProductLogic = async (
             SELECT
                 pv.variant_id,
                 pv.sku,
-                pv.list_price,
-                pv.net_price,
+                pv.base_price,
 								pv.created_at,
 								pv.updated_at,
                 pvi.quantity_available,
@@ -57,10 +56,10 @@ export const getProductLogic = async (
                         SELECT
                             po.option_id,
                             po.option_name,
-                            pov.value_id,
+                            pov.option_value_id,
                             pov.value
                         FROM variant_to_option_values vtov
-                        JOIN product_option_values pov ON vtov.value_id = pov.value_id
+                        JOIN product_option_values pov ON vtov.variant_value_id = pov.option_value_id
                         JOIN product_options po ON pov.option_id = po.option_id
                         WHERE vtov.variant_id = pv.variant_id
                     ) AS option_data

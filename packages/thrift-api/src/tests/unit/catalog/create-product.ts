@@ -6,6 +6,7 @@ import {
 import {
   ProductRepository,
   PersistedProduct,
+  PersistedVariant,
 } from '#src/context/catalog/ports/product-repository.js'
 
 chai.should()
@@ -25,6 +26,10 @@ const validCommand: CreateProductCommand = {
   ],
   vendorId: 'v1',
   storeId: 1,
+}
+
+const notImplemented = (): never => {
+  throw new Error('not implemented in test fake')
 }
 
 const fakeRepository: ProductRepository = {
@@ -55,6 +60,27 @@ const fakeRepository: ProductRepository = {
       })),
     }
   },
+  async getAll(): Promise<unknown> {
+    return null
+  },
+  async getById(): Promise<unknown> {
+    return null
+  },
+  async update(): Promise<PersistedProduct> {
+    return notImplemented()
+  },
+  async remove(): Promise<void> {
+    return undefined
+  },
+  async createVariant(): Promise<PersistedVariant> {
+    return notImplemented()
+  },
+  async updateVariant(): Promise<PersistedVariant> {
+    return notImplemented()
+  },
+  async removeVariant(): Promise<void> {
+    return undefined
+  },
 }
 
 export default () => {
@@ -71,6 +97,7 @@ export default () => {
     it('returns a domain error for invalid input without calling the repository', async () => {
       let called = false
       const repository: ProductRepository = {
+        ...fakeRepository,
         create: async (input) => {
           called = true
           return fakeRepository.create(input)

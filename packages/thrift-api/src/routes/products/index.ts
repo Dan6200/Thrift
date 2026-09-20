@@ -5,18 +5,14 @@ import { validateDbResult } from '#src/db-result-validation.js'
 import { sendResponse } from '#src/send-response.js'
 import authenticateUser from '#src/authentication.js'
 import { hasStoreAccess } from '#src/authorization/has-store-access.js'
-import {
-  getAllProductsLogic,
-  getProductLogic,
-  updateProductLogic,
-  deleteProductLogic,
-} from '#src/logic/products/index.js'
 import { createProductHandler } from '#src/context/catalog/http/create-product.js'
-import {
-  createVariantLogic,
-  updateVariantLogic,
-  deleteVariantLogic,
-} from '#src/logic/products/variants/index.js'
+import { getAllProductsHandler } from '#src/context/catalog/http/get-all-products.js'
+import { getProductHandler } from '#src/context/catalog/http/get-product.js'
+import { updateProductHandler } from '#src/context/catalog/http/update-product.js'
+import { deleteProductHandler } from '#src/context/catalog/http/delete-product.js'
+import { createVariantHandler } from '#src/context/catalog/http/create-variant.js'
+import { updateVariantHandler } from '#src/context/catalog/http/update-variant.js'
+import { deleteVariantHandler } from '#src/context/catalog/http/delete-variant.js'
 import {
   ProductCreateRequestSchema,
   ProductGetAllRequestSchema,
@@ -49,7 +45,7 @@ router
   )
   .get(
     validate(ProductGetAllRequestSchema),
-    getAllProductsLogic,
+    getAllProductsHandler,
     validateDbResult(ProductGETAllResponseSchema),
     sendResponse(OK),
   )
@@ -58,7 +54,7 @@ router
   .route('/:productId')
   .get(
     validate(ProductGetRequestSchema),
-    getProductLogic,
+    getProductHandler,
     validateDbResult(ProductGETResponseSchema),
     sendResponse(OK),
   )
@@ -66,7 +62,7 @@ router
     authenticateUser,
     validate(ProductUpdateRequestSchema),
     hasStoreAccess(['admin', 'editor']),
-    updateProductLogic,
+    updateProductHandler,
     validateDbResult(ProductResponseSchema),
     sendResponse(OK),
   )
@@ -74,7 +70,7 @@ router
     authenticateUser,
     validate(ProductDeleteRequestSchema),
     hasStoreAccess(['admin']),
-    deleteProductLogic,
+    deleteProductHandler,
     sendResponse(NO_CONTENT),
   )
 
@@ -84,7 +80,7 @@ router
     authenticateUser,
     validate(ProductVariantCreateRequestSchema),
     hasStoreAccess(['admin', 'editor']),
-    createVariantLogic,
+    createVariantHandler,
     validateDbResult(ProductVariantResponseSchema),
     sendResponse(CREATED),
   )
@@ -95,7 +91,7 @@ router
     authenticateUser,
     validate(ProductVariantUpdateRequestSchema),
     hasStoreAccess(['admin', 'editor']),
-    updateVariantLogic,
+    updateVariantHandler,
     validateDbResult(ProductVariantResponseSchema),
     sendResponse(OK),
   )
@@ -103,7 +99,7 @@ router
     authenticateUser,
     validate(ProductVariantDeleteRequestSchema),
     hasStoreAccess(['admin']),
-    deleteVariantLogic,
+    deleteVariantHandler,
     sendResponse(NO_CONTENT),
   )
 

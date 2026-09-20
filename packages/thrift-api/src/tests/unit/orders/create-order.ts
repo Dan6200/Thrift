@@ -55,6 +55,21 @@ const fakeRepository: OrderRepository = {
       })),
     }
   },
+  async getProfile() {
+    return null
+  },
+  async hasStoreAccess() {
+    return false
+  },
+  async getAllOrders() {
+    return []
+  },
+  async getOrderById() {
+    return null
+  },
+  async findReviewableItem() {
+    return null
+  },
 }
 
 export default () => {

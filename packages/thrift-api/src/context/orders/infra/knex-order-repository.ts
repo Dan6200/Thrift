@@ -1,5 +1,30 @@
 import { knex } from '#src/db/index.js'
-import { OrderRepository, PersistedOrder } from '../ports/order-repository.js'
+import {
+  OrderRepository,
+  OrderFilter,
+  OrderByIdFilter,
+  PersistedOrder,
+} from '../ports/order-repository.js'
+
+const assembleOrderItems = async (orderIds: number[]) => {
+  if (!orderIds.length) return new Map<number, unknown[]>()
+  const rows = await knex('order_items')
+    .whereIn('order_id', orderIds)
+    .select(
+      'order_id',
+      'order_item_id',
+      'variant_id',
+      'quantity',
+      'price_at_purchase',
+    )
+  const byOrderId = new Map<number, unknown[]>()
+  for (const row of rows) {
+    const items = byOrderId.get(row.order_id) ?? []
+    items.push(row)
+    byOrderId.set(row.order_id, items)
+  }
+  return byOrderId
+}
 
 export const knexOrderRepository: OrderRepository = {
   async storeExists(storeId) {
@@ -72,5 +97,54 @@ export const knexOrderRepository: OrderRepository = {
     })
 
     return created as PersistedOrder
+  },
+
+  async getProfile(userId) {
+    const profile = await knex('profiles').where({ id: userId }).first()
+    return profile ?? null
+  },
+
+  async hasStoreAccess(userId, storeId, roles) {
+    const {
+      rows: [{ has_store_access }],
+    } = await knex.raw('select has_store_access(?, ?, ?)', [
+      userId,
+      storeId,
+      roles,
+    ])
+    return !!has_store_access
+  },
+
+  async getAllOrders(filter: OrderFilter) {
+    const orders = await knex('orders').where(filter)
+    if (!orders.length) return []
+    const itemsByOrderId = await assembleOrderItems(
+      orders.map((order) => order.order_id),
+    )
+    return orders.map((order) => ({
+      ...order,
+      items: itemsByOrderId.get(order.order_id) ?? [],
+    }))
+  },
+
+  async getOrderById(filter: OrderByIdFilter) {
+    const order = await knex('orders').where(filter).first()
+    if (!order) return null
+    const itemsByOrderId = await assembleOrderItems([order.order_id])
+    return { ...order, items: itemsByOrderId.get(order.order_id) ?? [] }
+  },
+
+  async findReviewableItem(customerId, productId) {
+    const item = await knex('order_items as oi')
+      .join('orders as o', 'oi.order_id', 'o.order_id')
+      .join('product_variants as pv', 'oi.variant_id', 'pv.variant_id')
+      .join('products as p', 'pv.product_id', 'p.product_id')
+      .leftJoin('product_reviews as pr', 'oi.order_item_id', 'pr.order_item_id')
+      .where('o.customer_id', customerId)
+      .where('p.product_id', productId)
+      .whereNull('pr.order_item_id')
+      .select('oi.order_item_id')
+      .first()
+    return item ?? null
   },
 }

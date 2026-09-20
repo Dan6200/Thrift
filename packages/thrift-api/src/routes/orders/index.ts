@@ -6,11 +6,11 @@ import { validateDbResult } from '../../db-result-validation.js'
 import { sendResponse } from '../../send-response.js'
 import authenticateUser from '../../authentication.js'
 import {
-  createOrderLogic,
   getAllOrdersLogic,
   getOrderLogic,
   findReviewableItemLogic,
 } from '../../logic/orders/index.js'
+import { createOrderHandler } from '#src/context/orders/http/create-order.js'
 import {
   CreateOrderRequestSchema,
   GetAllOrdersRequestSchema,
@@ -28,7 +28,7 @@ router
   .post(
     authenticateUser,
     validate(CreateOrderRequestSchema),
-    createOrderLogic,
+    createOrderHandler,
     validateDbResult(OrderResponseSchema),
     sendResponse(CREATED),
   )

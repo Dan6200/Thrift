@@ -2,6 +2,7 @@
 import { handleSortQuery } from '#src/logic/products/utility.js'
 import catalogDomainTests from './catalog/index.js'
 import createProductUseCaseTests from './catalog/create-product.js'
+import createOrderTests from './orders/create-order.js'
 import chai from 'chai'
 
 chai.should()
@@ -9,6 +10,7 @@ chai.should()
 export default () => {
   describe('Catalog product domain', catalogDomainTests)
   describe('Catalog create product use case', createProductUseCaseTests)
+  describe('Orders', createOrderTests)
 
   it('it should create a database query from a query parameter input', () =>
     handleSortQuery('-base_price,product_id').should.equal(

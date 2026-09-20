@@ -1,7 +1,7 @@
 import { Result, ok, err } from '#src/shared/result.js'
 import { DomainError, domainError } from '#src/shared/domain-error.js'
 import { Variant, VariantOption } from './product.js'
-import { isNonNegativeMoney } from './money.js'
+import { isNonNegativeMoney } from '#src/shared/money.js'
 
 export type VariantUpdate = {
   sku?: string

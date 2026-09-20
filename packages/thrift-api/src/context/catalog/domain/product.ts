@@ -1,6 +1,6 @@
 import { Result, ok, err } from '#src/shared/result.js'
 import { DomainError, domainError } from '#src/shared/domain-error.js'
-import { Money, isNonNegativeMoney } from './money.js'
+import { Money, isNonNegativeMoney } from '#src/shared/money.js'
 
 export type VariantOption = {
   optionName: string

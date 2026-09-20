@@ -1,16 +1,14 @@
 import express from 'express'
-import Joi from 'joi' // New import
+import Joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
 import { validate } from '../../request-validation.js'
 import { validateDbResult } from '../../db-result-validation.js'
 import { sendResponse } from '../../send-response.js'
 import authenticateUser from '../../authentication.js'
-import {
-  getAllOrdersLogic,
-  getOrderLogic,
-  findReviewableItemLogic,
-} from '../../logic/orders/index.js'
 import { createOrderHandler } from '#src/context/orders/http/create-order.js'
+import { getAllOrdersHandler } from '#src/context/orders/http/get-all-orders.js'
+import { getOrderHandler } from '#src/context/orders/http/get-order.js'
+import { findReviewableItemHandler } from '#src/context/orders/http/find-reviewable-item.js'
 import {
   CreateOrderRequestSchema,
   GetAllOrdersRequestSchema,
@@ -35,7 +33,7 @@ router
   .get(
     authenticateUser,
     validate(GetAllOrdersRequestSchema),
-    getAllOrdersLogic,
+    getAllOrdersHandler,
     validateDbResult(OrderGETAllResponseSchema),
     sendResponse(OK),
   )
@@ -43,7 +41,7 @@ router
 router.route('/reviewable-item').get(
   authenticateUser,
   validate(FindReviewableItemRequestSchema),
-  findReviewableItemLogic,
+  findReviewableItemHandler,
   validateDbResult(
     Joi.object({
       order_item_id: Joi.number().integer().positive().required(),
@@ -57,7 +55,7 @@ router
   .get(
     authenticateUser,
     validate(GetOrderRequestSchema),
-    getOrderLogic,
+    getOrderHandler,
     validateDbResult(OrderResponseSchema),
     sendResponse(OK),
   )

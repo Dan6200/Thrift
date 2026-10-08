@@ -401,6 +401,10 @@ export const knexProductRepository: ProductRepository = {
           .where({ variant_id: variantId })
           .update(variantDataWithoutQA)
           .returning('*')
+      } else {
+        updatedVariant = await trx('product_variants')
+          .where({ variant_id: variantId })
+          .first()
       }
 
       let finalQuantity: number

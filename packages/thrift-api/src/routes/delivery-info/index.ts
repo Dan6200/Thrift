@@ -5,13 +5,11 @@ import { validateDbResult } from '../../db-result-validation.js'
 import { sendResponse } from '../../send-response.js'
 import authenticateUser from '../../authentication.js'
 import { customerAuthorization } from '../../authorization/customer-authorization.js'
-import {
-  createDeliveryLogic,
-  getAllDeliveriesLogic,
-  getDeliveryLogic,
-  updateDeliveryLogic,
-  deleteDeliveryLogic,
-} from '../../logic/delivery-info/index.js'
+import { createDeliveryHandler } from '#src/context/fulfillment/http/create-delivery.js'
+import { getAllDeliveriesHandler } from '#src/context/fulfillment/http/get-all-deliveries.js'
+import { getDeliveryHandler } from '#src/context/fulfillment/http/get-delivery.js'
+import { updateDeliveryHandler } from '#src/context/fulfillment/http/update-delivery.js'
+import { deleteDeliveryHandler } from '#src/context/fulfillment/http/delete-delivery.js'
 import {
   DeliveryInfoCreateRequestSchema,
   DeliveryInfoGetRequestSchema,
@@ -32,14 +30,14 @@ router
     customerAuthorization,
     checkDeliveryLimitLogic,
     validate(DeliveryInfoCreateRequestSchema),
-    createDeliveryLogic,
+    createDeliveryHandler,
     validateDbResult(DeliveryInfoResponseSchema),
     sendResponse(CREATED),
   )
   .get(
     authenticateUser,
     customerAuthorization,
-    getAllDeliveriesLogic,
+    getAllDeliveriesHandler,
     validateDbResult(DeliveryInfoResponseListSchema),
     sendResponse(OK),
   )
@@ -50,7 +48,7 @@ router
     authenticateUser,
     customerAuthorization,
     validate(DeliveryInfoGetRequestSchema),
-    getDeliveryLogic,
+    getDeliveryHandler,
     validateDbResult(DeliveryInfoResponseSchema),
     sendResponse(OK),
   )
@@ -58,7 +56,7 @@ router
     authenticateUser,
     customerAuthorization,
     validate(DeliveryInfoUpdateRequestSchema),
-    updateDeliveryLogic,
+    updateDeliveryHandler,
     validateDbResult(DeliveryInfoResponseSchema),
     sendResponse(OK),
   )
@@ -66,7 +64,7 @@ router
     authenticateUser,
     customerAuthorization,
     validate(DeliveryInfoDeleteRequestSchema),
-    deleteDeliveryLogic,
+    deleteDeliveryHandler,
     sendResponse(NO_CONTENT),
   )
 

@@ -4,13 +4,11 @@ import { validate } from '../../request-validation.js'
 import { validateDbResult } from '../../db-result-validation.js'
 import { sendResponse } from '../../send-response.js'
 import authenticateUser from '../../authentication.js'
-import {
-  createProductReviewLogic,
-  getProductReviewLogic,
-  updateProductReviewLogic,
-  deleteProductReviewLogic,
-  getProductReviewsByProductIdLogic,
-} from '../../logic/reviews/products/index.js'
+import { createReviewHandler } from '#src/context/reviews/http/create-review.js'
+import { getReviewHandler } from '#src/context/reviews/http/get-review.js'
+import { getReviewsByProductIdHandler } from '#src/context/reviews/http/get-reviews-by-product-id.js'
+import { updateReviewHandler } from '#src/context/reviews/http/update-review.js'
+import { deleteReviewHandler } from '#src/context/reviews/http/delete-review.js'
 import {
   CreateProductReviewRequestSchema,
   GetProductReviewRequestSchema,
@@ -30,28 +28,28 @@ router
   .post(
     authenticateUser,
     validate(CreateProductReviewRequestSchema),
-    createProductReviewLogic,
+    createReviewHandler,
     validateDbResult(ProductReviewResponseSchema),
     sendResponse(CREATED),
   )
   .get(
     authenticateUser,
     validate(GetProductReviewRequestSchema),
-    getProductReviewLogic,
+    getReviewHandler,
     validateDbResult(ProductReviewResponseSchema),
     sendResponse(OK),
   )
   .patch(
     authenticateUser,
     validate(UpdateProductReviewRequestSchema),
-    updateProductReviewLogic,
+    updateReviewHandler,
     validateDbResult(ProductReviewResponseSchema),
     sendResponse(OK),
   )
   .delete(
     authenticateUser,
     validate(DeleteProductReviewRequestSchema),
-    deleteProductReviewLogic,
+    deleteReviewHandler,
     sendResponse(NO_CONTENT),
   )
 
@@ -59,7 +57,7 @@ router
 router.route('/product/:product_id').get(
   // No authentication needed to view reviews, typically public
   validate(GetProductReviewsByProductIdRequestSchema),
-  getProductReviewsByProductIdLogic,
+  getReviewsByProductIdHandler,
   validateDbResult(ProductReviewGETAllResponseSchema),
   sendResponse(OK),
 )

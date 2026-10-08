@@ -5,12 +5,10 @@ import { validateDbResult } from '../db-result-validation.js'
 import { sendResponse } from '../send-response.js'
 import authenticateUser from '../authentication.js'
 import { hasStoreAccess } from '../authorization/has-store-access.js'
-import {
-  addStaffLogic,
-  listStaffLogic,
-  updateStaffLogic,
-  removeStaffLogic,
-} from '../logic/store_staff/index.js'
+import { addStaffHandler } from '#src/context/store-management/http/add-staff.js'
+import { listStaffHandler } from '#src/context/store-management/http/list-staff.js'
+import { updateStaffHandler } from '#src/context/store-management/http/update-staff.js'
+import { removeStaffHandler } from '#src/context/store-management/http/remove-staff.js'
 import {
   AddStoreStaffRequestSchema,
   ListStoreStaffRequestSchema,
@@ -29,7 +27,7 @@ router
     authenticateUser,
     validate(AddStoreStaffRequestSchema),
     hasStoreAccess(['admin']),
-    addStaffLogic,
+    addStaffHandler,
     validateDbResult(StoreStaffResponseSchema),
     sendResponse(CREATED),
   )
@@ -37,7 +35,7 @@ router
     authenticateUser,
     validate(ListStoreStaffRequestSchema),
     hasStoreAccess(['admin', 'editor', 'viewer']),
-    listStaffLogic,
+    listStaffHandler,
     validateDbResult(StoreStaffListResponseSchema),
     sendResponse(OK),
   )
@@ -48,7 +46,7 @@ router
     authenticateUser,
     validate(UpdateStoreStaffRequestSchema),
     hasStoreAccess(['admin']),
-    updateStaffLogic,
+    updateStaffHandler,
     validateDbResult(StoreStaffResponseSchema),
     sendResponse(OK),
   )
@@ -56,7 +54,7 @@ router
     authenticateUser,
     validate(RemoveStoreStaffRequestSchema),
     hasStoreAccess(['admin']),
-    removeStaffLogic,
+    removeStaffHandler,
     sendResponse(NO_CONTENT),
   )
 

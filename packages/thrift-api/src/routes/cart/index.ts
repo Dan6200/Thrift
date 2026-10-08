@@ -4,12 +4,10 @@ import { validate } from '#src/request-validation.js'
 import { validateDbResult } from '#src/db-result-validation.js'
 import { sendResponse } from '#src/send-response.js'
 import authenticateUser from '#src/authentication.js'
-import {
-  getCartLogic,
-  addItemToCartLogic,
-  updateCartItemLogic,
-  removeCartItemLogic,
-} from '#src/logic/cart/index.js'
+import { getCartHandler } from '#src/context/cart/http/get-cart.js'
+import { addItemHandler } from '#src/context/cart/http/add-item.js'
+import { updateItemHandler } from '#src/context/cart/http/update-item.js'
+import { removeItemHandler } from '#src/context/cart/http/remove-item.js'
 import {
   GetCartRequestSchema,
   AddItemToCartRequestSchema,
@@ -28,7 +26,7 @@ router.get(
   authenticateUser,
   customerAuthorization,
   validate(GetCartRequestSchema),
-  getCartLogic,
+  getCartHandler,
   validateDbResult(cartResponseSchema),
   sendResponse(OK),
 )
@@ -38,7 +36,7 @@ router.post(
   authenticateUser,
   customerAuthorization,
   validate(AddItemToCartRequestSchema),
-  addItemToCartLogic,
+  addItemHandler,
   validateDbResult(cartItemResponseSchema),
   sendResponse(CREATED),
 )
@@ -48,7 +46,7 @@ router.put(
   authenticateUser,
   customerAuthorization,
   validate(UpdateCartItemRequestSchema),
-  updateCartItemLogic,
+  updateItemHandler,
   validateDbResult(cartItemResponseSchema),
   sendResponse(OK),
 )
@@ -58,7 +56,7 @@ router.delete(
   authenticateUser,
   customerAuthorization,
   validate(RemoveCartItemRequestSchema),
-  removeCartItemLogic,
+  removeItemHandler,
   sendResponse(NO_CONTENT),
 )
 

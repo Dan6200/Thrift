@@ -7,13 +7,11 @@ import authenticateUser from '../../authentication.js'
 import { vendorAuthorization } from '../../authorization/vendor-authorization.js'
 import { checkStoreLimit } from '../../authorization/check-store-limit.js'
 import { hasStoreAccess } from '../../authorization/has-store-access.js'
-import {
-  createStoreLogic,
-  getAllStoresLogic,
-  getStoreLogic,
-  updateStoreLogic,
-  deleteStoreLogic,
-} from '../../logic/stores/index.js'
+import { createStoreHandler } from '#src/context/store-management/http/create-store.js'
+import { getAllStoresHandler } from '#src/context/store-management/http/get-all-stores.js'
+import { getStoreHandler } from '#src/context/store-management/http/get-store.js'
+import { updateStoreHandler } from '#src/context/store-management/http/update-store.js'
+import { deleteStoreHandler } from '#src/context/store-management/http/delete-store.js'
 import {
   StoreCreateRequestSchema,
   StoreGetAllRequestSchema,
@@ -34,7 +32,7 @@ router
     validate(StoreCreateRequestSchema),
     vendorAuthorization,
     checkStoreLimit,
-    createStoreLogic,
+    createStoreHandler,
     validateDbResult(StoreDataResponseSchema),
     sendResponse(CREATED),
   )
@@ -42,7 +40,7 @@ router
     authenticateUser,
     validate(StoreGetAllRequestSchema),
     vendorAuthorization,
-    getAllStoresLogic,
+    getAllStoresHandler,
     validateDbResult(StoreDataResponseListSchema),
     sendResponse(OK),
   )
@@ -53,7 +51,7 @@ router
     authenticateUser,
     validate(StoreGetRequestSchema),
     hasStoreAccess(['admin', 'editor', 'viewer']),
-    getStoreLogic,
+    getStoreHandler,
     validateDbResult(StoreDataResponseSchema),
     sendResponse(OK),
   )
@@ -61,7 +59,7 @@ router
     authenticateUser,
     validate(StoreUpdateRequestSchema),
     hasStoreAccess(['admin', 'editor']),
-    updateStoreLogic,
+    updateStoreHandler,
     validateDbResult(StoreDataResponseSchema),
     sendResponse(OK),
   )
@@ -69,7 +67,7 @@ router
     authenticateUser,
     validate(StoreDeleteRequestSchema),
     hasStoreAccess(['admin']),
-    deleteStoreLogic,
+    deleteStoreHandler,
     sendResponse(NO_CONTENT),
   )
 

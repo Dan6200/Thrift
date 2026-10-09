@@ -1,12 +1,10 @@
 import express from 'express'
 import multer from 'multer'
 import { cloudinaryStorageAvatars } from '#src/utils/media-storage.js'
-import {
-  createAvatarLogic,
-  getAvatarLogic,
-  updateAvatarLogic,
-  deleteAvatarLogic,
-} from '#src/logic/media/index.js'
+import { createAvatarHandler } from '#src/context/media/http/create-avatar.js'
+import { getAvatarHandler } from '#src/context/media/http/get-avatar.js'
+import { updateAvatarHandler } from '#src/context/media/http/update-avatar.js'
+import { deleteAvatarHandler } from '#src/context/media/http/delete-avatar.js'
 import authenticateUser from '#src/authentication.js'
 import { validate } from '#src/request-validation.js'
 import { validateDbResult } from '#src/db-result-validation.js'
@@ -28,18 +26,22 @@ router
   .post(
     upload.single('avatar'),
     validate(AvatarRequestSchema),
-    createAvatarLogic,
+    createAvatarHandler,
     validateDbResult(AvatarResponseSchema),
     sendResponse(CREATED),
   )
-  .get(getAvatarLogic, validateDbResult(AvatarResponseSchema), sendResponse(OK))
-  .patch(
-    upload.single('avatar'),
-    validate(AvatarRequestSchema),
-    updateAvatarLogic,
+  .get(
+    getAvatarHandler,
     validateDbResult(AvatarResponseSchema),
     sendResponse(OK),
   )
-  .delete(deleteAvatarLogic, sendResponse(NO_CONTENT))
+  .patch(
+    upload.single('avatar'),
+    validate(AvatarRequestSchema),
+    updateAvatarHandler,
+    validateDbResult(AvatarResponseSchema),
+    sendResponse(OK),
+  )
+  .delete(deleteAvatarHandler, sendResponse(NO_CONTENT))
 
 export default router

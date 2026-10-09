@@ -1,12 +1,10 @@
 import express from 'express'
 import multer from 'multer'
 import { cloudinaryStorageProducts } from '#src/utils/media-storage.js'
-import {
-  createProductMediaLogic,
-  getProductMediaLogic,
-  updateProductMediaLogic,
-  deleteProductMediaLogic,
-} from '#src/logic/media/index.js'
+import { createProductMediaHandler } from '#src/context/media/http/create-product-media.js'
+import { getProductMediaHandler } from '#src/context/media/http/get-product-media.js'
+import { updateProductMediaHandler } from '#src/context/media/http/update-product-media.js'
+import { deleteProductMediaHandler } from '#src/context/media/http/delete-product-media.js'
 import authenticateUser from '#src/authentication.js'
 import { validate } from '#src/request-validation.js'
 import { validateDbResult } from '#src/db-result-validation.js'
@@ -35,7 +33,7 @@ router
     upload.array('product-media', uploadLimit),
     validate(CreateProductMediaRequestSchema),
     hasStoreAccess(['admin', 'editor']),
-    createProductMediaLogic,
+    createProductMediaHandler,
     validateDbResult(Joi.array().items(ProductMediaResponseSchema)),
     sendResponse(CREATED),
   )
@@ -44,7 +42,7 @@ router
   .route('/:mediaId')
   .get(
     validate(GetProductMediaRequestSchema),
-    getProductMediaLogic,
+    getProductMediaHandler,
     validateDbResult(Joi.array().items(ProductMediaResponseSchema)),
     sendResponse(OK),
   )
@@ -52,14 +50,14 @@ router
     upload.single('product-media'),
     validate(UpdateProductMediaRequestSchema),
     hasStoreAccess(['admin', 'editor']),
-    updateProductMediaLogic,
+    updateProductMediaHandler,
     validateDbResult(ProductMediaResponseSchema),
     sendResponse(OK),
   )
   .delete(
     validate(DeleteProductMediaRequestSchema),
     hasStoreAccess(['admin']),
-    deleteProductMediaLogic,
+    deleteProductMediaHandler,
     sendResponse(NO_CONTENT),
   )
 

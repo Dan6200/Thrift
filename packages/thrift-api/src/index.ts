@@ -17,7 +17,6 @@ import cartRouter from '#src/routes/cart/index.js'
 import analyticsRouter from '#src/routes/analytics.js'
 import productReviewsRouter from '#src/routes/reviews/products.js'
 import ordersRouter from '#src/routes/orders/index.js'
-import cmsRouter from '#src/routes/cms/index.js' // Import the new CMS router
 import authRouter from '#src/routes/auth.js' // Integrate the new auth router
 import paymentsRouter from '#src/routes/payments.js' // Integrate the new payments router
 
@@ -84,7 +83,6 @@ v1Router.use('/media/avatar', avatarMediaRouter)
 v1Router.use('/reviews/products', productReviewsRouter)
 v1Router.use('/orders', ordersRouter)
 v1Router.use('/analytics', analyticsRouter)
-v1Router.use('/cms', cmsRouter) // Integrate the CMS router
 v1Router.use('/auth', authRouter) // Integrate the auth router
 v1Router.use('/payments', paymentsRouter) // Integrate the payments router
 

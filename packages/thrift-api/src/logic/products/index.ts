@@ -1,5 +1,0 @@
-export * from './create-product.js'
-export * from './get-all-products.js'
-export * from './get-product.js'
-export * from './update-product.js'
-export * from './delete-product.js'

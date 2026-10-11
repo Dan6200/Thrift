@@ -8,7 +8,7 @@ export function handleSortQuery(queryString: string): string {
     'average_rating',
     'review_count',
     'products_sold',
-  ] // Define your allowed sortable columns
+  ]
 
   let sortCriteria: string[] = queryString.split(',')
   let dbQueryString = 'ORDER BY '
@@ -31,7 +31,7 @@ export function handleSortQuery(queryString: string): string {
   }
 
   if (validSorts.length === 0) {
-    return '' // Return empty string if no valid sort criteria
+    return ''
   }
 
   return dbQueryString + validSorts.join(', ')

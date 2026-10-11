@@ -1,6 +1,6 @@
 import { knex } from '#src/db/index.js'
 import NotFoundError from '#src/errors/not-found.js'
-import { handleSortQuery } from '#src/logic/products/utility.js'
+import { handleSortQuery } from './sort.js'
 import {
   ProductRepository,
   PersistedProduct,

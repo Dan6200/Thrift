@@ -1,5 +1,5 @@
 // cspell:disable
-import { handleSortQuery } from '#src/logic/products/utility.js'
+import { handleSortQuery } from '#src/context/catalog/infra/sort.js'
 import catalogDomainTests from './catalog/index.js'
 import createProductUseCaseTests from './catalog/create-product.js'
 import createOrderTests from './orders/create-order.js'

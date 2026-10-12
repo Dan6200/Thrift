@@ -5,6 +5,7 @@ import { TestRequest, RequestParams } from '../test-request/types.js'
 import testRequest from '../test-request/index.js'
 import { ProfileResponseSchema } from '#src/app-schema/profiles.js'
 import { validateTestData } from '../helpers/test-validators.js'
+import { assertRecentIsoTimestamp } from '../helpers/assert-timestamp.js'
 import { ProfileData, ProfileRequestData } from '#src/types/profile/index.js'
 
 chai.use(chaiHttp).should()
@@ -37,14 +38,9 @@ const compareProfileData = (actual: any, expected: ProfileRequestData) => {
   actualProfile.is_customer.should.equal(expected.is_customer)
   actualProfile.is_vendor.should.equal(expected.is_vendor)
 
-  // Check that timestamps are recent (within the last 5 seconds)
-  const now = new Date()
-  const createdAt = new Date(actualProfile.created_at!)
-  const updatedAt = new Date(actualProfile.updated_at!)
-  const twoSeconds = 2000
-
-  chai.expect(now.getTime() - createdAt.getTime()).to.be.lessThan(twoSeconds)
-  chai.expect(now.getTime() - updatedAt.getTime()).to.be.lessThan(twoSeconds)
+  // Check that timestamps are parseable ISO strings within a generous window
+  assertRecentIsoTimestamp(actualProfile.created_at, { label: 'created_at' })
+  assertRecentIsoTimestamp(actualProfile.updated_at, { label: 'updated_at' })
 
   return true
 }

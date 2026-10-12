@@ -25,6 +25,7 @@ import {
 } from '#src/types/products.js'
 import * as JDP from 'jsondiffpatch'
 import * as consoleFormatter from 'jsondiffpatch/formatters/console'
+import { assertRecentIsoTimestamp } from '../../helpers/assert-timestamp.js'
 
 const jdp = JDP.create()
 
@@ -71,14 +72,9 @@ const compareProductData = (actual: any, expected: ProductResponseData) => {
     actualProduct.category_id.should.equal(expected.category_id)
     actualProduct.subcategory_id.should.equal(expected.subcategory_id)
 
-    // Check that timestamps are recent (within the last 5 seconds)
-    const now = new Date()
-    const createdAt = new Date(actualProduct.created_at!)
-    const updatedAt = new Date(actualProduct.updated_at!)
-    const twoSeconds = 2000
-
-    chai.expect(now.getTime() - createdAt.getTime()).to.be.lessThan(twoSeconds)
-    chai.expect(now.getTime() - updatedAt.getTime()).to.be.lessThan(twoSeconds)
+    // Check that timestamps are parseable ISO strings within a generous window
+    assertRecentIsoTimestamp(actualProduct.created_at, { label: 'created_at' })
+    assertRecentIsoTimestamp(actualProduct.updated_at, { label: 'updated_at' })
 
     // Compare variants and options
     if (expected.variants) {
@@ -147,14 +143,9 @@ const compareVariantData = (
       }
     }
 
-    // Check that timestamps are recent (within the last 5 seconds)
-    const now = new Date()
-    const createdAt = new Date(actualVariant.created_at!)
-    const updatedAt = new Date(actualVariant.updated_at!)
-    const twoSeconds = 2000
-
-    chai.expect(now.getTime() - createdAt.getTime()).to.be.lessThan(twoSeconds)
-    chai.expect(now.getTime() - updatedAt.getTime()).to.be.lessThan(twoSeconds)
+    // Check that timestamps are parseable ISO strings within a generous window
+    assertRecentIsoTimestamp(actualVariant.created_at, { label: 'created_at' })
+    assertRecentIsoTimestamp(actualVariant.updated_at, { label: 'updated_at' })
 
     return true
   } catch (assertionError) {

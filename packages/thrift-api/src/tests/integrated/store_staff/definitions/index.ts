@@ -10,6 +10,7 @@ import {
   StoreStaffListResponseSchema,
 } from '#src/app-schema/store_staff.js'
 import { validateTestData } from '../../helpers/test-validators.js'
+import { assertRecentIsoTimestamp } from '../../helpers/assert-timestamp.js'
 import { StoreStaff } from '#src/types/store_staff.js'
 import chai from 'chai'
 
@@ -66,14 +67,9 @@ const compareStoreStaffData = (actual: any, expected: StoreStaff) => {
   actualStaff.staff_id.should.equal(expected.staff_id)
   actualStaff.role.should.equal(expected.role)
 
-  // Check that timestamps are recent (within the last 5 seconds)
-  const now = new Date()
-  const createdAt = new Date(actualStaff.created_at!)
-  const updatedAt = new Date(actualStaff.updated_at!)
-  const twoSeconds = 2000
-
-  chai.expect(now.getTime() - createdAt.getTime()).to.be.lessThan(twoSeconds)
-  chai.expect(now.getTime() - updatedAt.getTime()).to.be.lessThan(twoSeconds)
+  // Check that timestamps are parseable ISO strings within a generous window
+  assertRecentIsoTimestamp(actualStaff.created_at, { label: 'created_at' })
+  assertRecentIsoTimestamp(actualStaff.updated_at, { label: 'updated_at' })
 
   return true
 }

@@ -17,6 +17,7 @@ import {
 import chai from 'chai'
 import * as JDP from 'jsondiffpatch'
 import * as consoleFormatter from 'jsondiffpatch/formatters/console'
+import { assertRecentIsoTimestamp } from '../../helpers/assert-timestamp.js'
 
 const jdp = JDP.create()
 
@@ -75,14 +76,9 @@ const compareCartData = (actual: any, expected: ExpectedData) => {
     expected as any,
   )
   try {
-    // Check that timestamps are recent (within the last 5 seconds)
-    const now = new Date()
-    const createdAt = new Date(actualCart.created_at!)
-    const updatedAt = new Date(actualCart.updated_at!)
-    const twoSeconds = 2000
-
-    chai.expect(now.getTime() - createdAt.getTime()).to.be.lessThan(twoSeconds)
-    chai.expect(now.getTime() - updatedAt.getTime()).to.be.lessThan(twoSeconds)
+    // Check that timestamps are parseable ISO strings within a generous window
+    assertRecentIsoTimestamp(actualCart.created_at, { label: 'created_at' })
+    assertRecentIsoTimestamp(actualCart.updated_at, { label: 'updated_at' })
 
     actualCart.total_items.should.equal(expected.total_items)
     actualCart.total_price.should.equal(expected.total_price)

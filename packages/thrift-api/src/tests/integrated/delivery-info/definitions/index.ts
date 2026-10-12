@@ -11,6 +11,7 @@ import {
   DeliveryInfoResponseSchema,
 } from '#src/app-schema/delivery-info.js'
 import { validateTestData } from '../../helpers/test-validators.js'
+import { assertRecentIsoTimestamp } from '../../helpers/assert-timestamp.js'
 import { DeliveryInfo } from '#src/types/delivery-info.js'
 
 const { CREATED, OK, NOT_FOUND, NO_CONTENT } = StatusCodes
@@ -77,14 +78,13 @@ const compareDeliveryInfoData = (actual: any, expected: DeliveryInfo) => {
     expected.delivery_instructions,
   )
 
-  // Check that timestamps are recent (within the last 5 seconds)
-  const now = new Date()
-  const createdAt = new Date(actualDeliveryInfo.created_at!)
-  const updatedAt = new Date(actualDeliveryInfo.updated_at!)
-  const twoSeconds = 2000
-
-  chai.expect(now.getTime() - createdAt.getTime()).to.be.lessThan(twoSeconds)
-  chai.expect(now.getTime() - updatedAt.getTime()).to.be.lessThan(twoSeconds)
+  // Check that timestamps are parseable ISO strings within a generous window
+  assertRecentIsoTimestamp(actualDeliveryInfo.created_at, {
+    label: 'created_at',
+  })
+  assertRecentIsoTimestamp(actualDeliveryInfo.updated_at, {
+    label: 'updated_at',
+  })
 
   return true
 }

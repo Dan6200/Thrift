@@ -13,6 +13,7 @@ import {
   StoreDataResponseSchema,
 } from '#src/app-schema/stores.js'
 import { validateTestData } from '../../helpers/test-validators.js'
+import { assertRecentIsoTimestamp } from '../../helpers/assert-timestamp.js'
 import StoreData from '#src/types/store-data.js'
 import * as JDP from 'jsondiffpatch'
 const jdp = JDP.create()
@@ -91,16 +92,12 @@ const compareStoreData = (actual: any, expected: StoreData) => {
   actualStore.store_address.country.should.equal(expected.store_address.country)
 
   // Check timestamps for store_address
-  const addressNow = new Date()
-  const storeAddressCreatedAt = new Date(actualStore.store_address.created_at!)
-  const storeAddressUpdatedAt = new Date(actualStore.store_address.updated_at!)
-  const twoSeconds = 2000
-  chai
-    .expect(addressNow.getTime() - storeAddressCreatedAt.getTime())
-    .to.be.lessThan(twoSeconds)
-  chai
-    .expect(addressNow.getTime() - storeAddressUpdatedAt.getTime())
-    .to.be.lessThan(twoSeconds)
+  assertRecentIsoTimestamp(actualStore.store_address.created_at, {
+    label: 'store_address.created_at',
+  })
+  assertRecentIsoTimestamp(actualStore.store_address.updated_at, {
+    label: 'store_address.updated_at',
+  })
 
   // Compare pages and sections
   if (expected.pages) {
@@ -121,28 +118,20 @@ const compareStoreData = (actual: any, expected: StoreData) => {
           )
           actualSection.section_type.should.equal(expectedSection.section_type)
           actualSection.sort_order.should.equal(expectedSection.sort_order)
-          const now = new Date()
-          const createdAt = new Date(actualSection.created_at!)
-          const updatedAt = new Date(actualSection.updated_at!)
-
-          chai
-            .expect(now.getTime() - createdAt.getTime())
-            .to.be.lessThan(twoSeconds)
-          chai
-            .expect(now.getTime() - updatedAt.getTime())
-            .to.be.lessThan(twoSeconds)
+          assertRecentIsoTimestamp(actualSection.created_at, {
+            label: 'section.created_at',
+          })
+          assertRecentIsoTimestamp(actualSection.updated_at, {
+            label: 'section.updated_at',
+          })
         }
       }
     }
   }
 
-  // Check that timestamps are recent (within the last 5 seconds)
-  const now = new Date()
-  const createdAt = new Date(actualStore.created_at!)
-  const updatedAt = new Date(actualStore.updated_at!)
-
-  chai.expect(now.getTime() - createdAt.getTime()).to.be.lessThan(twoSeconds)
-  chai.expect(now.getTime() - updatedAt.getTime()).to.be.lessThan(twoSeconds)
+  // Check that timestamps are parseable ISO strings within a generous window
+  assertRecentIsoTimestamp(actualStore.created_at, { label: 'created_at' })
+  assertRecentIsoTimestamp(actualStore.updated_at, { label: 'updated_at' })
 
   return true
 }

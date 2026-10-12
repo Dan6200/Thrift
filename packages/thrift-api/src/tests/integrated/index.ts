@@ -13,6 +13,7 @@ import testCart from './cart/index.js'
 import testProductReviews from './reviews/products/index.js'
 import testOrders from './orders/index.js'
 import { bulkDeleteImages } from './utils/bulk-delete.js'
+import adversarialTests from './adversarial/index.js'
 
 const Ebuka = loadUserData(
   'src/tests/integrated/data/users/customers/user-ebuka',
@@ -137,5 +138,9 @@ export default function (): void {
 
   describe('Media Asset Cleanup', async () =>
     Promise.all([bulkDeleteImages('avatars'), bulkDeleteImages('products')]))
+
+  /** Strict adversarial contract tests **/
+
+  describe('Testing adversarial contract invariants', () => adversarialTests())
   // end
 }

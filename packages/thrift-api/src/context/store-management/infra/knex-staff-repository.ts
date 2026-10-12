@@ -1,9 +1,18 @@
 import { knex } from '#src/db/index.js'
 import NotFoundError from '#src/errors/not-found.js'
+import ConflictError from '#src/errors/conflict.js'
 import { StaffRepository } from '../ports/staff-repository.js'
 
 export const knexStaffRepository: StaffRepository = {
   async add({ storeId, staffId, role }) {
+    const existing = await knex('store_staff')
+      .where({ store_id: storeId, staff_id: staffId })
+      .first()
+
+    if (existing) {
+      throw new ConflictError('Staff member already exists for this store.')
+    }
+
     const [newStaff] = await knex('store_staff')
       .insert({ store_id: storeId, staff_id: staffId, role })
       .returning('*')

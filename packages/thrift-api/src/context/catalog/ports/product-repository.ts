@@ -77,6 +77,10 @@ export type CreateVariantInput = {
   variant: Variant
 }
 
+export type VariantBySku = {
+  variant_id: number
+}
+
 export type UpdateVariantInput = {
   productId: number
   variantId: number
@@ -96,6 +100,7 @@ export type ProductRepository = {
   getById(query: GetProductQuery): Promise<unknown>
   update(command: UpdateProductCommand): Promise<PersistedProduct>
   remove(command: RemoveProductCommand): Promise<void>
+  getVariantBySku(sku: string): Promise<VariantBySku | null>
   createVariant(input: CreateVariantInput): Promise<PersistedVariant>
   updateVariant(input: UpdateVariantInput): Promise<PersistedVariant>
   removeVariant(input: RemoveVariantInput): Promise<void>

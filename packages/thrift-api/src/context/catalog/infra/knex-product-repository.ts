@@ -296,6 +296,13 @@ export const knexProductRepository: ProductRepository = {
       .del()
   },
 
+  async getVariantBySku(sku) {
+    const variant = await knex('product_variants')
+      .where({ sku })
+      .first('variant_id')
+    return variant ?? null
+  },
+
   async createVariant({ productId, storeId, variant }) {
     const product = await knex('products')
       .where({ product_id: productId, store_id: storeId })

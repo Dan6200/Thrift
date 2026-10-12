@@ -1,5 +1,5 @@
-import { Result } from '#src/shared/result.js'
-import { DomainError } from '#src/shared/domain-error.js'
+import { Result, ok, err } from '#src/shared/result.js'
+import { DomainError, domainError } from '#src/shared/domain-error.js'
 import { createProduct, Variant } from '../domain/product.js'
 import {
   ProductRepository,
@@ -33,11 +33,20 @@ export const createProductUseCase =
       return productResult
     }
 
+    for (const variant of productResult.value.variants) {
+      const existing = await repository.getVariantBySku(variant.sku)
+      if (existing) {
+        return err(
+          domainError('CONFLICT', `SKU "${variant.sku}" already exists.`),
+        )
+      }
+    }
+
     const persisted = await repository.create({
       product: productResult.value,
       vendorId: command.vendorId,
       storeId: command.storeId,
     })
 
-    return { kind: 'ok', value: persisted }
+    return ok(persisted)
   }

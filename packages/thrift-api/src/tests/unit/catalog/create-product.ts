@@ -72,6 +72,9 @@ const fakeRepository: ProductRepository = {
   async remove(): Promise<void> {
     return undefined
   },
+  async getVariantBySku(): Promise<{ variant_id: number } | null> {
+    return null
+  },
   async createVariant(): Promise<PersistedVariant> {
     return notImplemented()
   },

@@ -1,5 +1,5 @@
 import { knex } from '#src/db/index.js'
-import BadRequestError from '#src/errors/bad-request.js'
+import NotFoundError from '#src/errors/not-found.js'
 import {
   DeliveryInfoRepository,
   CreateDeliveryInput,
@@ -89,7 +89,7 @@ export const knexDeliveryInfoRepository: DeliveryInfoRepository = {
         .select('address_id')
 
       if (!currentDeliveryInfo) {
-        throw new BadRequestError('Delivery info for customer not found')
+        throw new NotFoundError('Delivery info not found.')
       }
 
       const { address_id } = currentDeliveryInfo
@@ -155,10 +155,13 @@ export const knexDeliveryInfoRepository: DeliveryInfoRepository = {
   },
 
   async remove(customerId, deliveryInfoId) {
-    return knex('delivery_info')
+    const deletedCount = await knex('delivery_info')
       .where('delivery_info_id', deliveryInfoId)
       .where('customer_id', customerId)
       .del()
-      .returning([knex.raw('NOW() as deleted_at')])
+
+    if (deletedCount === 0) {
+      throw new NotFoundError('Delivery info not found.')
+    }
   },
 }

@@ -3,6 +3,7 @@ import NotFoundError from '#src/errors/not-found.js'
 import UnauthorizedError from '#src/errors/unauthorized.js'
 import UnauthenticatedError from '#src/errors/unauthenticated.js'
 import InternalServerError from '#src/errors/internal-server.js'
+import ConflictError from '#src/errors/conflict.js'
 import { DomainError } from './domain-error.js'
 
 export const toHttpError = (error: DomainError): Error => {
@@ -18,6 +19,6 @@ export const toHttpError = (error: DomainError): Error => {
     case 'INTERNAL':
       return new InternalServerError(error.message)
     case 'CONFLICT':
-      return new BadRequestError(error.message)
+      return new ConflictError(error.message)
   }
 }

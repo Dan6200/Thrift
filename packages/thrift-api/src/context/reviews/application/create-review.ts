@@ -26,5 +26,13 @@ export const createReviewUseCase =
         ),
       )
     }
+
+    const existingReview = await repository.getById(command.orderItemId)
+    if (existingReview) {
+      return err(
+        domainError('CONFLICT', 'You have already reviewed this order item.'),
+      )
+    }
+
     return ok(await repository.create(command))
   }

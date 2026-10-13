@@ -31,43 +31,37 @@ The refactor separates concerns so that:
 
 ```
 packages/thrift-api/src/
-  context/                 # bounded contexts (DDD)
-    catalog/               # the products/variants/options domain
-      domain/              # pure: aggregates, value objects, invariants
-        money.ts           #   Money value object (integer kobo)
-        product.ts         #   Product aggregate + createProduct smart constructor
-        variant.ts         #   Variant validation + VariantUpdate
-      application/         # use cases (orchestration, no I/O)
-        create-product.ts
-        get-all-products.ts
-        get-product.ts
-        update-product.ts
-        delete-product.ts
-        create-variant.ts
-        update-variant.ts
-        delete-variant.ts
-      ports/               # interfaces the domain depends on (ports)
-        product-repository.ts
-      infra/               # adapters that implement the ports (I/O)
-        knex-product-repository.ts
-      http/                # Express handlers (adapters between HTTP and app)
-        create-product.ts
-        ...
-    orders/                # (planned) sales/orders context
-    identity/              # (planned) profiles/auth
-    store-management/      # (planned) stores/staff/pages
-    fulfillment/           # (planned) delivery-info
-    analytics/             # (planned) read models
+  context/                 # bounded contexts (DDD) — all ten share one shape
+    catalog/               # products/variants/options
+    orders/                # order aggregate + reads
+    cart/                  # shopping cart
+    identity/              # profiles + auth (register via Supabase Auth gateway)
+    fulfillment/           # delivery-info
+    store-management/      # stores + store staff
+    reviews/               # product reviews
+    analytics/             # read-model queries
+    media/                 # avatar + product media
+    payments/              # Paystack/QStash gateway + domain events
+      # each context contains:
+      #   domain/      pure: aggregates, value objects, invariants
+      #   application/ use cases (orchestration, no I/O)
+      #   ports/       interfaces (ports)
+      #   infra/       knex adapters (I/O)
+      #   http/        Express handlers (transport ⇄ app)
   shared/                  # cross-cutting primitives
     result.ts              #   Result / Either
-    domain-error.ts        #   DomainError + HTTP status mapping
-    event-bus.ts           #   (planned) publish(events) port
+    domain-error.ts        #   DomainError codes + status mapping
+    money.ts               #   Money value object (integer kobo)
+    to-http-error.ts       #   DomainError → HTTP error class (incl. 409)
+    event.ts               #   DomainEvent + EventPublisher port
   routes/                  # Express routers (wiring only)
   db/                      # knex, pg (infrastructure only)
-  errors/                  # HTTP error classes (legacy, used by handlers)
-  logic/                   # legacy middleware (being migrated out)
-  types/                   # legacy types (being migrated out)
-  app-schema/              # legacy Joi schemas (being migrated to http/)
+  errors/                  # HTTP error classes (bad-request, not-found,
+                           #   unauthorized, unauthenticated, conflict,
+                           #   internal-server)
+  app-schema/              # Joi request/response schemas (boundary validation)
+  types/                   # legacy shared types (being phased out into ports/)
+  tests/                   # unit + integrated + adversarial tests
 ```
 
 Rules:
@@ -138,8 +132,11 @@ export type DomainError = { code: DomainErrorCode; message: string }
 ```
 
 Domain errors are plain data, not `Error` subclasses. `domainErrorStatusCode`
-maps each code to an HTTP status. The domain stays free of HTTP concerns while
-still being able to communicate _why_ an operation failed.
+maps each code to an HTTP status. `shared/to-http-error.ts` exports
+`toHttpError`, which turns a `DomainError` into the matching HTTP error class
+(used by `http/` handlers) — including `CONFLICT` → `ConflictError` (409). The
+domain stays free of HTTP concerns while still being able to communicate _why_
+an operation failed.
 
 ### 4.3 Smart constructors / aggregate invariants (`domain/product.ts`)
 
@@ -157,7 +154,7 @@ This is "make illegal states unrepresentable": you cannot hold a `Product` that
 violates the rules, because the constructor refuses to produce one. The function
 also **normalizes** (trims SKUs), so downstream code can trust its input.
 
-### 4.4 Value object (`domain/money.ts`)
+### 4.4 Value object (`shared/money.ts`)
 
 ```ts
 export type Money = number // integer minor units (kobo)
@@ -340,18 +337,41 @@ The domain/application layers are completely oblivious to all of this.
   http never imports infra directly (it goes through application).
 - **Boundaries do the mapping**: snake_case ⇄ camelCase happens in http and infra.
 - **Small commits**: one logical change per commit.
-- **Strangler fig**: keep legacy `logic/` middleware until its context is fully
-  extracted and the integrated suite is green, then delete it.
+- **Strangler fig**: keep legacy code until its replacement is wired and green,
+  then delete it (already applied to `logic/` and `events/`).
+- **Pragmatic exceptions**: persistence-only CRUD contexts with no domain
+  invariants (`stores`, `store_staff`, `delivery-info`) keep snake_case
+  end-to-end (no camelCase mapping), and a few adapters throw HTTP errors
+  directly (`NotFoundError`, `ConflictError`) instead of returning `Result`.
+  Richer contexts use `Result` + `toHttpError`. Normalizing these is a
+  future cleanup, not a correctness issue.
 
 ---
 
 ## 9. Status
 
-| Context                                                    | Status                                                            |
-| ---------------------------------------------------------- | ----------------------------------------------------------------- |
-| `catalog`                                                  | ✅ extracted (domain/application/ports/infra/http + routes wired) |
-| `shared`                                                   | ✅ `Result`, `DomainError`; `event-bus` planned                   |
-| `orders`/`sales`                                           | ⏳ next                                                           |
-| `identity`, `store-management`, `fulfillment`, `analytics` | ⏳ planned                                                        |
-| `logic/`, `types/`, `app-schema/`                          | legacy, being migrated out                                        |
-| `scripts/`                                                 | legacy import utilities (still use old pricing columns)           |
+All ten bounded contexts are extracted and wired. The legacy middleware has been
+removed.
+
+| Context                              | Status                                                         |
+| ------------------------------------ | -------------------------------------------------------------- |
+| `catalog` (products/variants)        | ✅ extracted                                                   |
+| `orders` (create + reads)            | ✅ extracted                                                   |
+| `cart`                               | ✅ extracted                                                   |
+| `identity` (profile + auth register) | ✅ extracted                                                   |
+| `fulfillment` (delivery-info)        | ✅ extracted                                                   |
+| `store-management` (stores + staff)  | ✅ extracted                                                   |
+| `reviews`                            | ✅ extracted                                                   |
+| `analytics` (read models)            | ✅ extracted                                                   |
+| `media` (avatar + product media)     | ✅ extracted                                                   |
+| `payments` (Paystack/QStash/events)  | ✅ extracted                                                   |
+| `shared/`                            | ✅ `result`, `domain-error`, `money`, `to-http-error`, `event` |
+| `logic/`, `events/`                  | 🗑 removed (dead code)                                         |
+| `cms` routes                         | 🗑 removed (no longer used)                                    |
+| `scripts/`                           | obsolete generators removed; media/image tooling retained      |
+| `app-schema/`, `types/`              | boundary Joi schemas + legacy types (still present)            |
+
+Supporting docs: `ddd_refactor_plan.md` (plan + drift register),
+`docs/review-guide.md` (how to review the change), `docs/testing-strategy.md`
+(test pyramid + blind-agent contract), `docs/test-style-review.md` (adversarial
+suite style review).

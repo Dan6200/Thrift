@@ -11,19 +11,15 @@ import {
   seedStore,
   productPayload,
 } from './helpers.js'
-import { loadUserData } from '../helpers/load-data.js'
+import { userFactory, vendorFactory } from '../factories/index.js'
 import { deleteUserForTesting } from '../helpers/delete-user.js'
 
 chai.use(chaiHttp).should()
 
 const { BAD_REQUEST, NOT_FOUND, FORBIDDEN, CONFLICT, CREATED, OK } = StatusCodes
 
-const vendorFixture = loadUserData(
-  'src/tests/integrated/data/users/vendors/user-aliyu',
-)
-const customerFixture = loadUserData(
-  'src/tests/integrated/data/users/customers/user-ebuka',
-)
+const vendorFixture = vendorFactory()
+const customerFixture = userFactory({ isCustomer: true })
 
 export default function () {
   describe('Adversarial: Stores & Staff', () => {

@@ -7,11 +7,7 @@ import {
 import { ProfileRequestData } from '#src/types/profile/index.js'
 import { createProductsForTesting } from '../helpers/create-product.js'
 import { createStoreForTesting } from '../helpers/create-store.js'
-import { loadUserData } from '../helpers/load-data.js'
-
-const { userInfo: aliyuInfo, products } = loadUserData(
-  'src/tests/integrated/data/users/vendors/user-aliyu',
-)
+import { vendorFactory } from '../factories/index.js'
 import { deleteUserForTesting } from '../helpers/delete-user.js'
 import { createUserForTesting } from '../helpers/create-user.js'
 import { signInForTesting } from '../helpers/signin-user.js'
@@ -23,8 +19,9 @@ export default function (customer: { userInfo: ProfileRequestData }) {
   const cartItems: (CartItemRequestData & { base_price: number })[] = []
 
   before(async () => {
-    // Create and sign in vendor (Aliyu), then a store with products. This
+    // Create and sign in a fresh vendor, then a store with products. This
     // shared, read-only catalog is reused by every test below.
+    const aliyuInfo = vendorFactory().userInfo
     aliyuUserId = await createUserForTesting(aliyuInfo)
     const aliyuToken = await signInForTesting(aliyuInfo)
     const storeRes = await createStoreForTesting(aliyuToken)
@@ -33,7 +30,7 @@ export default function (customer: { userInfo: ProfileRequestData }) {
     for await (const response of createProductsForTesting(
       aliyuToken,
       storeId,
-      products.length,
+      3,
     )) {
       for (const {
         variant_id,

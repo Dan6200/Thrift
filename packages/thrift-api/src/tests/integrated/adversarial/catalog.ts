@@ -11,7 +11,7 @@ import {
   seedVendorCatalog,
   productPayload,
 } from './helpers.js'
-import { loadUserData } from '../helpers/load-data.js'
+import { userFactory, vendorFactory } from '../factories/index.js'
 import { deleteUserForTesting } from '../helpers/delete-user.js'
 
 chai.use(chaiHttp).should()
@@ -19,9 +19,7 @@ chai.use(chaiHttp).should()
 const { BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, CONFLICT } =
   StatusCodes
 
-const customerFixture = loadUserData(
-  'src/tests/integrated/data/users/customers/user-ebuka',
-)
+const customerFixture = userFactory({ isCustomer: true })
 
 export default function () {
   describe('Adversarial: Catalog (products/variants)', () => {
@@ -30,13 +28,9 @@ export default function () {
 
     before(async () => {
       vendor = await seedUser(
-        uniqueUser(
-          loadUserData('src/tests/integrated/data/users/vendors/user-aliyu')
-            .userInfo,
-          {
-            isVendor: true,
-          },
-        ),
+        uniqueUser(vendorFactory().userInfo, {
+          isVendor: true,
+        }),
       )
       storeId = await seedStore(vendor.token)
     })

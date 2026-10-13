@@ -9,19 +9,15 @@ import {
   seedUser,
   seedVendorCatalog,
 } from './helpers.js'
-import { loadUserData } from '../helpers/load-data.js'
+import { userFactory, vendorFactory } from '../factories/index.js'
 import { deleteUserForTesting } from '../helpers/delete-user.js'
 
 chai.use(chaiHttp).should()
 
 const { BAD_REQUEST, NOT_FOUND, FORBIDDEN, CREATED, OK } = StatusCodes
 
-const aisha = loadUserData(
-  'src/tests/integrated/data/users/customers/user-aisha',
-)
-const ebuka = loadUserData(
-  'src/tests/integrated/data/users/customers/user-ebuka',
-)
+const aisha = userFactory({ isCustomer: true })
+const ebuka = userFactory({ isCustomer: true })
 
 export default function () {
   describe('Adversarial: Cart', () => {
@@ -154,11 +150,7 @@ export default function () {
         // Use a fresh customer so accumulated state from earlier tests cannot
         // skew the arithmetic assertion.
         const fresh = await seedUser(
-          uniqueUser(
-            loadUserData(
-              'src/tests/integrated/data/users/customers/user-mustapha',
-            ).userInfo,
-          ),
+          uniqueUser(userFactory({ isCustomer: true }).userInfo),
         )
         try {
           const qty = 3

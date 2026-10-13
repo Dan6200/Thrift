@@ -20,19 +20,13 @@ import { createProductsForTesting } from '../helpers/create-product.js'
 import { createOrderForTesting } from '../helpers/create-order.js'
 import { knex } from '#src/db/index.js'
 import { faker } from '@faker-js/faker'
-import { loadUserData } from '../helpers/load-data.js'
+import { userFactory } from '../factories/index.js'
 import { updateVariantForTesting } from '../helpers/product-variants.js'
 import { ProductVariant } from '#src/types/products.js'
 
-const Ebuka = loadUserData(
-  'src/tests/integrated/data/users/customers/user-ebuka',
-)
-const Aisha = loadUserData(
-  'src/tests/integrated/data/users/customers/user-aisha',
-)
-const Mustapha = loadUserData(
-  'src/tests/integrated/data/users/customers/user-mustapha',
-)
+const Ebuka = userFactory({ isCustomer: true })
+const Aisha = userFactory({ isCustomer: true })
+const Mustapha = userFactory({ isCustomer: true })
 
 chai.use(chaiHttp).should()
 

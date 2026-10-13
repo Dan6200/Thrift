@@ -6,7 +6,7 @@ import testStores from './stores/index.js'
 import testDelivery from './delivery-info/index.js'
 import testProducts from './products/index.js'
 import testMedia from './media/index.js'
-import { loadUserData } from './helpers/load-data.js'
+import { customerFactory, vendorFactory } from './factories/index.js'
 import testAnalytics from './analytics/index.js'
 import testStoreStaff from './store_staff/index.js'
 import testCart from './cart/index.js'
@@ -15,16 +15,10 @@ import testOrders from './orders/index.js'
 import { bulkDeleteImages } from './utils/bulk-delete.js'
 import adversarialTests from './adversarial/index.js'
 
-const Ebuka = loadUserData(
-  'src/tests/integrated/data/users/customers/user-ebuka',
-)
-const Aisha = loadUserData(
-  'src/tests/integrated/data/users/customers/user-aisha',
-)
-const Mustapha = loadUserData(
-  'src/tests/integrated/data/users/customers/user-mustapha',
-)
-const Aliyu = loadUserData('src/tests/integrated/data/users/vendors/user-aliyu')
+const Ebuka = customerFactory()
+const Aisha = customerFactory()
+const Mustapha = customerFactory()
+const Aliyu = vendorFactory()
 
 const users = [Ebuka, Aliyu, Aisha, Mustapha]
 const customers = [Ebuka, Aisha, Mustapha] // is_customer is true

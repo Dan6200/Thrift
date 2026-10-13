@@ -16,158 +16,258 @@ import {
   testUpdateVariant,
   testDeleteVariant,
 } from './definitions/index.js'
-import { loadYamlFile } from '../helpers/load-data.js'
-
-const {
-  expectedDataAfterVariantAdditionAndUpdates,
-  variantsToCreate,
-  variantUpdates,
-} = loadYamlFile(
-  'src/tests/integrated/data/users/vendors/user-aliyu/products/index.yml',
-)
 import { ProfileRequestData } from '../../../types/profile/index.js'
 import assert from 'assert'
 import { createUserForTesting } from '../helpers/create-user.js'
 import { deleteUserForTesting } from '../helpers/delete-user.js'
 import { signInForTesting } from '../helpers/signin-user.js'
 import { createStoreForTesting } from '../helpers/create-store.js'
+import { productFactory, variantFactory } from '../factories/index.js'
 
-// globals
 chai.use(chaiHttp).should()
 
-export default function ({
-  userInfo,
-  products,
-  productPartialUpdate,
-}: {
-  userInfo?: ProfileRequestData
-  products?: ProductRequestData[]
-  productPartialUpdate?: UpdateProductRequestData[]
-}) {
-  let token: string
-  let storeId: number
-  let userId: string
-  const productIds: number[] = []
-  const variantIds: number[] = []
-
-  before(async () => {
-    userId = await createUserForTesting(userInfo)
-    token = await signInForTesting(userInfo)
-    const response = await createStoreForTesting(token)
-    ;({ store_id: storeId } = response.body)
-  })
-
-  it('it should Add a couple products to each store', async () => {
-    for (const product of products) {
-      const { product_id } = await testCreateProduct({
-        body: product,
-        query: { storeId },
-        token,
-        expectedData: product,
-      })
-      productIds.push(product_id)
+export default function ({ userInfo }: { userInfo: ProfileRequestData }) {
+  // Each test seeds its own vendor, store and products via factories, so no
+  // test depends on state left behind by another.
+  const withVendor = async (
+    fn: (token: string, storeId: number) => Promise<void>,
+  ) => {
+    const userId = await createUserForTesting(userInfo)
+    const token = await signInForTesting(userInfo)
+    try {
+      const storeRes = await createStoreForTesting(token)
+      await fn(token, storeRes.body.store_id)
+    } finally {
+      await deleteUserForTesting(userId)
     }
-  })
+  }
 
-  it('it should create new variants for the first product', async () => {
-    const productId = productIds[0]
-    for (const variant of variantsToCreate) {
-      const { variant_id } = await testPostVariant({
-        params: { productId },
-        query: { storeId },
-        body: variant,
-        token,
-        expectedData: variant,
-      })
-      variantIds.push(variant_id)
-    }
-  })
+  // A fresh catalog (products + partial updates + variants to create + updates).
+  const catalog = () => {
+    const products: ProductRequestData[] = [
+      productFactory(),
+      productFactory(),
+      productFactory(),
+    ]
+    const productPartialUpdate: UpdateProductRequestData[] = [
+      { category_id: 2 },
+      { description: ['An updated description'] },
+      {
+        title: `Renamed Product ${Math.random().toString(36).slice(2, 8)}`,
+        subcategory_id: 2,
+      },
+    ]
+    const variantsToCreate = [
+      variantFactory(),
+      variantFactory(),
+      variantFactory(),
+    ]
+    const variantUpdates = [
+      {
+        base_price: 3000,
+        quantity_available: 8,
+        inventory_change_reason: 'restock',
+      },
+      { base_price: 4000 },
+    ]
+    return { products, productPartialUpdate, variantsToCreate, variantUpdates }
+  }
 
-  it('it should update the newly created variants', async () => {
-    const productId = productIds[0]
-    assert(!!variantIds.length && !!variantUpdates.length)
-    for (const [i, variantUpdate] of variantUpdates.entries()) {
-      const expectedData = { ...variantsToCreate[i], ...variantUpdate }
-      await testUpdateVariant({
-        params: { productId, variantId: variantIds[i] },
-        query: { storeId },
-        body: variantUpdate,
-        token,
-        expectedData,
-      })
-    }
-  })
+  const createProduct = async (
+    token: string,
+    storeId: number,
+    body: ProductRequestData,
+  ) =>
+    testCreateProduct({ token, query: { storeId }, body, expectedData: body })
 
-  it('it should retrieve all the products and their variants', async () => {
-    await testGetAllProducts({
-      token,
-      query: { storeId },
-    })
-  })
-
-  it('it should update all the products a vendor has for sale', async () => {
-    assert(
-      !!productIds.length && productIds?.length === productPartialUpdate.length,
-    )
-    for (const [idx, productId] of productIds.entries()) {
-      const { variants, ...expectedData } = {
-        ...products[idx],
-        ...productPartialUpdate[idx],
+  it('creates products and reads them all back', () =>
+    withVendor(async (token, storeId) => {
+      const { products } = catalog()
+      for (const product of products) {
+        await createProduct(token, storeId, product)
       }
-      await testUpdateProduct({
-        token,
-        params: { productId },
-        body: productPartialUpdate[idx],
-        query: { storeId },
-        expectedData,
-      })
-    }
-  })
+      await testGetAllProducts({ token, query: { storeId } })
+    }))
 
-  it('it should retrieve a specific product and its variants. The return data should match updates in a synchronous test suite', async () => {
-    assert(!!productIds.length)
-    for (const [i, productId] of productIds.entries()) {
-      await testGetProduct({
-        token,
-        params: { productId },
-        query: { storeId },
-        expectedData: expectedDataAfterVariantAdditionAndUpdates[
-          i
-        ] as unknown as ProductResponseData, // intentional typecast
-      })
-    }
-  })
+  it('creates new variants for a product', () =>
+    withVendor(async (token, storeId) => {
+      const { products, variantsToCreate } = catalog()
+      const { product_id } = await createProduct(token, storeId, products[0])
+      for (const variant of variantsToCreate) {
+        await testPostVariant({
+          params: { productId: product_id },
+          query: { storeId },
+          body: variant,
+          token,
+          expectedData: variant,
+        })
+      }
+    }))
 
-  it('it should delete the newly created variants', async () => {
-    const productId = productIds[0]
-    for (const variantId of variantIds) {
-      await testDeleteVariant({
-        query: { storeId },
-        params: { productId, variantId },
-        token,
-      })
-    }
-  })
+  it('updates the newly created variants', () =>
+    withVendor(async (token, storeId) => {
+      const { products, variantsToCreate, variantUpdates } = catalog()
+      const { product_id } = await createProduct(token, storeId, products[0])
+      const variantIds: number[] = []
+      for (const variant of variantsToCreate) {
+        const { variant_id } = await testPostVariant({
+          params: { productId: product_id },
+          query: { storeId },
+          body: variant,
+          token,
+          expectedData: variant,
+        })
+        variantIds.push(variant_id)
+      }
+      assert(variantUpdates.length === 2)
+      for (const [i, variantUpdate] of variantUpdates.entries()) {
+        await testUpdateVariant({
+          params: { productId: product_id, variantId: variantIds[i] },
+          query: { storeId },
+          body: variantUpdate,
+          token,
+          expectedData: { ...variantsToCreate[i], ...variantUpdate },
+        })
+      }
+    }))
 
-  it('it should delete all the product a vendor has for sale', async () => {
-    assert(!!productIds.length)
-    for (const productId of productIds)
-      await testDeleteProduct({
-        token,
-        params: { productId },
-        query: { storeId },
-      })
-  })
+  it('updates all the products a vendor has for sale', () =>
+    withVendor(async (token, storeId) => {
+      const { products, productPartialUpdate } = catalog()
+      const productIds: number[] = []
+      for (const product of products) {
+        const { product_id } = await createProduct(token, storeId, product)
+        productIds.push(product_id)
+      }
+      assert(productIds.length === productPartialUpdate.length)
+      for (const [idx, productId] of productIds.entries()) {
+        const { variants, ...expectedData } = {
+          ...products[idx],
+          ...productPartialUpdate[idx],
+        }
+        await testUpdateProduct({
+          token,
+          params: { productId },
+          body: productPartialUpdate[idx],
+          query: { storeId },
+          expectedData,
+        })
+      }
+    }))
 
-  it('it should fail to retrieve any of the deleted products', async () => {
-    assert(!!productIds.length)
-    for (const productId of productIds)
-      await testGetNonExistentProduct({
-        query: { storeId },
-        token,
-        params: { productId },
-      })
-  })
+  it('reflects product and variant modifications when retrieved', () =>
+    withVendor(async (token, storeId) => {
+      const {
+        products,
+        productPartialUpdate,
+        variantsToCreate,
+        variantUpdates,
+      } = catalog()
 
-  after(async () => deleteUserForTesting(userId))
+      const productIds: number[] = []
+      for (const product of products) {
+        const { product_id } = await createProduct(token, storeId, product)
+        productIds.push(product_id)
+      }
+
+      const variantIds: number[] = []
+      for (const variant of variantsToCreate) {
+        const { variant_id } = await testPostVariant({
+          params: { productId: productIds[0] },
+          query: { storeId },
+          body: variant,
+          token,
+          expectedData: variant,
+        })
+        variantIds.push(variant_id)
+      }
+      for (const [i, variantUpdate] of variantUpdates.entries()) {
+        await testUpdateVariant({
+          params: { productId: productIds[0], variantId: variantIds[i] },
+          query: { storeId },
+          body: variantUpdate,
+          token,
+          expectedData: { ...variantsToCreate[i], ...variantUpdate },
+        })
+      }
+      for (const [idx, productId] of productIds.entries()) {
+        const { variants, ...updated } = {
+          ...products[idx],
+          ...productPartialUpdate[idx],
+        }
+        await testUpdateProduct({
+          token,
+          params: { productId },
+          body: productPartialUpdate[idx],
+          query: { storeId },
+          expectedData: updated,
+        })
+      }
+
+      for (const [i, productId] of productIds.entries()) {
+        const expected = {
+          ...products[i],
+          ...productPartialUpdate[i],
+          variants:
+            i === 0
+              ? [
+                  ...products[0].variants,
+                  ...variantsToCreate.map((v, j) =>
+                    variantUpdates[j] ? { ...v, ...variantUpdates[j] } : v,
+                  ),
+                ]
+              : products[i].variants,
+        }
+        await testGetProduct({
+          token,
+          params: { productId },
+          query: { storeId },
+          expectedData: expected as unknown as ProductResponseData,
+        })
+      }
+    }))
+
+  it('deletes the newly created variants', () =>
+    withVendor(async (token, storeId) => {
+      const { products, variantsToCreate } = catalog()
+      const { product_id } = await createProduct(token, storeId, products[0])
+      for (const variant of variantsToCreate) {
+        const { variant_id } = await testPostVariant({
+          params: { productId: product_id },
+          query: { storeId },
+          body: variant,
+          token,
+          expectedData: variant,
+        })
+        await testDeleteVariant({
+          query: { storeId },
+          params: { productId: product_id, variantId: variant_id },
+          token,
+        })
+      }
+    }))
+
+  it('deletes all products and fails to retrieve them', () =>
+    withVendor(async (token, storeId) => {
+      const { products } = catalog()
+      const productIds: number[] = []
+      for (const product of products) {
+        const { product_id } = await createProduct(token, storeId, product)
+        productIds.push(product_id)
+      }
+      for (const productId of productIds) {
+        await testDeleteProduct({
+          token,
+          params: { productId },
+          query: { storeId },
+        })
+      }
+      for (const productId of productIds) {
+        await testGetNonExistentProduct({
+          query: { storeId },
+          token,
+          params: { productId },
+        })
+      }
+    }))
 }

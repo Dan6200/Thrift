@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto'
 import { createUserForTesting } from '../helpers/create-user.js'
 import { deleteUserForTesting } from '../helpers/delete-user.js'
 import { signInForTesting } from '../helpers/signin-user.js'
-import { loadUserData } from '../helpers/load-data.js'
+import { userFactory, vendorFactory } from '../factories/index.js'
 
 chai.use(chaiHttp)
 
@@ -66,9 +66,7 @@ export function expectErrorMessage(response: any, label: string) {
   }
 }
 
-const vendorFixture = loadUserData(
-  'src/tests/integrated/data/users/vendors/user-aliyu',
-)
+const vendorFixture = vendorFactory()
 
 /**
  * Build a fresh userInfo fixture with a globally unique email/phone so it can

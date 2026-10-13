@@ -9,7 +9,7 @@ import {
   seedUser,
   seedVendorCatalog,
 } from './helpers.js'
-import { loadUserData } from '../helpers/load-data.js'
+import { userFactory, vendorFactory } from '../factories/index.js'
 import { deleteUserForTesting } from '../helpers/delete-user.js'
 import { knex } from '#src/db/index.js'
 
@@ -17,12 +17,8 @@ chai.use(chaiHttp).should()
 
 const { BAD_REQUEST, NOT_FOUND, FORBIDDEN, CREATED, OK } = StatusCodes
 
-const aisha = loadUserData(
-  'src/tests/integrated/data/users/customers/user-aisha',
-)
-const ebuka = loadUserData(
-  'src/tests/integrated/data/users/customers/user-ebuka',
-)
+const aisha = userFactory({ isCustomer: true })
+const ebuka = userFactory({ isCustomer: true })
 
 export default function () {
   describe('Adversarial: Orders', () => {

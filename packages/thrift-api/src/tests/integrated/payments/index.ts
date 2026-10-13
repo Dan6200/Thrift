@@ -8,7 +8,7 @@ import { deleteUserForTesting } from '../helpers/delete-user.js'
 import { signInForTesting } from '../helpers/signin-user.js'
 import { createStoreForTesting } from '../helpers/create-store.js'
 import { createOrderForTesting } from '../helpers/create-order.js' // Import existing helper
-import { loadUserData } from '../helpers/load-data.js'
+import { userFactory, vendorFactory } from '../factories/index.js'
 import { knex } from '#src/db/index.js'
 import {
   testInitializePayment,
@@ -26,12 +26,8 @@ const {
 } = StatusCodes
 
 // Load test data
-const customerData = loadUserData(
-  'src/tests/integrated/data/users/customers/user-aisha',
-)
-const vendorData = loadUserData(
-  'src/tests/integrated/data/users/vendors/user-aliyu',
-)
+const customerData = userFactory({ isCustomer: true })
+const vendorData = vendorFactory()
 
 describe('Payments', () => {
   let customerToken: string

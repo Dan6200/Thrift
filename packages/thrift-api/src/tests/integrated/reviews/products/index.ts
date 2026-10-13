@@ -17,17 +17,11 @@ import { deleteUserForTesting } from '../../helpers/delete-user.js'
 import { signInForTesting } from '../../helpers/signin-user.js'
 import { createStoreForTesting } from '../../helpers/create-store.js'
 import { createProductsForTesting } from '../../helpers/create-product.js'
-import { loadUserData } from '../../helpers/load-data.js'
+import { vendorFactory, userFactory } from '../../factories/index.js'
 
-const { userInfo: vendorInfo } = loadUserData(
-  'src/tests/integrated/data/users/vendors/user-aliyu',
-)
-const { userInfo: mustaphaInfo } = loadUserData(
-  'src/tests/integrated/data/users/customers/user-mustapha',
-)
-const { userInfo: ebukaInfo } = loadUserData(
-  'src/tests/integrated/data/users/customers/user-ebuka',
-)
+const { userInfo: vendorInfo } = vendorFactory()
+const { userInfo: mustaphaInfo } = userFactory({ isCustomer: true })
+const { userInfo: ebukaInfo } = userFactory({ isCustomer: true })
 import { createOrderForTesting } from '../../helpers/create-order.js'
 
 chai.use(chaiHttp).should()

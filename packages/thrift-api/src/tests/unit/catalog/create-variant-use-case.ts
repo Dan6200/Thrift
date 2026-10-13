@@ -64,6 +64,7 @@ export default () => {
       })
       const result = await createVariantUseCase(repo)({
         productId: 1,
+        storeId: 1,
         variant: { ...validVariant, basePrice: -1 },
       })
       result.kind.should.equal('err')
@@ -81,6 +82,7 @@ export default () => {
       })
       const result = await createVariantUseCase(repo)({
         productId: 1,
+        storeId: 1,
         variant: validVariant,
       })
       result.kind.should.equal('err')
@@ -101,6 +103,7 @@ export default () => {
       })
       const result = await createVariantUseCase(repo)({
         productId: 1,
+        storeId: 1,
         variant: validVariant,
       })
       result.kind.should.equal('ok')

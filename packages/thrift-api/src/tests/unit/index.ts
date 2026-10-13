@@ -8,6 +8,7 @@ import catalogDomainTests from './catalog/index.js'
 import catalogVariantTests from './catalog/variant.js'
 import catalogSortTests from './catalog/sort.js'
 import createProductUseCaseTests from './catalog/create-product.js'
+import createVariantUseCaseTests from './catalog/create-variant-use-case.js'
 import createOrderTests from './orders/create-order.js'
 import createOrderEdgeCaseTests from './orders/create-order-edge-cases.js'
 import cartDomainTests from './cart/cart.js'
@@ -23,6 +24,7 @@ export default () => {
   describe('Catalog variant domain', catalogVariantTests)
   describe('Catalog sort', catalogSortTests)
   describe('Catalog create product use case', createProductUseCaseTests)
+  describe('Catalog create variant use case', createVariantUseCaseTests)
   describe('Orders', createOrderTests)
   describe('Orders edge cases', createOrderEdgeCaseTests)
   describe('Cart domain', cartDomainTests)

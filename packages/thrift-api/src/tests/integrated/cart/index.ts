@@ -85,7 +85,12 @@ export default function (customer: { userInfo: ProfileRequestData }) {
       })
     }))
 
-  it('should add items and read them all back', () =>
+  it('should add items to the cart', () =>
+    withCustomer(async (token) => {
+      await addAllItems(token)
+    }))
+
+  it('should get all the items in a cart', () =>
     withCustomer(async (token) => {
       await addAllItems(token)
       await testGetCart({

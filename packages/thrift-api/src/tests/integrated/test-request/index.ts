@@ -1,5 +1,5 @@
 import chai from 'chai'
-import { RequestForTests, TestRequestParams } from './types.js'
+import { TestRequestParams, RequestParams } from './types.js'
 
 export default function ({
   verb,
@@ -15,17 +15,10 @@ export default function ({
     params,
     body,
     token,
-  }: {
-    query?: Pick<RequestForTests, 'query'>
-    params?: Pick<RequestForTests, 'params'>
-    body?: Pick<RequestForTests, 'body'>
-    token?: string
-  }) {
+    headers,
+  }: RequestParams) {
     const server = process.env.SERVER!
-    // Validate the request body first
-    if (body && Object.entries(body).length !== 0 && !validateTestReqData)
-      throw new Error('Must validate test request data')
-    // simulate request object...
+    // Request validation is opt-in: only validate when a validator is provided.
     if (validateTestReqData && !validateTestReqData({ query, params, body }))
       throw new Error('Invalid Test Request Data')
 
@@ -35,6 +28,8 @@ export default function ({
       [verb](path)
       .query(query)
       .send(<object>body)
+
+    if (headers) request.set(headers)
 
     process.env.DEBUG &&
       console.log('\nDEBUG: request ->' + JSON.stringify(request) + '\n')

@@ -136,8 +136,13 @@ export default function (): void {
       testMedia(user as any))
   }
 
-  describe('Media Asset Cleanup', async () =>
-    Promise.all([bulkDeleteImages('avatars'), bulkDeleteImages('products')]))
+  /** Media cleanup runs once after every integrated test completes. **/
+  after(async () => {
+    await Promise.all([
+      bulkDeleteImages('avatars'),
+      bulkDeleteImages('products'),
+    ])
+  })
 
   /** Strict adversarial contract tests **/
 

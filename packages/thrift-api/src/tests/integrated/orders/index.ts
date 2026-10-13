@@ -1,8 +1,6 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
-import assert from 'assert'
 import { ProfileRequestData } from '#src/types/profile/index.js'
-import { OrderCreateRequestData } from '#src/types/orders.js'
 import {
   testCreateOrder,
   testGetAllOrders,
@@ -23,130 +21,140 @@ const { userInfo: aliyuInfo } = vendorFactory()
 
 chai.use(chaiHttp).should()
 
+type SeedContext = {
+  customerToken: string
+  storeId: number
+  variantId: number
+  variantPrice: number
+  productId: number
+}
+
 export default function (customer: { userInfo: ProfileRequestData }) {
-  let customerToken: string
-  let customerId: string
-  let vendorToken: string
-  let vendorId: string
-  let storeId: number
-  let variantId: number
-  let product_id: string // Added to capture product ID
-  let order_id: number
-  let order_item_id: number
-  let variantPrice: number
+  // Each test seeds its own customer + vendor + store + product, so no test
+  // depends on state left behind by another.
+  const withSeed = async (
+    fn: (ctx: SeedContext) => Promise<void>,
+  ): Promise<void> => {
+    const customerId = await createUserForTesting(customer.userInfo)
+    const customerToken = await signInForTesting(customer.userInfo)
+    const vendorId = await createUserForTesting(aliyuInfo)
+    const vendorToken = await signInForTesting(aliyuInfo)
+    try {
+      const storeRes = await createStoreForTesting(vendorToken)
+      const storeId = storeRes.body.store_id
 
-  before(async () => {
-    // Create and sign in customer
-    customerId = await createUserForTesting(customer.userInfo)
-    customerToken = await signInForTesting(customer.userInfo)
+      const productRequests = []
+      for await (const req of createProductsForTesting(
+        vendorToken,
+        storeId,
+        1,
+      )) {
+        productRequests.push(req)
+      }
+      const [productRes] = await Promise.all(productRequests)
+      const productId = productRes.body.product_id
+      const variantId = productRes.body.variants[0].variant_id
+      const variantPrice = productRes.body.variants[0].base_price
 
-    // Create and sign in vendor
-    vendorId = await createUserForTesting(aliyuInfo)
-    vendorToken = await signInForTesting(aliyuInfo)
-
-    // Create a store for the vendor
-    const storeRes = await createStoreForTesting(vendorToken)
-    storeId = storeRes.body.store_id
-
-    // Create a product in that store
-    const productCreationPromises = []
-    for await (const promise of createProductsForTesting(
-      vendorToken,
-      storeId,
-      1,
-    )) {
-      productCreationPromises.push(promise)
+      await fn({ customerToken, storeId, variantId, variantPrice, productId })
+    } finally {
+      await deleteUserForTesting(customerId)
+      await deleteUserForTesting(vendorId)
     }
-    const productResponses = await Promise.all(productCreationPromises)
-    const productRes = productResponses[0]
-    product_id = productRes.body.product_id // Capture product_id
-    variantId = productRes.body.variants[0].variant_id
-    variantPrice = productRes.body.variants[0].base_price
-  })
+  }
 
-  after(async () => {
-    await deleteUserForTesting(customerId)
-    await deleteUserForTesting(vendorId)
-  })
-
-  it('should allow a customer to create an order', async () => {
+  const createOrder = async (ctx: SeedContext, quantity = 1) => {
     const orderData = {
-      items: [
-        {
-          variant_id: variantId,
-          quantity: 1,
-        },
-      ],
+      items: [{ variant_id: ctx.variantId, quantity }],
     }
-    const response = await testCreateOrder({
-      token: customerToken,
+    return testCreateOrder({
+      token: ctx.customerToken,
       body: orderData,
-      query: { store_id: storeId },
+      query: { store_id: ctx.storeId },
       expectedData: {
         ...orderData,
-        store_id: storeId,
-        total_amount: variantPrice * 1,
+        store_id: ctx.storeId,
+        total_amount: ctx.variantPrice * quantity,
       },
     })
-    order_id = response.order_id
-    order_item_id = response.items[0].order_item_id // Capture order_item_id
-  })
+  }
 
-  it('should allow a customer to get all their orders', async () => {
-    await testGetAllOrders({
-      token: customerToken,
-      query: { store_id: storeId },
-    })
-  })
+  it('should allow a customer to create an order', () =>
+    withSeed(async (ctx) => {
+      await createOrder(ctx)
+    }))
 
-  it('should allow a customer to get a specific order', async () => {
-    await testGetOrder({
-      token: customerToken,
-      params: { order_id },
-      query: { store_id: storeId },
-    })
-  })
+  it('should allow a customer to get all their orders', () =>
+    withSeed(async (ctx) => {
+      await createOrder(ctx)
+      await testGetAllOrders({
+        token: ctx.customerToken,
+        query: { store_id: ctx.storeId },
+      })
+    }))
 
-  it('should allow a customer to find a reviewable item', async () => {
-    await testGetReviewableItem({
-      token: customerToken,
-      query: { product_id: product_id }, // Pass product_id only
-      expectedOrderItemId: order_item_id,
-    })
-  })
+  it('should allow a customer to get a specific order', () =>
+    withSeed(async (ctx) => {
+      const order = await createOrder(ctx)
+      await testGetOrder({
+        token: ctx.customerToken,
+        params: { order_id: order.order_id },
+        query: { store_id: ctx.storeId },
+      })
+    }))
 
-  // it('should allow a customer to update an order', async () => {
-  //   const updatedOrderData = {
-  //     items: [
-  //       {
-  //         variant_id: variantId,
-  //         quantity: 2,
-  //       },
-  //     ],
-  //   }
-  //   await testUpdateOrder({
-  //     token: customerToken,
-  //     params: { order_id },
-  //     body: updatedOrderData,
-  //     expectedData: {
-  //       ...updatedOrderData,
-  //       store_id: storeId,
-  //       total_amount: variantPrice * 2,
-  //     },
-  //   })
-  // })
+  it('should allow a customer to find a reviewable item', () =>
+    withSeed(async (ctx) => {
+      const order = await createOrder(ctx)
+      await testGetReviewableItem({
+        token: ctx.customerToken,
+        query: { product_id: ctx.productId },
+        expectedOrderItemId: order.items[0].order_item_id,
+      })
+    }))
 
-  // it('should allow a customer to delete an order', async () => {
-  //   await testDeleteOrder({
-  //     token: customerToken,
-  //     params: { order_id },
-  //   })
-  // })
+  // CONTRACT FINDING: PATCH/DELETE /v1/orders/:order_id return 404
+  // ("Resource not found") — the documented order surface is create + read-only
+  // (POST|GET /v1/orders, GET /v1/orders/reviewable-item, GET /v1/orders/:order_id).
+  // These tests are recorded (not deleted) so they can be un-skipped if the
+  // endpoints are ever implemented.
+  it.skip('should allow a customer to update an order', () =>
+    withSeed(async (ctx) => {
+      const order = await createOrder(ctx)
+      const updatedOrderData = {
+        items: [{ variant_id: ctx.variantId, quantity: 2 }],
+      }
+      await testUpdateOrder({
+        token: ctx.customerToken,
+        params: { order_id: order.order_id },
+        body: updatedOrderData,
+        expectedData: {
+          ...updatedOrderData,
+          store_id: ctx.storeId,
+          total_amount: ctx.variantPrice * 2,
+        },
+      })
+    }))
 
-  // it('should fail to get a deleted order', async () => {
-  //   await testGetNonExistentOrder({
-  //     token: customerToken,
-  //     params: { order_id },
-  //   })
-  // })
+  it.skip('should allow a customer to delete an order', () =>
+    withSeed(async (ctx) => {
+      const order = await createOrder(ctx)
+      await testDeleteOrder({
+        token: ctx.customerToken,
+        params: { order_id: order.order_id },
+      })
+    }))
+
+  it.skip('should fail to get a deleted order', () =>
+    withSeed(async (ctx) => {
+      const order = await createOrder(ctx)
+      await testDeleteOrder({
+        token: ctx.customerToken,
+        params: { order_id: order.order_id },
+      })
+      await testGetNonExistentOrder({
+        token: ctx.customerToken,
+        params: { order_id: order.order_id },
+      })
+    }))
 }

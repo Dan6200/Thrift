@@ -116,27 +116,46 @@ The fake is a plain object implementing the port. See the templates:
 mapping** (a rule violation returns the right `DomainError` code and _does not_
 call the write method) and the **happy path** (valid input reaches the repo).
 
-- `createProductUseCase(repo)(command)` — validates via `createProduct`, then
-  rejects any variant whose SKU already exists globally (`repo.getVariantBySku`
-  → `CONFLICT`), then `repo.create`.
-- `createVariantUseCase(repo)(command)` — validates via `createVariant`, rejects
-  duplicate SKU (`getVariantBySku` → `CONFLICT`), then `repo.createVariant`.
-- `updateVariantUseCase(repo)(input)` — validates via `validateVariantUpdate`,
-  then `repo.updateVariant`.
-- `createOrderUseCase(repo)(command)` — `repo.storeExists` → `NOT_FOUND`;
-  `repo.deliveryInfoBelongsTo` → `INVALID_INPUT`; then `createOrder` with
-  prices/stock from the repo; then `repo.create`.
-- `createReviewUseCase(repo)(command)` — `getOrderItemOwner` → `NOT_FOUND` /
-  `UNAUTHORIZED`; `getById` (existing review) → `CONFLICT`; then `repo.create`.
-- `updateReviewUseCase` / `deleteReviewUseCase` — `getById` → `NOT_FOUND`;
-  ownership mismatch → `UNAUTHORIZED`.
-- `addItemUseCase` / `updateItemUseCase` / `removeItemUseCase` (cart) — stock
-  check (`validateQuantity`) and not-found mapping.
+- `createProductUseCase(repo)(command)` — `command = { title, categoryId,
+subcategoryId, description: string[], variants: Variant[], vendorId, storeId }`.
+  Validates via `createProduct`; rejects any variant whose SKU already exists
+  globally (`repo.getVariantBySku(sku)` → `CONFLICT`); then `repo.create`.
+- `createVariantUseCase(repo)(command)` — `command = { productId, storeId,
+variant: Variant }`. Validates via `createVariant`; rejects duplicate SKU
+  (`getVariantBySku` → `CONFLICT`); then `repo.createVariant`.
+- `updateVariantUseCase(repo)(input)` — `input = { productId, variantId,
+storeId, changes: VariantUpdate }`. **The payload field is `changes`** (not
+  `update`/`variant`). Validates via `validateVariantUpdate(input.changes)`;
+  then `repo.updateVariant({ ...input, changes })`.
+- `createOrderUseCase(repo)(command)` — `command = { customerId, storeId,
+deliveryInfoId?, items: { variantId, quantity }[] }`. `repo.storeExists` →
+  `NOT_FOUND`; `repo.deliveryInfoBelongsTo` → `INVALID_INPUT`; then `createOrder`
+  with prices/stock from `repo.getVariantPrices` / `repo.getAvailableStock`;
+  then `repo.create`.
+- `createReviewUseCase(repo)(command)` — `command = { orderItemId, customerId,
+rating, customerRemark? }`. `repo.getOrderItemOwner(orderItemId)` →
+  `NOT_FOUND` / `UNAUTHORIZED`; `repo.getById(orderItemId)` (existing) →
+  `CONFLICT`; then `repo.create`.
+- `updateReviewUseCase(repo)(command)` — `command = { orderItemId, customerId,
+rating, customerRemark? }`. `getById` → `NOT_FOUND`; ownership mismatch →
+  `UNAUTHORIZED`; then `repo.update`.
+- `deleteReviewUseCase(repo)(command)` — `command = { orderItemId, customerId }`.
+  `getById` → `NOT_FOUND`; ownership → `UNAUTHORIZED`; then `repo.remove`.
+- Cart use cases:
+  - `addItemUseCase(repo)(command)` — `command = { customerId, variantId,
+quantity }`. `repo.getStock(variantId)` → `validateQuantity`; then
+    `repo.addItem`.
+  - `updateItemUseCase(repo)(command)` — `command = { customerId, itemId,
+quantity }`. `repo.getCartId` → `NOT_FOUND`; `repo.getCartItem` →
+    `NOT_FOUND`; `getStock` → `validateQuantity`; then `repo.updateItem`.
+  - `removeItemUseCase(repo)(command)` — `command = { customerId, itemId }`.
+    `getCartId` → `NOT_FOUND`; `repo.removeItem` (0 rows → `NOT_FOUND`).
 
-> The port method names above (`getVariantBySku`, `getOrderItemOwner`, etc.) are
-> the **contract** — the fake must expose exactly these names; the real adapter
-> implements them. When unsure of a signature, mirror the existing unit-test
-> fake rather than guessing.
+> The port method names (`getVariantBySku`, `getOrderItemOwner`, `getById`,
+> `getStock`, `getCartId`, `getCartItem`, `addItem`, `updateItem`, `removeItem`,
+> `storeExists`, `deliveryInfoBelongsTo`, `getVariantPrices`,
+> `getAvailableStock`, …) are the **contract** — the fake must expose exactly
+> these names and shapes. When unsure, mirror the existing unit-test fakes.
 
 ---
 

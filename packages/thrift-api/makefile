@@ -27,19 +27,19 @@ dev:
 
 test:
 	@echo "Running test suites"
-	$(PKG_MANAGER) tests
+	$(PKG_MANAGER) test
 
 clean:
-	rm -rf .next node_modules
+	rm -rf built node_modules
 
 reinstall:
 	rm -rf node_modules pnpm-lock.yaml
 	$(PKG_MANAGER) install
 
 lint:
-	$(PKG_MANAGER) run lint
+	$(PKG_MANAGER) exec eslint .
 
 format:
-	$(PKG_MANAGER) run format
+	$(PKG_MANAGER) exec prettier --write .
 
 

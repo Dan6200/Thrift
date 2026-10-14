@@ -13,7 +13,7 @@ jobs:
       SUPABASE_DB_URL: "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
       SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
       SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
-      SERVER: http://localhost:1024
+      SERVER: http://localhost:1027
       SUPABASE_URL: http://localhost:54321
       ACTIONS_STEP_DEBUG: true
       CI: true
@@ -58,7 +58,7 @@ jobs:
         working-directory: packages/thrift-api
 
       - name: Run tests
-        run: pnpm --filter thrift-api tests
+        run: pnpm --filter thrift-api test
 
       - name: View results on failure
         if: failure()

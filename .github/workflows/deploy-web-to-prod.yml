@@ -1,10 +1,9 @@
 name: Deploy Web to Production
 
 on:
-  workflow_run:
-    workflows: ["Thrift-web Testing"]
-    types:
-      - completed
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:

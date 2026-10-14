@@ -93,7 +93,7 @@ jobs:
               echo "Deleting old backup folder: $FOLDER"
               # Supabase storage ls with the folder prefix will list all files inside
               # Use awk to extract just the file name (after the folder prefix)
-              FILES_TO_DELETE=$(supabase storage ls "ss:///backups/db/$FOLDER/" --experimental | awk -F'db/'$FOLDER'/'' {'print $2'}')
+              FILES_TO_DELETE=$(supabase storage ls "ss:///backups/db/$FOLDER/" --experimental | awk -F"db/$FOLDER/" '{print $2}')
               
               for FILE in $FILES_TO_DELETE; do
                 echo "  Deleting file: ss:///backups/db/$FOLDER/$FILE"

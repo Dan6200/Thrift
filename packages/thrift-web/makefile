@@ -4,7 +4,7 @@ PKG_MANAGER = pnpm
 .PHONY: all build run test clean
 
 # Targets
-all: build test start ## Build the project and test the application
+all: build ## Build the project
 
 install:
 	@echo "Installing Nextjs application"
@@ -23,8 +23,8 @@ dev:
 	$(PKG_MANAGER) run dev
 
 test:
-	@echo "Running test suites"
-	$(PKG_MANAGER) test
+	@echo "Running lint checks (no test suite defined for thrift-web)"
+	$(PKG_MANAGER) run lint
 
 clean:
 	rm -rf .next node_modules
@@ -37,6 +37,6 @@ lint:
 	$(PKG_MANAGER) run lint
 
 format:
-	$(PKG_MANAGER) run format
+	$(PKG_MANAGER) exec prettier --write .
 
 

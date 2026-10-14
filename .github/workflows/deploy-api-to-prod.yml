@@ -5,9 +5,12 @@ on:
     workflows: ["Thrift-api Testing"]
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   deploy:
+    # Deploy automatically when tests pass, or on manual dispatch.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code

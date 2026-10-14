@@ -2221,6 +2221,43 @@ BEGIN
     END LOOP;
 END $$;
 
+-- Vary product pricing so the UI/UX shows meaningfully different prices.
+-- All variants are seeded with a flat base_price of 100000; this replaces that
+-- with per-category base prices plus a per-product spread. base_price is stored
+-- in kobo (the minor unit for NGN; NGN 1 = 100 kobo).
+UPDATE product_variants pv
+SET base_price = (
+    SELECT
+      CASE c.category_name
+        WHEN 'Electronics' THEN 150000
+        WHEN 'Clothing' THEN 25000
+        WHEN 'Books' THEN 8000
+        WHEN 'Beauty Products' THEN 12000
+        WHEN 'Automobiles' THEN 1500000
+        WHEN 'Video Games' THEN 45000
+        WHEN 'Home & Kitchen' THEN 30000
+        WHEN 'Toys & Games' THEN 9000
+        WHEN 'Health & Household' THEN 10000
+        WHEN 'Pet Supplies' THEN 15000
+        WHEN 'Sports & Outdoors' THEN 20000
+        WHEN 'Tools & Home Improvement' THEN 25000
+        WHEN 'Arts, Crafts & Sewing' THEN 11000
+        WHEN 'Baby' THEN 13000
+        WHEN 'Garden & Outdoor' THEN 22000
+        WHEN 'Musical Instruments' THEN 80000
+        WHEN 'Office Products' THEN 40000
+        WHEN 'Software' THEN 30000
+        WHEN 'Collectibles & Fine Art' THEN 50000
+        WHEN 'Industrial & Scientific' THEN 120000
+        WHEN 'Handmade' THEN 35000
+        ELSE 15000
+      END
+      * (100 + (p.product_id % 41)) / 100
+    FROM products p
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE p.product_id = pv.product_id
+  );
+
 -- Seed Auth Users From Profiles
 -- Enable pgcrypto for password hashing
 CREATE EXTENSION IF NOT EXISTS pgcrypto;

@@ -22,8 +22,10 @@ export function Product({ product }: { product: ProductType }) {
     {},
   )
 
+  const media = product.media ?? []
+
   useEffect(() => {
-    const variants = product.media.reduce(
+    const variants = media.reduce(
       (acc, img) => {
         acc[img.variant_id.toString()] = img
         return acc
@@ -31,7 +33,7 @@ export function Product({ product }: { product: ProductType }) {
       {} as Record<string, ImgData>,
     )
     setImageVariants(variants)
-  }, [product.media])
+  }, [product.media]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (product.variants && product.variants.length > 0) {
@@ -58,9 +60,9 @@ export function Product({ product }: { product: ProductType }) {
     }
   }
 
-  const displayImg = selectedVariant
+  const displayImg: ImgData | undefined = selectedVariant
     ? imageVariants[selectedVariant.variant_id]
-    : product.media[0]
+    : media[0]
 
   return (
     <div className="container mx-auto p-4 sm:p-8 my-10 md:my-20 h-full">
@@ -86,21 +88,16 @@ export function Product({ product }: { product: ProductType }) {
           <ProductDetails
             product={product}
             selectedVariant={selectedVariant}
-            displayImg={displayImg}
             onOptionSelect={handleOptionSelect}
           />
         </CardContent>
       </Card>
 
-      {/* TODO: Wrap the two bottom sections in a div and center */}
-
       <div className="w-2/3 mx-auto">
-        {/* Description Section */}
-        <Description description={product.description} />
+        <Description description={product.description ?? []} />
 
         <Separator />
 
-        {/* Reviews Section */}
         <ProductReviews
           product_id={product.product_id}
           average_rating={product.average_rating}

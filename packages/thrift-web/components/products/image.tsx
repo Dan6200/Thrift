@@ -1,7 +1,10 @@
-//cspell:ignore CldImage, cloudinary, cloudinary's, unoptimized
+//cspell:ignore CldImage, cloudinary
 'use client'
 import { CldImage } from 'next-cloudinary'
+import { useState } from 'react'
+import { ImageOff } from 'lucide-react'
 import { ImgData } from '@/types/products'
+import { cn } from '@/lib/utils'
 
 export function ProductImage({
   className,
@@ -14,19 +17,55 @@ export function ProductImage({
   height: number
   imgData: ImgData | undefined
 }) {
-  if (imgData?.filepath) {
-    const src = imgData.filepath
-    const alt = imgData.description
-    // Note explicitly setting version is not necessary
+  const [errored, setErrored] = useState(false)
+  const src = imgData?.filepath
+
+  if (!src || errored) {
     return (
-      <CldImage
-        {...{ src, alt, className, width, height }}
-        style={{
-          objectFit: 'cover',
-          objectPosition: 'center',
-        }}
+      <div
+        className={cn(
+          'flex items-center justify-center bg-muted text-muted-foreground',
+          className,
+        )}
+      >
+        <ImageOff className="w-8 h-8" />
+      </div>
+    )
+  }
+
+  const alt = imgData?.description ?? imgData?.filename ?? 'Product image'
+  const style = {
+    objectFit: 'cover' as const,
+    objectPosition: 'center' as const,
+  }
+  const onError = () => setErrored(true)
+
+  // Absolute URLs (e.g. plain http(s) image links) are rendered directly.
+  if (/^https?:\/\//.test(src)) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        width={width}
+        height={height}
+        style={style}
+        onError={onError}
       />
     )
   }
-  return <p>Failed to Load Image</p>
+
+  // Otherwise treat the path as a Cloudinary public ID.
+  return (
+    <CldImage
+      src={src}
+      alt={alt}
+      className={className}
+      width={width}
+      height={height}
+      style={style}
+      onError={onError}
+    />
+  )
 }

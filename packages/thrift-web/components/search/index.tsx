@@ -157,6 +157,12 @@ const Hit = ({
   const displayImage =
     hit.media?.find((m: any) => m.is_display_image) || hit.media?.[0]
 
+  const description = Array.isArray(hit.description)
+    ? hit.description.join('. ')
+    : typeof hit.description === 'string'
+      ? hit.description
+      : ''
+
   return (
     <article
       className="my-4 p-2 rounded-md text-foreground/70 dark:text-foreground/70 hover:bg-foreground/10 cursor-pointer flex items-center gap-4"
@@ -188,9 +194,7 @@ const Hit = ({
             }}
           />
         </h1>
-        <p className="text-sm sm:text-base">
-          {hit.description.join('. ').slice(0, 70)}...
-        </p>
+        <p className="text-sm sm:text-base">{description.slice(0, 70)}...</p>
       </div>
     </article>
   )

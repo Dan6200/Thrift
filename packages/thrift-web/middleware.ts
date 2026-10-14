@@ -26,6 +26,8 @@ const PROTECTED_PATHS = [
   '/create-store',
   '/vendor-analytics',
   '/orders',
+  '/checkout',
+  '/account',
 ]
 
 /**

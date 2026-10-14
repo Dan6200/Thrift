@@ -3,7 +3,7 @@
 import { Product } from '@/components/products/product'
 import getProductById from '../get-product-by-id'
 import getProducts from '../get-products'
-import { ProductData, ProductSchema } from '@/types/products'
+import { ProductData } from '@/types/products'
 import { notFound } from 'next/navigation'
 
 export default async function ProductPage({
@@ -12,12 +12,10 @@ export default async function ProductPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  let response = await getProductById(+id)
-  if (response == undefined) {
+  const product = await getProductById(+id)
+  if (product == null) {
     throw notFound()
   }
-  ProductSchema.parse(response)
-  const product = response
   return <Product product={product} />
 }
 

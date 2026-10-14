@@ -1,5 +1,5 @@
 import { ShoppingCart } from '@/types/shopping-cart'
-import { Product } from '@/types/products'
+import { CartProduct } from '@/types/shopping-cart'
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 
@@ -10,7 +10,11 @@ export const shoppingCartAtom = atomWithStorage<ShoppingCart | null>(
 
 export const addItemAtom = atom(
   null,
-  (get, set, { product, quantity }: { product: Product; quantity: number }) => {
+  (
+    get,
+    set,
+    { product, quantity }: { product: CartProduct; quantity: number },
+  ) => {
     const shoppingCart = get(shoppingCartAtom)
     const newShoppingCart = new ShoppingCart(null, shoppingCart)
     newShoppingCart.addItem(product, quantity)
@@ -18,27 +22,32 @@ export const addItemAtom = atom(
   },
 )
 
-export const removeItemAtom = atom(null, (get, set, newProduct: Product) => {
-  const shoppingCart = get(shoppingCartAtom)
-  if (
-    shoppingCart?.cartItems.find(
-      ({ product }) => product.product_id === newProduct.product_id,
-    )
-  ) {
-    const newShoppingCart = new ShoppingCart(null, shoppingCart)
-    newShoppingCart.removeItem(newProduct)
-    set(shoppingCartAtom, newShoppingCart)
-  }
-})
+export const removeItemAtom = atom(
+  null,
+  (get, set, newProduct: CartProduct) => {
+    const shoppingCart = get(shoppingCartAtom)
+    if (
+      shoppingCart?.cartItems.find(
+        ({ product }) =>
+          product.product_id === newProduct.product_id &&
+          product.variant_id === newProduct.variant_id,
+      )
+    ) {
+      const newShoppingCart = new ShoppingCart(null, shoppingCart)
+      newShoppingCart.removeItem(newProduct)
+      set(shoppingCartAtom, newShoppingCart)
+    }
+  },
+)
 
 export const getTotalAtom = atom((get) => {
   const shoppingCart = get(shoppingCartAtom)
   return shoppingCart?.cartItems.reduce<number>((res, { product, count }) => {
     const price =
-      typeof product.net_price === 'string'
-        ? parseFloat(product.net_price)
-        : product.net_price
-    return res + (typeof res === 'number' ? price * count : 0)
+      typeof product.base_price === 'string'
+        ? parseFloat(product.base_price)
+        : product.base_price
+    return res + (Number.isFinite(price) ? price * count : 0)
   }, 0)
 })
 

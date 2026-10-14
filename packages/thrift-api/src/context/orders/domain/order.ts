@@ -2,6 +2,15 @@ import { Result, ok, err } from '#src/shared/result.js'
 import { DomainError, domainError } from '#src/shared/domain-error.js'
 import { Money } from '#src/shared/money.js'
 
+export type OrderStatus =
+  | 'pending'
+  | 'processing'
+  | 'failed'
+  | 'cancelled'
+  | 'shipped'
+  | 'delivered'
+  | 'refunded'
+
 export type OrderItemInput = {
   variantId: number
   quantity: number
@@ -26,27 +35,32 @@ export type Order = {
   deliveryInfoId?: number
   totalAmount: Money
   items: OrderItem[]
-  status: 'pending'
+  status: OrderStatus
 }
 
 export type VariantPrice = (variantId: number) => Money | undefined
 export type AvailableStock = (variantId: number) => number
 
-export const createOrder = (
-  draft: OrderDraft,
+export type BuiltOrderItems = {
+  items: OrderItem[]
+  totalAmount: Money
+}
+
+export const buildOrderItems = (
+  items: OrderItemInput[],
   priceOf: VariantPrice,
   stockOf: AvailableStock,
-): Result<Order, DomainError> => {
-  if (draft.items.length === 0) {
+): Result<BuiltOrderItems, DomainError> => {
+  if (items.length === 0) {
     return err(
       domainError('INVALID_INPUT', 'An order must have at least one item.'),
     )
   }
 
   let totalAmount = 0
-  const items: OrderItem[] = []
+  const built: OrderItem[] = []
 
-  for (const item of draft.items) {
+  for (const item of items) {
     if (!Number.isInteger(item.quantity) || item.quantity <= 0) {
       return err(
         domainError(
@@ -76,7 +90,7 @@ export const createOrder = (
       )
     }
 
-    items.push({
+    built.push({
       variantId: item.variantId,
       quantity: item.quantity,
       priceAtPurchase: price,
@@ -84,12 +98,25 @@ export const createOrder = (
     totalAmount += price * item.quantity
   }
 
+  return ok({ items: built, totalAmount })
+}
+
+export const createOrder = (
+  draft: OrderDraft,
+  priceOf: VariantPrice,
+  stockOf: AvailableStock,
+): Result<Order, DomainError> => {
+  const built = buildOrderItems(draft.items, priceOf, stockOf)
+  if (built.kind === 'err') {
+    return built
+  }
+
   return ok({
     customerId: draft.customerId,
     storeId: draft.storeId,
     deliveryInfoId: draft.deliveryInfoId,
-    totalAmount,
-    items,
+    totalAmount: built.value.totalAmount,
+    items: built.value.items,
     status: 'pending',
   })
 }

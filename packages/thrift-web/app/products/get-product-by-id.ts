@@ -1,15 +1,20 @@
-import { ProductSchema } from '@/types/products'
+import { Product, ProductSchema } from '@/types/products'
 
-export default async function getProductById(id: number) {
-  // fetch product
+export default async function getProductById(
+  id: number,
+): Promise<Product | null> {
   const response = await fetch(
     process.env.NEXT_PUBLIC_SERVER + '/v1/products/' + id,
     { next: { revalidate: 30 * 60 } },
   ).then((res) => {
-    if (res.status === 404) return null
+    if (!res.ok) return null
     return res.json()
   })
-  if (response == null) throw new Error('Product not found')
-  if (!ProductSchema.parse(response)) throw new Error('Invalid product')
-  return response
+
+  if (response == null) return null
+
+  const parsed = ProductSchema.safeParse(response)
+  if (!parsed.success) return null
+
+  return parsed.data
 }

@@ -7,8 +7,7 @@ export default async function getProducts({
 }: {
   page?: number
   limit?: number
-}) {
-  // fetch products
+}): Promise<ProductData> {
   const response = await fetch(
     process.env.NEXT_PUBLIC_SERVER +
       '/v1/products?' +
@@ -19,13 +18,22 @@ export default async function getProducts({
       }),
     { next: { revalidate: 60 * 60 } },
   ).then((res) => {
-    if (res.status >= 400) return null
+    if (!res.ok) return null
     return res.json()
   })
 
-  ProductDataSchema.parse(response)
+  if (!response) {
+    return { products: [], total_count: 0 }
+  }
 
-  const { products, total_count } = response
+  // Tolerate schema drift / malformed responses by degrading to an empty list.
+  const parsed = ProductDataSchema.safeParse(response)
+  if (!parsed.success) {
+    return { products: [], total_count: 0 }
+  }
 
-  return { products, total_count } as ProductData
+  return {
+    products: parsed.data.products,
+    total_count: parsed.data.total_count,
+  }
 }

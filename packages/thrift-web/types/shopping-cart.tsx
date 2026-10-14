@@ -1,7 +1,10 @@
 import { Product, ProductVariant } from '@/types/products'
 
+// A product merged with its selected variant, as stored in the cart.
+export type CartProduct = Product & ProductVariant
+
 export type Item = {
-  product: Product & Partial<ProductVariant>
+  product: CartProduct
   count: number
 }
 
@@ -16,19 +19,17 @@ export class ShoppingCart {
       const item = {
         product,
         count: quantity,
-      }
+      } as Item
       this.cartItems.push(item)
     } else if (shoppingCart) {
       this.cartItems = new Array(...shoppingCart.cartItems)
     }
   }
-  addItem(product: Product, quantity: number = 1) {
+  addItem(product: CartProduct, quantity: number = 1) {
     const existingItem = this.cartItems.find(
       (item) =>
         item.product.product_id === product.product_id &&
-        product.variants?.find(
-          (variant) => item.product.variant_id === variant.variant_id,
-        ),
+        item.product.variant_id === product.variant_id,
     )
     if (existingItem) {
       existingItem.count += quantity
@@ -37,21 +38,19 @@ export class ShoppingCart {
     }
     return true
   }
-  removeItem(product: Product) {
+  removeItem(product: CartProduct) {
     const oldLength = this.cartItems.length
     this.cartItems = this.cartItems.filter(
       (item) =>
         !(
           item.product.product_id === product.product_id &&
-          product.variants?.find(
-            (variant) => item.product.variant_id === variant.variant_id,
-          )
+          item.product.variant_id === product.variant_id
         ),
     )
-    return oldLength >= this.cartItems.length
+    return oldLength > this.cartItems.length
   }
   increaseCount(index: number) {
-    return index >= 0 || index < this.cartItems.length
+    return index >= 0 && index < this.cartItems.length
       ? this.cartItems[index].count++
       : false
   }

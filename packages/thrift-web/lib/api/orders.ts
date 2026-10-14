@@ -1,14 +1,32 @@
 // lib/api/orders.ts
-import { axiosInstance } from '@/components/axios-instance' // Assuming you have a configured axios instance
-import { Order } from '@/types/orders' // Assuming you have an Order type
+import { axiosInstance } from '@/components/axios-instance'
+import { Order, CreateOrderInput } from '@/types/orders'
 
-export const getAllOrders = async (): Promise<Order[]> => {
-  const response = await axiosInstance.get('/orders')
+export const getAllOrders = async (storeId?: number): Promise<Order[]> => {
+  const response = await axiosInstance.get('/orders', {
+    params: storeId ? { store_id: storeId } : undefined,
+  })
   return response.data
 }
 
 export const getOrderById = async (order_id: number): Promise<Order> => {
   const response = await axiosInstance.get(`/orders/${order_id}`)
+  return response.data
+}
+
+export const createOrder = async (input: CreateOrderInput): Promise<Order> => {
+  const response = await axiosInstance.post(
+    `/orders?store_id=${input.store_id}`,
+    {
+      delivery_info_id: input.delivery_info_id ?? null,
+      items: input.items,
+    },
+  )
+  return response.data
+}
+
+export const cancelOrder = async (order_id: number): Promise<Order> => {
+  const response = await axiosInstance.post(`/orders/${order_id}/cancel`)
   return response.data
 }
 

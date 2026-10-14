@@ -1,14 +1,21 @@
 // types/orders.ts
 
 export interface OrderItem {
+  order_id?: number
   order_item_id: number
   variant_id: number
   quantity: number
-  price_at_purchase: string
-  // You can join product details here if needed in the API
-  product_title?: string
-  product_image_url?: string
+  price_at_purchase: number
 }
+
+export type OrderStatus =
+  | 'pending'
+  | 'processing'
+  | 'failed'
+  | 'cancelled'
+  | 'shipped'
+  | 'delivered'
+  | 'refunded'
 
 export interface Order {
   order_id: number
@@ -16,9 +23,21 @@ export interface Order {
   store_id: number
   delivery_info_id: number | null
   order_date: string
-  total_amount: string
-  status: string
+  total_amount: number
+  status: OrderStatus | string
+  payment_reference?: string | null
   created_at: string
   updated_at: string
-  order_items: OrderItem[] // Assuming order items are nested in the response
+  items: OrderItem[]
+}
+
+export interface CreateOrderItem {
+  variant_id: number
+  quantity: number
+}
+
+export interface CreateOrderInput {
+  store_id: number
+  delivery_info_id?: number | null
+  items: CreateOrderItem[]
 }

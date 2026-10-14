@@ -32,8 +32,8 @@ export const GetAllOrdersRequestSchema = Joi.object({
   body: Joi.object().optional(),
   params: Joi.object().optional(),
   query: Joi.object({
-    store_id: Joi.number().integer().positive().required(),
-  }).required(),
+    store_id: Joi.number().integer().positive().optional(),
+  }).optional(),
 })
 
 export const FindReviewableItemRequestSchema = Joi.object({

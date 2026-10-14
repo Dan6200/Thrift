@@ -10,8 +10,8 @@ export const createOrderHandler = async (
   _res: Response,
   next: NextFunction,
 ) => {
-  const { store_id, delivery_info_id } = req.validatedQueryParams!
-  const { items } = req.validatedBody!
+  const { store_id } = req.validatedQueryParams!
+  const { items, delivery_info_id } = req.validatedBody!
 
   const result = await useCase({
     customerId: req.userId!,

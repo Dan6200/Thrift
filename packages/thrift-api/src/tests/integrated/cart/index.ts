@@ -119,7 +119,7 @@ export default function (customer: { userInfo: ProfileRequestData }) {
           ...cartItemFiltered,
           price: base_price,
           quantity: updatedQuantity,
-        },
+        } as any,
       })
     }))
 
@@ -139,7 +139,11 @@ export default function (customer: { userInfo: ProfileRequestData }) {
         token,
         params: { itemId: itemIds[0] },
         body: { quantity: updatedQuantity },
-        expectedData: { ...item0, price: price0, quantity: updatedQuantity },
+        expectedData: {
+          ...item0,
+          price: price0,
+          quantity: updatedQuantity,
+        } as any,
       })
       await testRemoveCartItem({ token, params: { itemId: itemIds[2] } })
 

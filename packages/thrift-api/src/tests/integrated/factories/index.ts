@@ -28,7 +28,7 @@ export type UserInfo = {
 
 export function userFactory(
   opts: { isVendor?: boolean; isCustomer?: boolean } = {},
-): { userInfo: UserInfo; updatedProfileInfo: { dob: string } } {
+): any {
   const isVendor = opts.isVendor ?? false
   return {
     userInfo: {
@@ -58,14 +58,14 @@ const deliveryInfo = () => ({
   delivery_instructions: 'Leave at the door',
 })
 
-export function deliveryInfoFactory(count = 3) {
+export function deliveryInfoFactory(count = 3): any {
   return {
     listOfDeliveryInfo: Array.from({ length: count }, deliveryInfo),
     listOfUpdatedDeliveryInfo: Array.from({ length: count }, deliveryInfo),
   }
 }
 
-export function storeFactory() {
+export function storeFactory(): any {
   return {
     store_name: `Store ${suffix()}`,
     favicon: 'https://example.com/favicon.ico',
@@ -83,7 +83,7 @@ export function storeFactory() {
   }
 }
 
-export function storeListFactory(count = 3) {
+export function storeListFactory(count = 3): any {
   const listOfStores = Array.from({ length: count }, storeFactory)
   const updatedStores = listOfStores.map((store) => ({
     ...store,
@@ -93,7 +93,7 @@ export function storeListFactory(count = 3) {
   return { listOfStores, updatedStores }
 }
 
-export function productFactory() {
+export function productFactory(): any {
   const s = suffix()
   return {
     title: `Test Product ${s}`,
@@ -111,7 +111,7 @@ export function productFactory() {
   }
 }
 
-export function variantFactory() {
+export function variantFactory(): any {
   const s = suffix()
   return {
     sku: `SKU-${s}-V`,
@@ -133,7 +133,7 @@ const mediaFile = (name: string, path: string, description: string) => ({
   filetype: 'image/jpeg',
 })
 
-export function productMediaFactory() {
+export function productMediaFactory(): any {
   return {
     productMedia: [
       [
@@ -179,11 +179,11 @@ export function productMediaFactory() {
   }
 }
 
-export function customerFactory() {
+export function customerFactory(): any {
   return { ...userFactory({ isCustomer: true }), ...deliveryInfoFactory() }
 }
 
-export function vendorFactory() {
+export function vendorFactory(): any {
   return {
     ...userFactory({ isVendor: true }),
     ...storeListFactory(),

@@ -108,7 +108,7 @@ export default function (customer: { userInfo: ProfileRequestData }) {
       const order = await createOrder(ctx)
       await testGetReviewableItem({
         token: ctx.customerToken,
-        query: { product_id: ctx.productId },
+        query: { product_id: String(ctx.productId) },
         expectedOrderItemId: order.items[0].order_item_id,
       })
     }))

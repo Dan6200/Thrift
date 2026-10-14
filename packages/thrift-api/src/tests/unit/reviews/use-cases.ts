@@ -2,6 +2,7 @@ import chai from 'chai'
 import { createReviewUseCase } from '#src/context/reviews/application/create-review.js'
 import { updateReviewUseCase } from '#src/context/reviews/application/update-review.js'
 import { deleteReviewUseCase } from '#src/context/reviews/application/delete-review.js'
+import { ReviewRepository } from '#src/context/reviews/ports/review-repository.js'
 
 chai.should()
 
@@ -22,26 +23,29 @@ const existingReview: Review = {
   customer_remark: 'ok',
 }
 
-const makeRepo = (overrides: Record<string, any> = {}) => ({
+const makeRepo = (
+  overrides: Partial<ReviewRepository> = {},
+): ReviewRepository => ({
   async getOrderItemOwner(): Promise<string | null> {
     return ownerId
   },
-  async getById(): Promise<Review | null> {
+  async create(): Promise<unknown> {
+    return undefined
+  },
+  async getById(): Promise<unknown> {
     return null
   },
-  async create(): Promise<any> {
+  async getByProductId(): Promise<unknown> {
+    return null
+  },
+  async update(): Promise<unknown> {
     return undefined
   },
-  async update(): Promise<any> {
-    return undefined
-  },
-  async remove(): Promise<any> {
-    return undefined
+  async remove(): Promise<number> {
+    return 1
   },
   ...overrides,
 })
-
-const anyRepo = (repo: ReturnType<typeof makeRepo>) => repo as any
 
 export default () => {
   describe('createReviewUseCase', () => {
@@ -60,7 +64,7 @@ export default () => {
           createCalled = true
         },
       })
-      const result = await createReviewUseCase(anyRepo(repo))(command)
+      const result = await createReviewUseCase(repo)(command)
       result.kind.should.equal('err')
       if (result.kind === 'err') result.error.code.should.equal('NOT_FOUND')
       createCalled.should.equal(false)
@@ -73,7 +77,7 @@ export default () => {
           createCalled = true
         },
       })
-      const result = await createReviewUseCase(anyRepo(repo))({
+      const result = await createReviewUseCase(repo)({
         ...command,
         customerId: otherId,
       })
@@ -90,7 +94,7 @@ export default () => {
           createCalled = true
         },
       })
-      const result = await createReviewUseCase(anyRepo(repo))(command)
+      const result = await createReviewUseCase(repo)(command)
       result.kind.should.equal('err')
       if (result.kind === 'err') result.error.code.should.equal('CONFLICT')
       createCalled.should.equal(false)
@@ -103,7 +107,7 @@ export default () => {
           createCalled = true
         },
       })
-      const result = await createReviewUseCase(anyRepo(repo))(command)
+      const result = await createReviewUseCase(repo)(command)
       result.kind.should.equal('ok')
       createCalled.should.equal(true)
     })
@@ -125,7 +129,7 @@ export default () => {
           updateCalled = true
         },
       })
-      const result = await updateReviewUseCase(anyRepo(repo))(command)
+      const result = await updateReviewUseCase(repo)(command)
       result.kind.should.equal('err')
       if (result.kind === 'err') result.error.code.should.equal('NOT_FOUND')
       updateCalled.should.equal(false)
@@ -139,7 +143,7 @@ export default () => {
           updateCalled = true
         },
       })
-      const result = await updateReviewUseCase(anyRepo(repo))(command)
+      const result = await updateReviewUseCase(repo)(command)
       result.kind.should.equal('err')
       if (result.kind === 'err') result.error.code.should.equal('UNAUTHORIZED')
       updateCalled.should.equal(false)
@@ -153,7 +157,7 @@ export default () => {
           updateCalled = true
         },
       })
-      const result = await updateReviewUseCase(anyRepo(repo))(command)
+      const result = await updateReviewUseCase(repo)(command)
       result.kind.should.equal('ok')
       updateCalled.should.equal(true)
     })
@@ -168,9 +172,10 @@ export default () => {
         getById: async () => null,
         remove: async () => {
           removeCalled = true
+          return 1
         },
       })
-      const result = await deleteReviewUseCase(anyRepo(repo))(command)
+      const result = await deleteReviewUseCase(repo)(command)
       result.kind.should.equal('err')
       if (result.kind === 'err') result.error.code.should.equal('NOT_FOUND')
       removeCalled.should.equal(false)
@@ -182,9 +187,10 @@ export default () => {
         getById: async () => ({ ...existingReview, customer_id: otherId }),
         remove: async () => {
           removeCalled = true
+          return 1
         },
       })
-      const result = await deleteReviewUseCase(anyRepo(repo))(command)
+      const result = await deleteReviewUseCase(repo)(command)
       result.kind.should.equal('err')
       if (result.kind === 'err') result.error.code.should.equal('UNAUTHORIZED')
       removeCalled.should.equal(false)
@@ -196,9 +202,10 @@ export default () => {
         getById: async () => existingReview,
         remove: async () => {
           removeCalled = true
+          return 1
         },
       })
-      const result = await deleteReviewUseCase(anyRepo(repo))(command)
+      const result = await deleteReviewUseCase(repo)(command)
       result.kind.should.equal('ok')
       removeCalled.should.equal(true)
     })

@@ -2,34 +2,34 @@ import chai from 'chai'
 import { addItemUseCase } from '#src/context/cart/application/add-item.js'
 import { updateItemUseCase } from '#src/context/cart/application/update-item.js'
 import { removeItemUseCase } from '#src/context/cart/application/remove-item.js'
+import { CartRepository } from '#src/context/cart/ports/cart-repository.js'
 
 chai.should()
 
-type CartItem = { itemId: number; variantId: number; quantity: number }
-
-const makeRepo = (overrides: Record<string, any> = {}) => ({
+const makeRepo = (overrides: Partial<CartRepository> = {}): CartRepository => ({
+  async getCart(): Promise<unknown> {
+    return null
+  },
   async getStock(): Promise<number> {
     return 10
   },
   async getCartId(): Promise<number | null> {
     return 1
   },
-  async getCartItem(): Promise<CartItem | null> {
-    return { itemId: 1, variantId: 1, quantity: 1 }
+  async getCartItem(): Promise<{ variant_id: number } | null> {
+    return { variant_id: 1 }
   },
-  async addItem(): Promise<any> {
-    return { itemId: 1, variantId: 1, quantity: 1 }
+  async addItem(): Promise<unknown> {
+    return {}
   },
-  async updateItem(): Promise<any> {
-    return { itemId: 1, variantId: 1, quantity: 1 }
+  async updateItem(): Promise<unknown> {
+    return {}
   },
   async removeItem(): Promise<number> {
     return 1
   },
   ...overrides,
 })
-
-const anyRepo = (repo: ReturnType<typeof makeRepo>) => repo as any
 
 export default () => {
   describe('addItemUseCase', () => {
@@ -40,7 +40,7 @@ export default () => {
           addCalled = true
         },
       })
-      const result = await addItemUseCase(anyRepo(repo))({
+      const result = await addItemUseCase(repo)({
         customerId: 'c1',
         variantId: 1,
         quantity: 0,
@@ -58,7 +58,7 @@ export default () => {
           addCalled = true
         },
       })
-      const result = await addItemUseCase(anyRepo(repo))({
+      const result = await addItemUseCase(repo)({
         customerId: 'c1',
         variantId: 1,
         quantity: 6,
@@ -74,7 +74,7 @@ export default () => {
           addCalled = true
         },
       })
-      const result = await addItemUseCase(anyRepo(repo))({
+      const result = await addItemUseCase(repo)({
         customerId: 'c1',
         variantId: 1,
         quantity: 2,
@@ -95,7 +95,7 @@ export default () => {
           updateCalled = true
         },
       })
-      const result = await updateItemUseCase(anyRepo(repo))(command)
+      const result = await updateItemUseCase(repo)(command)
       result.kind.should.equal('err')
       if (result.kind === 'err') result.error.code.should.equal('NOT_FOUND')
       updateCalled.should.equal(false)
@@ -109,7 +109,7 @@ export default () => {
           updateCalled = true
         },
       })
-      const result = await updateItemUseCase(anyRepo(repo))(command)
+      const result = await updateItemUseCase(repo)(command)
       result.kind.should.equal('err')
       if (result.kind === 'err') result.error.code.should.equal('NOT_FOUND')
       updateCalled.should.equal(false)
@@ -123,7 +123,7 @@ export default () => {
           updateCalled = true
         },
       })
-      const result = await updateItemUseCase(anyRepo(repo))(command)
+      const result = await updateItemUseCase(repo)(command)
       result.kind.should.equal('err')
       updateCalled.should.equal(false)
     })
@@ -135,7 +135,7 @@ export default () => {
           updateCalled = true
         },
       })
-      const result = await updateItemUseCase(anyRepo(repo))(command)
+      const result = await updateItemUseCase(repo)(command)
       result.kind.should.equal('ok')
       updateCalled.should.equal(true)
     })
@@ -153,7 +153,7 @@ export default () => {
           return 0
         },
       })
-      const result = await removeItemUseCase(anyRepo(repo))(command)
+      const result = await removeItemUseCase(repo)(command)
       result.kind.should.equal('err')
       if (result.kind === 'err') result.error.code.should.equal('NOT_FOUND')
       removeCalled.should.equal(false)
@@ -163,7 +163,7 @@ export default () => {
       const repo = makeRepo({
         removeItem: async () => 0,
       })
-      const result = await removeItemUseCase(anyRepo(repo))(command)
+      const result = await removeItemUseCase(repo)(command)
       result.kind.should.equal('err')
       if (result.kind === 'err') result.error.code.should.equal('NOT_FOUND')
     })
@@ -176,7 +176,7 @@ export default () => {
           return 1
         },
       })
-      const result = await removeItemUseCase(anyRepo(repo))(command)
+      const result = await removeItemUseCase(repo)(command)
       result.kind.should.equal('ok')
       removeCalled.should.equal(true)
     })

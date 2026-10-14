@@ -97,6 +97,7 @@ export default () => {
           sku: validVariant.sku,
           base_price: validVariant.basePrice,
           quantity_available: validVariant.quantityAvailable,
+          options: [],
           created_at: '2026-01-01T00:00:00.000Z',
           updated_at: '2026-01-01T00:00:00.000Z',
         }),

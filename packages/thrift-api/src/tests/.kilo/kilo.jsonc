@@ -1,0 +1,10 @@
+{
+  "$schema": "https://kilo.ai",
+  "instructions": [".kilo/rules/*.md"],
+  "permission": {
+    "bash": "ask",
+    "read": "allow",
+    "edit": "allow",
+    "webfetch": "ask",
+  },
+}

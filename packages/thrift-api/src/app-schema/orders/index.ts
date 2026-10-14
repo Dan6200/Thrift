@@ -54,6 +54,24 @@ export const UpdateOrderRequestSchema = Joi.object({
 
 export const DeleteOrderRequestSchema = GetOrderRequestSchema
 
+export const AmendOrderRequestSchema = Joi.object({
+  body: Joi.object({
+    items: Joi.array().items(OrderItemDataSchema).min(1).required(),
+  }).required(),
+  params: Joi.object({
+    order_id: Joi.number().integer().positive().required(),
+  }).required(),
+  query: Joi.object().optional(),
+})
+
+export const CancelOrderRequestSchema = Joi.object({
+  body: Joi.object().optional(),
+  params: Joi.object({
+    order_id: Joi.number().integer().positive().required(),
+  }).required(),
+  query: Joi.object().optional(),
+})
+
 // Response Schemas
 export const OrderResponseSchema = Joi.object({
   order_id: Joi.number().integer().positive().required(),
@@ -63,7 +81,15 @@ export const OrderResponseSchema = Joi.object({
   order_date: Joi.date().iso().required(),
   total_amount: Joi.number().precision(2).positive().required(),
   status: Joi.string()
-    .valid('pending', 'processing', 'shipped', 'delivered', 'cancelled')
+    .valid(
+      'pending',
+      'processing',
+      'failed',
+      'cancelled',
+      'shipped',
+      'delivered',
+      'refunded',
+    )
     .required(),
   payment_reference: Joi.string().optional().allow(null),
   created_at: Joi.date().iso().required(),

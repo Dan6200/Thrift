@@ -70,6 +70,15 @@ const fakeRepository: OrderRepository = {
   async findReviewableItem() {
     return null
   },
+  async getOrderForMutation() {
+    return null
+  },
+  async amendOrder() {
+    return null
+  },
+  async cancelOrder() {
+    return null
+  },
 }
 
 export default () => {

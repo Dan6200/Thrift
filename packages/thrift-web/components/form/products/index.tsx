@@ -12,8 +12,8 @@ import { useSetAtom } from 'jotai'
 import {
   Title,
   Description,
-  ListPrice,
-  NetPrice,
+  BasePrice,
+  Sku,
   Category,
   Subcategory,
   Quantity,
@@ -34,8 +34,8 @@ export function ProductsForm() {
         <form className="flex flex-col w-full" onSubmit={handleSubmit(submit)}>
           <Title form={form} />
           <Description form={form} />
-          <ListPrice form={form} />
-          <NetPrice form={form} />
+          <BasePrice form={form} />
+          <Sku form={form} />
           <Category form={form} />
           <Subcategory form={form} />
           <Quantity form={form} />

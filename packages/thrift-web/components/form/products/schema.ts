@@ -15,15 +15,16 @@ export const schema = joi
       'string.max': 'Product description must be at most 500 characters',
       'any.required': 'Product description is required',
     }),
-    list_price: joi.number().min(0).required().messages({
-      'number.base': 'List price must be a number',
-      'number.min': 'List price cannot be negative',
-      'any.required': 'List price is required',
+    base_price: joi.number().integer().min(0).required().messages({
+      'number.base': 'Base price must be a number',
+      'number.integer': 'Base price must be an integer (kobo)',
+      'number.min': 'Base price cannot be negative',
+      'any.required': 'Base price is required',
     }),
-    net_price: joi.number().min(0).required().messages({
-      'number.base': 'Net price must be a number',
-      'number.min': 'Net price cannot be negative',
-      'any.required': 'Net price is required',
+    sku: joi.string().trim().min(1).max(100).required().messages({
+      'string.empty': 'SKU is required',
+      'string.max': 'SKU must be at most 100 characters',
+      'any.required': 'SKU is required',
     }),
     category_id: joi.number().integer().min(1).required().messages({
       'number.base': 'Category is required',

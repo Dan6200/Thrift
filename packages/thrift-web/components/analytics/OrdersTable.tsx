@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { RecentOrder as Order } from '@/types/analytics'
+import { formatNaira } from '@/lib/money'
 
 interface OrdersTableProps {
   orders: Order[]
@@ -36,13 +37,6 @@ export function OrdersTable({ orders, isLoading }: OrdersTableProps) {
         </CardContent>
       </Card>
     )
-  }
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(value)
   }
 
   const formatDate = (dateString: string) => {
@@ -87,18 +81,17 @@ export function OrdersTable({ orders, isLoading }: OrdersTableProps) {
           </TableHeader>
           <TableBody>
             {orders.map((order) => (
-              <TableRow key={order.order_id}>
-                <TableCell className="font-medium">{order.order_id}</TableCell>
-                <TableCell>{order.customer_id}</TableCell>{' '}
-                {/* Note: customerName is not in the new schema, using customer_id */}
-                <TableCell>{formatCurrency(order.total_amount)}</TableCell>
+              <TableRow key={order.orderId}>
+                <TableCell className="font-medium">{order.orderId}</TableCell>
+                <TableCell>{order.customerName}</TableCell>
+                <TableCell>{formatNaira(order.totalAmount)}</TableCell>
                 <TableCell>
                   <Badge variant={getStatusVariant(order.status)}>
                     {order.status.charAt(0).toUpperCase() +
                       order.status.slice(1)}
                   </Badge>
                 </TableCell>
-                <TableCell>{formatDate(order.order_date)}</TableCell>
+                <TableCell>{formatDate(order.orderDate)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

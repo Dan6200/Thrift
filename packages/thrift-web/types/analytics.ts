@@ -35,31 +35,13 @@ export const SalesByCategorySchema = z.object({
 })
 export type SalesByCategory = z.infer<typeof SalesByCategorySchema>
 
-// Corresponds to SalesAnalyticsRecentOrdersResponseSchema and OrderResponseSchema
+// Corresponds to SalesAnalyticsRecentOrdersResponseSchema
 export const RecentOrderSchema = z.object({
-  order_id: z.number().int(),
-  customer_id: z.uuid('v4'),
-  store_id: z.number().int(),
-  delivery_info_id: z.number().int().nullable(),
-  order_date: z.string().datetime(),
-  total_amount: z.number(),
-  status: z.enum([
-    'pending',
-    'processing',
-    'shipped',
-    'delivered',
-    'cancelled',
-  ]),
-  created_at: z.string().datetime(),
-  updated_at: z.string().datetime(),
-  items: z.array(
-    z.object({
-      order_item_id: z.number().int(),
-      variant_id: z.number().int(),
-      quantity: z.number().int(),
-      price_at_purchase: z.number(),
-    }),
-  ),
+  orderId: z.coerce.number(),
+  customerName: z.string(),
+  totalAmount: z.coerce.number(),
+  status: z.string(),
+  orderDate: z.string(),
 })
 export type RecentOrder = z.infer<typeof RecentOrderSchema>
 

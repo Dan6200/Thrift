@@ -1,8 +1,8 @@
 export interface ProductFormType {
   title: string
   description: string
-  list_price: number
-  net_price: number
+  base_price: number
+  sku: string
   category_id: number
   subcategory_id: number
   quantity_available: number

@@ -1,4 +1,4 @@
-import { Order } from '../domain/order.js'
+import { Order, OrderItem } from '../domain/order.js'
 
 export type PersistedOrderItem = {
   order_item_id: number
@@ -35,6 +35,19 @@ export type OrderByIdFilter = {
   store_id?: number
 }
 
+export type OrderForMutation = {
+  order_id: number
+  status: string
+  store_id: number
+  items: PersistedOrderItem[]
+}
+
+export type AmendOrderInput = {
+  orderId: number
+  items: OrderItem[]
+  totalAmount: number
+}
+
 export type OrderRepository = {
   storeExists(storeId: number): Promise<boolean>
   deliveryInfoBelongsTo(
@@ -53,4 +66,10 @@ export type OrderRepository = {
   getAllOrders(filter: OrderFilter): Promise<unknown>
   getOrderById(filter: OrderByIdFilter): Promise<unknown>
   findReviewableItem(customerId: string, productId: number): Promise<unknown>
+  getOrderForMutation(
+    orderId: number,
+    customerId: string,
+  ): Promise<OrderForMutation | null>
+  amendOrder(input: AmendOrderInput): Promise<PersistedOrder | null>
+  cancelOrder(orderId: number): Promise<PersistedOrder | null>
 }

@@ -147,4 +147,98 @@ export const knexOrderRepository: OrderRepository = {
       .first()
     return item ?? null
   },
+
+  async getOrderForMutation(orderId, customerId) {
+    const order = await knex('orders')
+      .where({ order_id: orderId, customer_id: customerId })
+      .first('order_id', 'status', 'store_id')
+
+    if (!order) return null
+
+    const items = await knex('order_items')
+      .where({ order_id: orderId })
+      .select('order_item_id', 'variant_id', 'quantity', 'price_at_purchase')
+
+    return { ...order, items }
+  },
+
+  async amendOrder({ orderId, items, totalAmount }) {
+    return knex.transaction(async (trx) => {
+      const [orderRow] = await trx('orders')
+        .where({ order_id: orderId, status: 'pending' })
+        .update({ total_amount: totalAmount, updated_at: knex.fn.now() })
+        .returning('*')
+
+      if (!orderRow) return null
+
+      const oldItems = await trx('order_items')
+        .where({ order_id: orderId })
+        .select('variant_id', 'quantity')
+
+      for (const item of oldItems) {
+        await trx('inventory').insert({
+          variant_id: item.variant_id,
+          quantity_change: item.quantity,
+          reason: 'order_amended',
+          notes: `Order ${orderId}`,
+        })
+      }
+
+      await trx('order_items').where({ order_id: orderId }).del()
+
+      const newItems = []
+      for (const item of items) {
+        const [row] = await trx('order_items')
+          .insert({
+            order_id: orderId,
+            variant_id: item.variantId,
+            quantity: item.quantity,
+            price_at_purchase: item.priceAtPurchase,
+          })
+          .returning('*')
+
+        newItems.push({
+          order_item_id: row.order_item_id,
+          variant_id: row.variant_id,
+          quantity: row.quantity,
+          price_at_purchase: row.price_at_purchase,
+        })
+
+        await trx('inventory').insert({
+          variant_id: item.variantId,
+          quantity_change: -item.quantity,
+          reason: 'sale',
+          notes: `Order ${orderId} (amended)`,
+        })
+      }
+
+      return { ...orderRow, items: newItems }
+    })
+  },
+
+  async cancelOrder(orderId) {
+    return knex.transaction(async (trx) => {
+      const [orderRow] = await trx('orders')
+        .where({ order_id: orderId, status: 'pending' })
+        .update({ status: 'cancelled', updated_at: knex.fn.now() })
+        .returning('*')
+
+      if (!orderRow) return null
+
+      const items = await trx('order_items')
+        .where({ order_id: orderId })
+        .select('order_item_id', 'variant_id', 'quantity', 'price_at_purchase')
+
+      for (const item of items) {
+        await trx('inventory').insert({
+          variant_id: item.variant_id,
+          quantity_change: item.quantity,
+          reason: 'order_cancelled',
+          notes: `Order ${orderId}`,
+        })
+      }
+
+      return { ...orderRow, items }
+    })
+  },
 }

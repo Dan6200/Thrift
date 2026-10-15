@@ -34,4 +34,8 @@ export const paystackPaymentGateway: PaymentGateway = {
   verifySignature(rawBody, signature) {
     return verifyPaystackSignature(rawBody, signature)
   },
+
+  async verifyTransaction(reference) {
+    return paystack.transaction.verify({ reference })
+  },
 }

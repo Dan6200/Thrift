@@ -31,7 +31,7 @@ jobs:
         working-directory: packages/thrift-web
 
       - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
         working-directory: packages/thrift-web
 
       - name: Install vercel

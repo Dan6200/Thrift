@@ -20,6 +20,8 @@ jobs:
       CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
       CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
       CLOUDINARY_CLOUD_NAME: dk6dujsds
+      PAYSTACK_SECRET_KEY: ${{ secrets.PAYSTACK_SECRET_KEY }}
+      PAYSTACK_CALLBACK_URL: ${{ secrets.PAYSTACK_CALLBACK_URL }}
 
     steps:
       - uses: actions/checkout@v4

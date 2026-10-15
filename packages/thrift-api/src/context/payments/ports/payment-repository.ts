@@ -25,6 +25,11 @@ export type PaymentRepository = {
     orderId: number,
     reference: string,
   ): Promise<unknown | null>
+  getOrderByReference(
+    reference: string,
+  ): Promise<{ order_id: number; status: string } | null>
+  markOrderFailed(orderId: number): Promise<number>
+  markOrderProcessingByOrderId(orderId: number): Promise<number>
   saveCard(input: {
     customerId: string
     authorization: any

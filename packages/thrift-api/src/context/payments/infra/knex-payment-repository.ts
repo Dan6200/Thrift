@@ -64,6 +64,25 @@ export const knexPaymentRepository: PaymentRepository = {
       .first()
   },
 
+  async getOrderByReference(reference) {
+    const order = await knex('orders')
+      .where({ payment_reference: reference })
+      .first('order_id', 'status')
+    return order ?? null
+  },
+
+  async markOrderFailed(orderId) {
+    return knex('orders')
+      .where({ order_id: orderId, status: 'pending' })
+      .update({ status: 'failed', updated_at: knex.fn.now() })
+  },
+
+  async markOrderProcessingByOrderId(orderId) {
+    return knex('orders')
+      .where({ order_id: orderId, status: 'pending' })
+      .update({ status: 'processing', updated_at: knex.fn.now() })
+  },
+
   async saveCard({ customerId, authorization, customerEmail }) {
     await knex('payment_info')
       .insert({

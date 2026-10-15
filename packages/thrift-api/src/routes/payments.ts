@@ -6,11 +6,14 @@ import { sendResponse } from '#src/send-response.js'
 import { initializePaymentHandler } from '#src/context/payments/http/initialize-payment.js'
 import { handleWebhookHandler } from '#src/context/payments/http/handle-webhook.js'
 import { processOrderJobHandler } from '#src/context/payments/http/process-order-job.js'
+import { handleCallbackHandler } from '#src/context/payments/http/handle-callback.js'
 import {
   InitializePaymentRequestSchema,
   InitializePaymentResponseSchema,
   PaystackWebhookRequestSchema,
   PaystackWebhookResponseSchema,
+  PaystackCallbackRequestSchema,
+  PaystackCallbackResponseSchema,
 } from '#src/app-schema/payments.js'
 import { validateDbResult } from '#src/db-result-validation.js'
 
@@ -29,6 +32,14 @@ router.post(
   '/jobs/process-order',
   processOrderJobHandler,
   validateDbResult(PaystackWebhookResponseSchema),
+  sendResponse(OK),
+)
+
+router.get(
+  '/callback',
+  validate(PaystackCallbackRequestSchema),
+  handleCallbackHandler,
+  validateDbResult(PaystackCallbackResponseSchema),
   sendResponse(OK),
 )
 

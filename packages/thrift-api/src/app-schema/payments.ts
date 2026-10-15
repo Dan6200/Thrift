@@ -30,6 +30,15 @@ export const PaystackWebhookRequestSchema = Joi.object({
   }),
 })
 
+// Schema for the Paystack redirect callback query (GET /payments/callback)
+export const PaystackCallbackRequestSchema = Joi.object({
+  body: Joi.object().optional(),
+  params: Joi.object().optional(),
+  query: Joi.object({
+    reference: Joi.string().required(),
+  }).required(),
+})
+
 // --- Response Schemas ---
 
 // Schema for the response after initializing a payment with Paystack
@@ -43,3 +52,10 @@ export const PaystackWebhookResponseSchema = Joi.object({
   message: Joi.string().required(),
   order: Joi.object().optional(), // Webhook might return updated order details
 }).unknown(true) // Allow unknown keys if the order object is complex and not fully validated here
+
+export const PaystackCallbackResponseSchema = Joi.object({
+  order_id: Joi.number().integer().positive().required(),
+  status: Joi.string().required(),
+  already_processed: Joi.boolean().optional(),
+  message: Joi.string().optional(),
+})

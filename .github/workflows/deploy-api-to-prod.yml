@@ -30,13 +30,13 @@ jobs:
         with:
           node-version: "22" # Or your preferred Node.js version
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-        working-directory: packages/thrift-api
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
 
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
-        working-directory: packages/thrift-api
 
       - name: Install vercel
         run: npm install -g vercel

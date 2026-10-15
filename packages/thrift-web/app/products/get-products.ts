@@ -1,5 +1,6 @@
 //cspell:ignore ponyfill
 import { ProductData, ProductDataSchema } from '@/types/products'
+import { normalizeProduct } from '@/lib/normalize-product'
 
 export default async function getProducts({
   page = 1,
@@ -27,7 +28,13 @@ export default async function getProducts({
   }
 
   // Tolerate schema drift / malformed responses by degrading to an empty list.
-  const parsed = ProductDataSchema.safeParse(response)
+  const normalized = {
+    ...response,
+    products: Array.isArray(response.products)
+      ? response.products.map(normalizeProduct)
+      : response.products,
+  }
+  const parsed = ProductDataSchema.safeParse(normalized)
   if (!parsed.success) {
     return { products: [], total_count: 0 }
   }

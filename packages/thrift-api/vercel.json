@@ -5,7 +5,7 @@
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install --no-frozen-lockfile",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/src" },
+    { "source": "/(.*)", "destination": "/api" },
     {
       "source": "/.well-known/acme-challenge/(.*)",
       "destination": "/public/.well-known/acme-challenge/$1"

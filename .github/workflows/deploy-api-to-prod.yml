@@ -26,10 +26,10 @@ jobs:
         with:
           version: 10
 
-      - name: Install Dependencies
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Deploy to Vercel
-        # rootDirectory (packages/thrift-api) is set on the Vercel project, so
-        # the CLI resolves the app, installs and builds it from the repo root.
-        run: npx vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Link and Deploy to Vercel
+        working-directory: packages/thrift-api
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+          npx vercel deploy --prod --yes --token=$VERCEL_TOKEN

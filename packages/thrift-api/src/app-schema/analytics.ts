@@ -66,7 +66,7 @@ export const SalesAnalyticsQuerySchema = joi.object({
     .optional()
     .when('type', {
       is: 'recent-orders',
-      then: joi.string().valid('pending', 'completed', 'cancelled'),
+      then: joi.string().valid('pending', 'delivered', 'cancelled'),
       otherwise: joi.forbidden(),
     }),
 })

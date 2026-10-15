@@ -169,7 +169,7 @@ export default function ({ userInfo }: { userInfo: ProfileRequestData }) {
           type: 'recent-orders',
           offset: 1,
           limit: 10,
-          status: 'completed',
+          status: 'delivered',
         },
       })
     })

@@ -137,7 +137,7 @@ describe('Payments', () => {
 
       await knex('orders')
         .where({ order_id: nonPendingOrderId })
-        .update({ status: 'completed' })
+        .update({ status: 'delivered' })
 
       await testInitializePayment({
         token: customerToken,

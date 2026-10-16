@@ -1,6 +1,5 @@
 import express from 'express'
 import multer from 'multer'
-import { cloudinaryStorageAvatars } from '#src/utils/media-storage.js'
 import { createAvatarHandler } from '#src/context/media/http/create-avatar.js'
 import { getAvatarHandler } from '#src/context/media/http/get-avatar.js'
 import { updateAvatarHandler } from '#src/context/media/http/update-avatar.js'
@@ -16,7 +15,7 @@ import {
 import { StatusCodes } from 'http-status-codes'
 
 const router = express.Router()
-const upload = multer({ storage: cloudinaryStorageAvatars })
+const upload = multer()
 const { CREATED, OK, NO_CONTENT } = StatusCodes
 
 router.use(authenticateUser)

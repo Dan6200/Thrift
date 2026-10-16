@@ -2,8 +2,9 @@ import { NextFunction, Request, Response } from 'express'
 import BadRequestError from '#src/errors/bad-request.js'
 import { createAvatarUseCase } from '../application/create-avatar.js'
 import { knexMediaRepository } from '../infra/knex-media-repository.js'
+import { cloudinaryMediaStorage } from '../infra/cloudinary-storage.js'
 
-const useCase = createAvatarUseCase(knexMediaRepository)
+const useCase = createAvatarUseCase(cloudinaryMediaStorage, knexMediaRepository)
 
 export const createAvatarHandler = async (
   req: Request,
@@ -19,10 +20,9 @@ export const createAvatarHandler = async (
     throw new BadRequestError('No file uploaded')
   }
 
-  const { filename, path: filepath, mimetype: filetype } = file as any
   req.dbResult = await useCase({
     userId,
-    file: { filename, filepath, filetype },
+    file,
     description: body?.description,
   })
   next()

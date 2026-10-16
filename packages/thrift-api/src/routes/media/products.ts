@@ -1,6 +1,5 @@
 import express from 'express'
 import multer from 'multer'
-import { cloudinaryStorageProducts } from '#src/utils/media-storage.js'
 import { createProductMediaHandler } from '#src/context/media/http/create-product-media.js'
 import { getProductMediaHandler } from '#src/context/media/http/get-product-media.js'
 import { updateProductMediaHandler } from '#src/context/media/http/update-product-media.js'
@@ -21,7 +20,7 @@ import { hasStoreAccess } from '#src/authorization/has-store-access.js'
 import Joi from 'joi'
 
 const router = express.Router()
-const upload = multer({ storage: cloudinaryStorageProducts })
+const upload = multer()
 const uploadLimit = 12
 const { CREATED, OK, NO_CONTENT } = StatusCodes
 

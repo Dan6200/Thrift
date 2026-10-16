@@ -2,8 +2,12 @@ import { NextFunction, Request, Response } from 'express'
 import BadRequestError from '#src/errors/bad-request.js'
 import { createProductMediaUseCase } from '../application/create-product-media.js'
 import { knexMediaRepository } from '../infra/knex-media-repository.js'
+import { cloudinaryMediaStorage } from '../infra/cloudinary-storage.js'
 
-const useCase = createProductMediaUseCase(knexMediaRepository)
+const useCase = createProductMediaUseCase(
+  cloudinaryMediaStorage,
+  knexMediaRepository,
+)
 
 const parseJsonField = (value: any): any => {
   if (value && typeof value === 'string') {
@@ -38,20 +42,15 @@ export const createProductMediaHandler = async (
   const parsedIsThumbnailImage = parseJsonField(is_thumbnail_image)
   const parsedFiletypes = parseJsonField(filetypes)
 
-  const filesArray = Array.isArray(files) ? files : [files]
-  if (!filesArray || filesArray.length === 0 || !filesArray[0]) {
+  const filesArray: Express.Multer.File[] = Array.isArray(files) ? files : []
+  if (!filesArray.length) {
     throw new BadRequestError('No files uploaded')
   }
 
   req.dbResult = await useCase({
     userId,
     productId: Number(product_id),
-    files: filesArray.map((file: any) => ({
-      filename: file.filename,
-      filepath: file.path,
-      filetype: file.mimetype,
-      originalname: file.originalname,
-    })),
+    files: filesArray,
     descriptions: parsedDescriptions,
     isDisplayImage: parsedIsDisplayImage,
     isThumbnailImage: parsedIsThumbnailImage,

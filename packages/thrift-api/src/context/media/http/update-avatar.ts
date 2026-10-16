@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import { updateAvatarUseCase } from '../application/update-avatar.js'
 import { knexMediaRepository } from '../infra/knex-media-repository.js'
+import { cloudinaryMediaStorage } from '../infra/cloudinary-storage.js'
 
-const useCase = updateAvatarUseCase(knexMediaRepository)
+const useCase = updateAvatarUseCase(cloudinaryMediaStorage, knexMediaRepository)
 
 export const updateAvatarHandler = async (
   req: Request,
@@ -10,11 +11,10 @@ export const updateAvatarHandler = async (
   next: NextFunction,
 ) => {
   const { userId, body, file } = req
-  const { filename, path: filepath, mimetype: filetype } = (file as any) || {}
 
   req.dbResult = await useCase({
     userId: userId!,
-    file: file ? { filename, filepath, filetype } : undefined,
+    file,
     description: body?.description,
   })
   next()

@@ -1,8 +1,9 @@
 // cspell:ignore fieldname
 ///////////////////////////////////////////////////
-// Uploads an image file to cloudinary using multer
+// Configures the Cloudinary SDK.
+// Uploads are performed by context/media/infra/cloudinary-storage.ts via the
+// MediaStorage port; this module only owns the SDK configuration.
 ///////////////////////////////////////////////////
-import { CloudinaryStorage, Options } from 'multer-storage-cloudinary'
 import { v2 as cloudinary } from 'cloudinary'
 import dotenv from 'dotenv'
 
@@ -20,55 +21,3 @@ cloudinary.config({
 })
 
 export { cloudinary }
-let cloudinaryStorageProducts: CloudinaryStorage | null = null,
-  cloudinaryStorageAvatars: CloudinaryStorage | null = null
-
-if (process.env.NODE_ENV === 'testing') {
-  cloudinaryStorageAvatars = new CloudinaryStorage({
-    cloudinary,
-    params: {
-      use_filename: true,
-      folder: 'sellit-media-testing/avatars',
-      unique_filename: true,
-      overwrite: true,
-      public_id: (_req, file) =>
-        `${file.fieldname}-${Math.trunc(Math.random() * 1e9)}`,
-    },
-  } as Options)
-  cloudinaryStorageProducts = new CloudinaryStorage({
-    cloudinary,
-    params: {
-      use_filename: true,
-      folder: 'sellit-media-testing/products',
-      unique_filename: true,
-      overwrite: true,
-      public_id: (_req, file) =>
-        `${file.fieldname}-${Math.trunc(Math.random() * 1e9)}`,
-    },
-  } as Options)
-} else {
-  cloudinaryStorageProducts = new CloudinaryStorage({
-    cloudinary,
-    params: {
-      use_filename: true,
-      folder: 'sellit-media/products',
-      unique_filename: true,
-      overwrite: true,
-      public_id: (_req, file) =>
-        `${file.fieldname}-${Math.trunc(Math.random() * 1e9)}`,
-    },
-  } as Options)
-  cloudinaryStorageAvatars = new CloudinaryStorage({
-    cloudinary,
-    params: {
-      use_filename: true,
-      folder: 'sellit-media/avatars',
-      unique_filename: true,
-      overwrite: true,
-      public_id: (_req, file) =>
-        `${file.fieldname}-${Math.trunc(Math.random() * 1e9)}`,
-    },
-  } as Options)
-}
-
-export { cloudinaryStorageAvatars, cloudinaryStorageProducts }

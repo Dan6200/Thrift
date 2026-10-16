@@ -8,6 +8,7 @@ import { deleteUserForTesting } from '../helpers/delete-user.js'
 import { signInForTesting } from '../helpers/signin-user.js'
 import { createStoreForTesting } from '../helpers/create-store.js'
 import { createOrderForTesting } from '../helpers/create-order.js' // Import existing helper
+import { createProductsForTesting } from '../helpers/create-product.js'
 import { userFactory, vendorFactory } from '../factories/index.js'
 import { knex } from '#src/db/index.js'
 import {
@@ -38,6 +39,7 @@ describe('Payments', () => {
 
   let testOrderId: number
   let testStoreId: string
+  let testVariantId: number
   let testPaystackSecret: string
 
   before(async () => {
@@ -60,11 +62,21 @@ describe('Payments', () => {
     const storeRes = await createStoreForTesting(vendorToken)
     testStoreId = storeRes.body.store_id
 
-    // 4. Create Order using helper
+    // 4. Create a product + variant so we have a real, current variant id
+    const productRequests = []
+    for await (const req of createProductsForTesting(
+      vendorToken,
+      Number(testStoreId),
+      1,
+    )) {
+      productRequests.push(req)
+    }
+    const [productRes] = await Promise.all(productRequests)
+    testVariantId = productRes.body.variants[0].variant_id
+
+    // 5. Create Order using helper
     const createOrderPayload = {
-      items: [
-        { variant_id: 1, quantity: 1 }, // Assuming variant_id 1 exists or is created elsewhere
-      ],
+      items: [{ variant_id: testVariantId, quantity: 1 }],
     }
     const createOrderQuery = { store_id: testStoreId }
     const orderRes = await createOrderForTesting(
@@ -125,7 +137,7 @@ describe('Payments', () => {
     it('should return 400 if order is not in pending status', async () => {
       // Create a new order and set its status to something else
       const createOrderPayload = {
-        items: [{ variant_id: 1, quantity: 1 }],
+        items: [{ variant_id: testVariantId, quantity: 1 }],
       }
       const createOrderQuery = { store_id: testStoreId }
       const orderRes = await createOrderForTesting(
@@ -180,7 +192,7 @@ describe('Payments', () => {
     it('should update order status on successful charge webhook', async () => {
       // Create a fresh order
       const createOrderPayload = {
-        items: [{ variant_id: 1, quantity: 1 }],
+        items: [{ variant_id: testVariantId, quantity: 1 }],
       }
       const createOrderQuery = { store_id: testStoreId }
       const orderRes = await createOrderForTesting(
@@ -267,7 +279,7 @@ describe('Payments', () => {
     it('should return 200 but not update order for unhandled event type', async () => {
       // Create a fresh order
       const createOrderPayload = {
-        items: [{ variant_id: 1, quantity: 1 }],
+        items: [{ variant_id: testVariantId, quantity: 1 }],
       }
       const createOrderQuery = { store_id: testStoreId }
       const orderRes = await createOrderForTesting(
@@ -316,7 +328,7 @@ describe('Payments', () => {
     it('should return 500 if Paystack verification fails', async () => {
       // Create a fresh order
       const createOrderPayload = {
-        items: [{ variant_id: 1, quantity: 1 }],
+        items: [{ variant_id: testVariantId, quantity: 1 }],
       }
       const createOrderQuery = { store_id: testStoreId }
       const orderRes = await createOrderForTesting(

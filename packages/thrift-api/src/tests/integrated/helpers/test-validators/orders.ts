@@ -2,6 +2,7 @@ import {
   CreateOrderRequestSchema,
   UpdateOrderRequestSchema,
   DeleteOrderRequestSchema,
+  CancelOrderRequestSchema,
   GetOrderRequestSchema,
   GetAllOrdersRequestSchema,
   FindReviewableItemRequestSchema,
@@ -30,6 +31,13 @@ export const validateDeleteOrderReq = (data: unknown) =>
     DeleteOrderRequestSchema,
     data,
     'Delete Order Request Validation Error',
+  )
+
+export const validateCancelOrderReq = (data: unknown) =>
+  validateTestData(
+    CancelOrderRequestSchema,
+    data,
+    'Cancel Order Request Validation Error',
   )
 
 export const validateGetOrderReq = (data: unknown) =>

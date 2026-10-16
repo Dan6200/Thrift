@@ -12,6 +12,7 @@ import testStoreStaff from './store_staff/index.js'
 import testCart from './cart/index.js'
 import testProductReviews from './reviews/products/index.js'
 import testOrders from './orders/index.js'
+import testPaymentsCallback from './payments/callback.js'
 import { bulkDeleteImages } from './utils/bulk-delete.js'
 import adversarialTests from './adversarial/index.js'
 
@@ -139,6 +140,9 @@ export default function (): void {
   })
 
   /** Strict adversarial contract tests **/
+
+  /** Payments callback (unauthenticated) **/
+  describe('Testing Payments Callback', testPaymentsCallback)
 
   describe('Testing adversarial contract invariants', () => adversarialTests())
   // end

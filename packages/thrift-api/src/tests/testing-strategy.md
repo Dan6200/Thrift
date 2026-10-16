@@ -100,13 +100,16 @@ created_at, updated_at, average_rating, review_count, products_sold`;
 ### 3.4 Orders
 
 - `#src/context/orders/domain/order.ts`
-  - `createOrder(draft, priceOf, stockOf): Result<Order, DomainError>`
+  - `OrderStatus = 'pending' | 'processing' | 'failed' | 'cancelled' | 'shipped' | 'delivered' | 'refunded'`
+  - `createOrder(draft, priceOf, stockOf): Result<Order, DomainError>` — status `'pending'`
+  - `buildOrderItems(items, priceOf, stockOf): Result<{ items, totalAmount }, DomainError>` — the shared validation + price-snapshot loop used by both create and amend
   - `draft.items` = `{ variantId, quantity }[]`
   - `priceOf: (variantId) => Money | undefined` (injected price lookup)
   - `stockOf: (variantId) => number` (injected stock lookup)
   - Invariants: ≥1 item; quantity positive int; `priceOf` defined (variant
-    exists); `stockOf ≥ quantity`; `totalAmount = Σ(price × quantity)`; status
-    `'pending'`.
+    exists); `stockOf ≥ quantity`; `totalAmount = Σ(price × quantity)`.
+  - **State machine**: amendment and cancellation are only legal while
+    `status === 'pending'`.
 
 ### 3.5 Application use cases (unit-test with a fake repository)
 
@@ -150,12 +153,61 @@ quantity }`. `repo.getCartId` → `NOT_FOUND`; `repo.getCartItem` →
     `NOT_FOUND`; `getStock` → `validateQuantity`; then `repo.updateItem`.
   - `removeItemUseCase(repo)(command)` — `command = { customerId, itemId }`.
     `getCartId` → `NOT_FOUND`; `repo.removeItem` (0 rows → `NOT_FOUND`).
+- Orders (amend/cancel):
+  - `amendOrderUseCase(repo)(command)` — `command = { customerId, orderId,
+items: { variantId, quantity }[] }`. `repo.getOrderForMutation(orderId,
+customerId)` → `NOT_FOUND`; `status !== 'pending'` → `CONFLICT`; then
+    `buildOrderItems` with **effective stock = available + this order's held
+    quantity** (so a customer isn't blocked by their own reservation); then
+    `repo.amendOrder`.
+  - `cancelOrderUseCase(repo)(command)` — `command = { customerId, orderId }`.
+    `getOrderForMutation` → `NOT_FOUND`; `status !== 'pending'` → `CONFLICT`;
+    then `repo.cancelOrder`.
+- Payments (use-case fakes: `PaymentRepository` + `PaymentGateway`):
+  - `handleCallbackUseCase(repo, gateway)(command)` — `command = { reference }`.
+    `repo.getOrderByReference(reference)` → `NOT_FOUND`; already non-`pending` →
+    `ok({ already_processed: true })`; `gateway.verifyTransaction(reference)`;
+    non-success → `repo.markOrderFailed(orderId)`; success →
+    `repo.markOrderProcessingByOrderId(orderId)`.
+- Media (use-case fakes: `MediaRepository` + `MediaStorage`):
+  - `createAvatarUseCase(storage, repo)(input)` — `storage.upload(file,
+'avatars')` → `repo.createAvatar`.
+  - `updateAvatarUseCase(storage, repo)(input)` — upload only if `file` present,
+    then `repo.updateAvatar`.
+  - `createProductMediaUseCase(storage, repo)(input)` — `storage.upload` each
+    file under `'products'`, then `repo.createProductMedia`.
+  - `updateProductMediaUseCase(storage, repo)(input)` — upload only if `file`
+    present, then `repo.updateProductMedia`.
 
 > The port method names (`getVariantBySku`, `getOrderItemOwner`, `getById`,
 > `getStock`, `getCartId`, `getCartItem`, `addItem`, `updateItem`, `removeItem`,
 > `storeExists`, `deliveryInfoBelongsTo`, `getVariantPrices`,
-> `getAvailableStock`, …) are the **contract** — the fake must expose exactly
-> these names and shapes. When unsure, mirror the existing unit-test fakes.
+> `getAvailableStock`, `getOrderForMutation`, `amendOrder`, `cancelOrder`,
+> `getOrderByReference`, `markOrderFailed`, `markOrderProcessingByOrderId`, …)
+> are the **contract** — the fake must expose exactly these names and shapes.
+> When unsure, mirror the existing unit-test fakes.
+
+### 3.6 External-service ports (mocking seams)
+
+These ports wrap external HTTP services. **Never call the real service in unit
+tests — fake the port.** The real adapter is exercised only by a thin,
+env-gated integration/smoke test.
+
+- `#src/context/payments/ports/payment-gateway.ts` — `PaymentGateway`
+  - `initializeTransaction(input): Promise<{ status, message?, data: { reference, authorization_url, access_code } }>`
+  - `verifySignature(rawBody, signature): boolean`
+  - `verifyTransaction(reference): Promise<{ status, message?, data: { status } }>`
+  - A fake returns canned `{ status: true, data: {…} }` values — no Paystack, no
+    HMAC secrets. This is how you mock Paystack.
+- `#src/context/media/ports/media-storage.ts` — `MediaStorage`
+  - `upload(file: { buffer, originalname, mimetype }, folder: 'avatars' | 'products'): Promise<{ filename, filepath, filetype }>`
+  - A fake returns `{ filename: 'fake-id', filepath: 'https://fake/fake.jpg',
+filetype: file.mimetype }` — no Cloudinary. This is how you mock Cloudinary.
+
+The payment and media **use cases depend on these ports**, so a plain fake
+object removes the external dependency entirely (this unblocks the previously
+`it.skip` webhook/callback/job tests and lets the media tests run without real
+Cloudinary uploads).
 
 ---
 
@@ -205,10 +257,21 @@ use case), `handleSortQuery`.
    (especially the "quantity change requires reason" rule).
 2. `cart.ts` — `validateQuantity`.
 3. `order.ts` — edge cases beyond the current few (multi-item arithmetic,
-   per-item stock, unknown variant).
+   per-item stock, unknown variant); `buildOrderItems`.
 4. `createVariantUseCase`, `updateVariantUseCase`, `updateVariant` mapping.
 5. `createReviewUseCase` / `updateReviewUseCase` / `deleteReviewUseCase`
    (ownership + duplicate).
 6. Cart `addItemUseCase` / `updateItemUseCase` / `removeItemUseCase`.
 7. `toHttpError` code→status/class mapping.
 8. `shared/result.ts`, `shared/money.ts` guards (cheap to pin).
+9. Orders state machine — `amendOrderUseCase` / `cancelOrderUseCase`
+   (pending-only guard → `CONFLICT`, ownership → `NOT_FOUND`, effective-stock
+   amendment).
+10. Payments — `handleCallbackUseCase` (and the webhook/job use cases) against a
+    fake `PaymentGateway` + `PaymentRepository` (mocks Paystack, no HMAC).
+11. Media — the four media use cases against a fake `MediaStorage` +
+    `MediaRepository` (mocks Cloudinary).
+
+New endpoints (integration surface, verified against the running server):
+`PATCH /v1/orders/:order_id` (amend), `POST /v1/orders/:order_id/cancel`,
+`GET /v1/payments/callback`.

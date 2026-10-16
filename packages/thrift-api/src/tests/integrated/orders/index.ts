@@ -6,8 +6,7 @@ import {
   testGetAllOrders,
   testGetOrder,
   testUpdateOrder,
-  testDeleteOrder,
-  testGetNonExistentOrder,
+  testCancelOrder,
   testGetReviewableItem,
 } from './definitions/index.js'
 import { createUserForTesting } from '#src/tests/integrated/helpers/create-user.js'
@@ -113,46 +112,28 @@ export default function (customer: { userInfo: ProfileRequestData }) {
       })
     }))
 
-  // CONTRACT FINDING: PATCH/DELETE /v1/orders/:order_id return 404
-  // ("Resource not found") — the documented order surface is create + read-only
-  // (POST|GET /v1/orders, GET /v1/orders/reviewable-item, GET /v1/orders/:order_id).
-  // These tests are recorded (not deleted) so they can be un-skipped if the
-  // endpoints are ever implemented.
-  it.skip('should allow a customer to update an order', () =>
+  it('should allow a customer to amend a pending order (PATCH)', () =>
     withSeed(async (ctx) => {
       const order = await createOrder(ctx)
-      const updatedOrderData = {
+      const amendedOrderData = {
         items: [{ variant_id: ctx.variantId, quantity: 2 }],
       }
       await testUpdateOrder({
         token: ctx.customerToken,
         params: { order_id: order.order_id },
-        body: updatedOrderData,
+        body: amendedOrderData,
         expectedData: {
-          ...updatedOrderData,
+          ...amendedOrderData,
           store_id: ctx.storeId,
           total_amount: ctx.variantPrice * 2,
         },
       })
     }))
 
-  it.skip('should allow a customer to delete an order', () =>
+  it('should allow a customer to cancel a pending order', () =>
     withSeed(async (ctx) => {
       const order = await createOrder(ctx)
-      await testDeleteOrder({
-        token: ctx.customerToken,
-        params: { order_id: order.order_id },
-      })
-    }))
-
-  it.skip('should fail to get a deleted order', () =>
-    withSeed(async (ctx) => {
-      const order = await createOrder(ctx)
-      await testDeleteOrder({
-        token: ctx.customerToken,
-        params: { order_id: order.order_id },
-      })
-      await testGetNonExistentOrder({
+      await testCancelOrder({
         token: ctx.customerToken,
         params: { order_id: order.order_id },
       })

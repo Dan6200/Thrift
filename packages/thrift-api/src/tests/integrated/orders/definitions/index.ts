@@ -8,6 +8,7 @@ import {
   validateCreateOrderReq,
   validateUpdateOrderReq,
   validateDeleteOrderReq,
+  validateCancelOrderReq,
   validateGetOrderReq,
   validateGetAllOrdersReq,
   validateOrderRes,
@@ -166,6 +167,24 @@ export const testUpdateOrder = (args: {
     validateTestResData: validateOrderRes,
     compareData: (actual, expected) => compareOrderData(actual, expected),
     expectedData: args.expectedData,
+  })(requestParams)
+}
+
+export const testCancelOrder = (args: {
+  token: string
+  params: { order_id: number }
+}) => {
+  const path = `${buildOrderPath(args.params.order_id)}/cancel`
+  const requestParams: RequestParams = {
+    token: args.token,
+    params: args.params,
+  }
+  return (testRequest as TestRequest)({
+    verb: 'post',
+    statusCode: OK,
+    path,
+    validateTestReqData: validateCancelOrderReq,
+    validateTestResData: validateOrderRes,
   })(requestParams)
 }
 

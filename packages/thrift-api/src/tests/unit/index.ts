@@ -19,6 +19,8 @@ import cartDomainTests from './cart/cart.js'
 import cartUseCaseTests from './cart/use-cases.js'
 import reviewUseCaseTests from './reviews/use-cases.js'
 import handleCallbackUseCaseTests from './payments/handle-callback-use-case.js'
+import handleWebhookUseCaseTests from './payments/handle-webhook-use-case.js'
+import processOrderJobUseCaseTests from './payments/process-order-job-use-case.js'
 import mediaUseCaseTests from './media/use-cases.js'
 
 chai.should()
@@ -43,5 +45,7 @@ export default () => {
   describe('Cart use cases', cartUseCaseTests)
   describe('Review use cases', reviewUseCaseTests)
   describe('Payments handle callback use case', handleCallbackUseCaseTests)
+  describe('Payments handle webhook use case', handleWebhookUseCaseTests)
+  describe('Payments process order job use case', processOrderJobUseCaseTests)
   describe('Media use cases', mediaUseCaseTests)
 }

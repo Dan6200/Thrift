@@ -1,6 +1,6 @@
 {
   "import": "tsx",
-  "require": "dotenv/config",
+  "require": ["./src/tests/load-env.ts"],
   "timeout": 100000,
   "recursive": true,
   "extension": ["ts", "js", "tsx"],

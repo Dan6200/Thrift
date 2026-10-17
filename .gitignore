@@ -13,6 +13,7 @@ generated_images
 
 # testing
 /coverage
+/packages/thrift-api/coverage
 
 # next.js
 /.next/

@@ -31,7 +31,12 @@
     "dev": "TZ=UTC NODE_ENV=development tsx watch src/server.ts",
     "dev:debug": "TZ=UTC DEBUG=1 NODE_ENV=development tsx watch src/server.ts",
     "reset-db": "supabase db reset",
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck:assistant": "tsc --noEmit -p tsconfig.json",
+    "test:ci": "TZ=UTC SERVER=localhost:1027 NODE_ENV=testing mocha src/tests --config src/tests/.mocharc.json --retries 1",
+    "test:parallel:assistant": "TZ=UTC SERVER=localhost:1037 NODE_ENV=testing mocha src/tests --config src/tests/.mocharc.json --parallel --jobs 4",
+    "coverage:assistant": "TZ=UTC NODE_ENV=testing c8 --all --include 'src/shared/**/*.ts' --include 'src/context/*/domain/**/*.ts' --include 'src/context/*/application/**/*.ts' --exclude 'src/tests/**' --exclude 'src/**/*.d.ts' --reporter=text --reporter=json-summary --check-coverage --lines 65 --functions 35 --branches 75 --statements 65 mocha src/tests --config src/tests/.mocharc.json --grep 'Testing isolated utility functions'"
   },
   "license": "ISC",
   "author": "daniel <danielnyong66@gmail.com>",
@@ -44,6 +49,7 @@
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "axios": "^1.10.0",
+    "c8": "^10.1.3",
     "chai": "^4.5.0",
     "eslint": "^8.57.1",
     "eslint-config-love": "^121.0.0",

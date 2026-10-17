@@ -53,6 +53,12 @@ jobs:
       - name: Build thrift-api
         run: pnpm --filter thrift-api build
 
+      - name: Typecheck thrift-api
+        run: pnpm --filter thrift-api typecheck
+
+      - name: Coverage gate (unit)
+        run: pnpm --filter thrift-api coverage:assistant
+
       - name: Start server
         run: |
           pnpm --filter thrift-api test-server &> results.log &
@@ -60,7 +66,7 @@ jobs:
         working-directory: packages/thrift-api
 
       - name: Run tests
-        run: pnpm --filter thrift-api test
+        run: pnpm --filter thrift-api test:ci
 
       - name: View results on failure
         if: failure()

@@ -245,13 +245,12 @@ describe('Payments', () => {
       await knex('orders').where({ order_id: orderId }).del()
     })
 
-    // ENVIRONMENT-LIMITED: the charge.success path publishes an event via
-    // QStash, which rejects the local development token ("You are using a
-    // development server token with QStash"). The processing + publish logic is
-    // covered by unit tests against a fake EventPublisher
-    // (unit/payments/handle-webhook-use-case.ts). Un-skip when a real QStash
-    // token and a publicly reachable APP_URL are configured.
-    it.skip('should update order status on successful charge webhook', async () => {
+    // The charge.success path publishes an event via QStash. Run the local
+    // QStash dev server (`qstash dev` on :8080) and start the API with
+    // QSTASH_URL=http://localhost:8080 (see .github/workflows/run-tests.yml).
+    // The processing + publish logic is also unit-tested against a fake
+    // EventPublisher (unit/payments/handle-webhook-use-case.ts).
+    it('should update order status on successful charge webhook', async () => {
       const { orderId, paymentRef } = await createPendingOrder()
       const payload = {
         id: uuidv4(),
@@ -276,7 +275,7 @@ describe('Payments', () => {
       await knex('orders').where({ order_id: orderId }).del()
     })
 
-    it.skip('should process the same event id only once (replay protection)', async () => {
+    it('should process the same event id only once (replay protection)', async () => {
       const { orderId, paymentRef } = await createPendingOrder()
       const payload = {
         id: uuidv4(),

@@ -22,6 +22,10 @@ jobs:
       CLOUDINARY_CLOUD_NAME: dk6dujsds
       PAYSTACK_SECRET_KEY: ${{ secrets.PAYSTACK_SECRET_KEY }}
       PAYSTACK_CALLBACK_URL: ${{ secrets.PAYSTACK_CALLBACK_URL }}
+      # Point the app + QStash client at the local QStash dev server (below), and
+      # at the CI server port so the async process-order job can be delivered.
+      QSTASH_URL: http://localhost:8080
+      APP_URL: http://localhost:1027
 
     steps:
       - uses: actions/checkout@v4
@@ -58,6 +62,13 @@ jobs:
 
       - name: Coverage gate (unit)
         run: pnpm --filter thrift-api coverage:assistant
+
+      - name: Start QStash dev server
+        run: |
+          curl -fsSL -o /tmp/qstash.tgz "https://artifacts.upstash.com/qstash/versions/2.40.12/qstash-server_2.40.12_linux_amd64.tar.gz"
+          mkdir -p /tmp/qstash && tar -xzf /tmp/qstash.tgz -C /tmp/qstash
+          /tmp/qstash/qstash dev > /tmp/qstash.log 2>&1 &
+          sleep 5
 
       - name: Start server
         run: |

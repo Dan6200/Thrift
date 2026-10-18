@@ -2,11 +2,11 @@
 
 - Be sure to commit before any change
 
-## Additional Rules For You the Assistant
+## Additional Rules For You the Agent
 
 - Commit and push (if you can before making any changes)
 - Commit after every change, in small focused commits. Never batch many changes into one all-or-nothing commit.
-- Run tests, Tests you should run are postfixed with `:assistant` in `package.json`.
+- Run tests, Tests you should run are postfixed with `:agent` in `package.json`.
 - When something doesn't work, try logging, to see what is happing.
 - `For every command in development and testing, they have a debug mode, post-fixed with `:debug`
   - Run both the debug server and tests when something isn't working

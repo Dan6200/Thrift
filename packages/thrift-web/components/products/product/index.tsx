@@ -1,6 +1,6 @@
 'use client'
 import { MoveLeft } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Card, CardContent } from '../../ui/card'
 import { GoBackLink } from '../go-back-link'
 import { ProductImage } from '../image'
@@ -15,31 +15,21 @@ import { Description } from './utils/description'
 import { ProductDetails } from './utils/ProductDetails'
 
 export function Product({ product }: { product: ProductType }) {
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
-    null,
-  )
-  const [imageVariants, setImageVariants] = useState<Record<string, ImgData>>(
-    {},
-  )
-
   const media = product.media ?? []
 
-  useEffect(() => {
-    const variants = media.reduce(
-      (acc, img) => {
-        acc[img.variant_id.toString()] = img
-        return acc
-      },
-      {} as Record<string, ImgData>,
-    )
-    setImageVariants(variants)
-  }, [product.media]) // eslint-disable-line react-hooks/exhaustive-deps
+  // Initialize from the product itself so the first (server) render shows the
+  // real variant, price and image instead of a ₦0.00 / placeholder flash.
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
+    product.variants?.[0] ?? null,
+  )
 
-  useEffect(() => {
-    if (product.variants && product.variants.length > 0) {
-      setSelectedVariant(product.variants[0])
-    }
-  }, [product.variants])
+  const imageVariants = media.reduce(
+    (acc, img) => {
+      acc[img.variant_id.toString()] = img
+      return acc
+    },
+    {} as Record<string, ImgData>,
+  )
 
   const handleOptionSelect = (optionName: string, value: string) => {
     if (!selectedVariant || !product.variants) return
@@ -61,7 +51,7 @@ export function Product({ product }: { product: ProductType }) {
   }
 
   const displayImg: ImgData | undefined = selectedVariant
-    ? imageVariants[selectedVariant.variant_id]
+    ? (imageVariants[selectedVariant.variant_id] ?? media[0])
     : media[0]
 
   return (

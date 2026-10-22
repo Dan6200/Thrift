@@ -1,5 +1,5 @@
 // server/src/lib/paystack.ts
-import Paystack from '@paystack/paystack-sdk'
+import PaystackSDK from '@paystack/paystack-sdk'
 
 const secretKey = process.env.PAYSTACK_SECRET_KEY
 
@@ -8,6 +8,16 @@ if (!secretKey) {
     'PAYSTACK_SECRET_KEY is missing from environment variables. Please check your .env file.',
   )
 }
+
+// `@paystack/paystack-sdk` is CommonJS and assigns the class to both
+// `module.exports` and `module.exports.default`. ESM interop for that shape
+// differs across runtimes (e.g. Vercel's nodejs launcher), so resolve the
+// constructor defensively instead of relying on the default import.
+type PaystackConstructor = typeof PaystackSDK
+
+const Paystack = ((PaystackSDK as unknown as { default?: unknown }).default ??
+  (PaystackSDK as unknown as { Paystack?: unknown }).Paystack ??
+  PaystackSDK) as PaystackConstructor
 
 /**
  * Singleton instance of the Paystack SDK client.

@@ -1,5 +1,5 @@
 import chai from 'chai'
-import { ok, err, map, flatMap, mapError, Result } from '#src/shared/result.js'
+import { ok, err, map, flatMap, mapError } from '#src/shared/result.js'
 
 chai.should()
 

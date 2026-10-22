@@ -26,12 +26,33 @@ import notFound from '#src/not-found.js'
 import swaggerUi from 'swagger-ui-express'
 import yaml from 'js-yaml'
 import { readFile } from 'fs/promises'
+import { fileURLToPath } from 'url'
 import path from 'path'
 
-const swaggerDocument = await readFile(
-  path.resolve('./api-docs/dist.yaml'),
-  'utf8',
-).then((doc) => yaml.load(doc))
+// Swagger docs are optional. Vercel bundles the file under a different path
+// than the process CWD, so try the common locations and never crash if the
+// file is missing (e.g. in a serverless function bundle).
+async function loadSwaggerDocument(): Promise<unknown> {
+  const here = path.dirname(fileURLToPath(import.meta.url))
+  const candidates = [
+    path.resolve('./api-docs/dist.yaml'),
+    path.resolve(here, '../../api-docs/dist.yaml'),
+    path.resolve(here, '../api-docs/dist.yaml'),
+  ]
+
+  for (const candidate of candidates) {
+    try {
+      const raw = await readFile(candidate, 'utf8')
+      return yaml.load(raw)
+    } catch {
+      // Try the next candidate.
+    }
+  }
+
+  return {}
+}
+
+const swaggerDocument = await loadSwaggerDocument()
 
 ////////////// Middlewares //////////////
 let app = express()

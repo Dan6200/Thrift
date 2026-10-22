@@ -1,19 +1,22 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { StatusCodes } from 'http-status-codes'
+import { createHmac, randomUUID } from 'node:crypto'
 import {
   request,
   expectRejected,
   uniqueUser,
   seedUser,
   seedVendorCatalog,
+  SERVER,
 } from './helpers.js'
-import { userFactory, vendorFactory } from '../factories/index.js'
+import { userFactory } from '../factories/index.js'
 import { deleteUserForTesting } from '../helpers/delete-user.js'
+import { knex } from '#src/db/index.js'
 
 chai.use(chaiHttp).should()
 
-const { BAD_REQUEST, NOT_FOUND, CREATED } = StatusCodes
+const { BAD_REQUEST, NOT_FOUND, CREATED, OK } = StatusCodes
 
 const aisha = userFactory({ isCustomer: true })
 
@@ -76,17 +79,83 @@ export default function () {
       })
     })
 
-    describe('webhook (environment-limited)', () => {
-      // NOTE: Webhook signature verification and raw-body handling cannot be
-      // exercised in this environment:
-      //   1. The test-request harness does not forward the `x-paystack-signature`
-      //      header (and the running server has no raw-body capture middleware),
-      //      so any validly-signed request is rejected as "invalid signature".
-      //   2. The signature is generated with a mock secret that does not match
-      //      the server's real PAYSTACK_SECRET_KEY.
-      // These invariants are therefore *recorded*, not silently deleted:
-      it.skip('rejects a replayed webhook event id (replay protection)', () => {})
-      it.skip('does not re-transition a processing order (idempotent webhook)', () => {})
+    describe('webhook replay & idempotency', () => {
+      // The signature is computed with the same PAYSTACK_SECRET_KEY the running
+      // server loaded (src/tests/load-env.ts mirrors src/server.ts), so the
+      // webhook reaches the real handler instead of being rejected as unsigned.
+      const sign = (payload: unknown) =>
+        createHmac('sha512', process.env.PAYSTACK_SECRET_KEY as string)
+          .update(JSON.stringify(payload))
+          .digest('hex')
+
+      const postWebhook = (payload: unknown, signature: string) =>
+        chai
+          .request(SERVER)
+          .post('/v1/payments/webhook')
+          .set('x-paystack-signature', signature)
+          .set('Content-Type', 'application/json')
+          .send(payload as any)
+
+      const giveOrderAReference = async (orderId: number) => {
+        const reference = `ADV_REF_${randomUUID()}`
+        await knex('orders')
+          .where({ order_id: orderId })
+          .update({ payment_reference: reference })
+        return reference
+      }
+
+      const chargeSuccessPayload = (
+        orderId: number,
+        reference: string,
+        eventId = `evt_${randomUUID()}`,
+      ) => ({
+        id: eventId,
+        event: 'charge.success',
+        data: {
+          reference,
+          status: 'success',
+          metadata: { order_id: orderId },
+        },
+      })
+
+      it('processes a replayed webhook event id only once', async () => {
+        const orderId = await makePendingOrder()
+        const reference = await giveOrderAReference(orderId)
+        const payload = chargeSuccessPayload(orderId, reference)
+        const signature = sign(payload)
+
+        const first = await postWebhook(payload, signature)
+        first.should.have.status(OK)
+        first.body.message.should.include('processing')
+
+        let order = await knex('orders').where({ order_id: orderId }).first()
+        order.status.should.equal('processing')
+
+        // Replay the exact same event id.
+        const replay = await postWebhook(payload, signature)
+        replay.should.have.status(OK)
+        replay.body.message.should.include('already processed')
+
+        order = await knex('orders').where({ order_id: orderId }).first()
+        order.status.should.equal('processing')
+      })
+
+      it('does not re-transition an order that is no longer pending', async () => {
+        const orderId = await makePendingOrder()
+        const reference = await giveOrderAReference(orderId)
+        await knex('orders')
+          .where({ order_id: orderId })
+          .update({ status: 'processing' })
+
+        const payload = chargeSuccessPayload(orderId, reference)
+
+        const res = await postWebhook(payload, sign(payload))
+        res.should.have.status(OK)
+        res.body.message.should.include('already processed')
+
+        const order = await knex('orders').where({ order_id: orderId }).first()
+        order.status.should.equal('processing')
+      })
     })
   })
 }

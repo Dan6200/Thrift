@@ -14,18 +14,6 @@ const uniqueEmail = () => `test-${suffix()}@example.com`
 const uniquePhone = () => `2348${Math.floor(1e7 + Math.random() * 9e7)}`
 const iso = (date: string) => `${date}T00:00:00.000Z`
 
-export type UserInfo = {
-  first_name: string
-  last_name: string
-  email: string
-  phone: string
-  password: string
-  dob: string
-  country: string
-  is_customer: boolean
-  is_vendor: boolean
-}
-
 export function userFactory(
   opts: { isVendor?: boolean; isCustomer?: boolean } = {},
 ): any {

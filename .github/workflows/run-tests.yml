@@ -61,7 +61,7 @@ jobs:
         run: pnpm --filter thrift-api typecheck
 
       - name: Coverage gate (unit)
-        run: pnpm --filter thrift-api coverage:assistant
+        run: pnpm --filter thrift-api coverage:agent
 
       - name: Start QStash dev server
         run: |

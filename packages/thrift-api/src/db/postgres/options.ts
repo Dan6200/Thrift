@@ -9,7 +9,7 @@ export const knexOptions = {
 
 export const pgOptions = {
   connectionString,
-  ssl: process.env.NODE_ENV.match(/(production)/)
+  ssl: (process.env.NODE_ENV ?? '').includes('production')
     ? {
         rejectUnauthorized: false,
       }

@@ -24,7 +24,10 @@ jobs:
       PAYSTACK_CALLBACK_URL: ${{ secrets.PAYSTACK_CALLBACK_URL }}
       # Point the app + QStash client at the local QStash dev server (below), and
       # at the CI server port so the async process-order job can be delivered.
+      # The dev server accepts any token, but the client refuses to publish
+      # without one (throws QstashError).
       QSTASH_URL: http://localhost:8080
+      QSTASH_TOKEN: eyJVc2VySUQiOiJkZWZhdWx0VXNlciIsIlBhc3N3b3JkIjoiZGVmYXVsdFBhc3N3b3JkIn0=
       APP_URL: http://localhost:1027
 
     steps:

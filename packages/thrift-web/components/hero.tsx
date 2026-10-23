@@ -39,7 +39,7 @@ export function Hero({
       />
       <div
         className={cn(
-          'text-3xl sm:text-8xl xl:text-9xl capitalize p-4 md:p-16 bg-foreground/60 dark:bg-background/60 inset-0 top-0 absolute font-extrabold z-5 flex h-full text-left items-start justify-end',
+          'text-3xl sm:text-5xl md:text-5xl xl:text-7xl capitalize p-4 md:p-16 bg-foreground/60 dark:bg-background/60 inset-0 top-0 absolute font-extrabold z-5 flex h-full text-left items-start justify-end',
           className,
           font?.className,
         )}

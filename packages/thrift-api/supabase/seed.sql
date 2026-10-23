@@ -2258,6 +2258,25 @@ SET base_price = (
     WHERE p.product_id = pv.product_id
   );
 
+-- Correct media filenames that the seed slugifies differently from the actual
+-- Cloudinary uploads (the uploads drop apostrophes and keep hyphens), and fall
+-- back to the product's base image for variant combinations that were never
+-- uploaded. Without this, ProductImage shows the missing-image placeholder.
+UPDATE public.media SET filepath = 'sellit-media/products/Childrens_Story_Book.jpg'
+  WHERE filepath = 'sellit-media/products/Children_s_Story_Book.jpg';
+UPDATE public.media SET filepath = 'sellit-media/products/Antivirus_Software_1-Year.jpg'
+  WHERE filepath = 'sellit-media/products/Antivirus_Software_1_Year.jpg';
+UPDATE public.media SET filepath = 'sellit-media/products/Sci-Fi_Paperback_Novel.jpg'
+  WHERE filepath = 'sellit-media/products/Sci_Fi_Paperback_Novel.jpg';
+UPDATE public.media SET filepath = 'sellit-media/products/Mens_Polo_Shirt.jpg'
+  WHERE filepath = 'sellit-media/products/Men_s_Polo_Shirt_NAVY_XL.jpg';
+UPDATE public.media SET filepath = 'sellit-media/products/Running_Shoes_Mens.jpg'
+  WHERE filepath = 'sellit-media/products/Running_Shoes_Men_s_WHITE_9.jpg';
+UPDATE public.media SET filepath = 'sellit-media/products/Womens_Denim_Jeans.jpg'
+  WHERE filepath = 'sellit-media/products/Women_s_Denim_Jeans_BLACK_28.jpg';
+UPDATE public.media SET filepath = 'sellit-media/products/4K_Smart_TV_55.jpg'
+  WHERE filepath = 'sellit-media/products/4K_Smart_TV_55__4K_UHD_55_.jpg';
+
 -- Seed Auth Users From Profiles
 -- Enable pgcrypto for password hashing
 CREATE EXTENSION IF NOT EXISTS pgcrypto;

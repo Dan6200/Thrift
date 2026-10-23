@@ -10,6 +10,10 @@ Architecture (Ports & Adapters)**. The essential idea:
 > **Functional core, imperative shell.** Business rules are pure functions with
 > no I/O. All side effects (HTTP, database) live in a thin outer shell.
 
+> **Pricing:** see [pricing-model.md](./pricing-model.md) for how base price,
+> modifiers and time-bound overrides combine into the effective price, and why
+> bulk pricing is a frontend UX feature rather than a product column.
+
 ---
 
 ## 1. Why this shape

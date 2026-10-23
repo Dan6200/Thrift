@@ -148,6 +148,10 @@ Legend: `S:` = schema file/line, `L:` = logic/schema/type file/line.
 | D5  | Money unit: schema uses integer minor units (bigint cents/kobo); logic uses float naira                                    | `S:` `base_price`, `total_amount`, `transactions.amount`, `ledger_lines.amount`, `default_price_modifier`, `price_modifier`, `absolute_price`; `L:` `create-order.ts:95-96`, `initialize-payment.ts:63` (`total_amount * 100`) | Standardize on integer minor units throughout; update order creation, payments, response schemas, tests.                                       |
 | D6  | `variant_price_overrides` + `product_variant_effective_price` unused by logic                                              | `S:` 408–417, 620–649                                                                                                                                                                                                          | Future promotions domain; not blocking, but design `Money` VO around effective price.                                                          |
 
+> **Pricing design rationale:** see [`docs/pricing-model.md`](docs/pricing-model.md)
+> — why price lives on the variant, bulk pricing as a frontend UX feature,
+> modifiers vs. combinatorial explosion, and time-bound overrides.
+
 ### 5.2 Inventory
 
 | ID  | Drift                                                                                                                                               | Evidence                                                                                                                                                       | Resolution                                                                      |

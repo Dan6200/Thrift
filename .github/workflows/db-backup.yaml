@@ -38,7 +38,9 @@ jobs:
         if: env.BACKUP_ENABLED == 'true'
         uses: supabase/setup-cli@v1
         with:
-          version: latest
+          # Pin instead of "latest" to avoid GitHub API rate limits when
+          # resolving the latest release.
+          version: 2.120.0
 
       - name: Link Supabase project
         if: env.BACKUP_ENABLED == 'true'

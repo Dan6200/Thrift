@@ -12,7 +12,13 @@ jobs:
     steps:
       - name: Ping Supabase REST API
         run: |
-          curl -s -f -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/products?select=product_id&limit=1" \
-            -H "apikey: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}" > /dev/null
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X GET \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/products?select=product_id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_PROD_PUBLISHABLE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_PROD_PUBLISHABLE_KEY }}")
+          echo "Supabase REST responded with HTTP $STATUS"
+          if [ "$STATUS" -lt 200 ] || [ "$STATUS" -ge 300 ]; then
+            echo "Keep-alive ping failed (HTTP $STATUS)"
+            exit 1
+          fi
           echo "Database ping successful at $(date -u)"

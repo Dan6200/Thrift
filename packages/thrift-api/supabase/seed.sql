@@ -2277,6 +2277,134 @@ UPDATE public.media SET filepath = 'sellit-media/products/Womens_Denim_Jeans.jpg
 UPDATE public.media SET filepath = 'sellit-media/products/4K_Smart_TV_55.jpg'
   WHERE filepath = 'sellit-media/products/4K_Smart_TV_55__4K_UHD_55_.jpg';
 
+-- ---------------------------------------------------------------------------
+-- Pricing model (see docs/pricing-model.md)
+--   base_price  = bulk anchor per product (set above)
+--   modifiers   = attribute deltas per option value (below)
+--   overrides   = time-bound promotions / clearance (below)
+--   effective   = product_variant_effective_price view
+-- ---------------------------------------------------------------------------
+
+-- 1. Default modifier per option value, in kobo. Colours/scents carry no
+--    delta; capacity/storage/RAM/size/etc. step the price up.
+UPDATE public.product_option_values pov
+SET default_price_modifier = CASE pov.value
+  -- STORAGE
+  WHEN '128GB' THEN 0
+  WHEN '256GB' THEN 30000
+  WHEN '512GB' THEN 60000
+  WHEN '1TB' THEN 120000
+  WHEN '512GB SSD' THEN 90000
+  WHEN '1TB SSD' THEN 160000
+  WHEN '2TB SSD' THEN 300000
+  -- CAPACITY
+  WHEN '500GB' THEN 0
+  WHEN '2TB' THEN 200000
+  WHEN '4 Quart' THEN 0
+  WHEN '5.8 Quart' THEN 15000
+  WHEN '7 Quart' THEN 30000
+  WHEN '2-Person' THEN 0
+  WHEN '4-Person' THEN 40000
+  -- RAM
+  WHEN '16GB' THEN 0
+  WHEN '32GB' THEN 50000
+  WHEN '64GB' THEN 120000
+  -- RESOLUTION
+  WHEN '720p' THEN 0
+  WHEN '1080p' THEN 20000
+  WHEN '4K UHD' THEN 80000
+  WHEN '8K UHD' THEN 200000
+  -- SIZE (apparel, shoes, inches, watches, TVs)
+  WHEN 'S' THEN 0
+  WHEN 'M' THEN 5000
+  WHEN 'L' THEN 10000
+  WHEN 'XL' THEN 15000
+  WHEN '6' THEN 0
+  WHEN '7' THEN 3000
+  WHEN '8' THEN 6000
+  WHEN '9' THEN 9000
+  WHEN '10' THEN 12000
+  WHEN '11' THEN 15000
+  WHEN '12' THEN 18000
+  WHEN '26' THEN 0
+  WHEN '28' THEN 4000
+  WHEN '30' THEN 8000
+  WHEN '32' THEN 12000
+  WHEN '24 inch' THEN 0
+  WHEN '27 inch' THEN 10000
+  WHEN '32 inch' THEN 20000
+  WHEN '41mm' THEN 0
+  WHEN '45mm' THEN 8000
+  WHEN '55"' THEN 0
+  WHEN '65"' THEN 50000
+  WHEN '75"' THEN 120000
+  -- COUNT
+  WHEN '60 Softgels' THEN 0
+  WHEN '120 Softgels' THEN 5000
+  WHEN '240 Softgels' THEN 12000
+  -- VOLUME
+  WHEN '30ml' THEN 0
+  WHEN '50ml' THEN 3000
+  WHEN '100ml' THEN 6000
+  WHEN '200ml' THEN 12000
+  -- WEIGHT RANGE
+  WHEN '5-25 lbs' THEN 0
+  WHEN '5-50 lbs' THEN 8000
+  WHEN '10-70 lbs' THEN 20000
+  -- THICKNESS
+  WHEN '4mm' THEN 0
+  WHEN '6mm' THEN 2000
+  WHEN '8mm' THEN 4000
+  -- WI-FI SPEED
+  WHEN 'AX1800' THEN 0
+  WHEN 'AX3000' THEN 10000
+  WHEN 'AX5400' THEN 25000
+  -- MEGAPIXELS
+  WHEN '20MP' THEN 0
+  WHEN '24MP' THEN 10000
+  WHEN '30MP' THEN 25000
+  -- REFRESH RATE
+  WHEN '144Hz' THEN 0
+  WHEN '240Hz' THEN 30000
+  ELSE 0
+END;
+
+-- 2. Apply each option value's default delta to the variant-option links, so
+--    effective price = base_price + Σ modifiers. Individual links can later be
+--    overridden without touching the bulk base_price.
+UPDATE public.variant_to_option_values vtov
+SET price_modifier = pov.default_price_modifier,
+    modifier_type = 'absolute'
+FROM public.product_option_values pov
+WHERE vtov.variant_value_id = pov.option_value_id;
+
+-- 3. "Single out" a special variant by giving it its own base_price, outside
+--    the bulk default (e.g. a clearance unit).
+UPDATE public.product_variants
+SET base_price = (base_price * 85) / 100
+WHERE variant_id = (SELECT max(variant_id) FROM public.product_variants);
+
+-- 4. Time-bound overrides: a 7-day flash sale (25% off) on one variant of the
+--    first three products. The view uses the newest active override and the
+--    price snaps back when it expires.
+INSERT INTO public.variant_price_overrides (variant_id, absolute_price, start_date, end_date)
+SELECT pv.variant_id,
+       greatest(0, (pv.base_price * 75) / 100)::bigint,
+       now(),
+       now() + interval '7 days'
+FROM public.product_variants pv
+WHERE pv.variant_id IN (
+    SELECT min(variant_id)
+    FROM public.product_variants
+    GROUP BY product_id
+    ORDER BY min(variant_id)
+    LIMIT 3
+  )
+  AND NOT EXISTS (
+    SELECT 1 FROM public.variant_price_overrides vpo
+    WHERE vpo.variant_id = pv.variant_id AND vpo.end_date > now()
+  );
+
 -- Seed Auth Users From Profiles
 -- Enable pgcrypto for password hashing
 CREATE EXTENSION IF NOT EXISTS pgcrypto;

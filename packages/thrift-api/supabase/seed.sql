@@ -307,7 +307,7 @@ insert into public.page_sections (page_id, section_type, section_title, section_
 insert into public.product_variants (product_id, sku, base_price)
 select
   p.product_id,
-  'SKU-' || p.product_id,
+  'THR-' || p.product_id,
   100000
 from
   public.products p
@@ -450,7 +450,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -486,7 +486,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || speed_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || speed_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -522,7 +522,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || resolution_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || resolution_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -558,7 +558,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -601,7 +601,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || size_value || '-' || refresh_rate_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || size_value || '-' || refresh_rate_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -643,7 +643,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -679,7 +679,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -715,7 +715,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || weight_range_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || weight_range_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -758,7 +758,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value || '-' || capacity_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value || '-' || capacity_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -800,7 +800,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -836,7 +836,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || volume_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || volume_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -872,7 +872,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || scent_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || scent_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -908,7 +908,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || count_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || count_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -944,7 +944,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -980,7 +980,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -1016,7 +1016,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -1052,7 +1052,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || capacity_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || capacity_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -1088,7 +1088,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || capacity_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || capacity_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -1124,7 +1124,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -1167,7 +1167,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value || '-' || megapixels_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value || '-' || megapixels_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1209,7 +1209,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -1245,7 +1245,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -1288,7 +1288,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || size_value || '-' || resolution_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || size_value || '-' || resolution_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1337,7 +1337,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value || '-' || size_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value || '-' || size_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1386,7 +1386,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value || '-' || thickness_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value || '-' || thickness_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1428,7 +1428,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -1471,7 +1471,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || ram_value || '-' || storage_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || ram_value || '-' || storage_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1513,7 +1513,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || volume_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || volume_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -1556,7 +1556,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value || '-' || storage_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value || '-' || storage_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1605,7 +1605,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value || '-' || storage_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value || '-' || storage_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1654,7 +1654,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || size_value || '-' || color_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || size_value || '-' || color_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1696,7 +1696,7 @@ BEGIN
     LOOP
         -- Insert variant
         INSERT INTO public.product_variants (product_id, sku, base_price)
-        SELECT v_product_id, 'SKU-' || v_product_id || '-' || color_value, 100000
+        SELECT v_product_id, 'THR-' || v_product_id || '-' || color_value, 100000
         RETURNING variant_id INTO v_variant_id;
 
         -- Seed inventory
@@ -1739,7 +1739,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || size_value || '-' || color_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || size_value || '-' || color_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1788,7 +1788,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || size_value || '-' || color_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || size_value || '-' || color_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1837,7 +1837,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || size_value || '-' || color_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || size_value || '-' || color_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1886,7 +1886,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || size_value || '-' || color_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || size_value || '-' || color_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1935,7 +1935,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || size_value || '-' || color_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || size_value || '-' || color_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -1984,7 +1984,7 @@ BEGIN
         LOOP
             -- Insert variant
             INSERT INTO public.product_variants (product_id, sku, base_price)
-            SELECT v_product_id, 'SKU-' || v_product_id || '-' || size_value || '-' || color_value, 100000
+            SELECT v_product_id, 'THR-' || v_product_id || '-' || size_value || '-' || color_value, 100000
             FROM public.products WHERE product_id = v_product_id
             RETURNING variant_id INTO v_variant_id;
 
@@ -2146,7 +2146,7 @@ BEGIN
         INSERT INTO public.product_variants (product_id, sku, base_price)
         VALUES (
             p_record.product_id,
-            regexp_replace(p_record.title, '[^a-zA-Z0-9_]+', '', 'g') || '_DEFAULT_SKU',
+            regexp_replace(p_record.title, '[^a-zA-Z0-9_]+', '', 'g') || 'STD',
             100000
         )
         ON CONFLICT (sku) DO NOTHING
